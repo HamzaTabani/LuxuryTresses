@@ -94,15 +94,16 @@ const Signup = ({navigation}) => {
             </View>
           </View>
           <View style={{alignItems: 'center', marginTop: 40}}>
-            <PrimaryButton title="continue" onPress={null} />
+            <PrimaryButton
+              title="continue"
+              onPress={() => navigation.navigate('otp')}
+            />
           </View>
         </ScrollView>
       </View>
     </ImageBackground>
   );
 };
-
-
 
 export default Signup;
 const styles = StyleSheet.create({

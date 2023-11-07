@@ -1,11 +1,7 @@
 import React from 'react';
 import {
-  ImageBackground,
   StyleSheet,
   View,
-  StatusBar,
-  Image,
-  ScrollView,
   Pressable,
 } from 'react-native';
 import {

@@ -4,16 +4,19 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import OTP from '../screens/Auth/OTP';
 import TabNavigation from './TabNavigation';
 import Welcome from '../screens/Welcome';
+import InitialProfile from '../screens/InitialProfile';
 
 const Stack = createNativeStackNavigator();
 
 const AppNavigation = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Navigator
+        screenOptions={{headerShown: false, animation: 'fade_from_bottom'}}>
         <Stack.Screen name="welcome" component={Welcome} />
         <Stack.Screen name="signup" component={Signup} />
         <Stack.Screen name="otp" component={OTP} />
+        <Stack.Screen name="initialprofile" component={InitialProfile} />
         <Stack.Screen name="tabs" component={TabNavigation} />
       </Stack.Navigator>
     </NavigationContainer>
