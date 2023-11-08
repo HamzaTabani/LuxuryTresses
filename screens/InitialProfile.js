@@ -55,14 +55,13 @@ const InitialProfile = ({navigation}) => {
           </Pressable>
         </View>
 
-        <View
-          style={{
-            flex: 1,
-          }}>
+        <ScrollView
+        >
+
           <View
             style={{
               flex: 0.2,
-              marginTop: hp('5%'),
+              marginTop: hp('7%'),
               paddingHorizontal: wp('10%'),
             }}>
             <Text style={styles.signup_heading}>How people to know you?</Text>
@@ -71,14 +70,14 @@ const InitialProfile = ({navigation}) => {
             style={{
               flex: 0.8,
             }}>
-            <ScrollView
-              contentContainerStyle={{
+            <View
+              style={{
                 backgroundColor: '#0C0A22',
                 width: '100%',
                 alignItems: 'center',
                 borderTopRightRadius: 20,
                 borderTopLeftRadius: 20,
-                paddingBottom: 20,
+                paddingBottom: 40,
                 marginTop: hp('3%'),
               }}>
               <View style={{width: wp('80%')}}>
@@ -158,9 +157,9 @@ const InitialProfile = ({navigation}) => {
                   onPress={() => navigation.navigate('tabs')}
                 />
               </View>
-            </ScrollView>
+            </View>
           </View>
-        </View>
+        </ScrollView>
       </ImageBackground>
     </View>
   );
@@ -173,7 +172,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   back_header: {
-    height: hp('7%'),
+    height: hp('10%'),
   },
   back_button: {
     marginTop: 20,

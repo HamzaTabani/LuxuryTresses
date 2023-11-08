@@ -5,6 +5,7 @@ import OTP from '../screens/Auth/OTP';
 import TabNavigation from './TabNavigation';
 import Welcome from '../screens/Welcome';
 import InitialProfile from '../screens/InitialProfile';
+// import Profile from '../screens/Profile';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,7 @@ const AppNavigation = () => {
         <Stack.Screen name="otp" component={OTP} />
         <Stack.Screen name="initialprofile" component={InitialProfile} />
         <Stack.Screen name="tabs" component={TabNavigation} />
+        {/* <Stack.Screen name="profile" component={Profile}/> */}
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -5,6 +5,8 @@ import {
   View,
   ImageBackground,
   ScrollView,
+  Image,
+  Pressable,
 } from 'react-native';
 import ProfileHeader from '../../components/Headers/ProfileHeader';
 import {
@@ -14,6 +16,7 @@ import {
 import Subheading from '../../components/Subheading';
 import ShortcutBox from '../../components/ShortcutBox';
 import Card from '../../components/Card';
+import ProductCard from '../../components/ProductCard';
 
 const shortcutBoxContent = [
   {
@@ -91,6 +94,7 @@ const Home = () => {
             <View
               style={{
                 marginTop: 30,
+                marginBottom: 10,
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-between',
@@ -103,8 +107,9 @@ const Home = () => {
             {/* Top Style */}
             <View
               style={{
-                marginVertical: 40,
-                paddingVertical: 25,
+                marginVertical: 30,
+                paddingBottom: 40,
+                paddingTop: 30,
                 borderTopWidth: 0.5,
                 borderBottomWidth: 0.5,
                 borderColor: '#D49621',
@@ -126,7 +131,7 @@ const Home = () => {
             <View
               style={{
                 marginBottom: 40,
-                paddingVertical: 30,
+                paddingBottom: 40,
                 borderBottomWidth: 0.5,
                 borderColor: '#D49621',
               }}>
@@ -137,10 +142,182 @@ const Home = () => {
 
                 <ScrollView style={{marginTop: 20, marginLeft: 30}} horizontal>
                   {cartData2.map(item => (
-                    <Card key={item?.id} rating={3} item={item} />
+                    <ProductCard key={item?.id} rating={3} item={item} />
                   ))}
                 </ScrollView>
               </View>
+            </View>
+
+            {/* banner 1 */}
+            <View style={{paddingHorizontal: wp('8%'), marginBottom: 8}}>
+              <View
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  position: 'relative',
+                  height: 200,
+                  width: '100%',
+                }}>
+                <Image
+                  source={require('../../assets/images/homebanner1.png')}
+                  resizeMode="contain"
+                  style={{
+                    width: '100%',
+                  }}
+                />
+                <View
+                  style={{
+                    position: 'absolute',
+                    top: 35,
+                    right: 12,
+                    height: 50,
+                    width: 50,
+                  }}>
+                  <Image
+                    source={require('../../assets/images/topleftarrow.png')}
+                    resizeMode="contain"
+                    style={{
+                      width: '100%',
+                    }}
+                  />
+                </View>
+                <View
+                  style={{
+                    position: 'absolute',
+                    bottom: 35,
+                    right: 12,
+                    height: 50,
+                  }}>
+                  <Text
+                    style={{
+                      fontWeight: '400',
+                      color: '#fff',
+                      textAlign: 'right',
+                      fontSize: hp('2.5%'),
+                    }}>
+                    Let your hair
+                  </Text>
+                  <Text
+                    style={{
+                      fontWeight: '400',
+                      color: '#fff',
+                      textAlign: 'right',
+                      fontSize: hp('2.5%'),
+                    }}>
+                    Speak for itself
+                  </Text>
+                </View>
+              </View>
+            </View>
+            {/* banner 2 */}
+            <View style={{paddingHorizontal: wp('8%'), marginBottom: 80}}>
+              <View
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  position: 'relative',
+                  height: 200,
+                  width: '100%',
+                }}>
+                <Image
+                  source={require('../../assets/images/homebanner2.png')}
+                  resizeMode="contain"
+                  style={{
+                    width: '100%',
+                  }}
+                />
+                <View
+                  style={{
+                    position: 'absolute',
+                    top: 18,
+                    right: 20,
+                    height: hp('35%'),
+                    width: wp('35%'),
+                  }}>
+                  <Image
+                    source={require('../../assets/images/banner2support.png')}
+                    resizeMode="contain"
+                    style={{
+                      width: '100%',
+                    }}
+                  />
+                </View>
+                <View
+                  style={{
+                    position: 'absolute',
+                    top: 30,
+                    left: 12,
+                  }}>
+                  <Text
+                    style={{
+                      fontWeight: '400',
+                      color: '#000',
+                      fontSize: hp('2.5%'),
+                    }}>
+                    Start your
+                  </Text>
+                  <Text
+                    style={{
+                      fontWeight: '400',
+                      color: '#000',
+                      fontSize: hp('2.5%'),
+                    }}>
+                    hiar journey
+                  </Text>
+                  <Text
+                    style={{
+                      color: 'grey',
+                      marginTop: 10,
+                    }}>
+                    Explore stylists
+                  </Text>
+                  <Pressable>
+                    <View
+                      style={{
+                        height: 40,
+                        width: 120,
+                        backgroundColor: '#111649',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-evenly',
+                        borderRadius: 5,
+                        marginTop: 10,
+                      }}>
+                      <Image
+                        source={require('../../assets/images/topleftarrow.png')}
+                        resizeMode="contain"
+                        style={{
+                          width: 20,
+                        }}
+                      />
+                      <Text
+                        style={{
+                          fontWeight: '400',
+                          color: '#EDBA1B',
+                          fontSize: hp('1.5%'),
+                        }}>
+                        START NOW
+                      </Text>
+                    </View>
+                  </Pressable>
+                </View>
+              </View>
+            </View>
+
+            {/* bottom lines */}
+            <View
+              style={{
+                paddingHorizontal: wp('8%'),
+                marginBottom: 150,
+                alignItems: 'center',
+              }}>
+              <Image
+                source={require('../../assets/images/bottom_lines.png')}
+                resizeMode="contain"
+                style={{
+                  width: 40,
+                }}
+              />
             </View>
           </View>
         </ScrollView>

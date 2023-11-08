@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   },
   back_button: {
     marginTop: 20,
-    marginLeft: 15,
+    marginLeft: 25,
     width: 50,
     height: 50,
     borderWidth: 1,

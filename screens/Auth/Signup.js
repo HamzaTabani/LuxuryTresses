@@ -24,20 +24,29 @@ const Signup = ({navigation}) => {
       style={styles.bg_signup}>
       <BackHeader />
 
-      <View style={{flex: 1, paddingHorizontal: wp('10%')}}>
+      <ScrollView contentContainerStyle={{paddingHorizontal: wp('10%')}}>
+        <View
+         style={{
+          flex: 1,
+          marginTop: hp('10%'),
+        }}
+        >
+
         <View
           style={{
             flex: 0.5,
-            marginTop: hp('5%'),
+            marginTop: hp('0%'),
           }}>
           <Text style={styles.signup_heading}>Welcome Back</Text>
           <Text style={styles.signup_title}>
             Lets make your hair attractive,
           </Text>
         </View>
-        <ScrollView
+        <View
           style={{
             flex: 0.5,
+            marginTop: hp("13%"),
+            paddingBottom: 10
           }}>
           <View>
             <Text style={styles.input_lable}>Enter your email</Text>
@@ -99,8 +108,10 @@ const Signup = ({navigation}) => {
               onPress={() => navigation.navigate('otp')}
             />
           </View>
-        </ScrollView>
-      </View>
+        </View>
+        </View>
+
+      </ScrollView>
     </ImageBackground>
   );
 };

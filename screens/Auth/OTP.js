@@ -43,69 +43,83 @@ const OTP = ({navigation}) => {
         style={styles.bg_signup}>
         <BackHeader />
 
-        <View style={{flex: 1, paddingHorizontal: wp('10%')}}>
+        <ScrollView
+          contentContainerStyle={{
+            paddingHorizontal: wp('10%'),
+          }}>
           <View
             style={{
-              flex: 0.5,
-              marginTop: hp('5%'),
+              flex: 1,
+              marginTop: hp('10%'),
             }}>
-            <Text style={styles.signup_heading}>Confirmation</Text>
-            <Text style={styles.signup_title}>
-              Enter 4 digit code we sent to your email
-            </Text>
-          </View>
-          <ScrollView
-            style={{
-              flex: 0.5,
-            }}>
-            <View>
-              <Text style={styles.input_lable}>Enter code</Text>
-              <View style={styles.inputs_container}>
-                {verificationCode.map((digit, index) => (
-                  <TextInput
-                    key={index}
-                    ref={otpInputs[index]}
-                    style={styles.inputs}
-                    keyboardType="numeric"
-                    maxLength={1}
-                    value={digit}
-                    onChangeText={text => handleOTPChange(text, index)}
-                  />
-                ))}
-              </View>
-            </View>
-
-            <View style={styles.seperator}>
-              <TouchableOpacity>
-                <FontAwesome5
-                  name="refresh-outline"
-                  type="Ionicons"
-                  color="#e0e0e0"
-                  size={32}
-                  style={{textAlign: 'center', color: '#D49621'}}
-                />
-              </TouchableOpacity>
-              <Text
-                style={{color: '#D49621', textAlign: 'center', marginTop: 10}}>
-                Resend code
+            <View
+              style={{
+                flex: 0.5,
+              }}>
+              <Text style={styles.signup_heading}>Confirmation</Text>
+              <Text style={styles.signup_title}>
+                Enter 4 digit code we sent to your email
               </Text>
             </View>
+            <View
+              style={{
+                flex: 0.5,
+                marginTop: hp('14%'),
+                paddingBottom: 10
+              }}>
+              <View>
+                <Text style={styles.input_lable}>Enter code</Text>
+                <View style={styles.inputs_container}>
+                  {verificationCode.map((digit, index) => (
+                    <TextInput
+                      key={index}
+                      ref={otpInputs[index]}
+                      style={styles.inputs}
+                      keyboardType="numeric"
+                      maxLength={1}
+                      value={digit}
+                      onChangeText={text => handleOTPChange(text, index)}
+                    />
+                  ))}
+                </View>
+              </View>
 
-            <View style={{alignItems: 'center', marginTop: 40}}>
-              <PrimaryButton
-                title="continue"
-                onPress={() => navigation.navigate('initialprofile')}
-              />
-            </View>
+              <View style={styles.seperator}>
+                <TouchableOpacity>
+                  <FontAwesome5
+                    name="refresh-outline"
+                    type="Ionicons"
+                    color="#e0e0e0"
+                    size={32}
+                    style={{textAlign: 'center', color: '#D49621'}}
+                  />
+                </TouchableOpacity>
+                <Text
+                  style={{
+                    color: '#D49621',
+                    textAlign: 'center',
+                    marginTop: 10,
+                  }}>
+                  Resend code
+                </Text>
+              </View>
 
-            <View style={{alignItems: 'center', marginTop: 20}}>
-              <OutlineButton
-                title="other methods"
-                onPress={() => navigation.goBack()}
-              />
+              <View style={{alignItems: 'center', marginTop: 40}}>
+                <PrimaryButton
+                  title="continue"
+                  onPress={() => navigation.navigate('initialprofile')}
+                />
+              </View>
+
+              <View style={{alignItems: 'center', marginTop: 20}}>
+                <OutlineButton
+                  title="other methods"
+                  onPress={() => navigation.goBack()}
+                />
+              </View>
             </View>
-          </ScrollView>
-        </View>
+          </View>
+        </ScrollView>
       </ImageBackground>
     </View>
   );

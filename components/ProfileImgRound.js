@@ -1,8 +1,11 @@
+import {useNavigation} from '@react-navigation/native';
 import {TouchableOpacity, Image} from 'react-native';
 
 const ProfileImgRound = ({imgSrc}) => {
+  const navigation = useNavigation();
   return (
     <TouchableOpacity
+      onPress={() => navigation.navigate('profile')}
       style={{
         borderWidth: 2,
         borderColor: '#D49621',

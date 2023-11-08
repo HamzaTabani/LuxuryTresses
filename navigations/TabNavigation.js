@@ -2,14 +2,27 @@ import Home from '../screens/TabScreen/Home';
 import Setting from '../screens/TabScreen/Setting';
 import Cart from '../screens/TabScreen/Cart';
 import Location from '../screens/TabScreen/Location';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import FontAwesome5 from 'react-native-vector-icons/Octicons';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {View} from 'react-native';
-
+import Profile from '../screens/Profile';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
+const HomeStacks = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <Tab.Screen name="home" component={Home} />
+      <Tab.Screen name="profile" component={Profile} />
+    </Stack.Navigator>
+  );
+};
 
 const TabNavigation = () => {
   return (
@@ -32,8 +45,8 @@ const TabNavigation = () => {
         },
       }}>
       <Tab.Screen
-        name="home"
-        component={Home}
+        name="homestack"
+        component={HomeStacks}
         options={{
           tabBarIcon: ({focused}) =>
             focused ? (

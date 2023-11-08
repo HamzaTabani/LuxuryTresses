@@ -10,7 +10,6 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import FontAwesome5 from 'react-native-vector-icons/Ionicons';
 import ProfileImgRound from '../ProfileImgRound';
 import SearchTopButton from '../SearchTopButton';
 
