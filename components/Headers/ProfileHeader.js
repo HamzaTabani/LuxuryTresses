@@ -1,10 +1,4 @@
-import {
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Image,
-  Pressable,
-} from 'react-native';
+import {StyleSheet, View, Text} from 'react-native';
 
 import {
   widthPercentageToDP as wp,
@@ -12,16 +6,33 @@ import {
 } from 'react-native-responsive-screen';
 import ProfileImgRound from '../ProfileImgRound';
 import SearchTopButton from '../SearchTopButton';
+import {useState} from 'react';
 
-const ProfileHeader = () => {
+const ProfileHeader = ({username}) => {
+  const [searchActive, setSearchActive] = useState(false);
+
   return (
     <View style={styles.profile_header}>
-      <View>
+      <View style={{flexDirection: 'row', alignItems: 'center', gap: 15}}>
         <ProfileImgRound />
+
+        {!searchActive && username ? (
+          <Text
+            style={{
+              color: '#fff',
+              fontWeight: '500',
+              fontSize: hp('3%'),
+            }}>
+            Hi Sarah,
+          </Text>
+        ) : null}
       </View>
-      
+
       <View>
-        <SearchTopButton />
+        <SearchTopButton
+          searchActive={searchActive}
+          setSearchActive={setSearchActive}
+        />
       </View>
     </View>
   );

@@ -7,8 +7,7 @@ import {
 } from 'react-native-responsive-screen';
 import FontAwesome5 from 'react-native-vector-icons/Ionicons';
 
-const SearchTopButton = () => {
-  const [searchActive, setSearchActive] = useState(false);
+const SearchTopButton = ({searchActive, setSearchActive}) => {
 
   return (
     <Pressable onPress={() => setSearchActive(!searchActive)}>

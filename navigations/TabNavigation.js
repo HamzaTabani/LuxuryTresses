@@ -9,6 +9,9 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {View} from 'react-native';
 import Profile from '../screens/Profile';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import Trendings from '../screens/Trendings';
+import Recents from '../screens/Recents';
+import Popular from '../screens/Populars';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +23,9 @@ const HomeStacks = () => {
       }}>
       <Tab.Screen name="home" component={Home} />
       <Tab.Screen name="profile" component={Profile} />
+      <Tab.Screen name="trendings" component={Trendings} />
+      <Tab.Screen name="recents" component={Recents} />
+      <Tab.Screen name="populars" component={Popular} />
     </Stack.Navigator>
   );
 };

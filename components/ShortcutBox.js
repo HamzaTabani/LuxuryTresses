@@ -1,7 +1,11 @@
 import React, {useRef, useEffect} from 'react';
 import {Text, View, Image} from 'react-native';
 
-const ShortcutBox = ({item}) => {
+const ShortcutBox = ({title, img}) => {
+
+
+
+
   return (
     <View
       style={{
@@ -14,11 +18,11 @@ const ShortcutBox = ({item}) => {
         alignItems: 'center',
       }}>
       <Image
-        source={item?.img}
+        source={img}
         resizeMode="contain"
         style={{width: 35, height: 35}}
       />
-      <Text style={{color: '#fff'}}>{item?.title}</Text>
+      <Text style={{color: '#fff'}}>{title}</Text>
     </View>
   );
 };

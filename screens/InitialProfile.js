@@ -42,7 +42,7 @@ const InitialProfile = ({navigation}) => {
         resizeMode="cover"
         style={styles.bg_signup}>
         <View style={styles.back_header}>
-          <Pressable onPress={() => navigation.goBack()}>
+          <Pressable onPress={() => navigation.navigate("tabs")}>
             <View style={styles.back_button}>
               <Text
                 style={{
