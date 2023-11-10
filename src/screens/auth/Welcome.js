@@ -16,7 +16,6 @@ import PrimaryButton from '../../components/PrimaryButton';
 const Welcome = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="#000" hidden={false} />
 
       <ImageBackground
         source={require('../../assets/images/splashbg.png')}
@@ -67,6 +66,7 @@ const styles = StyleSheet.create({
   splash_header: {
     flex: 0.2,
     alignItems: 'flex-start',
+    paddingTop: hp('3%')
   },
   logo: {
     width: 80,

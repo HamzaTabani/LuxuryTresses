@@ -154,7 +154,7 @@ const InitialProfile = ({navigation}) => {
               <View style={{alignItems: 'center', marginTop: 40}}>
                 <OutlineButton
                   title="done"
-                  onPress={() => navigation.navigate('tabs')}
+                  onPress={() => navigation.navigate('TabNavigation')}
                 />
               </View>
             </View>
@@ -173,6 +173,7 @@ const styles = StyleSheet.create({
   },
   back_header: {
     height: hp('10%'),
+    paddingTop: hp('3%')
   },
   back_button: {
     marginTop: 20,
