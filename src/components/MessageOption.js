@@ -3,11 +3,15 @@ import React from 'react'
 import colors from '../assets/colors'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import Message from 'react-native-vector-icons/Feather'
+import { useNavigation } from '@react-navigation/native'
 
 const MessageOption = () => {
+
+    const navigation = useNavigation()
+
     return (
         <TouchableOpacity style={styles.messageCard} activeOpacity={0.9}
-            onPress={() => alert('work in progress')}
+            onPress={() => navigation.navigate('SecondaryStack',{screen: 'Chat'})}
         >
             <Message
                 name={'message-square'}

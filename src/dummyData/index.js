@@ -29,3 +29,72 @@ export const stylistImages = [
         image: images.stylist4
     }
 ]
+
+export const histories = [
+    {
+        id: 1,
+        image: images.cart1
+    },
+    {
+        id: 2,
+        image: images.cart2
+    },
+    {
+        id: 3,
+        image: images.cart3
+    },
+    {
+        id: 4,
+        image: images.cart4
+    },
+    {
+        id: 5,
+        image: images.cart5
+    },
+    {
+        id: 6,
+        image: images.cart6
+    }
+]
+
+export const kilometers = [
+    {
+        id: 1,
+        text: '5 km'
+    },
+    {
+        id: 2,
+        text: '10 km'
+    },
+    {
+        id: 3,
+        text: '15 km'
+    }
+]
+
+export const markerImages = [
+    {
+        id: 1,
+        image: images.marker1,
+        lat: '',
+        long: ''
+    },
+    {
+        id: 2,
+        image: images.marker2,
+        lat: '',
+        long: ''
+    },
+    {
+        id: 3,
+        image: images.marker3,
+        lat: '',
+        long: ''
+    },
+    {
+        id: 4,
+        image: images.marker4,
+        lat: '',
+        long: ''
+    }
+]

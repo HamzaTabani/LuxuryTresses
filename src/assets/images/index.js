@@ -7,4 +7,17 @@ export default {
     stylist4: require('../images/stylist4.png'),
     stylist5: require('../images/stylist5.png'),
     star: require('../images/popular.png'),
+    orders1: require('../images/orders1.png'),
+    cart1: require('../images/cart1.png'),
+    cart2: require('../images/cart2.png'),
+    cart3: require('../images/cart3.png'),
+    cart4: require('../images/cart4.png'),
+    cart5: require('../images/cart5.png'),
+    cart6: require('../images/cart6.png'),
+    bag: require('../images/goldbag.png'),
+    locationIcon: require('../images/aim.png'),
+    marker1: require('../images/marker1.png'),
+    marker2: require('../images/marker2.png'),
+    marker3: require('../images/marker3.png'),
+    marker4: require('../images/marker4.png')
 }

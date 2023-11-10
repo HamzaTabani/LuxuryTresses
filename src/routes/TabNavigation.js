@@ -14,6 +14,7 @@ import Recents from '../screens/main/Recents';
 import Popular from '../screens/main/Populars';
 import Nearby from '../screens/main/Nearby';
 import StylistDetails from '../screens/main/StylistDetails';
+import Chat from '../screens/main/Chat';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -34,7 +35,31 @@ const HomeStacks = () => {
   );
 };
 
+const SecondaryStack = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <Tab.Screen name="Chat" component={Chat} />
+    </Stack.Navigator>
+  )
+}
+
 const TabNavigation = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false
+      }}
+    >
+      <Stack.Screen name='BottomStack' component={BottomStack} />
+      <Stack.Screen name='SecondaryStack' component={SecondaryStack} />
+    </Stack.Navigator>
+  )
+}
+
+const BottomStack = () => {
   return (
     <Tab.Navigator
       activeColor="#f0edf6"
