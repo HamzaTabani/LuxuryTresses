@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   Text,
   StyleSheet,
@@ -35,20 +35,20 @@ const cartData = [
 ];
 const cartData2 = [
   {
-    id: 1,
+    id: 4,
     img: require('../../assets/images/cart4.png'),
   },
   {
-    id: 2,
+    id: 5,
     img: require('../../assets/images/cart5.png'),
   },
   {
-    id: 3,
+    id: 6,
     img: require('../../assets/images/cart6.png'),
   },
 ];
 
-const Home = ({ navigation }) => {
+const Home = ({navigation}) => {
   return (
     <>
       <ScrollView
@@ -61,10 +61,10 @@ const Home = ({ navigation }) => {
           style={styles.bg_home}>
           {/* home header */}
           <ProfileHeader text={'Hi Sarah,'} />
-          <ScrollView style={{ flex: 1 }}>
+          <ScrollView style={{flex: 1}}>
             {/* home title */}
             <View>
-              <View style={{ paddingHorizontal: wp('8%') }}>
+              <View style={{paddingHorizontal: wp('8%')}}>
                 <Text style={styles.home_heading}>Hi Sarah,</Text>
                 <Text style={styles.home_title}>Lets make a new style!</Text>
               </View>
@@ -115,15 +115,20 @@ const Home = ({ navigation }) => {
                   borderColor: '#D49621',
                 }}>
                 <View>
-                  <View style={{ paddingHorizontal: wp('8%') }}>
-                    <Subheading title={'Top stylists'} />
+                  <View style={{paddingHorizontal: wp('8%')}}>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('TopStylists')}>
+                      <Subheading title={'Top stylists'} />
+                    </TouchableOpacity>
                   </View>
                   <ScrollView
-                    style={{ marginTop: 20, marginLeft: 30 }}
+                    style={{marginTop: 20, marginLeft: 30}}
                     horizontal>
                     {cartData.map(item => (
-                     <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('StylistDetails')}> 
-                      <Card key={item?.id} rating={3} item={item} />
+                      <TouchableOpacity
+                        activeOpacity={0.9}
+                        onPress={() => navigation.navigate('StylistDetails')}>
+                        <Card key={item?.id} rating={3} item={item} />
                       </TouchableOpacity>
                     ))}
                   </ScrollView>
@@ -139,12 +144,15 @@ const Home = ({ navigation }) => {
                   borderColor: '#D49621',
                 }}>
                 <View>
-                  <View style={{ paddingHorizontal: wp('8%') }}>
-                    <Subheading title={'Recent products'} />
+                  <View style={{paddingHorizontal: wp('8%')}}>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('RecentProducts')}>
+                      <Subheading title={'Recent products'} />
+                    </TouchableOpacity>
                   </View>
 
                   <ScrollView
-                    style={{ marginTop: 20, marginLeft: 30 }}
+                    style={{marginTop: 20, marginLeft: 30}}
                     horizontal>
                     {cartData2.map(item => (
                       <ProductCard key={item?.id} rating={3} item={item} />
@@ -154,7 +162,7 @@ const Home = ({ navigation }) => {
               </View>
 
               {/* banner 1 */}
-              <View style={{ paddingHorizontal: wp('8%'), marginBottom: 8 }}>
+              <View style={{paddingHorizontal: wp('8%'), marginBottom: 8}}>
                 <View
                   style={{
                     alignItems: 'center',
@@ -215,7 +223,7 @@ const Home = ({ navigation }) => {
                 </View>
               </View>
               {/* banner 2 */}
-              <View style={{ paddingHorizontal: wp('8%'), marginBottom: 80 }}>
+              <View style={{paddingHorizontal: wp('8%'), marginBottom: 80}}>
                 <View
                   style={{
                     alignItems: 'center',

@@ -14,7 +14,6 @@ import Recents from '../screens/main/Recents';
 import Popular from '../screens/main/Populars';
 import Nearby from '../screens/main/Nearby';
 import StylistDetails from '../screens/main/StylistDetails';
-import RecentProducts from '../screens/main/RecentProducts';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -31,7 +30,6 @@ const HomeStacks = () => {
       <Tab.Screen name="populars" component={Popular} />
       <Tab.Screen name="Nearby" component={Nearby} />
       <Tab.Screen name="StylistDetails" component={StylistDetails} />
-      {/* <Tab.Screen name="RecentProducts" component={RecentProducts} /> */}
     </Stack.Navigator>
   );
 };
