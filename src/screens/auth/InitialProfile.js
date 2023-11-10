@@ -173,6 +173,7 @@ const styles = StyleSheet.create({
   },
   back_header: {
     height: hp('10%'),
+    paddingTop: hp('3%')
   },
   back_button: {
     marginTop: 20,
