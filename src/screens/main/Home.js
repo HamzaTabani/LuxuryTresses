@@ -127,8 +127,9 @@ const Home = ({navigation}) => {
                     {cartData.map(item => (
                       <TouchableOpacity
                         activeOpacity={0.9}
+                        key={item?.id}
                         onPress={() => navigation.navigate('StylistDetails')}>
-                        <Card key={item?.id} rating={3} item={item} />
+                        <Card  rating={3} item={item} />
                       </TouchableOpacity>
                     ))}
                   </ScrollView>

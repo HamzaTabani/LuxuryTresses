@@ -6,10 +6,12 @@ import Message from 'react-native-vector-icons/Feather'
 import { useNavigation } from '@react-navigation/native'
 
 const MessageOption = () => {
-    const navigation = useNavigation();
+
+    const navigation = useNavigation()
+
     return (
         <TouchableOpacity style={styles.messageCard} activeOpacity={0.9}
-            onPress={() => navigation.navigate("chat")}
+            onPress={() => navigation.navigate('SecondaryStack',{screen: 'Chat'})}
         >
             <Message
                 name={'message-square'}

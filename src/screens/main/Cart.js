@@ -3,7 +3,7 @@ import {
   Text,
   StyleSheet,
   View,
-  ImageBackground,
+  Image,
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
@@ -12,43 +12,53 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {useState} from 'react';
+import { useState } from 'react';
+import images from '../../assets/images';
+import colors from '../../assets/colors';
+import HistoryCard from '../../components/HistoryCard';
+import Container from '../../components/Container';
+import { histories } from '../../dummyData';
 
 const Cart = () => {
   const [tabActive, setTabActive] = useState('');
   console.log(tabActive);
   return (
-    <ScrollView
-      contentContainerStyle={{
-        flex: 1,
-      }}>
-      <ImageBackground
-        source={require('../../assets/images/homebg.png')}
-        resizeMode="cover"
-        style={styles.bg_home}>
-        {/* Cart Header  */}
-
-        <CartHeader />
-        {/* Cart Btn */}
-
-        <View style={styles.cart_main}>
-          <ScrollView>
-            <View style={styles.btn_wrapper}>
-              <TouchableOpacity
-                style={tabActive === 'order' ? styles.btns_active : styles.btns}
-                onPress={() => setTabActive('order')}>
-                <Text style={{color: 'white'}}>Orders</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={tabActive !== 'order' ? styles.btns_active : styles.btns}
-                onPress={() => setTabActive('history')}>
-                <Text style={{color: 'white'}}>History</Text>
-              </TouchableOpacity>
-            </View>
-          </ScrollView>
+    <Container>
+      <CartHeader />
+      {/* Cart Btn */}
+      <View style={styles.cart_main}>
+        <View style={styles.btn_wrapper}>
+          <TouchableOpacity
+            style={tabActive === 'order' ? styles.btns_active : styles.btns}
+            onPress={() => setTabActive('order')}>
+            <Text style={{ color: 'white' }}>Orders</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={tabActive !== 'order' ? styles.btns_active : styles.btns}
+            onPress={() => setTabActive('history')}>
+            <Text style={{ color: 'white' }}>History</Text>
+          </TouchableOpacity>
         </View>
-      </ImageBackground>
-    </ScrollView>
+        {tabActive === 'order' ?
+          <View style={{ flex: 0.8, justifyContent: 'center' }}>
+            <Image
+              source={images.orders1}
+              style={styles.orderImage}
+            />
+            <Text style={styles.text}>{'You have no favourites :('}</Text>
+          </View>
+          :
+          <ScrollView contentContainerStyle={styles.historyWrapper}>
+            {histories.map((item) => (
+              <HistoryCard
+              key={item.id}
+                image={item.image}
+              />
+            ))}
+          </ScrollView>
+        }
+      </View>
+    </Container>
   );
 };
 
@@ -67,7 +77,7 @@ const styles = StyleSheet.create({
   },
   btn_wrapper: {
     borderWidth: 1.2,
-    borderColor: '#DBBE62',
+    borderColor: colors.secondary,
     borderRadius: 50,
     padding: 2,
     flexDirection: 'row',
@@ -75,7 +85,7 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   btns_active: {
-    backgroundColor: '#DBBE62',
+    backgroundColor: colors.secondary,
     paddingHorizontal: wp(16),
     paddingVertical: 10,
     borderRadius: 50,
@@ -86,6 +96,22 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 50,
   },
+  orderImage: {
+    height: hp('30%'),
+    alignSelf: 'center',
+    width: hp('30%')
+  },
+  text: {
+    color: colors.secondary,
+    width: '40%',
+    fontSize: hp('3%'),
+    marginTop: hp('3.5%'),
+    alignSelf: 'center'
+  },
+  historyWrapper: {
+    paddingTop: hp('5%'),
+    paddingBottom: hp('14%')
+  }
 });
 
 export default Cart;
