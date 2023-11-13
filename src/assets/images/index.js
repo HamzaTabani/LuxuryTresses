@@ -19,5 +19,6 @@ export default {
     marker1: require('../images/marker1.png'),
     marker2: require('../images/marker2.png'),
     marker3: require('../images/marker3.png'),
-    marker4: require('../images/marker4.png')
+    marker4: require('../images/marker4.png'),
+    marker5: require('../images/marker5.png')
 }

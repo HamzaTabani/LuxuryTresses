@@ -1,17 +1,23 @@
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Image, StyleSheet, TouchableOpacity, View, FlatList } from 'react-native'
 import React, { useState } from 'react'
 import PageWrapper from '../../components/PageWrapper'
 import ProfileHeader from '../../components/ProfileHeader'
 import MapView, { Marker } from 'react-native-maps';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import colors from '../../assets/colors';
-import { kilometers, markerImages, tabs } from '../../dummyData';
+import { kilometers, markerImages, stylistImages, stylistInformations, tabs } from '../../dummyData';
 import { Picker } from '@react-native-picker/picker';
 import images from '../../assets/images';
+import StylistInfo from '../../components/StylistInfo';
 
 const Nearby = () => {
     const [changeTab, setChangeTab] = useState(1)
     const [selectKilometers, setSelectKilometers] = useState("")
+    const [isDetailOpen, setIsDetailOpen] = useState(false)
+
+    const onIconPress = () => {
+        setIsDetailOpen(!isDetailOpen)
+    }
 
     return (
         <PageWrapper>
@@ -19,8 +25,8 @@ const Nearby = () => {
             <View style={styles.screen}>
                 <MapView
                     initialRegion={{
-                        latitude: 37.78825,
-                        longitude: -122.4324,
+                        latitude: 44.466621,
+                        longitude: -70.250395,
                         latitudeDelta: 0.0922,
                         longitudeDelta: 0.0421,
                     }}
@@ -34,6 +40,9 @@ const Nearby = () => {
                         />
                     ))}
                 </MapView>
+                <View style={styles.radiusWrapper}>
+                    <View style={styles.mapRadius} />
+                </View>
                 <View style={styles.workingmapView}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <View style={styles.tabView}>
@@ -69,6 +78,21 @@ const Nearby = () => {
                             />
                         </View>
                     </View>
+
+                </View>
+                <View style={[styles.barStyle, isDetailOpen == false ? { top: hp('30%'), left: 40, alignItems: 'center', justifyContent: 'center' } : { top: hp('11%'), bottom: hp('25%'), left: hp('2%') }]}>
+                    <FlatList
+                        data={stylistInformations}
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}
+                        renderItem={({ item }) => (
+                            <StylistInfo
+                                image={item.image}
+                                isActive={isDetailOpen}
+                                onArrowPress={() => onIconPress()}
+                            />
+                        )}
+                    />
                 </View>
             </View>
         </PageWrapper>
@@ -80,7 +104,6 @@ export default Nearby
 const styles = StyleSheet.create({
     screen: {
         overflow: 'hidden',
-        marginTop: hp('4%'),
         borderRadius: 30,
     },
     mapStyle: {
@@ -129,5 +152,28 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 50,
         width: hp('7%')
+    },
+    radiusWrapper: {
+        position: 'absolute',
+        alignItems: 'center',
+        justifyContent: 'center',
+        right: 0,
+        left: 0,
+        bottom: 160,
+        top: 0
+    },
+    mapRadius: {
+        borderRadius: 200,
+        position: 'absolute',
+        padding: hp('15%'),
+        // height: 200,
+        // width: 200,
+        backgroundColor: 'rgba(239, 229, 204, 0.8)'
+    },
+    barStyle: {
+        flexDirection: 'row',
+        position: 'absolute',
+        bottom: 0,
+        right: 0
     }
 })

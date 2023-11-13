@@ -9,16 +9,6 @@ const Stack = createNativeStackNavigator();
 
 const AppNavigation = () => {
   return (
-<<<<<<< HEAD
-    <Stack.Navigator
-      screenOptions={{ headerShown: false, animation: 'fade_from_bottom' }}>
-      <Stack.Screen name="welcome" component={Welcome} />
-      <Stack.Screen name="signup" component={Signup} />
-      <Stack.Screen name="otp" component={OTP} />
-      <Stack.Screen name="initialprofile" component={InitialProfile} />
-      {/* <Stack.Screen name="profile" component={Profile}/> */}
-    </Stack.Navigator>
-=======
       <Stack.Navigator
         screenOptions={{ headerShown: false, animation: 'fade_from_bottom' }}>
         <Stack.Screen name="welcome" component={Welcome} />
@@ -27,7 +17,6 @@ const AppNavigation = () => {
         <Stack.Screen name="initialprofile" component={InitialProfile} />
         <Stack.Screen name="profile" component={Profile}/>
       </Stack.Navigator>
->>>>>>> 1ebc4971bf79a33a7f7568e53f4ceeb1e2b4d3bb
   );
 };
 

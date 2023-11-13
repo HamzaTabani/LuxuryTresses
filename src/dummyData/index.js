@@ -76,25 +76,42 @@ export const markerImages = [
     {
         id: 1,
         image: images.marker1,
-        lat: '',
-        long: ''
+        lat: 44.486621,
+        long: -70.240395
     },
     {
         id: 2,
         image: images.marker2,
-        lat: '',
-        long: ''
+        lat: 44.459423,
+        long: -70.236404
     },
     {
         id: 3,
         image: images.marker3,
-        lat: '',
-        long: ''
+        lat: 44.459423,
+        long: -70.261072
     },
     {
         id: 4,
         image: images.marker4,
-        lat: '',
-        long: ''
+        lat: 44.485621,
+        long: -70.260695
+    },
+    {
+        id: 5,
+        image: images.marker5,
+        lat: 44.469931,
+        long: -70.271599
     }
+]
+
+export const stylistInformations = [
+    {
+        id: 1,
+        image: images.stylist1
+    },
+    {
+        id: 2,
+        image: images.stylist5
+    },
 ]
