@@ -128,7 +128,7 @@ const Home = ({navigation}) => {
                       <TouchableOpacity
                         activeOpacity={0.9}
                         key={item?.id}
-                        onPress={() => navigation.navigate('StylistDetails')}>
+                        onPress={() => navigation.navigate('ProfileDetail')}>
                         <Card  rating={3} item={item} />
                       </TouchableOpacity>
                     ))}
