@@ -35,7 +35,6 @@ const SingleProduct = () => {
   return (
     <Container>
       <ProfileHeader icon={true} username={true} text={'Deep mask'} />
-
       <ScrollView style={styles.container}>
         {/* product images.. */}
         <View style={{height: 300}}>

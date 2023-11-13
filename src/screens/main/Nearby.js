@@ -79,7 +79,6 @@ const Nearby = () => {
                             />
                         </View>
                     </View>
-
                 </View>
                 <View style={[styles.barStyle, isDetailOpen == false ? { top: hp('30%'), left: 40, alignItems: 'center', justifyContent: 'center' } : { top: hp('11%'), bottom: hp('25%'), left: hp('2%') }]}>
                     <FlatList

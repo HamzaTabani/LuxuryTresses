@@ -358,7 +358,7 @@ const Profile = () => {
                         alignItems: 'center',
                         width: '50%',
                       }}>
-                      <TouchableOpacity>
+                      <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('SecondaryStack',{screen: 'SelectLocation'})}>
                         <Image
                           source={require('../../assets/images/mapicon.png')}
                           resizeMode="contain"

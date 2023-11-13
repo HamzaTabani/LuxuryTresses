@@ -18,9 +18,13 @@ import colors from '../../assets/colors';
 import HistoryCard from '../../components/HistoryCard';
 import Container from '../../components/Container';
 import { histories } from '../../dummyData';
+import { useNavigation } from '@react-navigation/native';
 
 const Cart = () => {
   const [tabActive, setTabActive] = useState('');
+
+  const navigation = useNavigation()
+
   console.log(tabActive);
   return (
     <Container>
@@ -51,8 +55,9 @@ const Cart = () => {
           <ScrollView contentContainerStyle={styles.historyWrapper}>
             {histories.map((item) => (
               <HistoryCard
-              key={item.id}
+                key={item.id}
                 image={item.image}
+                onPress={() => navigation.navigate('OrderHistory')}
               />
             ))}
           </ScrollView>

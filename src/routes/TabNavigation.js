@@ -19,6 +19,8 @@ import RecentProducts from '../screens/main/RecentProducts';
 import TopStylists from '../screens/main/TopStylists';
 import SingleProduct from '../screens/main/SingleProduct';
 import Checkout from '../screens/main/Checkout';
+import SelectLocation from '../screens/main/SelectLocation';
+import OrderHistory from '../screens/main/OrderHistory';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -42,6 +44,19 @@ const HomeStacks = () => {
   );
 };
 
+const CartStack = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false
+      }}
+    >
+      <Tab.Screen name="Cart" component={Cart} />
+      <Tab.Screen name="OrderHistory" component={OrderHistory} />
+    </Stack.Navigator>
+  )
+}
+
 const SecondaryStack = () => {
   return (
     <Stack.Navigator
@@ -50,6 +65,7 @@ const SecondaryStack = () => {
       }}>
       <Tab.Screen name="Chat" component={Chat} />
       <Tab.Screen name="Checkout" component={Checkout} />
+      <Tab.Screen name="SelectLocation" component={SelectLocation} />
     </Stack.Navigator>
   )
 }
@@ -119,8 +135,8 @@ const BottomStack = () => {
         }}
       />
       <Tab.Screen
-        name="location"
-        component={Location}
+        name="Nearby"
+        component={Nearby}
         options={{
           tabBarIcon: ({ focused }) =>
             focused ? (
@@ -150,8 +166,8 @@ const BottomStack = () => {
         }}
       />
       <Tab.Screen
-        name="cart"
-        component={Cart}
+        name="CartStack"
+        component={CartStack}
         options={{
           tabBarIcon: ({ focused }) =>
             focused ? (

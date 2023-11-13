@@ -115,3 +115,18 @@ export const stylistInformations = [
         image: images.stylist5
     },
 ]
+
+export const historyImages = [
+    {
+        id: 1,
+        image: images.cart4
+    },
+    {
+        id: 2,
+        image: images.cart5
+    },
+    {
+        id: 3,
+        image: images.cart6
+    },
+]

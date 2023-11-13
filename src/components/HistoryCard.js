@@ -1,13 +1,13 @@
-import { StyleSheet, Text, View, Image } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import colors from '../assets/colors'
 import images from '../assets/images'
 import * as Progress from 'react-native-progress';
 
-const HistoryCard = ({ image }) => {
+const HistoryCard = ({ image, onPress }) => {
     return (
-        <View style={styles.cardStyle}>
+        <TouchableOpacity style={styles.cardStyle} activeOpacity={0.9} onPress={onPress}>
             <View style={{ flexDirection: 'row' }}>
                 <Image
                     source={image}
@@ -51,7 +51,7 @@ const HistoryCard = ({ image }) => {
 
                 </View>
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 
