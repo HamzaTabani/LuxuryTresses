@@ -16,6 +16,9 @@ import Nearby from '../screens/main/Nearby';
 import StylistDetails from '../screens/main/StylistDetails';
 import Chat from '../screens/main/Chat';
 import RecentProducts from '../screens/main/RecentProducts';
+import TopStylists from '../screens/main/TopStylists';
+import SingleProduct from '../screens/main/SingleProduct';
+import Checkout from '../screens/main/Checkout';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -32,7 +35,9 @@ const HomeStacks = () => {
       <Tab.Screen name="populars" component={Popular} />
       <Tab.Screen name="Nearby" component={Nearby} />
       <Tab.Screen name="StylistDetails" component={StylistDetails} />
-      {/* <Tab.Screen name="RecentProducts" component={RecentProducts} /> */}
+      <Tab.Screen name="RecentProducts" component={RecentProducts} />
+      <Tab.Screen name="TopStylists" component={TopStylists} />
+      <Tab.Screen name="SingleProduct" component={SingleProduct} />
     </Stack.Navigator>
   );
 };
@@ -44,6 +49,7 @@ const SecondaryStack = () => {
         headerShown: false,
       }}>
       <Tab.Screen name="Chat" component={Chat} />
+      <Tab.Screen name="Checkout" component={Checkout} />
     </Stack.Navigator>
   )
 }

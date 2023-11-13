@@ -28,7 +28,7 @@ const Nearby = () => {
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <View style={styles.tabView}>
                             {tabs.map((item) => (
-                                <TouchableOpacity activeOpacity={0.9} onPress={() => setChangeTab(item.id)}
+                                <TouchableOpacity key={item.id} activeOpacity={0.9} onPress={() => setChangeTab(item.id)}
                                     style={changeTab == item.id && styles.background}
                                 >
                                     <Image

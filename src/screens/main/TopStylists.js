@@ -7,31 +7,31 @@ import React from 'react';
 import ProfileHeader from '../../components/ProfileHeader';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Container from '../../components/Container';
-import ProductCard from '../../components/ProductCard';
+import Card from '../../components/Card';
 const cartData2 = [
   {
     id: 1,
-    img: require('../../assets/images/cart4.png'),
+    img: require('../../assets/images/cart1.png'),
   },
   {
     id: 2,
-    img: require('../../assets/images/cart5.png'),
+    img: require('../../assets/images/cart2.png'),
   },
   {
     id: 3,
-    img: require('../../assets/images/cart6.png'),
-  },
-  {
-    id: 4,
-    img: require('../../assets/images/cart4.png'),
-  },
-  {
-    id: 5,
     img: require('../../assets/images/cart5.png'),
   },
   {
-    id: 6,
+    id: 4,
+    img: require('../../assets/images/cart3.png'),
+  },
+  {
+    id: 5,
     img: require('../../assets/images/cart6.png'),
+  },
+  {
+    id: 6,
+    img: require('../../assets/images/cart1.png'),
   },
   {
     id: 7,
@@ -51,17 +51,17 @@ const cartData2 = [
   },
 ];
 
-const RecentProducts = () => {
+const TopStylists = () => {
   return (
     <Container>
-      <ProfileHeader username={true} icon={true} text={'Recent products'} />
+      <ProfileHeader username={true} icon={true} text={'Top stylists'} />
       <View style={styles.wrapper}>
         <FlatList
           data={cartData2}
           keyExtractor={item => item.id}
           renderItem={({item}) => (
             <View style={{marginBottom: 15}}>
-              <ProductCard rating={3} item={item} />
+              <Card rating={3} item={item} />
             </View>
           )}
           columnWrapperStyle={{justifyContent: 'space-evenly'}}
@@ -72,7 +72,7 @@ const RecentProducts = () => {
   );
 };
 
-export default RecentProducts;
+export default TopStylists;
 
 const styles = StyleSheet.create({
   screen: {
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     paddingTop: hp('4%'),
   },
   wrapper: {
-    flex: 1, 
-    paddingBottom: 70
-  }
+    flex: 1,
+    paddingBottom: 70,
+  },
 });

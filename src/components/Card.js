@@ -1,9 +1,19 @@
+import {useNavigation} from '@react-navigation/native';
 import React, {useRef, useEffect} from 'react';
-import {Text, View, Image, Animated, Easing, StyleSheet} from 'react-native';
+import {
+  Text,
+  View,
+  Image,
+  Animated,
+  Easing,
+  StyleSheet,
+  Pressable,
+} from 'react-native';
 import Svg, {Circle} from 'react-native-svg';
 
 const Card = ({rating, item}) => {
   const progress = useRef(new Animated.Value(0)).current;
+  const navigation = useNavigation();
 
   useEffect(() => {
     const ratingToProgress = rating / 5;
@@ -23,80 +33,82 @@ const Card = ({rating, item}) => {
   });
 
   return (
-    <View style={styles.card_box}>
-      {/* card box img */}
-      <View style={styles.card_box_img}>
-        <Image
-          source={item?.img}
-          resizeMode="contain"
-          style={{width: '100%'}}
-        />
+   
+      <View style={styles.card_box}>
+        {/* card box img */}
+        <View style={styles.card_box_img}>
+          <Image
+            source={item?.img}
+            resizeMode="contain"
+            style={{width: '100%'}}
+          />
 
-        {/* small icons */}
-        <View style={styles.card_box_img_icon1}>
-          <Image
-            source={require('../assets/images/seat.png')}
-            resizeMode="contain"
-            style={{width: 17, height: 17}}
-          />
+          {/* small icons */}
+          <View style={styles.card_box_img_icon1}>
+            <Image
+              source={require('../assets/images/seat.png')}
+              resizeMode="contain"
+              style={{width: 17, height: 17}}
+            />
+          </View>
+          <View style={styles.card_box_img_icon2}>
+            <Image
+              source={require('../assets/images/bag.png')}
+              resizeMode="contain"
+              style={{width: 17, height: 17}}
+            />
+          </View>
+          {/* rating icon */}
+          <View
+            style={{
+              height: 40,
+              width: 40,
+              backgroundColor: '#fff',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: 50,
+              position: 'absolute',
+              bottom: -35,
+              right: 10,
+              borderWidth: 0.3,
+            }}>
+            <Svg width="40" height="40">
+              <Circle
+                cx="20"
+                cy="20"
+                r={radius}
+                fill="transparent"
+                stroke="#19CC89"
+                strokeWidth="4"
+                strokeDasharray={`${circumference} ${circumference}`}
+                strokeDashoffset={animatedStrokeDashoffset}
+              />
+              <Image
+                source={require('../assets/images/popular.png')}
+                resizeMode="contain"
+                style={{
+                  width: 20,
+                  height: 20,
+                  position: 'absolute',
+                  top: 10,
+                  left: 10,
+                }}
+              />
+            </Svg>
+          </View>
         </View>
-        <View style={styles.card_box_img_icon2}>
-          <Image
-            source={require('../assets/images/bag.png')}
-            resizeMode="contain"
-            style={{width: 17, height: 17}}
-          />
-        </View>
-        {/* rating icon */}
         <View
           style={{
-            height: 40,
-            width: 40,
-            backgroundColor: '#fff',
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: 50,
-            position: 'absolute',
-            bottom: -35,
-            right: 10,
-            borderWidth: 0.3,
+            paddingTop: 25,
           }}>
-          <Svg width="40" height="40">
-            <Circle
-              cx="20"
-              cy="20"
-              r={radius}
-              fill="transparent"
-              stroke="#19CC89"
-              strokeWidth="4"
-              strokeDasharray={`${circumference} ${circumference}`}
-              strokeDashoffset={animatedStrokeDashoffset}
-            />
-            <Image
-              source={require('../assets/images/popular.png')}
-              resizeMode="contain"
-              style={{
-                width: 20,
-                height: 20,
-                position: 'absolute',
-                top: 10,
-                left: 10,
-              }}
-            />
-          </Svg>
+          <Text style={{color: '#fff', fontWeight: 'bold'}}>Omnis iste</Text>
+          <Text style={{color: '#f6f6f6'}}>
+            1609 Oak, st{' '}
+            <Text style={{fontWeight: 'bold', color: '#fff'}}>(2km)</Text>{' '}
+          </Text>
         </View>
       </View>
-      <View
-        style={{
-          paddingTop: 25,
-        }}>
-        <Text style={{color: '#fff', fontWeight: 'bold'}}>Omnis iste</Text>
-        <Text style={{color: '#f6f6f6'}}>
-          1609 Oak, st{' '}
-          <Text style={{fontWeight: 'bold', color: '#fff'}}>(2km)</Text>{' '}
-        </Text>
-      </View>
-    </View>
+  
   );
 };
 

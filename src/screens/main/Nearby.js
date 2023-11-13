@@ -35,6 +35,7 @@ const Nearby = () => {
                 >
                     {markerImages.map((item) => (
                         <Marker
+                        key={item.id}
                             image={item.image}
                             coordinate={{ latitude: item.lat, longitude: item.long }}
                         />
@@ -47,7 +48,7 @@ const Nearby = () => {
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <View style={styles.tabView}>
                             {tabs.map((item) => (
-                                <TouchableOpacity activeOpacity={0.9} onPress={() => setChangeTab(item.id)}
+                                <TouchableOpacity key={item.id} activeOpacity={0.9} onPress={() => setChangeTab(item.id)}
                                     style={changeTab == item.id && styles.background}
                                 >
                                     <Image
@@ -68,7 +69,7 @@ const Nearby = () => {
                                 }
                             >
                                 {kilometers.map((item) => (
-                                    <Picker.Item label={item.text} value={item.text} style={{ color: colors.black }} />
+                                    <Picker.Item key={item.id} label={item.text} value={item.text} style={{ color: colors.black }} />
                                 ))}
                             </Picker>
                         </View>

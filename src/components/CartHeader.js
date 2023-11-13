@@ -14,7 +14,7 @@ const CartHeader = () => {
     <View style={styles.profile_header}>
       <View style={styles.back_button}>
         <Pressable onPress={() => navigation.goBack()}>
-          <View>
+          <View style={{zIndex:100}}>
             <FontAwesome5
               name="arrow-back-sharp"
               type="Ionicons"
@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
     height: hp(12),
+    zIndex:200
   },
   search_box: {
     padding: hp('1.55%'),

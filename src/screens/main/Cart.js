@@ -51,6 +51,7 @@ const Cart = () => {
           <ScrollView contentContainerStyle={styles.historyWrapper}>
             {histories.map((item) => (
               <HistoryCard
+              key={item.id}
                 image={item.image}
               />
             ))}

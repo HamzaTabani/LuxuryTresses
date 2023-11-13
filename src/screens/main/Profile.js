@@ -473,14 +473,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 15,
   },
-  //   inputs2: {
-  //     marginLeft: 10,
-  //     color: '#6D6C7B',
-  //     padding: 1,
-  //     borderWidth: 0.6,
-  //     borderRadius: 40,
-  //     borderColor: '#D49621',
-  //   },
 });
 
 export default Profile;
