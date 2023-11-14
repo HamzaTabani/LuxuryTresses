@@ -68,7 +68,7 @@ const cartData2 = [
 ];
 
 const ProfileDetail = () => {
-  const [tabActive, setTabActive] = useState('');
+  const [tabActive, setTabActive] = useState('order');
   const navigation  = useNavigation();
 
   return (
