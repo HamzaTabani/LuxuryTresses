@@ -1,17 +1,14 @@
 import React from 'react';
-import {
-  Text,
-  StyleSheet,
-  View,
-  ScrollView,
-} from 'react-native';
+import {Text, StyleSheet, View, ScrollView} from 'react-native';
 import Container from '../../components/Container';
 import ProfileHeader from '../../components/ProfileHeader';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import CheckoutProductCard from '../../components/CheckoutProductCard';
 import PrimaryButton from '../../components/PrimaryButton';
+import {useNavigation} from '@react-navigation/native';
 
 const Checkout = () => {
+  const navigation = useNavigation();
   return (
     <Container>
       <ProfileHeader icon={true} username={true} text={'Checkout'} />
@@ -50,8 +47,11 @@ const Checkout = () => {
           </View>
         </View>
         {/* Pay Button */}
-        <View style={{marginTop: 30, alignItems:'center'}}>
-          <PrimaryButton title="Pay now" />
+        <View style={{marginTop: 30, alignItems: 'center'}}>
+          <PrimaryButton
+            title="Pay now"
+            onPress={() => navigation.navigate('PaymentMethod')}
+          />
         </View>
       </ScrollView>
     </Container>

@@ -10,7 +10,7 @@ import OutlineButton from './OutlineButton'
 
 const StylistInfo = ({ image, isActive, onArrowPress }) => {
     return (
-        <View style={[styles.card, isActive ? {width: '67%'} : {marginRight: hp('4.5%')}]}>
+        <View style={[styles.card, isActive ? { width: '67%', height: hp('65%') } : { marginRight: hp('4.5%') }]}>
             <Arrow
                 name={isActive ? 'arrow-down' : 'arrow-up'}
                 color={colors.white}
@@ -74,7 +74,7 @@ const StylistInfo = ({ image, isActive, onArrowPress }) => {
                         ))}
                     </ScrollView>
                     <OutlineButton
-                        buttonStyle={{ borderColor: colors.white, marginTop: hp('2%'), alignSelf: 'center' }}
+                        buttonStyle={{ borderColor: colors.white, marginTop: hp('4%'), alignSelf: 'center' }}
                         textStyle={{ color: colors.white }}
                         title={'SEE TIMES'}
                     />

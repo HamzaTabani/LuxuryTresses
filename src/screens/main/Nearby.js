@@ -35,7 +35,7 @@ const Nearby = () => {
                 >
                     {markerImages.map((item) => (
                         <Marker
-                        key={item.id}
+                            key={item.id}
                             image={item.image}
                             coordinate={{ latitude: item.lat, longitude: item.long }}
                         />
@@ -87,7 +87,7 @@ const Nearby = () => {
                         showsHorizontalScrollIndicator={false}
                         renderItem={({ item }) => (
                             <StylistInfo
-                                image={item.image}
+                                image={images.stylist3}
                                 isActive={isDetailOpen}
                                 onArrowPress={() => onIconPress()}
                             />
@@ -164,11 +164,13 @@ const styles = StyleSheet.create({
     },
     mapRadius: {
         borderRadius: 200,
+        borderWidth: 1,
+        borderColor: colors.orange,
         position: 'absolute',
         padding: hp('15%'),
         // height: 200,
         // width: 200,
-        backgroundColor: 'rgba(239, 229, 204, 0.8)'
+        backgroundColor: 'rgba(239, 229, 204, 0.3)'
     },
     barStyle: {
         flexDirection: 'row',

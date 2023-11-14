@@ -7,8 +7,10 @@ import {
 import RatingIcon from './RatingIcon';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
+import { useNavigation } from '@react-navigation/native';
 
 const VenderCardBox = ({name, img}) => {
+  const navigation = useNavigation();
   return (
     <View style={styles.cardBox}>
       <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
@@ -41,7 +43,9 @@ const VenderCardBox = ({name, img}) => {
       {/* vender contact and ratings*/}
       <View style={{justifyContent: 'space-between'}}>
         <View style={styles.ratingButton}>
+          <Pressable onPress={()=>navigation.navigate("Reviews")}>
           <RatingIcon rating={5} w={30} h={30} r={10} />
+          </Pressable>
           <Text style={{fontWeight: '400', color: '#fff'}}>4.5 Rating</Text>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>

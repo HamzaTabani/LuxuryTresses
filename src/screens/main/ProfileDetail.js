@@ -1,0 +1,313 @@
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  FlatList,
+} from 'react-native';
+import React from 'react';
+import ProfileHeader from '../../components/ProfileHeader';
+import images from '../../assets/images';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import colors from '../../assets/colors';
+import Container from '../../components/Container';
+import ReviewCard from '../../components/ReviewCard';
+import {stylistImages} from '../../dummyData';
+import TimingCard from '../../components/TimingCard';
+import OutlineButton from '../../components/OutlineButton';
+import MessageOption from '../../components/MessageOption';
+import {useState} from 'react';
+import ProductCard from '../../components/ProductCard';
+import { useNavigation } from '@react-navigation/native';
+const cartData2 = [
+  {
+    id: 1,
+    img: require('../../assets/images/cart4.png'),
+  },
+  {
+    id: 2,
+    img: require('../../assets/images/cart5.png'),
+  },
+  {
+    id: 3,
+    img: require('../../assets/images/cart6.png'),
+  },
+  {
+    id: 4,
+    img: require('../../assets/images/cart4.png'),
+  },
+  {
+    id: 5,
+    img: require('../../assets/images/cart5.png'),
+  },
+  {
+    id: 6,
+    img: require('../../assets/images/cart6.png'),
+  },
+  {
+    id: 7,
+    img: require('../../assets/images/cart4.png'),
+  },
+  {
+    id: 8,
+    img: require('../../assets/images/cart5.png'),
+  },
+  {
+    id: 9,
+    img: require('../../assets/images/cart6.png'),
+  },
+  {
+    id: 10,
+    img: require('../../assets/images/cart6.png'),
+  },
+];
+
+const ProfileDetail = () => {
+  const [tabActive, setTabActive] = useState('');
+  const navigation  = useNavigation();
+
+  return (
+    <Container>
+      <ProfileHeader username={true} icon={true} text={'Omnis iste'} />
+      <ScrollView
+        contentContainerStyle={styles.screen}
+        showsVerticalScrollIndicator={false}>
+        <View style={styles.wrapper}>
+          <Image
+            source={images.stylist1}
+            style={styles.imageStyle}
+            borderRadius={20}
+          />
+          <View style={styles.textWrapper}>
+            <Text style={styles.name}>Omnis Iste</Text>
+            <Text style={styles.location}>
+              1609 Oak, St.{' '}
+              <Text style={{color: colors.white, fontWeight: 'bold'}}>
+                (2km)
+              </Text>
+            </Text>
+            <View style={{flexDirection: 'row'}}>
+              <View style={styles.iconView}>
+                <Image source={images.tab1} />
+              </View>
+              <View style={[styles.iconView, {marginLeft: hp('1%')}]}>
+                <Image source={images.tab2} />
+              </View>
+            </View>
+          </View>
+          <View style={{marginTop: hp('7%')}}>
+            <Image
+              source={images.stylist2}
+              style={styles.exploreImage}
+              borderRadius={10}
+            />
+            <Text style={styles.exploreText}>Explore</Text>
+          </View>
+        </View>
+
+        <View style={{paddingTop: hp('4%')}}>
+          <ReviewCard />
+        </View>
+
+        <View style={{paddingTop: hp('4%')}}>
+          <View style={styles.btn_wrapper}>
+            <TouchableOpacity
+              style={tabActive === 'order' ? styles.btns_active : styles.btns}
+              onPress={() => setTabActive('order')}>
+              <Text
+                style={
+                  tabActive == 'order'
+                    ? styles.btns_active_text
+                    : styles.btns_text
+                }>
+                Orders
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={tabActive !== 'order' ? styles.btns_active : styles.btns}
+              onPress={() => setTabActive('product')}>
+              <Text
+                style={
+                  tabActive !== 'order'
+                    ? styles.btns_active_text
+                    : styles.btns_text
+                }>
+                Products
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        {tabActive === 'order' ? (
+          <View style={{paddingTop: hp('4%')}}>
+            <View style={styles.textContainer}>
+              <Text style={styles.heading}>About Omnis iste</Text>
+              <Text style={styles.message}>
+                Sed ut perspiciatis unde omnis iste natus error sit voluptatem{' '}
+                {'\n'}
+                {'\n'} accusantium doloremque laudantium, totam rem aperiam,
+                eaque {'\n'}
+                {'\n'} ipsa quae ab illo inventore veritatis et quasi architecto
+                beatae vitae dicta sunt explicabo.{' '}
+              </Text>
+            </View>
+            <View style={styles.imageWrapper}>
+              {stylistImages.map(item => (
+                <>
+                  <Image
+                    key={item.id}
+                    source={item.image}
+                    borderRadius={15}
+                    blurRadius={item.id == 4 ? 25 : 0}
+                    style={styles.image}
+                  />
+                  <Text style={styles.moreText}>{item.id == 4 && 'More'}</Text>
+                </>
+              ))}
+            </View>
+
+            <View style={{paddingTop: hp('4%')}}>
+              <TimingCard />
+              <View style={{paddingTop: hp('5%'), flexDirection: 'row'}}>
+                <OutlineButton
+                  title={'BOOK NOW'}
+                  buttonStyle={{width: '80%'}}
+                  textStyle={{color: colors.white}}
+                  onPress={()=>navigation.navigate("Booking")}
+                />
+                <View style={{marginLeft: hp('2%')}}>
+                  <MessageOption />
+                </View>
+              </View>
+            </View>
+          </View>
+        ) : (
+          <View style={{paddingTop: hp('4%')}}>
+            <FlatList
+              data={cartData2}
+              keyExtractor={item => item.id}
+              renderItem={({item}) => (
+                <View style={{marginBottom: 15}}>
+                  <ProductCard rating={3} item={item} />
+                </View>
+              )}
+              columnWrapperStyle={{justifyContent: 'space-evenly'}}
+              numColumns={2}
+            />
+          </View>
+        )}
+      </ScrollView>
+    </Container>
+  );
+};
+
+export default ProfileDetail;
+
+const styles = StyleSheet.create({
+  screen: {
+    padding: hp('2%'),
+    paddingBottom: hp('22%'),
+    paddingTop: hp('4%'),
+  },
+  wrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  imageStyle: {
+    height: hp('18%'),
+    width: '38%',
+  },
+  textWrapper: {
+    paddingTop: hp('5%'),
+  },
+  name: {
+    color: colors.white,
+    fontSize: hp('2.4%'),
+    fontWeight: 'bold',
+  },
+  location: {
+    color: colors.white,
+    marginTop: hp('1%'),
+  },
+  iconView: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.white,
+    marginTop: hp('1.4%'),
+    height: hp('4%'),
+    width: hp('4%'),
+    borderRadius: 50,
+  },
+  exploreImage: {
+    height: hp('8%'),
+    width: hp('9%'),
+  },
+  exploreText: {
+    marginTop: hp('1%'),
+    color: colors.white,
+    fontSize: hp('2%'),
+    alignSelf: 'center',
+    fontWeight: 'bold',
+  },
+  heading: {
+    color: colors.white,
+    fontWeight: 'bold',
+    fontSize: hp('2%'),
+  },
+  textContainer: {
+    paddingTop: hp('3%'),
+    marginLeft: hp('1%'),
+  },
+  message: {
+    marginTop: hp('2%'),
+    color: colors.white,
+  },
+  image: {
+    height: hp('10%'),
+    width: hp('10%'),
+  },
+  imageWrapper: {
+    paddingTop: hp('5%'),
+    flexDirection: 'row',
+    gap: 10,
+  },
+  moreText: {
+    color: colors.white,
+    position: 'absolute',
+    right: hp('4.8%'),
+    fontWeight: 'bold',
+    top: hp('8.5%'),
+    fontSize: hp('2%'),
+  },
+  btn_wrapper: {
+    borderWidth: 1.2,
+    borderColor: colors.secondary,
+    borderRadius: 50,
+    padding: 2,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 5,
+  },
+  btns_active: {
+    backgroundColor: colors.secondary,
+    paddingHorizontal: wp(16),
+    paddingVertical: 10,
+    borderRadius: 50,
+  },
+  btns: {
+    backgroundColor: 'transparent',
+    paddingHorizontal: wp(16),
+    paddingVertical: 10,
+    borderRadius: 50,
+  },
+  btns_active_text: {
+    color: '#000',
+  },
+  btns_text: {
+    color: '#fff',
+  },
+});

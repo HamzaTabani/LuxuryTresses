@@ -13,14 +13,17 @@ import Trendings from '../screens/main/Trendings';
 import Recents from '../screens/main/Recents';
 import Popular from '../screens/main/Populars';
 import Nearby from '../screens/main/Nearby';
-import StylistDetails from '../screens/main/StylistDetails';
+import ProfileDetail from '../screens/main/ProfileDetail';
 import Chat from '../screens/main/Chat';
 import RecentProducts from '../screens/main/RecentProducts';
 import TopStylists from '../screens/main/TopStylists';
 import SingleProduct from '../screens/main/SingleProduct';
 import Checkout from '../screens/main/Checkout';
-import SelectLocation from '../screens/main/SelectLocation';
+import PaymentMethod from '../screens/main/PaymentMethod';
+import Reviews from '../screens/main/Reviews';
+import Booking from '../screens/main/Booking';
 import OrderHistory from '../screens/main/OrderHistory';
+import SelectLocation from '../screens/main/SelectLocation';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -36,10 +39,12 @@ const HomeStacks = () => {
       <Tab.Screen name="recents" component={Recents} />
       <Tab.Screen name="populars" component={Popular} />
       <Tab.Screen name="Nearby" component={Nearby} />
-      <Tab.Screen name="StylistDetails" component={StylistDetails} />
+      <Tab.Screen name="ProfileDetail" component={ProfileDetail} />
       <Tab.Screen name="RecentProducts" component={RecentProducts} />
       <Tab.Screen name="TopStylists" component={TopStylists} />
       <Tab.Screen name="SingleProduct" component={SingleProduct} />
+      <Tab.Screen name="Reviews" component={Reviews} />
+      <Tab.Screen name="Booking" component={Booking} />
     </Stack.Navigator>
   );
 };
@@ -65,6 +70,7 @@ const SecondaryStack = () => {
       }}>
       <Tab.Screen name="Chat" component={Chat} />
       <Tab.Screen name="Checkout" component={Checkout} />
+      <Tab.Screen name="PaymentMethod" component={PaymentMethod} />
       <Tab.Screen name="SelectLocation" component={SelectLocation} />
     </Stack.Navigator>
   )
