@@ -19,7 +19,37 @@ import FontAwesome5 from 'react-native-vector-icons/Ionicons';
 import {Picker} from '@react-native-picker/picker';
 import {useNavigation} from '@react-navigation/native';
 import ModalChangeProfilePic from '../../components/ModalChangeProfilePic';
+import colors from '../../assets/colors';
 
+const cities = [
+  {
+    id: 1,
+    text: 'Los Angeles',
+  },
+  {
+    id: 2,
+    text: 'Washington',
+  },
+  {
+    id: 3,
+    text: 'Chicago',
+  },
+];
+
+const states = [
+  {
+    id: 1,
+    text: 'Texas',
+  },
+  {
+    id: 2,
+    text: 'California',
+  },
+  {
+    id: 3,
+    text: 'Illinois',
+  },
+];
 const Profile = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [tab, setTab] = useState('general');
@@ -228,41 +258,28 @@ const Profile = () => {
 
                           <View
                             style={{
-                              width: 140,
                               height: 50,
                               borderWidth: 0.5,
                               borderColor: '#D49621',
                               borderRadius: 40,
+                              borderRadius: 50,
+                              width: 140,
                             }}>
                             <Picker
                               selectedValue={selectedLanguage}
-                              dropdownIconColor={'#fff'}
+                              dropdownIconColor={colors.orange}
+                              dropdownIconRippleColor={colors.orange}
                               onValueChange={(itemValue, itemIndex) =>
                                 setSelectedLanguage(itemValue)
                               }>
-                              <Picker.Item
-                                label="Select"
-                                value="city"
-                                style={{
-                                  color: '#6D6C7B',
-                                }}
-                              />
-                              <Picker.Item
-                                label="Java"
-                                value="java"
-                                style={{
-                                  backgroundColor: 'gray',
-                                  color: '#fff',
-                                }}
-                              />
-                              <Picker.Item
-                                label="JavaScript"
-                                value="js"
-                                style={{
-                                  backgroundColor: 'gray',
-                                  color: '#fff',
-                                }}
-                              />
+                              {cities.map(item => (
+                                <Picker.Item
+                                  key={item.id}
+                                  label={item.text}
+                                  value={item.text}
+                                  style={{color: colors.darkgray}}
+                                />
+                              ))}
                             </Picker>
                           </View>
                         </View>
@@ -270,41 +287,28 @@ const Profile = () => {
                           <Text style={styles.label}>State</Text>
                           <View
                             style={{
-                              width: 140,
                               height: 50,
                               borderWidth: 0.5,
                               borderColor: '#D49621',
                               borderRadius: 40,
+                              borderRadius: 50,
+                              width: 140,
                             }}>
                             <Picker
                               selectedValue={selectedLanguage}
-                              dropdownIconColor={'#fff'}
+                              dropdownIconColor={colors.orange}
+                              dropdownIconRippleColor={colors.orange}
                               onValueChange={(itemValue, itemIndex) =>
                                 setSelectedLanguage(itemValue)
                               }>
-                              <Picker.Item
-                                label="Select"
-                                value="city"
-                                style={{
-                                  color: '#6D6C7B',
-                                }}
-                              />
-                              <Picker.Item
-                                label="Java"
-                                value="java"
-                                style={{
-                                  backgroundColor: 'gray',
-                                  color: '#fff',
-                                }}
-                              />
-                              <Picker.Item
-                                label="JavaScript"
-                                value="js"
-                                style={{
-                                  backgroundColor: 'gray',
-                                  color: '#fff',
-                                }}
-                              />
+                              {states.map(item => (
+                                <Picker.Item
+                                  key={item.id}
+                                  label={item.text}
+                                  value={item.text}
+                                  style={{color: colors.darkgray}}
+                                />
+                              ))}
                             </Picker>
                           </View>
                         </View>
@@ -358,7 +362,13 @@ const Profile = () => {
                         alignItems: 'center',
                         width: '50%',
                       }}>
-                      <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('SecondaryStack',{screen: 'SelectLocation'})}>
+                      <TouchableOpacity
+                        activeOpacity={0.9}
+                        onPress={() =>
+                          navigation.navigate('SecondaryStack', {
+                            screen: 'SelectLocation',
+                          })
+                        }>
                         <Image
                           source={require('../../assets/images/mapicon.png')}
                           resizeMode="contain"

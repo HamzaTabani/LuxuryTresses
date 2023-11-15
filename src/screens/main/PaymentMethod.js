@@ -1,13 +1,19 @@
 import React from 'react';
-import {Text, StyleSheet, View, ScrollView, Image} from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  View,
+  ScrollView,
+  Image,
+  ImageBackground,
+} from 'react-native';
 import Container from '../../components/Container';
 import ProfileHeader from '../../components/ProfileHeader';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import CheckoutProductCard from '../../components/CheckoutProductCard';
 import PrimaryButton from '../../components/PrimaryButton';
 import OutlineButton from '../../components/OutlineButton';
 import Back from 'react-native-vector-icons/Ionicons';
-import colors from '../../assets/colors';
+import colors from '../../assets/colors'; 
 
 const PaymentMethod = () => {
   return (
@@ -21,10 +27,34 @@ const PaymentMethod = () => {
             borderColor: '#D49621',
             borderBottomWidth: 0.3,
           }}>
-          <CheckoutProductCard />
-          <CheckoutProductCard />
+          <ImageBackground
+            source={require('../../assets/images/homebanner2.png')}
+            style={{
+              width: '100%',
+              height: 180,
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+            }}
+            borderRadius={20}>
+            <View style={{margin: hp('2.5%')}}>
+              <Text style={styles.userCartText}>Sarah.J</Text>
+            </View>
+            <View style={{margin: hp('2.5%')}}>
+              <Text style={styles.userCartText}>4242 4242 4242 4242</Text>
+              <Text
+                style={{
+                  fontWeight: 'light',
+                  color: '#efefef',
+                  fontSize: hp('1.5%'),
+                }}>
+                12 / 24
+              </Text>
+            </View>
+          </ImageBackground>
+          {/* <CheckoutProductCard /> */}
+          {/* <CheckoutProductCard /> */}
           <View style={{alignItems: 'center', marginTop: 20}}>
-            <OutlineButton title="Add New Card" textStyle={{color:"#fff"}}/>
+            <OutlineButton title="Add New Card" textStyle={{color: '#fff'}} />
           </View>
         </View>
         {/* checkou summary */}
@@ -91,7 +121,6 @@ const PaymentMethod = () => {
             </View>
           </View>
 
-          
           <View style={styles.chatHeader}>
             <View
               style={{
@@ -144,7 +173,7 @@ const PaymentMethod = () => {
             </View>
           </View>
         </View>
-        
+
         {/* Pay Button */}
         <View style={{marginTop: 5, alignItems: 'center'}}>
           <PrimaryButton title="Pay now" />
@@ -197,7 +226,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#000015',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 17
+    marginBottom: 17,
+  },
+  userCartText: {
+    fontWeight: 'light',
+    color: '#fff',
+    fontSize: hp('3.5%'),
   },
 });
 
