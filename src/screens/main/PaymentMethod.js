@@ -90,8 +90,6 @@ const PaymentMethod = () => {
               <Back name={'arrow-forward'} color={colors.orange} size={20} />
             </View>
           </View>
-
-          
           <View style={styles.chatHeader}>
             <View
               style={{

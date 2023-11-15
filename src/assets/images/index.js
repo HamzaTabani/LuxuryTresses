@@ -22,5 +22,7 @@ export default {
     marker4: require('../images/marker4.png'),
     marker5: require('../images/marker5.png'),
     banner1: require('../images/homebanner1.png'),
-    banner2: require('../images/homebanner2.png')
+    banner2: require('../images/homebanner2.png'),
+    visa: require('../images/visa.png'),
+    cash: require('../images/cash.png')
 }
