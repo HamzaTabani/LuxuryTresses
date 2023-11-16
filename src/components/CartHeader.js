@@ -6,9 +6,11 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import SearchTopButton from '../../src/components/SearchTopButton';
+import { useState } from 'react';
 
 const CartHeader = () => {
   const navigation = useNavigation();
+  const [searchActive, setSearchActive] = useState(false);
 
   return (
     <View style={styles.profile_header}>
@@ -26,7 +28,10 @@ const CartHeader = () => {
       </View>
 
       <View>
-        <SearchTopButton />
+      <SearchTopButton
+          searchActive={searchActive}
+          setSearchActive={setSearchActive}
+        />
       </View>
     </View>
   );

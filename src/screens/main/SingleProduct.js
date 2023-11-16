@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Text,
   StyleSheet,
@@ -10,12 +10,13 @@ import {
 import Container from '../../components/Container';
 import ProfileHeader from '../../components/ProfileHeader';
 import Swiper from 'react-native-swiper';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import colors from '../../assets/colors';
 import OutlineButton from '../../components/OutlineButton';
 import MessageOption from '../../components/MessageOption';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import UserDetailCard from '../../components/UserDetailCard';
+import { historyImages } from '../../dummyData';
 
 const SingleProduct = () => {
   const navigation = useNavigation();
@@ -36,35 +37,26 @@ const SingleProduct = () => {
       <ProfileHeader icon={true} username={true} text={'Deep mask'} />
       <ScrollView style={styles.container}>
         {/* product images.. */}
-        <View style={{height: 300}}>
+        <View style={{ height: 300 }}>
           <Swiper
             style={styles.wrapper}
-            activeDotColor={'#D49621'}
-            dotColor={'#fff'}>
-            <View style={styles.slidedImageBox}>
+            activeDotColor={colors.orange}
+            dotStyle={{ borderWidth: 1, borderColor: colors.orange }}>
+            {historyImages.map((item) => (
               <Image
-                source={require('../../assets/images/cart6.png')}
-                resizeMode="contain"
-                style={{width: '100%', height: 300}}
+                source={item.image}
+                borderRadius={20}
+                // resizeMode="contain"
+                style={{ width: hp('37%'), height: hp('35%'), alignSelf: 'center' }}
               />
-            </View>
-            <View style={styles.slidedImageBox}>
-              <Image
-                source={require('../../assets/images/cart6.png')}
-                resizeMode="contain"
-                style={{width: '100%', height: 300}}
-              />
-            </View>
+            ))}
           </Swiper>
         </View>
         {/* product detail */}
-        <View style={{marginTop: 10}}>
+        <View style={{ marginTop: 10 }}>
           {/* product owner.. */}
-          <UserDetailCard/>
-         
-
+          <UserDetailCard />
           {/* product description */}
-
           <View>
             <Text
               style={{
@@ -99,14 +91,14 @@ const SingleProduct = () => {
                 gap: 5,
                 marginLeft: 20,
               }}>
-              <Text style={{color: '#D49621', fontSize: hp('2.4%')}}>
+              <Text style={{ color: '#D49621', fontSize: hp('2.4%') }}>
                 $24.00
               </Text>
-              <Text style={{color: '#efefef', fontSize: hp('1.6%')}}>
+              <Text style={{ color: '#efefef', fontSize: hp('1.6%') }}>
                 (24 available)
               </Text>
             </View>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <TouchableOpacity
                 onPress={decrementQuantity}
                 style={styles.button}>
@@ -134,10 +126,10 @@ const SingleProduct = () => {
             <OutlineButton
               title={'Add to cart'}
               onPress={() =>
-                navigation.navigate('SecondaryStack', {screen: 'Checkout'})
+                navigation.navigate('SecondaryStack', { screen: 'Checkout' })
               }
-              textStyle={{color: '#fff'}}
-              buttonStyle={{width: '82%'}}
+              textStyle={{ color: '#fff' }}
+              buttonStyle={{ width: '82%' }}
             />
             <MessageOption />
           </View>
@@ -151,13 +143,6 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: '5%',
     marginBottom: 100,
-  },
-  wrapper: {},
-  slidedImageBox: {
-    width: '100%',
-    height: 500,
-    alignSelf: 'center',
-    alignItems: 'center',
   },
   chatHeader: {
     height: 80,

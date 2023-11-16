@@ -23,7 +23,7 @@ const UserDetailCard = () => {
             height: 70,
           }}>
           <Image
-            source={require('../assets/images/chatuser.png')}
+            source={images.stylist1}
             resizeMode="cover"
             style={{width: '100%', height: '100%'}}
           />

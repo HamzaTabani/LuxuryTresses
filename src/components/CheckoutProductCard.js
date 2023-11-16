@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Text,
   StyleSheet,
@@ -6,71 +6,70 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-const CheckoutProductCard = () => {
-    const [quantity, setQuantity] = useState(1);
+const CheckoutProductCard = ({ image, name, price }) => {
+  const [quantity, setQuantity] = useState(1);
 
-    const incrementQuantity = () => {
-      setQuantity(quantity + 1);
-    };
-  
-    const decrementQuantity = () => {
-      if (quantity > 1) {
-        setQuantity(quantity - 1);
-      }
-    };
-  
+  const incrementQuantity = () => {
+    setQuantity(quantity + 1);
+  };
+
+  const decrementQuantity = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
+
   return (
     <View style={styles.productQuantityBox}>
-    <View
-      style={{
-        flexDirection: 'row',
-        gap: 15,
-      }}>
       <View
         style={{
-          width: 70,
-          height: 70,
+          flexDirection: 'row',
+          gap: 15,
         }}>
-        <Image
-          source={require('../assets/images/cart5.png')}
-          resizeMode="cover"
-          style={{width: '100%', height: '100%', borderRadius: 15}}
-        />
-        {/* online status button */}
-      </View>
-
-      <View style={{justifyContent: 'center'}}>
-        <Text style={{color: '#fff', fontSize: hp('2.0%')}}>
-          Deep mask
-        </Text>
-        <Text
+        <View
           style={{
-            color: '#efefef',
-            fontSize: hp('1.5%'),
-            marginTop: 2,
+            width: 70,
+            height: 70,
           }}>
-          $5.22
-        </Text>
+          <Image
+            source={image}
+            resizeMode="cover"
+            style={{ width: '100%', height: '100%', borderRadius: 15 }}
+          />
+          {/* online status button */}
+        </View>
+        <View style={{ justifyContent: 'center' }}>
+          <Text style={{ color: '#fff', fontSize: hp('2.0%') }}>
+            Deep mask
+          </Text>
+          <Text
+            style={{
+              color: '#efefef',
+              fontSize: hp('1.5%'),
+              marginTop: 2,
+            }}>
+            {price}
+          </Text>
+        </View>
+      </View>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <TouchableOpacity
+          onPress={decrementQuantity}
+          style={styles.button}>
+          <Text style={styles.buttonText}>-</Text>
+        </TouchableOpacity>
+        <View style={styles.quantityButton}>
+          <Text style={styles.quantityText}>{quantity}</Text>
+        </View>
+        <TouchableOpacity
+          onPress={incrementQuantity}
+          style={styles.button}>
+          <Text style={styles.buttonText}>+</Text>
+        </TouchableOpacity>
       </View>
     </View>
-    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-      <TouchableOpacity
-        onPress={decrementQuantity}
-        style={styles.button}>
-        <Text style={styles.buttonText}>-</Text>
-      </TouchableOpacity>
-      <View style={styles.quantityButton}>
-        <Text style={styles.quantityText}>{quantity}</Text>
-      </View>
-      <TouchableOpacity
-        onPress={incrementQuantity}
-        style={styles.button}>
-        <Text style={styles.buttonText}>+</Text>
-      </TouchableOpacity>
-    </View>
-  </View>
   );
 };
 
@@ -85,7 +84,8 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 5,
     backgroundColor: '#020116',
-    marginTop: 20,
+    marginTop: hp('2%'),
+    marginBottom: hp('2%'),
   },
   button: {
     width: 40,

@@ -1,11 +1,12 @@
 import React from 'react';
-import {Text, StyleSheet, View, ScrollView} from 'react-native';
+import { Text, StyleSheet, View, ScrollView } from 'react-native';
 import Container from '../../components/Container';
 import ProfileHeader from '../../components/ProfileHeader';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import CheckoutProductCard from '../../components/CheckoutProductCard';
 import PrimaryButton from '../../components/PrimaryButton';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import { checkoutss } from '../../dummyData';
 
 const Checkout = () => {
   const navigation = useNavigation();
@@ -20,14 +21,17 @@ const Checkout = () => {
             borderColor: '#D49621',
             borderBottomWidth: 0.6,
           }}>
-          <CheckoutProductCard />
-          <CheckoutProductCard />
-          <CheckoutProductCard />
+          {checkoutss.map((item) => (
+            <CheckoutProductCard
+              image={item.image}
+              price={item.price}
+            />
+          ))}
         </View>
         {/* checkou summary */}
-        <View style={{marginTop: 15}}>
+        <View style={{ marginTop: 15 }}>
           <Text
-            style={{color: '#fff', fontWeight: 'bold', fontSize: hp('2.5%')}}>
+            style={{ color: '#fff', fontWeight: 'bold', fontSize: hp('2.5%') }}>
             Payment Summary
           </Text>
 
@@ -47,7 +51,7 @@ const Checkout = () => {
           </View>
         </View>
         {/* Pay Button */}
-        <View style={{marginTop: 30, alignItems: 'center'}}>
+        <View style={{ marginTop: hp('5%'), alignItems: 'center' }}>
           <PrimaryButton
             title="Pay now"
             onPress={() => navigation.navigate('PaymentMethod')}

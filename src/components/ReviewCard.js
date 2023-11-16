@@ -1,13 +1,13 @@
-import { StyleSheet, Text, View, Image } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import colors from '../assets/colors'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import * as Progress from 'react-native-progress';
 import images from '../assets/images';
 
-const ReviewCard = () => {
+const ReviewCard = ({onPress}) => {
     return (
-        <View style={styles.card}>
+        <TouchableOpacity style={styles.card} activeOpacity={0.9} onPress={onPress}>
             <View>
                 <Text style={styles.reviewText}>Customer reviews</Text>
                 <Text style={styles.text}>152 customer rating</Text>
@@ -32,7 +32,7 @@ const ReviewCard = () => {
                     </View>
                 </View>
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 

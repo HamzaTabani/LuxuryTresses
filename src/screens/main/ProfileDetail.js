@@ -68,7 +68,7 @@ const cartData2 = [
 ];
 
 const ProfileDetail = () => {
-  const [tabActive, setTabActive] = useState('');
+  const [tabActive, setTabActive] = useState('order');
   const navigation  = useNavigation();
 
   return (
@@ -109,11 +109,11 @@ const ProfileDetail = () => {
             <Text style={styles.exploreText}>Explore</Text>
           </View>
         </View>
-
         <View style={{paddingTop: hp('4%')}}>
-          <ReviewCard />
+          <ReviewCard 
+            onPress={() => navigation.navigate('Reviews')}
+          />
         </View>
-
         <View style={{paddingTop: hp('4%')}}>
           <View style={styles.btn_wrapper}>
             <TouchableOpacity
@@ -169,7 +169,6 @@ const ProfileDetail = () => {
                 </>
               ))}
             </View>
-
             <View style={{paddingTop: hp('4%')}}>
               <TimingCard />
               <View style={{paddingTop: hp('5%'), flexDirection: 'row'}}>
@@ -278,7 +277,7 @@ const styles = StyleSheet.create({
   moreText: {
     color: colors.white,
     position: 'absolute',
-    right: hp('4.8%'),
+    right: hp('4%'),
     fontWeight: 'bold',
     top: hp('8.5%'),
     fontSize: hp('2%'),

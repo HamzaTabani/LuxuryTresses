@@ -1,7 +1,6 @@
 import Home from '../screens/main/Home';
 import Setting from '../screens/main/Setting';
 import Cart from '../screens/main/Cart';
-import Location from '../screens/main/Location';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome5 from 'react-native-vector-icons/Octicons';
 import Feather from 'react-native-vector-icons/Feather';

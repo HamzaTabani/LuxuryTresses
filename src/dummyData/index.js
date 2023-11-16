@@ -130,3 +130,36 @@ export const historyImages = [
         image: images.cart6
     },
 ]
+
+export const methods = [
+    {
+        id: 1,
+        image: images.visa,
+        card: 'Mastercard / VISA',
+        number: '1512 1212 **** ****'
+    },
+    {
+        id: 2,
+        image: images.cash,
+        card: 'Cash on delivery',
+        number: 'Pay in cash'
+    }
+]
+
+export const checkoutss = [
+    {
+        id: 1,
+        image: images.cart5,
+        price: '$45.00'
+    },
+    {
+        id: 1,
+        image: images.cart6,
+        price: '$15.00'
+    },
+    {
+        id: 1,
+        image: images.cart4,
+        price: '$5.00'
+    }
+]

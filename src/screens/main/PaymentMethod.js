@@ -1,12 +1,20 @@
 import React from 'react';
-import {Text, StyleSheet, View, ScrollView, Image} from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  View,
+  ScrollView,
+  Image,
+  ImageBackground,
+} from 'react-native';
 import Container from '../../components/Container';
 import ProfileHeader from '../../components/ProfileHeader';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import CheckoutProductCard from '../../components/CheckoutProductCard';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import PrimaryButton from '../../components/PrimaryButton';
 import OutlineButton from '../../components/OutlineButton';
-import Back from 'react-native-vector-icons/Ionicons';
+import PayMethodCard from '../../components/PayMethodCard';
+import { methods } from '../../dummyData';
+import images from '../../assets/images';
 import colors from '../../assets/colors';
 
 const PaymentMethod = () => {
@@ -17,18 +25,55 @@ const PaymentMethod = () => {
         {/* checkout product list */}
         <View
           style={{
-            paddingBottom: 40,
-            borderColor: '#D49621',
+            paddingBottom: hp('5%'),
+            borderBottomColor: '#D49621',
             borderBottomWidth: 0.3,
           }}>
-          <CheckoutProductCard />
-          <CheckoutProductCard />
-          <View style={{alignItems: 'center', marginTop: 20}}>
-            <OutlineButton title="Add New Card" textStyle={{color:"#fff"}}/>
+          <ImageBackground
+            source={images.card_background}
+            borderRadius={20}
+            imageStyle={{
+              width: '100%',
+              height: 205,
+              borderColor: colors.orange,
+              borderWidth: 1
+            }}
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}
+          >
+            <View style={{ margin: hp('2.5%') }}>
+              <Text style={styles.userCartText}>Sarah.J</Text>
+              <Image
+                source={images.card_scan}
+                borderRadius={10}
+                style={styles.imageStyle}
+              />
+              <View style={{ marginTop: hp('3%') }}>
+                <Text style={styles.userCartText}>1234 5678 9101 2345</Text>
+                <Text
+                  style={{
+                    fontWeight: 'light',
+                    color: '#efefef',
+                    fontSize: hp('1.5%'),
+                  }}>
+                  12 / 24</Text>
+              </View>
+            </View>
+            <Image
+              source={images.master_card}
+              style={styles.image}
+            />
+          </ImageBackground>
+          {/* <CheckoutProductCard /> */}
+          {/* <CheckoutProductCard /> */}
+          <View style={{ alignItems: 'center', marginTop: hp('6%') }}>
+            <OutlineButton title="Add New Card" textStyle={{ color: '#fff' }} />
           </View>
         </View>
         {/* checkou summary */}
-        <View style={{marginTop: 15}}>
+        <View style={{ marginTop: 15 }}>
           <Text
             style={{
               color: '#fff',
@@ -38,113 +83,16 @@ const PaymentMethod = () => {
             }}>
             Other payment method
           </Text>
-
-          <View style={styles.chatHeader}>
-            <View
-              style={{
-                flexDirection: 'row',
-                gap: 15,
-              }}>
-              <View
-                style={{
-                  width: 70,
-                  height: 70,
-                }}>
-                <Image
-                  source={require('../../assets/images/chatuser.png')}
-                  resizeMode="cover"
-                  style={{width: '100%', height: '100%'}}
-                />
-                {/* online status button */}
-              </View>
-
-              <View style={{justifyContent: 'center'}}>
-                <Text style={{color: '#fff', fontSize: hp('2.0%')}}>
-                  Master card / Visa
-                </Text>
-                <Text
-                  style={{
-                    color: '#efefef',
-                    fontSize: hp('1.5%'),
-                    marginTop: 2,
-                  }}>
-                  1512 1212 **** ****
-                </Text>
-              </View>
-            </View>
-            <View
-              style={{
-                backgroundColor: '#000015',
-                margin: 3,
-                paddingHorizontal: 10,
-                padding: 3,
-                borderRadius: 50,
-                borderWidth: 1,
-                borderColor: '#D49621',
-                width: 40,
-                height: 40,
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginRight: 10,
-              }}>
-              <Back name={'arrow-forward'} color={colors.orange} size={20} />
-            </View>
-          </View>
-          <View style={styles.chatHeader}>
-            <View
-              style={{
-                flexDirection: 'row',
-                gap: 15,
-              }}>
-              <View
-                style={{
-                  width: 70,
-                  height: 70,
-                }}>
-                <Image
-                  source={require('../../assets/images/chatuser.png')}
-                  resizeMode="cover"
-                  style={{width: '100%', height: '100%'}}
-                />
-                {/* online status button */}
-              </View>
-
-              <View style={{justifyContent: 'center'}}>
-                <Text style={{color: '#fff', fontSize: hp('2.0%')}}>
-                  Master card / Visa
-                </Text>
-                <Text
-                  style={{
-                    color: '#efefef',
-                    fontSize: hp('1.5%'),
-                    marginTop: 2,
-                  }}>
-                  1512 1212 **** ****
-                </Text>
-              </View>
-            </View>
-            <View
-              style={{
-                backgroundColor: '#000015',
-                margin: 3,
-                paddingHorizontal: 10,
-                padding: 3,
-                borderRadius: 50,
-                borderWidth: 1,
-                borderColor: '#D49621',
-                width: 40,
-                height: 40,
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginRight: 10,
-              }}>
-              <Back name={'arrow-forward'} color={colors.orange} size={20} />
-            </View>
-          </View>
+          {methods.map((item) => (
+            <PayMethodCard
+              image={item.image}
+              cardname={item.card}
+              number={item.number}
+            />
+          ))}
         </View>
-        
         {/* Pay Button */}
-        <View style={{marginTop: 5, alignItems: 'center'}}>
+        <View style={{ marginTop: hp('2%'), alignItems: 'center' }}>
           <PrimaryButton title="Pay now" />
         </View>
       </ScrollView>
@@ -184,19 +132,22 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: hp('1.8%'),
   },
-  chatHeader: {
-    height: 80,
-    width: '100%',
-    borderRadius: 15,
-    borderWidth: 0.3,
-    borderColor: '#D49621',
-    padding: 3,
-    flexDirection: 'row',
-    backgroundColor: '#000015',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 17
+  userCartText: {
+    fontWeight: 'light',
+    color: '#fff',
+    fontSize: hp('2.5%'),
   },
+  image: {
+    height: hp('5%'),
+    marginTop: hp('2.5%'),
+    marginRight: hp('5%'),
+    width: '18%'
+  },
+  imageStyle: {
+    height: hp('3%'),
+    marginTop: hp('3%'),
+    width: hp('5%')
+  }
 });
 
 export default PaymentMethod;

@@ -24,5 +24,8 @@ export default {
     banner1: require('../images/homebanner1.png'),
     banner2: require('../images/homebanner2.png'),
     visa: require('../images/visa.png'),
-    cash: require('../images/cash.png')
+    cash: require('../images/cash.png'),
+    card_background: require('../images/cardBackground.png'),
+    master_card: require('../images/mastercard.png'),
+    card_scan: require('../images/scan.png')
 }
