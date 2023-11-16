@@ -1,5 +1,4 @@
 import Home from '../screens/main/Home';
-import Setting from '../screens/main/Setting';
 import Cart from '../screens/main/Cart';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome5 from 'react-native-vector-icons/Octicons';
@@ -116,9 +115,12 @@ const BottomStack = () => {
             focused ? (
               <View
                 style={{
-                  padding: 15,
+                  width: 60,
+                  height: 60,
                   backgroundColor: '#291E20',
                   borderRadius: 50,
+                  justifyContent:'center',
+                  alignItems:"center"
                 }}>
                 <FontAwesome5
                   name="home"
@@ -147,9 +149,12 @@ const BottomStack = () => {
             focused ? (
               <View
                 style={{
-                  padding: 15,
+                  width: 60,
+                  height: 60,
                   backgroundColor: '#291E20',
                   borderRadius: 50,
+                  justifyContent:'center',
+                  alignItems:"center"
                 }}>
                 <Feather
                   name="map-pin"
@@ -178,9 +183,12 @@ const BottomStack = () => {
             focused ? (
               <View
                 style={{
-                  padding: 15,
+                  width: 60,
+                  height: 60,
                   backgroundColor: '#291E20',
                   borderRadius: 50,
+                  justifyContent:'center',
+                  alignItems:"center"
                 }}>
                 <Feather
                   name="shopping-cart"
@@ -203,15 +211,18 @@ const BottomStack = () => {
       />
       <Tab.Screen
         name="settings"
-        component={Setting}
+        component={Profile}
         options={{
           tabBarIcon: ({ focused }) =>
             focused ? (
               <View
                 style={{
-                  padding: 15,
+                  width: 60,
+                  height: 60,
                   backgroundColor: '#291E20',
                   borderRadius: 50,
+                  justifyContent:'center',
+                  alignItems:"center"
                 }}>
                 <AntDesign
                   name="setting"

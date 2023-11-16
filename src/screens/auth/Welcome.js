@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
   splash_heading: {
     fontSize: hp('5.5%'),
     color: '#fff',
+    fontFamily: 'Lora-Medium',
   },
   splash_title: {
     fontSize: hp('2%'),

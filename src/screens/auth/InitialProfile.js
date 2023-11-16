@@ -189,6 +189,7 @@ const styles = StyleSheet.create({
   signup_heading: {
     fontSize: hp('5%'),
     color: '#fff',
+    fontFamily: 'Lora-Medium',
   },
   inputs_container: {
     flexDirection: 'row',

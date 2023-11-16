@@ -17,7 +17,7 @@ const Routes = () => {
           screenOptions={{
             headerShown: false,
           }}>
-          {/* <Stack.Screen name="AppNavigation" component={AppNavigation} /> */}
+          <Stack.Screen name="AppNavigation" component={AppNavigation} />
           <Stack.Screen name="TabNavigation" component={TabNavigation} />
         </Stack.Navigator>
       </NavigationContainer>

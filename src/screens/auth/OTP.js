@@ -49,7 +49,7 @@ const OTP = ({navigation}) => {
           <View
             style={{
               flex: 1,
-              marginTop: hp('10%'),
+              marginTop: hp('5%'),
             }}>
             <View
               style={{
@@ -130,6 +130,7 @@ const styles = StyleSheet.create({
   signup_heading: {
     fontSize: hp('5%'),
     color: '#fff',
+    fontFamily: 'Lora-Medium',
   },
   signup_title: {
     fontSize: hp('2%'),

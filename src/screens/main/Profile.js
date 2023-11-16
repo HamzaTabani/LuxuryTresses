@@ -70,7 +70,7 @@ const Profile = () => {
             }}>
             <View
               style={{
-                marginTop: 50,
+                marginTop: 30,
                 marginBottom: 100,
               }}>
               <View

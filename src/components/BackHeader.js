@@ -33,9 +33,9 @@ export default BackHeader;
 
 const styles = StyleSheet.create({
   back_header: {
-    height: hp('7%'),
+    height: hp('14%'),
     paddingTop: hp('3%'),
-    zIndex: 100
+    zIndex: 100,
   },
   back_button: {
     marginTop: 20,

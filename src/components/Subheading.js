@@ -15,5 +15,6 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     fontSize: hp('4%'),
     color: '#fff',
+    fontFamily: 'Lora-Medium',
   },
 });

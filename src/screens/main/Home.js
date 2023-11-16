@@ -208,6 +208,7 @@ const Home = ({navigation}) => {
                         color: '#fff',
                         textAlign: 'right',
                         fontSize: hp('2.5%'),
+                        fontFamily: 'Lora-Medium',
                       }}>
                       Let your hair
                     </Text>
@@ -217,6 +218,7 @@ const Home = ({navigation}) => {
                         color: '#fff',
                         textAlign: 'right',
                         fontSize: hp('2.5%'),
+                        fontFamily: 'Lora-Medium',
                       }}>
                       Speak for itself
                     </Text>
@@ -267,6 +269,7 @@ const Home = ({navigation}) => {
                         fontWeight: '400',
                         color: '#000',
                         fontSize: hp('2.5%'),
+                        fontFamily: 'Lora-Medium',
                       }}>
                       Start your
                     </Text>
@@ -275,6 +278,7 @@ const Home = ({navigation}) => {
                         fontWeight: '400',
                         color: '#000',
                         fontSize: hp('2.5%'),
+                        fontFamily: 'Lora-Medium',
                       }}>
                       hiar journey
                     </Text>
@@ -351,6 +355,7 @@ const styles = StyleSheet.create({
   home_heading: {
     fontSize: hp('5.5%'),
     color: '#fff',
+    fontFamily: 'Lora-Medium',
   },
   home_title: {
     fontSize: hp('2%'),
