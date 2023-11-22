@@ -78,7 +78,8 @@ const Profile = () => {
                   flex: 0.35,
                   flexDirection: 'row',
                   alignItems: 'flex-end',
-                  justifyContent: 'space-between',
+                  // justifyContent: 'space-evenly',
+                  gap: hp("5%")
                 }}>
                 {/*Profile Image */}
                 <View
@@ -92,7 +93,7 @@ const Profile = () => {
                   <Image
                     source={require('../../assets/images/profiledp.png')}
                     resizeMode="contain"
-                    style={{height: 180, width: 180, borderRadius: 30}}
+                    style={{height: hp("22%"), width: hp("22%"), borderRadius: 30}}
                   />
                   <TouchableOpacity onPress={() => setModalVisible(true)}>
                     <AntDesign
@@ -119,6 +120,7 @@ const Profile = () => {
                       flexDirection: 'row',
                       alignItems: 'center',
                       gap: 5,
+
                     }}>
                     <AntDesign
                       name="checkcircle"

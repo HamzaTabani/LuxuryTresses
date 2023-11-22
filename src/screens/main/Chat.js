@@ -17,6 +17,7 @@ const messageTemplate = [
   {text: 'Hi there!', from: 'bot'},
   {text: 'How can I help you?', from: 'bot'},
 ];
+
 const renderMessage = ({item}) => {
   const messageStyle =
     item.from === 'user' ? styles.userMessage : styles.otherMessage;

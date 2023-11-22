@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   Text,
   StyleSheet,
@@ -33,6 +33,7 @@ const cartData = [
     img: require('../../assets/images/cart3.png'),
   },
 ];
+
 const cartData2 = [
   {
     id: 4,
@@ -48,6 +49,7 @@ const cartData2 = [
   },
 ];
 
+
 const Home = ({navigation}) => {
   return (
     <>
@@ -60,8 +62,8 @@ const Home = ({navigation}) => {
           resizeMode="cover"
           style={styles.bg_home}>
           {/* home header */}
-          <ProfileHeader text={'Hi Sarah,'} />
           <ScrollView style={{flex: 1}}>
+          <ProfileHeader />
             {/* home title */}
             <View>
               <View style={{paddingHorizontal: wp('8%')}}>
@@ -70,15 +72,7 @@ const Home = ({navigation}) => {
               </View>
 
               {/* home shorcuts boxes */}
-              <View
-                style={{
-                  marginTop: 30,
-                  marginBottom: 10,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  paddingHorizontal: wp('8%'),
-                }}>
+              <View style={styles.shortcutsBoxContainer}>
                 <Pressable onPress={() => navigation.navigate('trendings')}>
                   <ShortcutBox
                     title={'Trends'}
@@ -105,15 +99,7 @@ const Home = ({navigation}) => {
                 </Pressable>
               </View>
               {/* Top Style */}
-              <View
-                style={{
-                  marginVertical: 30,
-                  paddingBottom: 40,
-                  paddingTop: 30,
-                  borderTopWidth: 0.5,
-                  borderBottomWidth: 0.5,
-                  borderColor: '#D49621',
-                }}>
+              <View style={styles.topStylesContainer}>
                 <View>
                   <View style={{paddingHorizontal: wp('8%')}}>
                     <TouchableOpacity
@@ -123,13 +109,14 @@ const Home = ({navigation}) => {
                   </View>
                   <ScrollView
                     style={{marginTop: 20, marginLeft: 30}}
-                    horizontal>
+                    horizontal
+                    showsHorizontalScrollIndicator={false}>
                     {cartData.map(item => (
                       <TouchableOpacity
                         activeOpacity={0.9}
                         key={item?.id}
                         onPress={() => navigation.navigate('ProfileDetail')}>
-                        <Card  rating={3} item={item} />
+                        <Card rating={3} item={item} />
                       </TouchableOpacity>
                     ))}
                   </ScrollView>
@@ -137,13 +124,7 @@ const Home = ({navigation}) => {
               </View>
 
               {/* Recent */}
-              <View
-                style={{
-                  marginBottom: 40,
-                  paddingBottom: 40,
-                  borderBottomWidth: 0.5,
-                  borderColor: '#D49621',
-                }}>
+              <View style={styles.recentContainer}>
                 <View>
                   <View style={{paddingHorizontal: wp('8%')}}>
                     <TouchableOpacity
@@ -154,6 +135,7 @@ const Home = ({navigation}) => {
 
                   <ScrollView
                     style={{marginTop: 20, marginLeft: 30}}
+                    showsHorizontalScrollIndicator={false}
                     horizontal>
                     {cartData2.map(item => (
                       <ProductCard key={item?.id} rating={3} item={item} />
@@ -164,14 +146,7 @@ const Home = ({navigation}) => {
 
               {/* banner 1 */}
               <View style={{paddingHorizontal: wp('8%'), marginBottom: 8}}>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    position: 'relative',
-                    height: 200,
-                    width: '100%',
-                  }}>
+                <View style={styles.bannerOneContainer}>
                   <Image
                     source={require('../../assets/images/homebanner1.png')}
                     resizeMode="contain"
@@ -179,14 +154,7 @@ const Home = ({navigation}) => {
                       width: '100%',
                     }}
                   />
-                  <View
-                    style={{
-                      position: 'absolute',
-                      top: 35,
-                      right: 12,
-                      height: 50,
-                      width: 50,
-                    }}>
+                  <View style={styles.bannerImageView}>
                     <Image
                       source={require('../../assets/images/topleftarrow.png')}
                       resizeMode="contain"
@@ -195,46 +163,15 @@ const Home = ({navigation}) => {
                       }}
                     />
                   </View>
-                  <View
-                    style={{
-                      position: 'absolute',
-                      bottom: 35,
-                      right: 12,
-                      height: 50,
-                    }}>
-                    <Text
-                      style={{
-                        fontWeight: '400',
-                        color: '#fff',
-                        textAlign: 'right',
-                        fontSize: hp('2.5%'),
-                        fontFamily: 'Lora-Medium',
-                      }}>
-                      Let your hair
-                    </Text>
-                    <Text
-                      style={{
-                        fontWeight: '400',
-                        color: '#fff',
-                        textAlign: 'right',
-                        fontSize: hp('2.5%'),
-                        fontFamily: 'Lora-Medium',
-                      }}>
-                      Speak for itself
-                    </Text>
+                  <View style={styles.bannerTitleView}>
+                    <Text style={styles.bannerOneText}>Let your hair</Text>
+                    <Text style={styles.bannerOneText}>Speak for itself</Text>
                   </View>
                 </View>
               </View>
               {/* banner 2 */}
               <View style={{paddingHorizontal: wp('8%'), marginBottom: 80}}>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    position: 'relative',
-                    height: 200,
-                    width: '100%',
-                  }}>
+                <View style={styles.bannerOneContainer}>
                   <Image
                     source={require('../../assets/images/homebanner2.png')}
                     resizeMode="contain"
@@ -242,14 +179,7 @@ const Home = ({navigation}) => {
                       width: '100%',
                     }}
                   />
-                  <View
-                    style={{
-                      position: 'absolute',
-                      top: 18,
-                      right: 20,
-                      height: hp('35%'),
-                      width: wp('35%'),
-                    }}>
+                  <View style={styles.bannerTwoImageView}>
                     <Image
                       source={require('../../assets/images/banner2support.png')}
                       resizeMode="contain"
@@ -264,24 +194,8 @@ const Home = ({navigation}) => {
                       top: 30,
                       left: 12,
                     }}>
-                    <Text
-                      style={{
-                        fontWeight: '400',
-                        color: '#000',
-                        fontSize: hp('2.5%'),
-                        fontFamily: 'Lora-Medium',
-                      }}>
-                      Start your
-                    </Text>
-                    <Text
-                      style={{
-                        fontWeight: '400',
-                        color: '#000',
-                        fontSize: hp('2.5%'),
-                        fontFamily: 'Lora-Medium',
-                      }}>
-                      hiar journey
-                    </Text>
+                    <Text style={styles.bannerTwoText}>Start your</Text>
+                    <Text style={styles.bannerTwoText}>hiar journey</Text>
                     <Text
                       style={{
                         color: 'grey',
@@ -291,16 +205,7 @@ const Home = ({navigation}) => {
                     </Text>
                     <Pressable>
                       <View
-                        style={{
-                          height: 40,
-                          width: 120,
-                          backgroundColor: '#111649',
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          justifyContent: 'space-evenly',
-                          borderRadius: 5,
-                          marginTop: 10,
-                        }}>
+                        style={styles.bannerButton}>
                         <Image
                           source={require('../../assets/images/topleftarrow.png')}
                           resizeMode="contain"
@@ -309,11 +214,7 @@ const Home = ({navigation}) => {
                           }}
                         />
                         <Text
-                          style={{
-                            fontWeight: '400',
-                            color: '#EDBA1B',
-                            fontSize: hp('1.5%'),
-                          }}>
+                          style={styles.bannerButtonText}>
                           START NOW
                         </Text>
                       </View>
@@ -362,4 +263,81 @@ const styles = StyleSheet.create({
     color: '#bbb9bd',
     marginTop: 10,
   },
+  shortcutsBoxContainer: {
+    marginTop: 30,
+    marginBottom: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: wp('8%'),
+  },
+  topStylesContainer: {
+    marginVertical: 30,
+    paddingBottom: 40,
+    paddingTop: 30,
+    borderTopWidth: 0.5,
+    borderBottomWidth: 0.5,
+    borderColor: '#D49621',
+  },
+  recentContainer: {
+    marginBottom: 40,
+    paddingBottom: 40,
+    borderBottomWidth: 0.5,
+    borderColor: '#D49621',
+  },
+  bannerOneContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+    height: 200,
+    width: '100%',
+  },
+  bannerImageView: {
+    position: 'absolute',
+    top: 35,
+    right: 12,
+    height: 50,
+    width: 50,
+  },
+  bannerTitleView: {
+    position: 'absolute',
+    bottom: 35,
+    right: 12,
+    height: 50,
+  },
+  bannerOneText: {
+    fontWeight: '400',
+    color: '#fff',
+    textAlign: 'right',
+    fontSize: hp('2.5%'),
+    fontFamily: 'Lora-Medium',
+  },
+  bannerTwoImageView: {
+    position: 'absolute',
+    top: 18,
+    right: 20,
+    height: hp('35%'),
+    width: wp('35%'),
+  },
+  bannerTwoText: {
+    fontWeight: '400',
+    color: '#000',
+    fontSize: hp('2.5%'),
+    fontFamily: 'Lora-Medium',
+  },
+  bannerButton: {
+    height: 40,
+    width: 120,
+    backgroundColor: '#111649',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    borderRadius: 5,
+    marginTop: 10,
+  }, 
+  bannerButtonText: {
+    fontWeight: '400',
+    color: '#EDBA1B',
+    fontSize: hp('1.5%'),
+  }
 });

@@ -23,7 +23,7 @@ const ModalChangeProfilePic = ({modalVisible, setModalVisible}) => {
       transparent={true}
       visible={modalVisible}
       onRequestClose={() => setModalVisible(false)}>
-      <View style={styles.centeredView}>
+      <ScrollView contentContainerStyle={styles.centeredView}>
         <View style={styles.modalView}>
           {/* modal close button */}
           <Pressable
@@ -48,7 +48,7 @@ const ModalChangeProfilePic = ({modalVisible, setModalVisible}) => {
           {/* profile pic view */}
           <View style={styles.profilePicViewer}>
             <Image
-              source={require('../assets//images/profiledp.png')}
+              source={require('../assets/images/profiledp.png')}
               style={styles.dp_img}
             />
           </View>
@@ -107,7 +107,7 @@ const ModalChangeProfilePic = ({modalVisible, setModalVisible}) => {
             </ScrollView>
           </View>
         </View>
-      </View>
+      </ScrollView>
     </Modal>
   );
 };
@@ -118,11 +118,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,0.5)',
+
   },
   modalView: {
     position: 'relative',
     width: '90%',
-    height: '81%',
     backgroundColor: 'white',
     borderRadius: 20,
     padding: 20,
@@ -160,8 +160,8 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   profilePicViewer: {
-    height: 300,
-    width: '100%',
+    height: hp("40"),
+    width: hp("40"),
     borderWidth: 1,
     borderColor: '#D49621',
     borderRadius: 40,
@@ -207,15 +207,15 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   more_images_box: {
-    width: 100,
-    height: 100,
+    width: hp("11%"),
+    height: hp("11%"),
     marginLeft: 10,
     borderRadius: 10,
   },
   more_image: {
-    width: '100%',
-    height: '100%',
     borderRadius: 20,
+    width: hp("11%"),
+    height: hp("11%"),
   },
 });
 

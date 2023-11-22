@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   Text,
   StyleSheet,
@@ -10,13 +10,13 @@ import {
 import Container from '../../components/Container';
 import ProfileHeader from '../../components/ProfileHeader';
 import Swiper from 'react-native-swiper';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import colors from '../../assets/colors';
 import OutlineButton from '../../components/OutlineButton';
 import MessageOption from '../../components/MessageOption';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import UserDetailCard from '../../components/UserDetailCard';
-import { historyImages } from '../../dummyData';
+import {historyImages} from '../../dummyData';
 
 const SingleProduct = () => {
   const navigation = useNavigation();
@@ -37,23 +37,27 @@ const SingleProduct = () => {
       <ProfileHeader icon={true} username={true} text={'Deep mask'} />
       <ScrollView style={styles.container}>
         {/* product images.. */}
-        <View style={{ height: 300 }}>
+        <View style={{height: hp("35%")}}>
           <Swiper
             style={styles.wrapper}
             activeDotColor={colors.orange}
-            dotStyle={{ borderWidth: 1, borderColor: colors.orange }}>
-            {historyImages.map((item) => (
+            dotStyle={{borderWidth: 1, borderColor: colors.orange}}>
+            {historyImages.map(item => (
               <Image
                 source={item.image}
                 borderRadius={20}
                 // resizeMode="contain"
-                style={{ width: hp('37%'), height: hp('35%'), alignSelf: 'center' }}
+                style={{
+                  width: hp('37%'),
+                  height: hp('35%'),
+                  alignSelf: 'center',
+                }}
               />
             ))}
           </Swiper>
         </View>
         {/* product detail */}
-        <View style={{ marginTop: 10 }}>
+        <View style={{marginTop: 30}}>
           {/* product owner.. */}
           <UserDetailCard />
           {/* product description */}
@@ -91,14 +95,14 @@ const SingleProduct = () => {
                 gap: 5,
                 marginLeft: 20,
               }}>
-              <Text style={{ color: '#D49621', fontSize: hp('2.4%') }}>
+              <Text style={{color: '#D49621', fontSize: hp('2.4%')}}>
                 $24.00
               </Text>
-              <Text style={{ color: '#efefef', fontSize: hp('1.6%') }}>
+              <Text style={{color: '#efefef', fontSize: hp('1.6%')}}>
                 (24 available)
               </Text>
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <TouchableOpacity
                 onPress={decrementQuantity}
                 style={styles.button}>
@@ -126,10 +130,10 @@ const SingleProduct = () => {
             <OutlineButton
               title={'Add to cart'}
               onPress={() =>
-                navigation.navigate('SecondaryStack', { screen: 'Checkout' })
+                navigation.navigate('SecondaryStack', {screen: 'Checkout'})
               }
-              textStyle={{ color: '#fff' }}
-              buttonStyle={{ width: '82%' }}
+              textStyle={{color: '#fff'}}
+              buttonStyle={{width: '82%'}}
             />
             <MessageOption />
           </View>

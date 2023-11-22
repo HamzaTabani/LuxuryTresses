@@ -159,6 +159,8 @@ const styles = StyleSheet.create({
   filterContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingBottom: hp("1.2%")
+
   },
   mainTitleText: {
     fontSize: hp('4%'),

@@ -98,12 +98,19 @@ const Nearby = () => {
             styles.barStyle,
             isDetailOpen == false
               ? {
-                  top: hp('30%'),
-                  left: 40,
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  // top: hp('30%'),
+                  // left: 40,
+                  // right: 40,
+                  // alignItems: 'center',
+                  // justifyContent: 'center',
+                  bottom: hp("32%")
                 }
-              : {top: hp('11%'), bottom: hp('25%'), left: hp('3%')},
+              : {
+                  // top: hp('11%'),
+                  bottom: hp('30%'),
+                  // left: hp('3%'),
+                  // backgroundColor: 'red',
+                },
           ]}>
           <FlatList
             ref={flatListRef}
@@ -202,7 +209,13 @@ const styles = StyleSheet.create({
   barStyle: {
     flexDirection: 'row',
     position: 'absolute',
-    bottom: 0,
-    right: 0,
+    // bottom: 0,
+    // right: 0,
+    justifyContent:"center",
+    alignItems:"center",
+    // height: hp("50%"),
+    width:"100%",
+    left: 0
+
   },
 });

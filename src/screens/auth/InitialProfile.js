@@ -61,7 +61,7 @@ const InitialProfile = ({navigation}) => {
           <View
             style={{
               flex: 0.2,
-              marginTop: hp('7%'),
+              marginTop: hp('1%'),
               paddingHorizontal: wp('10%'),
             }}>
             <Text style={styles.signup_heading}>How people to know you?</Text>
@@ -166,6 +166,8 @@ const InitialProfile = ({navigation}) => {
 };
 
 export default InitialProfile;
+
+
 const styles = StyleSheet.create({
   bg_signup: {
     flex: 1,
@@ -173,7 +175,8 @@ const styles = StyleSheet.create({
   },
   back_header: {
     height: hp('10%'),
-    paddingTop: hp('3%')
+    paddingTop: hp('3%'),
+    paddingBottom: hp("12%")
   },
   back_button: {
     marginTop: 20,

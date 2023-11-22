@@ -51,7 +51,7 @@ const Checkout = () => {
           </View>
         </View>
         {/* Pay Button */}
-        <View style={{ marginTop: hp('5%'), alignItems: 'center' }}>
+        <View style={{ marginTop: hp('4%'), alignItems: 'center' }}>
           <PrimaryButton
             title="Pay now"
             onPress={() => navigation.navigate('PaymentMethod')}

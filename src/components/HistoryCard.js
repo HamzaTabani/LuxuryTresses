@@ -31,7 +31,7 @@ const HistoryCard = ({ image, onPress }) => {
                         <View style={styles.ratingCard}>
                             <Progress.Circle progress={0.7}
                                 color={colors.lightgreen}
-                                size={30}
+                                size={22}
                                 style={{}}
                                 borderColor='transparent'
                             />
@@ -55,7 +55,7 @@ const HistoryCard = ({ image, onPress }) => {
     )
 }
 
-export default HistoryCard
+export default HistoryCard;
 
 const styles = StyleSheet.create({
     cardStyle: {

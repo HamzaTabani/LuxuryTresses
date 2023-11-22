@@ -56,8 +56,9 @@ const UserDetailCard = () => {
           <Progress.Circle
             progress={0.7}
             color={colors.lightgreen}
-            size={45}
+            size={38}
             borderColor="transparent"
+            style={{marginLeft: 1, marginTop: 1}}
           />
           <View style={styles.imageWrapper}>
             <Image
@@ -87,9 +88,11 @@ const styles = StyleSheet.create({
   ratingCard: {
     backgroundColor: colors.white,
     marginTop: hp('0.2%'),
-    height: hp('5.5%'),
+    // height: hp('5.5%'),
     borderRadius: 50,
-    width: hp('5.5%'),
+    height: 40,
+    width: 40
+    // width: hp('5.5%'),
   },
   imageWrapper: {
     position: 'absolute',

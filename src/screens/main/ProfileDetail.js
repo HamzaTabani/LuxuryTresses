@@ -293,9 +293,10 @@ const styles = StyleSheet.create({
   },
   btns_active: {
     backgroundColor: colors.secondary,
-    paddingHorizontal: wp(16),
     paddingVertical: 10,
     borderRadius: 50,
+    width: hp("20%"),
+    alignItems:"center"
   },
   btns: {
     backgroundColor: 'transparent',

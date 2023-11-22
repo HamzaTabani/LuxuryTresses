@@ -1,19 +1,21 @@
 import {StyleSheet, View, Text, Pressable} from 'react-native';
-
 import {
-  widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {useState} from 'react';
+import colors from '../assets/colors';
 import SearchTopButton from './SearchTopButton';
 import ProfileImgRound from './ProfileImgRound';
 import Back from 'react-native-vector-icons/Ionicons';
-import colors from '../assets/colors';
 import {useNavigation} from '@react-navigation/native';
 
+
 const ProfileHeader = ({username, icon, text}) => {
+
   const [searchActive, setSearchActive] = useState(false);
   const navigation = useNavigation();
+
+  
   return (
     <View style={styles.profile_header}>
       <View style={{flexDirection: 'row', alignItems: 'center', gap: 15}}>

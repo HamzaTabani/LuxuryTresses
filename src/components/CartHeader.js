@@ -45,8 +45,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 20,
-    height: hp(12),
-    zIndex:200
+    height: hp("15%"),
+    zIndex:200,
+    marginTop: 10
   },
   search_box: {
     padding: hp('1.55%'),

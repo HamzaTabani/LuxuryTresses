@@ -20,8 +20,8 @@ const StylistInfo = ({ image, isActive, onArrowPress, flatListRef }) => {
       style={[
         styles.card,
         isActive
-          ? { width: '67%', height: hp('65%') }
-          : { marginRight: hp('4.5%') },
+          ? {  height: hp('65%'),width: hp("47%") }
+          : { marginRight: hp('4.5%')},
       ]}>
       <Arrow
         name={isActive ? 'arrow-down' : 'arrow-up'}
@@ -56,7 +56,7 @@ const StylistInfo = ({ image, isActive, onArrowPress, flatListRef }) => {
             <Progress.Circle
               progress={0.7}
               color={colors.lightgreen}
-              size={49}
+              size={39}
               style={{ marginTop: hp('0.5%') }}
               borderColor="transparent"
             />
@@ -73,7 +73,7 @@ const StylistInfo = ({ image, isActive, onArrowPress, flatListRef }) => {
         </View>
       </View>
       {isActive && (
-        <View style={styles.textView}>
+        <ScrollView contentContainerStyle={styles.textView} showsVerticalScrollIndicator={false}>
           <Text style={styles.heading}>About Omnis iste</Text>
           <Text style={{ color: colors.white, marginTop: hp('2%') }}>
             Sed ut perspiciatis unde omnis iste natus error sit{'\n'} voluptatem
@@ -83,6 +83,7 @@ const StylistInfo = ({ image, isActive, onArrowPress, flatListRef }) => {
           </Text>
           <ScrollView
             horizontal={true}
+            
             onTouchStart={() => {
               flatListRef.current.setNativeProps({ scrollEnabled: false });
             }}
@@ -104,12 +105,14 @@ const StylistInfo = ({ image, isActive, onArrowPress, flatListRef }) => {
             buttonStyle={{
               borderColor: colors.white,
               marginTop: hp('4%'),
+              marginBottom: hp('1%'),
               alignSelf: 'center',
+              width:"95%"
             }}
             textStyle={{ color: colors.white }}
             title={'SEE TIMES'}
           />
-        </View>
+        </ScrollView>
       )}
     </View>
   );
@@ -123,6 +126,8 @@ const styles = StyleSheet.create({
     padding: hp('1%'),
     // marginRight: hp('4.5%'),
     borderRadius: 20,
+    marginHorizontal:20,
+    
   },
   image: {
     height: hp('10%'),
@@ -181,6 +186,7 @@ const styles = StyleSheet.create({
     marginTop: hp('2%'),
     borderColor: colors.white,
     padding: hp('2%'),
+    paddingBottom: hp("5%")
   },
   heading: {
     color: colors.white,
