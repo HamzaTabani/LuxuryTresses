@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     height: hp('5%'),
     marginTop: hp('2.5%'),
     marginRight: hp('5%'),
-    width: '18%',
+    width: '19%',
   },
   imageStyle: {
     height: hp('3%'),

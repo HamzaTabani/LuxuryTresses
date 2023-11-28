@@ -46,7 +46,7 @@ const VenderCardBox = ({name, img}) => {
           <Pressable onPress={()=>navigation.navigate("Reviews")}>
           <RatingIcon rating={5} w={30} h={30} r={10} />
           </Pressable>
-          <Text style={{fontWeight: '400', color: '#fff'}}>4.5 Rating</Text>
+          <Text style={{color: '#fff', fontSize: hp('1.4%')}}>4.5 Rating</Text>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Pressable>
@@ -131,8 +131,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
     backgroundColor: '#D49621',
-    height: 40,
-    width: 100,
+    height: hp('5.5%'),
+    width: hp('12%'),
     borderRadius: 10,
   },
 });

@@ -82,13 +82,13 @@ export const markerImages = [
     {
         id: 2,
         image: images.marker2,
-        lat: 44.459423,
-        long: -70.236404
+        lat: 44.469899,
+        long: -70.232404
     },
     {
         id: 3,
         image: images.marker3,
-        lat: 44.459423,
+        lat: 44.462222,
         long: -70.261072
     },
     {

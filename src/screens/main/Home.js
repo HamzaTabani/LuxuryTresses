@@ -18,6 +18,7 @@ import Subheading from '../../components/Subheading';
 import Card from '../../components/Card';
 import ProductCard from '../../components/ProductCard';
 import ShortcutBox from '../../components/ShortcutBox';
+import colors from '../../assets/colors';
 
 const cartData = [
   {
@@ -65,12 +66,10 @@ const Home = ({navigation}) => {
           <ScrollView style={{flex: 1}}>
           <ProfileHeader />
             {/* home title */}
-            <View>
               <View style={{paddingHorizontal: wp('8%')}}>
                 <Text style={styles.home_heading}>Hi Sarah,</Text>
                 <Text style={styles.home_title}>Lets make a new style!</Text>
               </View>
-
               {/* home shorcuts boxes */}
               <View style={styles.shortcutsBoxContainer}>
                 <Pressable onPress={() => navigation.navigate('trendings')}>
@@ -122,7 +121,6 @@ const Home = ({navigation}) => {
                   </ScrollView>
                 </View>
               </View>
-
               {/* Recent */}
               <View style={styles.recentContainer}>
                 <View>
@@ -132,7 +130,6 @@ const Home = ({navigation}) => {
                       <Subheading title={'Recent products'} />
                     </TouchableOpacity>
                   </View>
-
                   <ScrollView
                     style={{marginTop: 20, marginLeft: 30}}
                     showsHorizontalScrollIndicator={false}
@@ -143,7 +140,6 @@ const Home = ({navigation}) => {
                   </ScrollView>
                 </View>
               </View>
-
               {/* banner 1 */}
               <View style={{paddingHorizontal: wp('8%'), marginBottom: 8}}>
                 <View style={styles.bannerOneContainer}>
@@ -195,7 +191,7 @@ const Home = ({navigation}) => {
                       left: 12,
                     }}>
                     <Text style={styles.bannerTwoText}>Start your</Text>
-                    <Text style={styles.bannerTwoText}>hiar journey</Text>
+                    <Text style={styles.bannerTwoText}>hair journey</Text>
                     <Text
                       style={{
                         color: 'grey',
@@ -222,7 +218,6 @@ const Home = ({navigation}) => {
                   </View>
                 </View>
               </View>
-
               {/* bottom lines */}
               <View
                 style={{
@@ -238,7 +233,6 @@ const Home = ({navigation}) => {
                   }}
                 />
               </View>
-            </View>
           </ScrollView>
         </ImageBackground>
       </ScrollView>

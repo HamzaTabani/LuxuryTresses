@@ -20,8 +20,8 @@ const StylistInfo = ({ image, isActive, onArrowPress, flatListRef }) => {
       style={[
         styles.card,
         isActive
-          ? {  height: hp('65%'),width: hp("47%") }
-          : { marginRight: hp('4.5%')},
+          ? { height: hp('64%'), width: hp("47%") }
+          : { marginRight: hp('4.5%') },
       ]}>
       <Arrow
         name={isActive ? 'arrow-down' : 'arrow-up'}
@@ -56,14 +56,14 @@ const StylistInfo = ({ image, isActive, onArrowPress, flatListRef }) => {
             <Progress.Circle
               progress={0.7}
               color={colors.lightgreen}
-              size={39}
+              size={40}
               style={{ marginTop: hp('0.5%') }}
               borderColor="transparent"
             />
             <View style={styles.imageWrapper}>
               <Image
                 source={images.star}
-                style={{ height: hp('3%'), width: hp('3%') }}
+                style={{ height: hp('2.3%'), width: hp('2.3%') }}
               />
             </View>
           </View>
@@ -83,7 +83,7 @@ const StylistInfo = ({ image, isActive, onArrowPress, flatListRef }) => {
           </Text>
           <ScrollView
             horizontal={true}
-            
+
             onTouchStart={() => {
               flatListRef.current.setNativeProps({ scrollEnabled: false });
             }}
@@ -104,10 +104,10 @@ const StylistInfo = ({ image, isActive, onArrowPress, flatListRef }) => {
           <OutlineButton
             buttonStyle={{
               borderColor: colors.white,
-              marginTop: hp('4%'),
-              marginBottom: hp('1%'),
+              marginTop: hp('3%'),
+              // marginBottom: hp('1%'),
               alignSelf: 'center',
-              width:"95%"
+              width: "95%"
             }}
             textStyle={{ color: colors.white }}
             title={'SEE TIMES'}
@@ -126,8 +126,8 @@ const styles = StyleSheet.create({
     padding: hp('1%'),
     // marginRight: hp('4.5%'),
     borderRadius: 20,
-    marginHorizontal:20,
-    
+    marginHorizontal: 20,
+
   },
   image: {
     height: hp('10%'),
@@ -166,8 +166,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     alignItems: 'center',
     borderRadius: 50,
-    height: hp('7%'),
-    width: hp('7%'),
+    height: hp('6%'),
+    width: hp('6%'),
   },
   imageWrapper: {
     position: 'absolute',
@@ -182,11 +182,12 @@ const styles = StyleSheet.create({
   },
   textView: {
     borderWidth: 1,
+    // height: hp('44%'),
     borderRadius: 15,
     marginTop: hp('2%'),
     borderColor: colors.white,
     padding: hp('2%'),
-    paddingBottom: hp("5%")
+    paddingBottom: hp("2%")
   },
   heading: {
     color: colors.white,
@@ -197,7 +198,7 @@ const styles = StyleSheet.create({
     height: hp('10%'),
     marginRight: hp('1%'),
     width: hp('10%'),
-    marginTop: hp('1%'),
+    marginTop: hp('2%'),
   },
   scrollWrapper: {
     width: 300,

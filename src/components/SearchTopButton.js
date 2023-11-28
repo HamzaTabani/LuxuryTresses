@@ -1,4 +1,3 @@
-import {useState} from 'react';
 import {StyleSheet, View, Pressable, TextInput} from 'react-native';
 
 import {

@@ -230,6 +230,7 @@ const Profile = () => {
                       />
                       <TextInput
                         style={styles.inputs}
+                        keyboardType='email-address'
                         placeholder="sarah.j@gmail.com"
                         placeholderTextColor="#bbb9bd"
                       />
@@ -245,6 +246,7 @@ const Profile = () => {
                       />
                       <TextInput
                         style={styles.inputs}
+                        keyboardType='numeric'
                         placeholder="(012) 3434 789"
                         placeholderTextColor="#bbb9bd"
                       />
@@ -478,6 +480,7 @@ const styles = StyleSheet.create({
   },
   inputs: {
     marginLeft: 10,
+    width: '80%',
     color: '#6D6C7B',
   },
   inputs_container2: {

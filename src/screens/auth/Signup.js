@@ -15,6 +15,7 @@ import {
 import BackHeader from '../../components/BackHeader';
 import FontAwesome5 from 'react-native-vector-icons/Ionicons';
 import PrimaryButton from '../../components/PrimaryButton';
+import colors from '../../assets/colors';
 
 const Signup = ({navigation}) => {
   return (
@@ -59,6 +60,7 @@ const Signup = ({navigation}) => {
               <TextInput
                 style={styles.inputs}
                 placeholder="Email"
+                keyboardType='email-address'
                 placeholderTextColor="#bbb9bd"
               />
             </View>
@@ -147,6 +149,7 @@ const styles = StyleSheet.create({
   },
   inputs: {
     marginLeft: 10,
+    width: '80%',
     color: '#fff',
   },
   input_lable: {

@@ -4,7 +4,6 @@ import OTP from '../screens/auth/OTP';
 import Welcome from '../screens/auth/Welcome';
 import InitialProfile from '../screens/auth/InitialProfile';
 import Profile from '../screens/main/Profile';
-import Chat from '../screens/main/Chat';
 
 const Stack = createNativeStackNavigator();
 

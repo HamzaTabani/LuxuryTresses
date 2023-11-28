@@ -20,7 +20,7 @@ const ReviewCard = ({onPress}) => {
                 <View style={styles.progressView}>
                     <Progress.Circle progress={0.7}
                         color={colors.lightgreen}
-                        size={42}
+                        size={40.5}
                         style={{ marginTop: hp('0.5%') }}
                         borderColor='transparent'
                     />

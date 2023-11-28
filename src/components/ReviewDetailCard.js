@@ -4,6 +4,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import StarRating from 'react-native-star-rating-widget';
+import colors from '../assets/colors';
 
 const ReviewDetailCard = () => {
   return (
@@ -27,7 +28,7 @@ const ReviewDetailCard = () => {
         </Text>
       </View>
       <View>
-        <Text style={{lineHeight: 20, marginTop: 10}}>
+        <Text style={{lineHeight: 20, marginTop: 10, color: colors.black}}>
           Lorem Ipsum is simply dummy text of the printing and typesetting
           industry.
         </Text>

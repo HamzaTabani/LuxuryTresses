@@ -31,14 +31,13 @@ const HistoryCard = ({ image, onPress }) => {
                         <View style={styles.ratingCard}>
                             <Progress.Circle progress={0.7}
                                 color={colors.lightgreen}
-                                size={22}
-                                style={{}}
+                                size={26}
                                 borderColor='transparent'
                             />
                             <View style={styles.imageWrapper}>
                                 <Image
                                     source={images.star}
-                                    style={{ height: hp('2%'), width: hp('2%') }}
+                                    style={{ height: hp('1.5%'), width: hp('1.5%') }}
                                 />
                             </View>
                         </View>
@@ -115,8 +114,8 @@ const styles = StyleSheet.create({
     },
     imageWrapper: {
         position: 'absolute',
-        left: 5,
-        top: 6
+        left: 8,
+        top: 8
     },
     ratingText: {
         color: colors.white,

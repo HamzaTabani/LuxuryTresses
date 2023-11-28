@@ -32,7 +32,7 @@ const Welcome = ({ navigation }) => {
         {/* splash bottom */}
         <View style={styles.splash_bottom}>
           <View>
-            <Text style={styles.splash_heading}>Lets your hair,</Text>
+            <Text style={styles.splash_heading}>Let your hair,</Text>
             <Text style={styles.splash_heading}>Speak for itself</Text>
           </View>
           <View style={{ marginTop: 25 }}>

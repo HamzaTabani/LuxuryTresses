@@ -145,6 +145,7 @@ const InitialProfile = ({navigation}) => {
                   />
                   <TextInput
                     style={styles.inputs}
+                    keyboardType='numeric'
                     placeholder="Phone number"
                     placeholderTextColor="#bbb9bd"
                   />
@@ -213,6 +214,7 @@ const styles = StyleSheet.create({
   },
   inputs: {
     marginLeft: 10,
+    width: '80%',
     color: '#fff',
   },
   input_lable: {

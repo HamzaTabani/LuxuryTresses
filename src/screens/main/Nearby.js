@@ -37,6 +37,7 @@ const Nearby = () => {
       <ProfileHeader username={true} />
       <View style={styles.screen}>
         <MapView
+          scrollEnabled={false}
           initialRegion={{
             latitude: 44.466621,
             longitude: -70.250395,
@@ -53,9 +54,9 @@ const Nearby = () => {
             />
           ))}
         </MapView>
-        <View style={styles.radiusWrapper}>
+        {/* <View style={styles.radiusWrapper}>
           <View style={styles.mapRadius} />
-        </View>
+        </View> */}
         <View style={styles.workingmapView}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <View style={styles.tabView}>
@@ -67,7 +68,7 @@ const Nearby = () => {
                   style={changeTab == item.id && styles.background}>
                   <Image
                     source={item.icon}
-                    style={{height: hp('2.2%'), width: hp('2.2%')}}
+                    // style={{height: hp('2.2%'), width: hp('2.2%')}}
                   />
                 </TouchableOpacity>
               ))}
@@ -103,7 +104,7 @@ const Nearby = () => {
                   // right: 40,
                   // alignItems: 'center',
                   // justifyContent: 'center',
-                  bottom: hp("32%")
+                  bottom: hp("29%")
                 }
               : {
                   // top: hp('11%'),

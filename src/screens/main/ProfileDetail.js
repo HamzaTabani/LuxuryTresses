@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
   moreText: {
     color: colors.white,
     position: 'absolute',
-    right: hp('4%'),
+    right: 16,
     fontWeight: 'bold',
     top: hp('8.5%'),
     fontSize: hp('2%'),
