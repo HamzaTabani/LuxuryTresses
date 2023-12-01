@@ -14,12 +14,13 @@ const TimingCard = () => {
                 </View>
                 <Text style={styles.time}>24 hours</Text>
             </View>
-            <Arrow
+            <Text style={styles.text}>Monday 10:00 pm To Friday 10:00 pm</Text>
+            {/* <Arrow
                 name={'arrow-down'}
                 color={colors.white}
                 size={35}
                 style={{alignSelf: 'center'}}
-            />
+            /> */}
         </View>
     )
 }
@@ -46,5 +47,14 @@ const styles = StyleSheet.create({
         paddingTop: hp('2%'),
         width: '415%',
         borderBottomWidth: 0.7,
+        marginBottom: hp('2%'),
+    },
+    text:{
+        alignSelf: 'center',
+        fontWeight: 'bold',
+        fontSize: hp('1.7%'),
+        color: colors.white,
+        marginBottom: hp('1%')
+
     }
 })

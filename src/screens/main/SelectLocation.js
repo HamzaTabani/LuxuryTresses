@@ -24,9 +24,9 @@ const SelectLocation = () => {
                 />
             </MapView>
             <MapHeader />
-            <View style={styles.radiusWrapper}>
+            {/* <View style={styles.radiusWrapper}>
                 <View style={styles.mapRadius} />
-            </View>
+            </View> */}
             <LocationCard />
         </View>
     )

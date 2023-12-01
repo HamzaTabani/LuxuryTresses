@@ -5,51 +5,10 @@ import {
 } from 'react-native';
 import React from 'react';
 import ProfileHeader from '../../components/ProfileHeader';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Container from '../../components/Container';
 import ProductCard from '../../components/ProductCard';
-const cartData2 = [
-  {
-    id: 1,
-    img: require('../../assets/images/cart4.png'),
-  },
-  {
-    id: 2,
-    img: require('../../assets/images/cart5.png'),
-  },
-  {
-    id: 3,
-    img: require('../../assets/images/cart6.png'),
-  },
-  {
-    id: 4,
-    img: require('../../assets/images/cart4.png'),
-  },
-  {
-    id: 5,
-    img: require('../../assets/images/cart5.png'),
-  },
-  {
-    id: 6,
-    img: require('../../assets/images/cart6.png'),
-  },
-  {
-    id: 7,
-    img: require('../../assets/images/cart4.png'),
-  },
-  {
-    id: 8,
-    img: require('../../assets/images/cart5.png'),
-  },
-  {
-    id: 9,
-    img: require('../../assets/images/cart6.png'),
-  },
-  {
-    id: 10,
-    img: require('../../assets/images/cart6.png'),
-  },
-];
+import { products } from '../../dummyData';
 
 const RecentProducts = () => {
   return (
@@ -57,14 +16,14 @@ const RecentProducts = () => {
       <ProfileHeader username={true} icon={true} text={'Recent products'} />
       <View style={styles.wrapper}>
         <FlatList
-          data={cartData2}
+          data={products}
           keyExtractor={item => item.id}
-          renderItem={({item}) => (
-            <View style={{marginBottom: 15}}>
+          renderItem={({ item }) => (
+            <View style={{ marginBottom: hp('4%') }}>
               <ProductCard rating={3} item={item} />
             </View>
           )}
-          columnWrapperStyle={{justifyContent: 'space-evenly'}}
+          columnWrapperStyle={{ justifyContent: 'space-evenly' }}
           numColumns={2}
         />
       </View>
@@ -75,13 +34,8 @@ const RecentProducts = () => {
 export default RecentProducts;
 
 const styles = StyleSheet.create({
-  screen: {
-    padding: hp('2%'),
-    paddingBottom: hp('22%'),
-    paddingTop: hp('4%'),
-  },
   wrapper: {
-    flex: 1, 
-    paddingBottom: 70
+    flex: 1,
+    paddingBottom: hp('10%')
   }
 });

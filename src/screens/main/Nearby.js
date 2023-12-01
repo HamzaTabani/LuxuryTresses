@@ -5,11 +5,11 @@ import {
   View,
   FlatList,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, { useRef, useState } from 'react';
 import PageWrapper from '../../components/PageWrapper';
 import ProfileHeader from '../../components/ProfileHeader';
-import MapView, {Marker} from 'react-native-maps';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import MapView, { Marker, Circle } from 'react-native-maps';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import colors from '../../assets/colors';
 import {
   kilometers,
@@ -17,7 +17,7 @@ import {
   stylistInformations,
   tabs,
 } from '../../dummyData';
-import {Picker} from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker';
 import images from '../../assets/images';
 import StylistInfo from '../../components/StylistInfo';
 
@@ -25,11 +25,19 @@ const Nearby = () => {
   const [changeTab, setChangeTab] = useState(1);
   const [selectKilometers, setSelectKilometers] = useState('');
   const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [zoomLevel, setZoomLevel] = useState(10)
   const flatListRef = useRef(null);
 
+  const initialCircleRadius = 1000;
+
   const onIconPress = () => {
-    flatListRef.current.setNativeProps({scrollEnabled: true});
+    flatListRef.current.setNativeProps({ scrollEnabled: true });
     setIsDetailOpen(!isDetailOpen);
+  };
+
+  const handleRegionChange = (region) => {
+    console.log('moye moye', region)
+    setZoomLevel(region.longitudeDelta);
   };
 
   return (
@@ -37,7 +45,7 @@ const Nearby = () => {
       <ProfileHeader username={true} />
       <View style={styles.screen}>
         <MapView
-          scrollEnabled={false}
+          onRegionChange={(region) => handleRegionChange(region)}
           initialRegion={{
             latitude: 44.466621,
             longitude: -70.250395,
@@ -50,15 +58,21 @@ const Nearby = () => {
             <Marker
               key={item.id}
               image={item.image}
-              coordinate={{latitude: item.lat, longitude: item.long}}
+              coordinate={{ latitude: item.lat, longitude: item.long }}
             />
           ))}
+          <Circle
+            center={{ latitude: 44.486621, longitude: -70.240395 }}
+            radius={initialCircleRadius * zoomLevel}
+            fillColor='rgba(239, 229, 204, 0.3)'
+            strokeColor={colors.orange}
+          />
         </MapView>
         {/* <View style={styles.radiusWrapper}>
           <View style={styles.mapRadius} />
         </View> */}
         <View style={styles.workingmapView}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <View style={styles.tabView}>
               {tabs.map(item => (
                 <TouchableOpacity
@@ -68,7 +82,7 @@ const Nearby = () => {
                   style={changeTab == item.id && styles.background}>
                   <Image
                     source={item.icon}
-                    // style={{height: hp('2.2%'), width: hp('2.2%')}}
+                  // style={{height: hp('2.2%'), width: hp('2.2%')}}
                   />
                 </TouchableOpacity>
               ))}
@@ -84,7 +98,7 @@ const Nearby = () => {
                     key={item.id}
                     label={item.text}
                     value={item.text}
-                    style={{color: colors.black}}
+                    style={{ color: colors.black }}
                   />
                 ))}
               </Picker>
@@ -94,32 +108,15 @@ const Nearby = () => {
             </View>
           </View>
         </View>
-        <View
-          style={[
-            styles.barStyle,
-            isDetailOpen == false
-              ? {
-                  // top: hp('30%'),
-                  // left: 40,
-                  // right: 40,
-                  // alignItems: 'center',
-                  // justifyContent: 'center',
-                  bottom: hp("29%")
-                }
-              : {
-                  // top: hp('11%'),
-                  bottom: hp('30%'),
-                  // left: hp('3%'),
-                  // backgroundColor: 'red',
-                },
-          ]}>
+        <View style={[styles.barStyle, isDetailOpen ? { bottom: hp("28%") } : { bottom: hp('29%') }]}>
           <FlatList
             ref={flatListRef}
             data={stylistInformations}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             nestedScrollEnabled
-            renderItem={({item}) => (
+            pagingEnabled={true}
+            renderItem={({ item }) => (
               <StylistInfo
                 image={item.image}
                 isActive={isDetailOpen}
@@ -139,6 +136,7 @@ export default Nearby;
 const styles = StyleSheet.create({
   screen: {
     overflow: 'hidden',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     borderRadius: 30,
   },
   mapStyle: {
@@ -212,10 +210,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     // bottom: 0,
     // right: 0,
-    justifyContent:"center",
-    alignItems:"center",
+    justifyContent: "center",
+    alignItems: "center",
     // height: hp("50%"),
-    width:"100%",
+    width: "100%",
     left: 0
 
   },

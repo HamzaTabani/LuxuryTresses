@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     width: hp("40"),
     borderWidth: 1,
     borderColor: '#D49621',
-    borderRadius: 40,
+    borderRadius: 57,
     padding: 3,
     alignItems: 'center',
     justifyContent: 'center',
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
   dp_img: {
     width: '100%',
     height: '100%',
-    borderRadius: 40,
+    borderRadius: 57
   },
   select_from_gallery_button: {
     height: 45,

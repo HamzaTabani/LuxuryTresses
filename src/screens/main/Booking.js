@@ -97,7 +97,7 @@ const Booking = () => {
           <View
             style={{
               width: '100%',
-              height: 50,
+              padding: hp('0.2%'),
               borderWidth: 0.8,
               borderColor: '#D49621',
               borderRadius: 40,

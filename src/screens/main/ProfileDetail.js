@@ -17,59 +17,17 @@ import {
 import colors from '../../assets/colors';
 import Container from '../../components/Container';
 import ReviewCard from '../../components/ReviewCard';
-import {stylistImages} from '../../dummyData';
+import { products, stylistImages } from '../../dummyData';
 import TimingCard from '../../components/TimingCard';
 import OutlineButton from '../../components/OutlineButton';
 import MessageOption from '../../components/MessageOption';
-import {useState} from 'react';
+import { useState } from 'react';
 import ProductCard from '../../components/ProductCard';
 import { useNavigation } from '@react-navigation/native';
-const cartData2 = [
-  {
-    id: 1,
-    img: require('../../assets/images/cart4.png'),
-  },
-  {
-    id: 2,
-    img: require('../../assets/images/cart5.png'),
-  },
-  {
-    id: 3,
-    img: require('../../assets/images/cart6.png'),
-  },
-  {
-    id: 4,
-    img: require('../../assets/images/cart4.png'),
-  },
-  {
-    id: 5,
-    img: require('../../assets/images/cart5.png'),
-  },
-  {
-    id: 6,
-    img: require('../../assets/images/cart6.png'),
-  },
-  {
-    id: 7,
-    img: require('../../assets/images/cart4.png'),
-  },
-  {
-    id: 8,
-    img: require('../../assets/images/cart5.png'),
-  },
-  {
-    id: 9,
-    img: require('../../assets/images/cart6.png'),
-  },
-  {
-    id: 10,
-    img: require('../../assets/images/cart6.png'),
-  },
-];
 
 const ProfileDetail = () => {
   const [tabActive, setTabActive] = useState('order');
-  const navigation  = useNavigation();
+  const navigation = useNavigation();
 
   return (
     <Container>
@@ -87,34 +45,34 @@ const ProfileDetail = () => {
             <Text style={styles.name}>Omnis Iste</Text>
             <Text style={styles.location}>
               1609 Oak, St.{' '}
-              <Text style={{color: colors.white, fontWeight: 'bold'}}>
+              <Text style={{ color: colors.white, fontWeight: 'bold' }}>
                 (2km)
               </Text>
             </Text>
-            <View style={{flexDirection: 'row'}}>
+            <View style={{ flexDirection: 'row' }}>
               <View style={styles.iconView}>
                 <Image source={images.tab1} />
               </View>
-              <View style={[styles.iconView, {marginLeft: hp('1%')}]}>
+              <View style={[styles.iconView, { marginLeft: hp('1%') }]}>
                 <Image source={images.tab2} />
               </View>
             </View>
           </View>
-          <View style={{marginTop: hp('7%')}}>
+          <TouchableOpacity style={{ marginTop: hp('7%') }} activeOpacity={0.9} onPress={() => navigation.navigate('Nearby')}>
             <Image
               source={images.stylist2}
               style={styles.exploreImage}
               borderRadius={10}
             />
             <Text style={styles.exploreText}>Explore</Text>
-          </View>
+          </TouchableOpacity>
         </View>
-        <View style={{paddingTop: hp('4%')}}>
-          <ReviewCard 
+        <View style={{ paddingTop: hp('4%') }}>
+          <ReviewCard
             onPress={() => navigation.navigate('Reviews')}
           />
         </View>
-        <View style={{paddingTop: hp('4%')}}>
+        <View style={{ paddingTop: hp('4%') }}>
           <View style={styles.btn_wrapper}>
             <TouchableOpacity
               style={tabActive === 'order' ? styles.btns_active : styles.btns}
@@ -143,7 +101,7 @@ const ProfileDetail = () => {
           </View>
         </View>
         {tabActive === 'order' ? (
-          <View style={{paddingTop: hp('4%')}}>
+          <View style={{ paddingTop: hp('4%') }}>
             <View style={styles.textContainer}>
               <Text style={styles.heading}>About Omnis iste</Text>
               <Text style={styles.message}>
@@ -169,32 +127,34 @@ const ProfileDetail = () => {
                 </>
               ))}
             </View>
-            <View style={{paddingTop: hp('4%')}}>
+            <View style={{ paddingTop: hp('4%') }}>
               <TimingCard />
-              <View style={{paddingTop: hp('5%'), flexDirection: 'row'}}>
+              <View style={{ paddingTop: hp('5%'), flexDirection: 'row' }}>
                 <OutlineButton
                   title={'BOOK NOW'}
-                  buttonStyle={{width: '80%'}}
-                  textStyle={{color: colors.white}}
-                  onPress={()=>navigation.navigate("Booking")}
+                  buttonStyle={{ width: '80%' }}
+                  textStyle={{ color: colors.white }}
+                  onPress={() => navigation.navigate("Booking")}
                 />
-                <View style={{marginLeft: hp('2%')}}>
+                <View style={{ marginLeft: hp('2%') }}>
                   <MessageOption />
                 </View>
               </View>
             </View>
           </View>
         ) : (
-          <View style={{paddingTop: hp('4%')}}>
+          <View style={{ paddingTop: hp('4%') }}>
             <FlatList
-              data={cartData2}
+              data={products}
               keyExtractor={item => item.id}
-              renderItem={({item}) => (
-                <View style={{marginBottom: 15}}>
-                  <ProductCard rating={3} item={item} />
-                </View>
+              renderItem={({ item }) => (
+                <TouchableOpacity style={{ marginBottom: hp('3.5%') }}
+                  activeOpacity={0.9} onPress={() => navigation.navigate('SingleProduct')}
+                >
+                  <ProductCard rating={3} item={item} product={true}  />
+                </TouchableOpacity>
               )}
-              columnWrapperStyle={{justifyContent: 'space-evenly'}}
+              columnWrapperStyle={{ justifyContent: 'space-evenly' }}
               numColumns={2}
             />
           </View>
@@ -277,7 +237,7 @@ const styles = StyleSheet.create({
   moreText: {
     color: colors.white,
     position: 'absolute',
-    right: 16,
+    right: hp('2.8%'),
     fontWeight: 'bold',
     top: hp('8.5%'),
     fontSize: hp('2%'),
@@ -296,7 +256,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 50,
     width: hp("20%"),
-    alignItems:"center"
+    alignItems: "center"
   },
   btns: {
     backgroundColor: 'transparent',

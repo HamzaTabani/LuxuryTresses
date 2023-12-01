@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     },
     iconView: {
         backgroundColor: colors.white,
-        marginRight: hp('0.4%'),
+        marginRight: hp('1%'),
         height: hp('3.5%'),
         alignItems: 'center',
         justifyContent: 'center',
@@ -100,8 +100,9 @@ const styles = StyleSheet.create({
     },
     ratingView: {
         backgroundColor: colors.orange,
+        justifyContent: 'space-around',
         height: hp('4%'),
-        width: '110%',
+        width: '85%',
         flexDirection: 'row',
         borderRadius: 10,
     },

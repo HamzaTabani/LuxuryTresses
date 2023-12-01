@@ -20,8 +20,8 @@ const StylistInfo = ({ image, isActive, onArrowPress, flatListRef }) => {
       style={[
         styles.card,
         isActive
-          ? { height: hp('64%'), width: hp("47%") }
-          : { marginRight: hp('4.5%') },
+          ? { height: hp('66%'), width: hp("43%") }
+          : { marginRight: hp('1%') },
       ]}>
       <Arrow
         name={isActive ? 'arrow-down' : 'arrow-up'}
@@ -195,9 +195,9 @@ const styles = StyleSheet.create({
     fontSize: hp('2%'),
   },
   imageStyle: {
-    height: hp('10%'),
+    height: hp('9%'),
     marginRight: hp('1%'),
-    width: hp('10%'),
+    width: hp('9%'),
     marginTop: hp('2%'),
   },
   scrollWrapper: {

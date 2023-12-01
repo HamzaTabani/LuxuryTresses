@@ -18,7 +18,8 @@ import Subheading from '../../components/Subheading';
 import Card from '../../components/Card';
 import ProductCard from '../../components/ProductCard';
 import ShortcutBox from '../../components/ShortcutBox';
-import colors from '../../assets/colors';
+import { products } from '../../dummyData';
+import images from '../../assets/images';
 
 const cartData = [
   {
@@ -38,20 +39,20 @@ const cartData = [
 const cartData2 = [
   {
     id: 4,
-    img: require('../../assets/images/cart4.png'),
+    image: images.product2,
   },
   {
     id: 5,
-    img: require('../../assets/images/cart5.png'),
+    image: images.product3,
   },
   {
     id: 6,
-    img: require('../../assets/images/cart6.png'),
+    image: images.product4,
   },
 ];
 
 
-const Home = ({navigation}) => {
+const Home = ({ navigation }) => {
   return (
     <>
       <ScrollView
@@ -63,179 +64,182 @@ const Home = ({navigation}) => {
           resizeMode="cover"
           style={styles.bg_home}>
           {/* home header */}
-          <ScrollView style={{flex: 1}}>
-          <ProfileHeader />
+          <ScrollView style={{ flex: 1 }}>
+            <ProfileHeader />
             {/* home title */}
-              <View style={{paddingHorizontal: wp('8%')}}>
-                <Text style={styles.home_heading}>Hi Sarah,</Text>
-                <Text style={styles.home_title}>Lets make a new style!</Text>
-              </View>
-              {/* home shorcuts boxes */}
-              <View style={styles.shortcutsBoxContainer}>
-                <Pressable onPress={() => navigation.navigate('trendings')}>
-                  <ShortcutBox
-                    title={'Trends'}
-                    img={require('../../assets/images/trend.png')}
-                  />
-                </Pressable>
-                <Pressable onPress={() => navigation.navigate('Nearby')}>
-                  <ShortcutBox
-                    title={'Nearby'}
-                    img={require('../../assets/images/near.png')}
-                  />
-                </Pressable>
-                <Pressable onPress={() => navigation.navigate('recents')}>
-                  <ShortcutBox
-                    title={'Recents'}
-                    img={require('../../assets/images/recent.png')}
-                  />
-                </Pressable>
-                <Pressable onPress={() => navigation.navigate('populars')}>
-                  <ShortcutBox
-                    title={'Popular'}
-                    img={require('../../assets/images/popular.png')}
-                  />
-                </Pressable>
-              </View>
-              {/* Top Style */}
-              <View style={styles.topStylesContainer}>
-                <View>
-                  <View style={{paddingHorizontal: wp('8%')}}>
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate('TopStylists')}>
-                      <Subheading title={'Top stylists'} />
-                    </TouchableOpacity>
-                  </View>
-                  <ScrollView
-                    style={{marginTop: 20, marginLeft: 30}}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}>
-                    {cartData.map(item => (
-                      <TouchableOpacity
-                        activeOpacity={0.9}
-                        key={item?.id}
-                        onPress={() => navigation.navigate('ProfileDetail')}>
-                        <Card rating={3} item={item} />
-                      </TouchableOpacity>
-                    ))}
-                  </ScrollView>
+            <View style={{ paddingHorizontal: wp('8%') }}>
+              <Text style={styles.home_heading}>Hi Sarah,</Text>
+              <Text style={styles.home_title}>Lets make a new style!</Text>
+            </View>
+            {/* home shorcuts boxes */}
+            <View style={styles.shortcutsBoxContainer}>
+              <Pressable onPress={() => navigation.navigate('trendings')}>
+                <ShortcutBox
+                  title={'Trends'}
+                  img={require('../../assets/images/trend.png')}
+                />
+              </Pressable>
+              <Pressable onPress={() => navigation.navigate('Nearby')}>
+                <ShortcutBox
+                  title={'Nearby'}
+                  img={require('../../assets/images/near.png')}
+                />
+              </Pressable>
+              <Pressable onPress={() => navigation.navigate('recents')}>
+                <ShortcutBox
+                  title={'Recents'}
+                  img={require('../../assets/images/recent.png')}
+                />
+              </Pressable>
+              <Pressable onPress={() => navigation.navigate('populars')}>
+                <ShortcutBox
+                  title={'Popular'}
+                  img={require('../../assets/images/popular.png')}
+                />
+              </Pressable>
+            </View>
+            {/* Top Style */}
+            <View style={styles.topStylesContainer}>
+              <View>
+                <View style={{ paddingHorizontal: wp('8%') }}>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('TopStylists')}>
+                    <Subheading title={'Top stylists'} />
+                  </TouchableOpacity>
                 </View>
-              </View>
-              {/* Recent */}
-              <View style={styles.recentContainer}>
-                <View>
-                  <View style={{paddingHorizontal: wp('8%')}}>
+                <ScrollView
+                  style={{ marginTop: 20, marginHorizontal: hp('-3%') }}
+                  horizontal
+                  contentContainerStyle={{ paddingHorizontal: hp('5%') }}
+                  showsHorizontalScrollIndicator={false}>
+                  {cartData.map(item => (
                     <TouchableOpacity
+                      activeOpacity={0.9}
+                      key={item?.id}
+                      onPress={() => navigation.navigate('ProfileDetail')}>
+                      <Card rating={3} item={item} />
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+            </View>
+            {/* Recent */}
+            <View style={styles.recentContainer}>
+              <View>
+                <View style={{ paddingHorizontal: wp('8%') }}>
+                  <Subheading title={'Recent products'} />
+                </View>
+                <ScrollView
+                  style={{ marginTop: 20, marginHorizontal: hp('-3%') }}
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={{ paddingHorizontal: hp('5%') }}
+                  horizontal>
+                  {cartData2.map(item => (
+                    <TouchableOpacity
+                      activeOpacity={0.9}
                       onPress={() => navigation.navigate('RecentProducts')}>
-                      <Subheading title={'Recent products'} />
-                    </TouchableOpacity>
-                  </View>
-                  <ScrollView
-                    style={{marginTop: 20, marginLeft: 30}}
-                    showsHorizontalScrollIndicator={false}
-                    horizontal>
-                    {cartData2.map(item => (
                       <ProductCard key={item?.id} rating={3} item={item} />
-                    ))}
-                  </ScrollView>
-                </View>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
               </View>
-              {/* banner 1 */}
-              <View style={{paddingHorizontal: wp('8%'), marginBottom: 8}}>
-                <View style={styles.bannerOneContainer}>
-                  <Image
-                    source={require('../../assets/images/homebanner1.png')}
-                    resizeMode="contain"
-                    style={{
-                      width: '100%',
-                    }}
-                  />
-                  <View style={styles.bannerImageView}>
-                    <Image
-                      source={require('../../assets/images/topleftarrow.png')}
-                      resizeMode="contain"
-                      style={{
-                        width: '100%',
-                      }}
-                    />
-                  </View>
-                  <View style={styles.bannerTitleView}>
-                    <Text style={styles.bannerOneText}>Let your hair</Text>
-                    <Text style={styles.bannerOneText}>Speak for itself</Text>
-                  </View>
-                </View>
-              </View>
-              {/* banner 2 */}
-              <View style={{paddingHorizontal: wp('8%'), marginBottom: 80}}>
-                <View style={styles.bannerOneContainer}>
-                  <Image
-                    source={require('../../assets/images/homebanner2.png')}
-                    resizeMode="contain"
-                    style={{
-                      width: '100%',
-                    }}
-                  />
-                  <View style={styles.bannerTwoImageView}>
-                    <Image
-                      source={require('../../assets/images/banner2support.png')}
-                      resizeMode="contain"
-                      style={{
-                        width: '100%',
-                      }}
-                    />
-                  </View>
-                  <View
-                    style={{
-                      position: 'absolute',
-                      top: 30,
-                      left: 12,
-                    }}>
-                    <Text style={styles.bannerTwoText}>Start your</Text>
-                    <Text style={styles.bannerTwoText}>hair journey</Text>
-                    <Text
-                      style={{
-                        color: 'grey',
-                        marginTop: 10,
-                      }}>
-                      Explore stylists
-                    </Text>
-                    <Pressable>
-                      <View
-                        style={styles.bannerButton}>
-                        <Image
-                          source={require('../../assets/images/topleftarrow.png')}
-                          resizeMode="contain"
-                          style={{
-                            width: 20,
-                          }}
-                        />
-                        <Text
-                          style={styles.bannerButtonText}>
-                          START NOW
-                        </Text>
-                      </View>
-                    </Pressable>
-                  </View>
-                </View>
-              </View>
-              {/* bottom lines */}
-              <View
-                style={{
-                  paddingHorizontal: wp('8%'),
-                  marginBottom: 150,
-                  alignItems: 'center',
-                }}>
+            </View>
+            {/* banner 1 */}
+            <View style={{ paddingHorizontal: wp('8%'), marginBottom: 8 }}>
+              <View style={styles.bannerOneContainer}>
                 <Image
-                  source={require('../../assets/images/bottom_lines.png')}
+                  source={require('../../assets/images/homebanner1.png')}
                   resizeMode="contain"
                   style={{
-                    width: 40,
+                    width: '100%',
                   }}
                 />
+                <View style={styles.bannerImageView}>
+                  <Image
+                    source={require('../../assets/images/topleftarrow.png')}
+                    resizeMode="contain"
+                    style={{
+                      width: '100%',
+                    }}
+                  />
+                </View>
+                <View style={styles.bannerTitleView}>
+                  <Text style={styles.bannerOneText}>Let your hair</Text>
+                  <Text style={styles.bannerOneText}>Speak for itself</Text>
+                </View>
               </View>
+            </View>
+            {/* banner 2 */}
+            <View style={{ paddingHorizontal: wp('8%'), marginBottom: 80 }}>
+              <View style={styles.bannerOneContainer}>
+                <Image
+                  source={require('../../assets/images/homebanner2.png')}
+                  resizeMode="contain"
+                  style={{
+                    width: '100%',
+                  }}
+                />
+                <View style={styles.bannerTwoImageView}>
+                  <Image
+                    source={require('../../assets/images/banner2support.png')}
+                    resizeMode="contain"
+                    style={{
+                      width: '100%',
+                    }}
+                  />
+                </View>
+                <View
+                  style={{
+                    position: 'absolute',
+                    top: 30,
+                    left: 12,
+                  }}>
+                  <Text style={styles.bannerTwoText}>Start your</Text>
+                  <Text style={styles.bannerTwoText}>hair journey</Text>
+                  <Text
+                    style={{
+                      color: 'grey',
+                      marginTop: 10,
+                    }}>
+                    Explore stylists
+                  </Text>
+                  <Pressable>
+                    <View
+                      style={styles.bannerButton}>
+                      <Image
+                        source={require('../../assets/images/topleftarrow.png')}
+                        resizeMode="contain"
+                        style={{
+                          width: 20,
+                        }}
+                      />
+                      <Text
+                        style={styles.bannerButtonText}>
+                        START NOW
+                      </Text>
+                    </View>
+                  </Pressable>
+                </View>
+              </View>
+            </View>
+            {/* bottom lines */}
+            <View
+              style={{
+                paddingHorizontal: wp('8%'),
+                marginBottom: 150,
+                alignItems: 'center',
+              }}>
+              <Image
+                source={require('../../assets/images/bottom_lines.png')}
+                resizeMode="contain"
+                style={{
+                  width: 40,
+                }}
+              />
+            </View>
           </ScrollView>
-        </ImageBackground>
-      </ScrollView>
+        </ImageBackground >
+      </ScrollView >
     </>
   );
 };
@@ -328,7 +332,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     borderRadius: 5,
     marginTop: 10,
-  }, 
+  },
   bannerButtonText: {
     fontWeight: '400',
     color: '#EDBA1B',

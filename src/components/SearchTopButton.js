@@ -1,38 +1,41 @@
-import {StyleSheet, View, Pressable, TextInput} from 'react-native';
-
+import { StyleSheet, View, TextInput } from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import FontAwesome5 from 'react-native-vector-icons/Ionicons';
 
-const SearchTopButton = ({searchActive, setSearchActive}) => {
+const SearchTopButton = ({ searchActive, setSearchActive }) => {
+
+  const onSearchBarPress = () => {
+    setSearchActive(!searchActive)
+  }
 
   return (
-    <Pressable onPress={() => setSearchActive(!searchActive)}>
-      <View style={searchActive ? styles.search_box_active : styles.search_box}>
-        {searchActive ? (
-          <>
-            <TextInput placeholder="Search Here " placeholderTextColor="#fff" />
-            <FontAwesome5
-              name="close-sharp"
-              type="Ionicons"
-              color="#fff"
-              size={28}
-            />
-          </>
-        ) : (
-          <>
-            <FontAwesome5
-              name="search"
-              type="Ionicons"
-              color="#fff"
-              size={28}
-            />
-          </>
-        )}
-      </View>
-    </Pressable>
+    <View style={searchActive ? styles.search_box_active : styles.search_box}>
+      {searchActive ? (
+        <>
+          <TextInput placeholder="Search Here " placeholderTextColor="#fff" style={{width: '80%'}} />
+          <FontAwesome5
+            name="close-sharp"
+            type="Ionicons"
+            color="#fff"
+            size={28}
+            onPress={() => onSearchBarPress()}
+          />
+        </>
+      ) : (
+        <>
+          <FontAwesome5
+            name="search"
+            type="Ionicons"
+            color="#fff"
+            size={28}
+            onPress={() => onSearchBarPress()}
+          />
+        </>
+      )}
+    </View>
   );
 };
 

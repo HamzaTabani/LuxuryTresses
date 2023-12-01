@@ -15,7 +15,7 @@ const AppNavigation = () => {
         <Stack.Screen name="signup" component={Signup} />
         <Stack.Screen name="otp" component={OTP} />
         <Stack.Screen name="initialprofile" component={InitialProfile} />
-        <Stack.Screen name="profile" component={Profile}/>
+        {/* <Stack.Screen name="profile" component={Profile}/> */}
       </Stack.Navigator>
   );
 };

@@ -22,6 +22,7 @@ import Reviews from '../screens/main/Reviews';
 import Booking from '../screens/main/Booking';
 import OrderHistory from '../screens/main/OrderHistory';
 import SelectLocation from '../screens/main/SelectLocation';
+import InitialProfile from '../screens/auth/InitialProfile';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -60,6 +61,20 @@ const CartStack = () => {
   )
 }
 
+const ProfileStack = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Tab.Screen name="Profile" component={Profile} />
+      <Tab.Screen name="InitialProfile" component={InitialProfile} />
+    </Stack.Navigator>
+  )
+}
+
+
 const SecondaryStack = () => {
   return (
     <Stack.Navigator
@@ -70,9 +85,11 @@ const SecondaryStack = () => {
       <Tab.Screen name="Checkout" component={Checkout} />
       <Tab.Screen name="PaymentMethod" component={PaymentMethod} />
       <Tab.Screen name="SelectLocation" component={SelectLocation} />
+
     </Stack.Navigator>
   )
 }
+
 
 const TabNavigation = () => {
   return (
@@ -119,8 +136,8 @@ const BottomStack = () => {
                   height: 60,
                   backgroundColor: '#291E20',
                   borderRadius: 50,
-                  justifyContent:'center',
-                  alignItems:"center"
+                  justifyContent: 'center',
+                  alignItems: "center"
                 }}>
                 <FontAwesome5
                   name="home"
@@ -153,8 +170,8 @@ const BottomStack = () => {
                   height: 60,
                   backgroundColor: '#291E20',
                   borderRadius: 50,
-                  justifyContent:'center',
-                  alignItems:"center"
+                  justifyContent: 'center',
+                  alignItems: "center"
                 }}>
                 <Feather
                   name="map-pin"
@@ -187,8 +204,8 @@ const BottomStack = () => {
                   height: 60,
                   backgroundColor: '#291E20',
                   borderRadius: 50,
-                  justifyContent:'center',
-                  alignItems:"center"
+                  justifyContent: 'center',
+                  alignItems: "center"
                 }}>
                 <Feather
                   name="shopping-cart"
@@ -210,8 +227,8 @@ const BottomStack = () => {
         }}
       />
       <Tab.Screen
-        name="settings"
-        component={Profile}
+        name="ProfileStack"
+        component={ProfileStack}
         options={{
           tabBarIcon: ({ focused }) =>
             focused ? (
@@ -221,8 +238,8 @@ const BottomStack = () => {
                   height: 60,
                   backgroundColor: '#291E20',
                   borderRadius: 50,
-                  justifyContent:'center',
-                  alignItems:"center"
+                  justifyContent: 'center',
+                  alignItems: "center"
                 }}>
                 <AntDesign
                   name="setting"

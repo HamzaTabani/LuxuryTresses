@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from 'react';
+import React, { useRef, useEffect } from 'react';
 import {
   Text,
   View,
@@ -6,18 +6,17 @@ import {
   Animated,
   Easing,
   StyleSheet,
-  Pressable,
 } from 'react-native';
-import Svg, {Circle} from 'react-native-svg';
+import Svg, { Circle } from 'react-native-svg';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {useNavigation} from '@react-navigation/native';
+import colors from '../assets/colors';
+import images from '../assets/images';
 
-const ProductCard = ({rating, item}) => {
+const ProductCard = ({ rating, item, product }) => {
   const progress = useRef(new Animated.Value(0)).current;
-  const navigation = useNavigation();
 
   useEffect(() => {
     const ratingToProgress = rating / 5;
@@ -37,33 +36,32 @@ const ProductCard = ({rating, item}) => {
   });
 
   return (
-    <Pressable onPress={() => navigation.navigate('SingleProduct')}>
-      <View style={styles.card_box}>
-        {/* card box img */}
-        <View style={styles.card_box_img}>
+    <View style={styles.card_box}>
+      {/* card box img */}
+      <View style={styles.card_box_img}>
+        <Image
+          source={item?.image}
+          resizeMode="contain"
+          style={styles.productImage}
+        />
+        {/* small icons */}
+        <View style={styles.card_box_img_icon1}>
           <Image
-            source={item?.img}
+            source={require('../assets/images/profile2.png')}
             resizeMode="contain"
-            style={{width: '100%'}}
+            style={{ width: 25, height: 25 }}
           />
+          <Text
+            style={{
+              fontWeight: 'bold',
+              color: '#fff',
+            }}>
+            Sarah J.
+          </Text>
+        </View>
 
-          {/* small icons */}
-          <View style={styles.card_box_img_icon1}>
-            <Image
-              source={require('../assets/images/profile2.png')}
-              resizeMode="contain"
-              style={{width: 25, height: 25}}
-            />
-            <Text
-              style={{
-                fontWeight: 'bold',
-                color: '#fff',
-              }}>
-              Sarah J.
-            </Text>
-          </View>
-
-          {/* rating icon */}
+        {/* rating icon */}
+        {!product &&
           <View
             style={{
               height: 40,
@@ -101,19 +99,37 @@ const ProductCard = ({rating, item}) => {
               />
             </Svg>
           </View>
-        </View>
-        <View
-          style={{
-            paddingTop: 25,
-          }}>
-          <Text style={{color: '#fff', fontWeight: 'bold'}}>Omnis iste</Text>
-          <Text style={{color: '#f6f6f6'}}>
-            1609 Oak, st{' '}
-            <Text style={{fontWeight: 'bold', color: '#fff'}}>(2km)</Text>{' '}
-          </Text>
-        </View>
+        }
       </View>
-    </Pressable>
+      <View
+        style={{
+          paddingTop: 25,
+          flexDirection: product && 'row',
+          gap: product && hp('3%'),
+          justifyContent: product && 'space-between',
+        }}>
+        {product ?
+          <>
+            <View>
+              <Text style={styles.productName}>Deep Mask</Text>
+              <Text style={styles.text}>$59.00</Text>
+            </View>
+            <View style={styles.iconView}>
+              <Image
+                source={images.shoppingIcon}
+                style={styles.image}
+              />
+            </View>
+          </> : <>
+            <Text style={styles.productName}>Omnis iste</Text>
+            <Text style={styles.text}>
+              1609 Oak, st{' '}
+              <Text style={styles.productName}>(2km)</Text>{' '}
+            </Text>
+          </>
+        }
+      </View>
+    </View>
   );
 };
 
@@ -151,5 +167,29 @@ const styles = StyleSheet.create({
     left: 5,
     borderWidth: 0.3,
     borderColor: '#D49621',
+  },
+  iconView: {
+    height: hp('3.7%'),
+    width: hp('3.7%'),
+    borderRadius: 100,
+    backgroundColor: colors.darkblue,
+    alignItems: 'center',
+    alignSelf: 'center',
+    justifyContent: 'center'
+  },
+  image: {
+    height: hp('1.5%'),
+    width: hp('1.5%')
+  },
+  productName: {
+    color: '#fff',
+    fontWeight: 'bold'
+  },
+  text: {
+    color: '#f6f6f6'
+  },
+  productImage: {
+    height: hp('17.2%'),
+    width: hp('17.2%')
   },
 });

@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, { useState, useRef } from 'react';
 
 import {
   ImageBackground,
@@ -15,12 +15,17 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import { useNavigation } from '@react-navigation/native'
 import FontAwesome5 from 'react-native-vector-icons/Ionicons';
 import OutlineButton from '../../components/OutlineButton';
 
-const InitialProfile = ({navigation}) => {
+const InitialProfile = ({ route }) => {
   const [verificationCode, setVerificationCode] = useState(['', '', '', '']);
   const otpInputs = [useRef(null), useRef(null), useRef(null), useRef(null)];
+
+
+  const navigation = useNavigation()
+  console.log('asdasdasd', navigation.getState().routeNames[1])
 
   const handleOTPChange = (text, index) => {
     if (text.length === 1 && index < 3) {
@@ -32,6 +37,17 @@ const InitialProfile = ({navigation}) => {
     setVerificationCode(newOtp);
   };
 
+  const onButtonPress = () => {
+
+    if (navigation.getState().routeNames[0] === 'Profile') {
+      navigation.goBack()
+    } else {
+        navigation.navigate('TabNavigation')
+    }
+
+  }
+
+
   return (
     <View
       style={{
@@ -41,23 +57,20 @@ const InitialProfile = ({navigation}) => {
         source={require('../../assets/images/otpbg.png')}
         resizeMode="cover"
         style={styles.bg_signup}>
-        <View style={styles.back_header}>
-          <Pressable onPress={() => navigation.navigate("TabNavigation")}>
-            <View style={styles.back_button}>
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                  color: '#D49621',
-                }}>
-                SKIP
-              </Text>
-            </View>
-          </Pressable>
-        </View>
+        <TouchableOpacity style={styles.back_header} onPress={() => onButtonPress()} activeOpacity={0.9}>
+          <View style={styles.back_button}>
+            <Text
+              style={{
+                fontWeight: 'bold',
+                color: '#D49621',
+              }}>
+              SKIP
+            </Text>
+          </View>
+        </TouchableOpacity>
 
         <ScrollView
         >
-
           <View
             style={{
               flex: 0.2,
@@ -68,19 +81,20 @@ const InitialProfile = ({navigation}) => {
           </View>
           <View
             style={{
-              flex: 0.8,
+              flex: 1,
             }}>
             <View
               style={{
                 backgroundColor: '#0C0A22',
-                width: '100%',
+                height: hp('75%'),
+                flex: 1,
+                // width: '100%',
                 alignItems: 'center',
                 borderTopRightRadius: 20,
                 borderTopLeftRadius: 20,
-                paddingBottom: 40,
                 marginTop: hp('3%'),
               }}>
-              <View style={{width: wp('80%')}}>
+              <View style={{ width: wp('80%') }}>
                 <View>
                   <Text style={styles.input_lable}>Add profile picture</Text>
 
@@ -125,7 +139,7 @@ const InitialProfile = ({navigation}) => {
                     type="Ionicons"
                     color="#bbb9bd"
                     size={28}
-                    style={{marginLeft: 10}}
+                    style={{ marginLeft: 10 }}
                   />
                   <TextInput
                     style={styles.inputs}
@@ -141,7 +155,7 @@ const InitialProfile = ({navigation}) => {
                     type="Ionicons"
                     color="#bbb9bd"
                     size={28}
-                    style={{marginLeft: 10}}
+                    style={{ marginLeft: 10 }}
                   />
                   <TextInput
                     style={styles.inputs}
@@ -151,11 +165,10 @@ const InitialProfile = ({navigation}) => {
                   />
                 </View>
               </View>
-
-              <View style={{alignItems: 'center', marginTop: 40}}>
+              <View style={{ alignItems: 'center', marginTop: 40 }}>
                 <OutlineButton
                   title="done"
-                  onPress={() => navigation.navigate('TabNavigation')}
+                  onPress={() => onButtonPress()}
                 />
               </View>
             </View>

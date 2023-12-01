@@ -163,3 +163,38 @@ export const checkoutss = [
         price: '$5.00'
     }
 ]
+
+export const products = [
+    {
+        id: 1,
+        image: images.product1
+    },
+    {
+        id: 2,
+        image: images.product2
+    },
+    {
+        id: 3,
+        image: images.product3
+    },
+    {
+        id: 4,
+        image: images.product4
+    },
+    {
+        id: 5,
+        image: images.product5
+    },
+    {
+        id: 6,
+        image: images.product6
+    },
+    {
+        id: 7,
+        image: images.product7
+    },
+    {
+        id: 8,
+        image: images.product8
+    }
+]
