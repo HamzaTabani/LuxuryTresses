@@ -12,6 +12,7 @@ import MapView, { Marker, Circle } from 'react-native-maps';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import colors from '../../assets/colors';
 import {
+  initialRegion,
   kilometers,
   markerImages,
   stylistInformations,
@@ -25,10 +26,9 @@ const Nearby = () => {
   const [changeTab, setChangeTab] = useState(1);
   const [selectKilometers, setSelectKilometers] = useState('');
   const [isDetailOpen, setIsDetailOpen] = useState(false);
-  const [zoomLevel, setZoomLevel] = useState(10)
   const flatListRef = useRef(null);
 
-  const initialCircleRadius = 1000;
+  let circleRadius = 1500;
 
   const onIconPress = () => {
     flatListRef.current.setNativeProps({ scrollEnabled: true });
@@ -37,7 +37,6 @@ const Nearby = () => {
 
   const handleRegionChange = (region) => {
     console.log('moye moye', region)
-    setZoomLevel(region.longitudeDelta);
   };
 
   return (
@@ -46,12 +45,7 @@ const Nearby = () => {
       <View style={styles.screen}>
         <MapView
           onRegionChange={(region) => handleRegionChange(region)}
-          initialRegion={{
-            latitude: 44.466621,
-            longitude: -70.250395,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
+          initialRegion={initialRegion}
           mapType="terrain"
           style={styles.mapStyle}>
           {markerImages.map(item => (
@@ -62,8 +56,9 @@ const Nearby = () => {
             />
           ))}
           <Circle
-            center={{ latitude: 44.486621, longitude: -70.240395 }}
-            radius={initialCircleRadius * zoomLevel}
+            center={{ latitude: 44.474621, longitude: -70.250395 }}
+            radius={circleRadius}
+            strokeWidth={0.5}
             fillColor='rgba(239, 229, 204, 0.3)'
             strokeColor={colors.orange}
           />
@@ -72,7 +67,7 @@ const Nearby = () => {
           <View style={styles.mapRadius} />
         </View> */}
         <View style={styles.workingmapView}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <View style={styles.mapHeaderWrapper}>
             <View style={styles.tabView}>
               {tabs.map(item => (
                 <TouchableOpacity
@@ -82,7 +77,6 @@ const Nearby = () => {
                   style={changeTab == item.id && styles.background}>
                   <Image
                     source={item.icon}
-                  // style={{height: hp('2.2%'), width: hp('2.2%')}}
                   />
                 </TouchableOpacity>
               ))}
@@ -136,7 +130,6 @@ export default Nearby;
 const styles = StyleSheet.create({
   screen: {
     overflow: 'hidden',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     borderRadius: 30,
   },
   mapStyle: {
@@ -145,6 +138,10 @@ const styles = StyleSheet.create({
   },
   workingmapView: {
     position: 'absolute',
+  },
+  mapHeaderWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
   tabView: {
     padding: hp('0.1%'),

@@ -198,3 +198,10 @@ export const products = [
         image: images.product8
     }
 ]
+
+export const initialRegion = {
+    latitude: 44.466621,
+    longitude: -70.250395,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+}

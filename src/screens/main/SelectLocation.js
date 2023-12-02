@@ -1,26 +1,35 @@
 import { StyleSheet, View } from 'react-native'
 import React from 'react'
-import MapView, { Marker } from 'react-native-maps'
+import MapView, { Marker, Circle } from 'react-native-maps'
 import MapHeader from '../../components/MapHeader'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import LocationCard from '../../components/LocationCard'
 import colors from '../../assets/colors'
+import { initialRegion } from '../../dummyData'
+import images from '../../assets/images'
 
 const SelectLocation = () => {
+
+    let circleRadius = 1500;
+
     return (
         <View>
             <MapView
-                initialRegion={{
-                    latitude: 44.466621,
-                    longitude: -70.250395,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
-                }}
+                initialRegion={initialRegion}
                 mapType='terrain'
                 style={styles.mapStyle}
             >
                 <Marker
                     coordinate={{ latitude: 44.463691, longitude: -70.250495 }}
+                    image={images.locationMarker}
+                />
+                <Circle
+                    center={{ latitude: 44.466621, longitude: -70.250395 }}
+                    strokeWidth={0.5}
+
+                    radius={circleRadius}
+                    fillColor='rgba(239, 229, 204, 0.3)'
+                    strokeColor={colors.orange}
                 />
             </MapView>
             <MapHeader />

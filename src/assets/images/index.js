@@ -36,5 +36,6 @@ export default {
     product5: require('../images/product5.png'),
     product6: require('../images/product6.png'),
     product7: require('../images/product7.png'),
-    product8: require('../images/product8.png')
+    product8: require('../images/product8.png'),
+    locationMarker: require('../images/markerImage.png')
 }
