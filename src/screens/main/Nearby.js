@@ -32,7 +32,7 @@ const Nearby = () => {
 
   const onIconPress = () => {
     flatListRef.current.setNativeProps({ scrollEnabled: true });
-    setIsDetailOpen(!isDetailOpen);
+    setIsDetailOpen(!isDetailOpen)
   };
 
   const handleRegionChange = (region) => {
@@ -63,9 +63,6 @@ const Nearby = () => {
             strokeColor={colors.orange}
           />
         </MapView>
-        {/* <View style={styles.radiusWrapper}>
-          <View style={styles.mapRadius} />
-        </View> */}
         <View style={styles.workingmapView}>
           <View style={styles.mapHeaderWrapper}>
             <View style={styles.tabView}>
@@ -110,11 +107,11 @@ const Nearby = () => {
             showsHorizontalScrollIndicator={false}
             nestedScrollEnabled
             pagingEnabled={true}
-            renderItem={({ item }) => (
+            renderItem={({ item, index }) => (
               <StylistInfo
                 image={item.image}
                 isActive={isDetailOpen}
-                onArrowPress={() => onIconPress()}
+                onArrowPress={() => onIconPress(index)}
                 flatListRef={flatListRef}
               />
             )}

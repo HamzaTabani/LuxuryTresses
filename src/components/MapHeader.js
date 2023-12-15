@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
         position: 'absolute'
     },
     iconView: {
-        borderWidth: 3,
+        borderWidth: 1.5,
         borderColor: colors.orange,
         alignItems: 'center',
         justifyContent: 'center',

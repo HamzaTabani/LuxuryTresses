@@ -123,7 +123,9 @@ const ProfileDetail = () => {
                     blurRadius={item.id == 4 ? 25 : 0}
                     style={styles.image}
                   />
-                  <Text style={styles.moreText}>{item.id == 4 && 'More'}</Text>
+                  <View style={styles.absoluteText}>
+                    <Text style={styles.moreText}>{item.id == 4 && 'More'}</Text>
+                  </View>
                 </>
               ))}
             </View>
@@ -151,7 +153,7 @@ const ProfileDetail = () => {
                 <TouchableOpacity style={{ marginBottom: hp('3.5%') }}
                   activeOpacity={0.9} onPress={() => navigation.navigate('SingleProduct')}
                 >
-                  <ProductCard rating={3} item={item} product={true}  />
+                  <ProductCard rating={3} item={item} product={true} />
                 </TouchableOpacity>
               )}
               columnWrapperStyle={{ justifyContent: 'space-evenly' }}
@@ -236,10 +238,10 @@ const styles = StyleSheet.create({
   },
   moreText: {
     color: colors.white,
-    position: 'absolute',
-    right: hp('2.8%'),
+    // position: 'absolute',
+    // right: hp('2.8%'),
     fontWeight: 'bold',
-    top: hp('8.5%'),
+    // top: hp('8.5%'),
     fontSize: hp('2%'),
   },
   btn_wrapper: {
@@ -270,4 +272,9 @@ const styles = StyleSheet.create({
   btns_text: {
     color: '#fff',
   },
+  absoluteText: {
+    position: 'absolute',
+    right: 32,
+    bottom: 29
+  }
 });

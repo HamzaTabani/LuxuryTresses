@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 import React from 'react'
 import MapView, { Marker, Circle } from 'react-native-maps'
 import MapHeader from '../../components/MapHeader'
@@ -13,7 +13,7 @@ const SelectLocation = () => {
     let circleRadius = 1500;
 
     return (
-        <View>
+        <>
             <MapView
                 initialRegion={initialRegion}
                 mapType='terrain'
@@ -26,18 +26,14 @@ const SelectLocation = () => {
                 <Circle
                     center={{ latitude: 44.466621, longitude: -70.250395 }}
                     strokeWidth={0.5}
-
                     radius={circleRadius}
                     fillColor='rgba(239, 229, 204, 0.3)'
                     strokeColor={colors.orange}
                 />
             </MapView>
             <MapHeader />
-            {/* <View style={styles.radiusWrapper}>
-                <View style={styles.mapRadius} />
-            </View> */}
             <LocationCard />
-        </View>
+        </>
     )
 }
 

@@ -91,7 +91,7 @@ const Recents = () => {
       <View style={styles.trendingContainer}>
         {/* ///////// title and filter buttons container ///////*/}
         <View style={styles.filterContainer}>
-          <Text style={styles.mainTitleText}>Recants</Text>
+          <Text style={styles.mainTitleText}>Recents</Text>
           <View style={{flexDirection: 'row', gap: 8}}>
             {/* filter tab */}
             <View style={styles.filterTabs}>
