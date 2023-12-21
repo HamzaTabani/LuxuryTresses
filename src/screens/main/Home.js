@@ -20,6 +20,7 @@ import ProductCard from '../../components/ProductCard';
 import ShortcutBox from '../../components/ShortcutBox';
 import { products } from '../../dummyData';
 import images from '../../assets/images';
+import { useSelector } from 'react-redux';
 
 const cartData = [
   {
@@ -53,6 +54,12 @@ const cartData2 = [
 
 
 const Home = ({ navigation }) => {
+
+  const state = useSelector(state => state);
+  console.log('====================================');
+  console.log(state, 'my redux state test.');
+
+
   return (
     <>
       <ScrollView
@@ -137,8 +144,9 @@ const Home = ({ navigation }) => {
                   {cartData2.map(item => (
                     <TouchableOpacity
                       activeOpacity={0.9}
+                      key={item?.id} 
                       onPress={() => navigation.navigate('RecentProducts')}>
-                      <ProductCard key={item?.id} rating={3} item={item} />
+                      <ProductCard rating={3} item={item} />
                     </TouchableOpacity>
                   ))}
                 </ScrollView>
