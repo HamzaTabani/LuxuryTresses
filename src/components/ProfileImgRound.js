@@ -1,8 +1,13 @@
-import {useNavigation} from '@react-navigation/native';
-import {TouchableOpacity, Image} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { TouchableOpacity, Image } from 'react-native';
+import { useSelector } from 'react-redux';
 
-const ProfileImgRound = ({imgSrc}) => {
+const ProfileImgRound = ({ imgSrc }) => {
   const navigation = useNavigation();
+
+  const { user, pic_url } = useSelector(state => state.userData)
+
+
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate('profile')}
@@ -16,11 +21,16 @@ const ProfileImgRound = ({imgSrc}) => {
         top: 'center',
         left: 'center',
       }}>
+
       <Image
+        borderRadius={100}
         source={
           imgSrc
             ? require('../assets/images/profileimg.png')
-            : require('../assets/images/dp.png')
+            :
+            user ?
+              { uri: pic_url + user?.profile_pic }
+              : require('../assets/images/dp.png')
         }
         style={{
           position: 'absolute',

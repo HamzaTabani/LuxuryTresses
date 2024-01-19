@@ -16,7 +16,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-const ModalChangeProfilePic = ({modalVisible, setModalVisible}) => {
+const ModalChangeProfilePic = ({modalVisible, setModalVisible, source}) => {
   return (
     <Modal
       animationType="fade"
@@ -48,7 +48,7 @@ const ModalChangeProfilePic = ({modalVisible, setModalVisible}) => {
           {/* profile pic view */}
           <View style={styles.profilePicViewer}>
             <Image
-              source={require('../assets/images/profiledp.png')}
+              source={source}
               style={styles.dp_img}
             />
           </View>

@@ -1,6 +1,6 @@
-import {configureStore} from '@reduxjs/toolkit';
-import authReducer from './features/authState';
-import {combineReducers} from 'redux';
+import { configureStore } from '@reduxjs/toolkit';
+import authReducer from './slices/AuthSlice';
+import { combineReducers } from 'redux';
 import {
   persistStore,
   persistReducer,
@@ -18,13 +18,15 @@ const persistConfig = {
   key: 'root',
   version: 1,
   storage: AsyncStorage,
-  whitelist: ['userData'],
-  blacklist: [contact.reducerPath], 
+  whitelist: [
+    'userData'
+  ],
+  blacklist: [], 
 };
 
 
 const rootReducer = combineReducers({
-  [contact.reducerPath]: contact.reducer,
+  // [contact.reducerPath]: contact.reducer,
   userData: authReducer,
 });
 
@@ -32,12 +34,12 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
   reducer: persistedReducer,
-  middleware: getDefaultMiddleware =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }).concat(contact.middleware),
+  // middleware: getDefaultMiddleware =>
+  //   getDefaultMiddleware({
+  //     serializableCheck: {
+  //       ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+  //     },
+  //   }).concat(contact.middleware),
 });
 
 export default store;

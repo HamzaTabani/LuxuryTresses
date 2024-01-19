@@ -1,17 +1,26 @@
-import {Text, TouchableOpacity, StyleSheet} from 'react-native';
+import { Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import colors from '../assets/colors';
 
-const OutlineButton = ({title, onPress, textStyle,buttonStyle}) => {
+const OutlineButton = ({ title, onPress, textStyle, buttonStyle, indicator }) => {
   return (
     <>
       <TouchableOpacity
-        style={[styles.primary_btn,buttonStyle]}
+        style={[styles.primary_btn, buttonStyle]}
         activeOpacity={0.7}
         onPress={onPress}>
-        <Text style={[styles.primary_btn_text,textStyle]}>{title}</Text>
+        {indicator ?
+          <ActivityIndicator
+            color={'#D49621'}
+            size={'small'}
+            style={{ alignSelf: 'center' }}
+          />
+          :
+          <Text style={[styles.primary_btn_text, textStyle]}>{title}</Text>
+        }
       </TouchableOpacity>
     </>
   );

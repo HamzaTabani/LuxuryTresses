@@ -1,11 +1,12 @@
-import {Text, TouchableOpacity, StyleSheet} from 'react-native';
+import { Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import LinearGradient from 'react-native-linear-gradient';
+import colors from '../assets/colors';
 
-const PrimaryButton = ({title, onPress}) => {
+const PrimaryButton = ({ title, onPress, indicator, style }) => {
   return (
     <>
       <TouchableOpacity
@@ -13,11 +14,20 @@ const PrimaryButton = ({title, onPress}) => {
         activeOpacity={0.7}
         onPress={onPress}>
         <LinearGradient
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 0}}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
           colors={['#F0BA10', '#F1DA86', '#D1911E']}
-          style={styles.primary_btn_gradient}>
-          <Text style={styles.primary_btn_text}>{title}</Text>
+          style={[styles.primary_btn_gradient, style]}
+          >
+          {indicator ?
+            <ActivityIndicator
+              color={colors.black}
+              size={'small'}
+              style={{ alignSelf: 'center' }}
+            />
+            :
+            <Text style={styles.primary_btn_text}>{title}</Text>
+          }
         </LinearGradient>
       </TouchableOpacity>
     </>

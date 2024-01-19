@@ -1,1 +1,1 @@
-export const API_BASE_URL = "www.test.com/api"
+export const API_BASE_URL = "https://demowebapp.digital/custom/luxury_tresses_app/public/api"

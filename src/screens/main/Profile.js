@@ -8,9 +8,9 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from 'react-native';
 import {
-  widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import BackHeader from '../../components/BackHeader';
@@ -20,6 +20,11 @@ import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import ModalChangeProfilePic from '../../components/ModalChangeProfilePic';
 import colors from '../../assets/colors';
+import { useDispatch, useSelector } from 'react-redux';
+import PrimaryButton from '../../components/PrimaryButton';
+import Logout from 'react-native-vector-icons/MaterialIcons'
+import { logoutUser } from '../../redux/slices/AuthSlice';
+import { ShowToast } from '../../utils';
 
 const cities = [
   {
@@ -53,8 +58,32 @@ const states = [
 const Profile = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [tab, setTab] = useState('general');
-  const [selectedLanguage, setSelectedLanguage] = useState('city');
+  const [selectedCity, setSelectedCity] = useState('Los Angeles');
+  const [selectedState, setSelectedState] = useState('Texas');
+  const [address, setAddress] = useState('')
   const navigation = useNavigation();
+
+  const { user, pic_url } = useSelector(state => state.userData)
+  console.log('waittt', user)
+
+  const dispatch = useDispatch()
+
+  const onSignOut = async () => {
+    await dispatch(logoutUser())
+    return ShowToast('Logout successfully')
+  }
+
+  const onLogoutPress = () => {
+    return Alert.alert(
+      "Logout",
+      "Are you sure you want to logout?",
+      [
+        { text: "Yes", onPress: onSignOut },
+        { text: 'No' }
+      ],
+    )
+  }
+
   return (
     <>
       <ImageBackground
@@ -62,7 +91,6 @@ const Profile = () => {
         resizeMode="cover"
         style={styles.bg_home}>
         <BackHeader />
-
         <ScrollView
           contentContainerStyle={{
             paddingHorizontal: hp('3%'),
@@ -79,42 +107,51 @@ const Profile = () => {
                 flexDirection: 'row',
                 alignItems: 'flex-end',
                 // justifyContent: 'space-evenly',
-                gap: hp("4%")
+                gap: hp("1.8%")
               }}>
               {/*Profile Image */}
-              <View
+              <TouchableOpacity
                 style={{
                   borderWidth: 1,
                   borderColor: '#D49621',
                   borderRadius: 30,
                   padding: 5,
                   position: 'relative',
-                }}>
+                }}
+                onPress={() => setModalVisible(true)}>
                 <Image
-                  source={require('../../assets/images/profiledp.png')}
+                  source={user?.profile_pic ? { uri: pic_url + user?.profile_pic } : require('../../assets/images/profiledp.png')}
                   resizeMode="contain"
                   style={{ height: hp("22%"), width: hp("22%"), borderRadius: 30 }}
                 />
-                <TouchableOpacity onPress={() => setModalVisible(true)}>
-                  <AntDesign
-                    name="pluscircleo"
-                    type="AntDesign"
-                    color="#fff"
-                    size={28}
-                    style={{
-                      position: 'absolute',
-                      bottom: 20,
-                      right: 17,
-                    }}
-                  />
-                </TouchableOpacity>
-              </View>
+                <AntDesign
+                  name="pluscircleo"
+                  type="AntDesign"
+                  color="#fff"
+                  size={28}
+                  style={{
+                    position: 'absolute',
+                    bottom: 20,
+                    right: 17,
+                  }}
+                />
+              </TouchableOpacity>
 
               {/* name and status... */}
               <View
                 style={{
-                  marginBottom: 10,
+                  marginBottom: 20,
                 }}>
+                <TouchableOpacity style={{ marginBottom: hp('0.2%'), flexDirection: 'row', alignItems: 'center', gap: 5 }}
+                  onPress={() => onLogoutPress()}
+                >
+                  <Logout
+                    name={'logout'}
+                    color={colors.orange}
+                    size={20}
+                  />
+                  <Text style={[styles.statusText, { color: colors.orange }]}>LOGOUT</Text>
+                </TouchableOpacity>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -126,15 +163,16 @@ const Profile = () => {
                     name="checkcircle"
                     type="AntDesign"
                     color="#19CC89"
-                    size={20}
+                    size={17}
                   />
-                  <Text style={styles.statusText}> Active</Text>
+                  <Text style={styles.statusText}>Active</Text>
                 </View>
-                <Text style={styles.nameText}>Sarah J.</Text>
-
-                <Text style={styles.usernameText}>@sarah.j</Text>
+                <Text style={styles.nameText}>{user.first_name + ' ' + user.last_name}</Text>
+                <Text style={styles.usernameText}>@{user.first_name + user.last_name}</Text>
               </View>
+
             </View>
+
             <View
               style={{
                 flex: 0.65,
@@ -147,7 +185,7 @@ const Profile = () => {
                   width: '100%',
                 }}>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('ProfileStack',{screen: 'InitialProfile'})}>
+                  onPress={() => navigation.navigate('ProfileStack', { screen: 'InitialProfile', params: { user, selectedCity, selectedState, address } })}>
                   <ImageBackground
                     source={require('../../assets/images/profilebanner.png')}
                     resizeMode="contain"
@@ -199,7 +237,6 @@ const Profile = () => {
                     General
                   </Text>
                 </TouchableOpacity>
-
                 <TouchableOpacity
                   style={
                     tab === 'location'
@@ -230,6 +267,8 @@ const Profile = () => {
                     />
                     <TextInput
                       style={styles.inputs}
+                      value={user.email}
+                      editable={false}
                       keyboardType='email-address'
                       placeholder="sarah.j@gmail.com"
                       placeholderTextColor="#bbb9bd"
@@ -246,6 +285,8 @@ const Profile = () => {
                     />
                     <TextInput
                       style={styles.inputs}
+                      editable={false}
+                      value={user.phone_number}
                       keyboardType='numeric'
                       placeholder="(012) 3434 789"
                       placeholderTextColor="#bbb9bd"
@@ -259,7 +300,6 @@ const Profile = () => {
                     <View style={{ flexDirection: 'row', gap: 10 }}>
                       <View>
                         <Text style={styles.label}>City</Text>
-
                         <View
                           style={{
                             height: 50,
@@ -270,11 +310,11 @@ const Profile = () => {
                             width: 140,
                           }}>
                           <Picker
-                            selectedValue={selectedLanguage}
+                            selectedValue={selectedCity}
                             dropdownIconColor={colors.orange}
                             dropdownIconRippleColor={colors.orange}
                             onValueChange={(itemValue, itemIndex) =>
-                              setSelectedLanguage(itemValue)
+                              setSelectedCity(itemValue)
                             }>
                             {cities.map(item => (
                               <Picker.Item
@@ -299,11 +339,11 @@ const Profile = () => {
                             width: 140,
                           }}>
                           <Picker
-                            selectedValue={selectedLanguage}
+                            selectedValue={selectedState}
                             dropdownIconColor={colors.orange}
                             dropdownIconRippleColor={colors.orange}
                             onValueChange={(itemValue, itemIndex) =>
-                              setSelectedLanguage(itemValue)
+                              setSelectedState(itemValue)
                             }>
                             {states.map(item => (
                               <Picker.Item
@@ -330,13 +370,15 @@ const Profile = () => {
                     />
                     <TextInput
                       style={styles.inputs}
+                      editable={false}
+                      value={user?.address}
+                      onChangeText={(text) => setAddress(text)}
                       placeholder="Address"
                       placeholderTextColor="#bbb9bd"
                     />
                   </View>
                 </View>
               )}
-
               <View
                 style={{
                   marginHorizontal: 5,
@@ -389,13 +431,21 @@ const Profile = () => {
                   </View>
                 </View>
               </View>
+              <View style={{ paddingTop: hp('5%') }}>
+                <PrimaryButton
+                  title={'Change password'}
+                  style={{ width: '110%' }}
+                  onPress={() => navigation.navigate('SecondaryStack', { screen: 'ChangePassword' })}
+                />
+              </View>
             </View>
           </View>
         </ScrollView>
-      </ImageBackground>
+      </ImageBackground >
       {/* profile pic change modal */}
-      <ModalChangeProfilePic
+      < ModalChangeProfilePic
         modalVisible={modalVisible}
+        source={user?.profile_pic ? { uri: pic_url + user?.profile_pic } : require('../../assets/images/profiledp.png')}
         setModalVisible={setModalVisible}
       />
     </>
@@ -410,12 +460,13 @@ const styles = StyleSheet.create({
   statusText: {
     color: '#6f6f7f',
     fontSize: hp('1.8%'),
+    marginTop: hp('1%'),
     marginBottom: 10,
   },
   nameText: {
     color: '#fff',
     fontWeight: '500',
-    fontSize: hp('3.5%'),
+    fontSize: hp('3%'),
     marginTop: 10,
   },
   usernameText: {
@@ -477,7 +528,7 @@ const styles = StyleSheet.create({
   inputs: {
     marginLeft: 10,
     width: '80%',
-    color: '#6D6C7B',
+    color: '#bbb9bd',
   },
   inputs_container2: {
     flexDirection: 'row',

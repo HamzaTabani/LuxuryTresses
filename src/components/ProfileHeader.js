@@ -15,6 +15,7 @@ const ProfileHeader = ({username, icon, text}) => {
   const [searchActive, setSearchActive] = useState(false);
   const navigation = useNavigation();
 
+
   
   return (
     <View style={styles.profile_header}>

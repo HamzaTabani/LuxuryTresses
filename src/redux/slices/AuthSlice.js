@@ -1,0 +1,211 @@
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { ErrorToast, ShowToast } from "../../utils";
+
+var formData = require('form-data')
+
+const url = 'https://demowebapp.digital/custom/luxury_tresses_app/public/api'
+
+export const register = createAsyncThunk('signup', async ({ first_name, last_name, phone_number, email, password, address, profile_pic }) => {
+
+  let data = new formData();
+  data.append('first_name', first_name);
+  data.append('last_name', last_name);
+  data.append('phone_number', phone_number);
+  data.append('email', email);
+  data.append('password', password);
+  data.append('address', address);
+  if (profile_pic) {
+    data.append('profile_pic', {
+      name: "image.jpg",
+      type: "image/jpeg",
+      uri: Platform.OS === "android" ? profile_pic : profile_pic.replace("file://", "")
+    })
+  }
+
+  console.log('dataaa', data)
+
+  return await fetch(`${url}/signup`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'multipart/form-data',
+    },
+    body: data
+  }).then(async res => {
+    let user = await res.json()
+    console.log('signuppppppp response =============>', user)
+    if (user.success) {
+      ShowToast('Account created successfully')
+    }
+    return user
+  }).catch((error) => {
+    console.log('signuppppp error ==============>', error)
+  })
+
+});
+
+export const login = createAsyncThunk('signin', async ({ email, password }) => {
+  var data = new formData()
+  data.append('email', email)
+  data.append('password', password)
+
+  return await fetch(`${url}/login`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'multipart/form-data',
+    },
+    body: data
+  }).then(async res => {
+    let data = await res.json()
+    console.log('login response ============>', data)
+    if (data.success) {
+      ShowToast('Login successfully')
+    } else {
+      ShowToast(data.message)
+    }
+    return data;
+  }).catch(error => {
+    console.log('login error ================>', error)
+  })
+})
+
+export const editProfile = createAsyncThunk('updateProfile', async ({ first_name, last_name, phone_number, address, state, city, profile_pic }, { getState }) => {
+  const stateData = getState().userData
+  const token = stateData.token
+
+  var data = new formData()
+
+  data.append('first_name', first_name)
+  data.append('last_name', last_name)
+  data.append('phone_number', phone_number)
+  data.append('address', address)
+  data.append('state', state)
+  data.append('city', city)
+  if (profile_pic) {
+    data.append('profile_pic', {
+      name: "image.jpg",
+      type: "image/jpeg",
+      uri: Platform.OS === "android" ? profile_pic : profile_pic.replace("file://", "")
+    })
+
+    return await fetch(`${url}/update-profile`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+      body: data
+    }).then(async (res) => {
+      let updatedData = await res.json()
+      console.log('edit response ===================>', updatedData.data)
+      if (updatedData.data.success) {
+        return true
+      }
+      return updatedData
+    }).catch((error) => {
+      ErrorToast(error)
+      return false
+    })
+  }
+
+})
+
+export const changePassword = createAsyncThunk('passwordChange', async ({ current_password, new_password }, { getState }) => {
+
+  const stateData = getState().userData
+  const token = stateData.token
+  // console.log('tokennn', token)
+
+  var data = new formData()
+  data.append('current_password', current_password),
+    data.append('new_password', new_password)
+
+  return await fetch(`${url}/change-password`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    },
+    body: data
+  }).then(async res => {
+    let response = await res.json()
+    console.log('change password response ================>', response)
+    if (response.success) {
+      ShowToast(response.message)
+      return response.success;
+    } else {
+      ShowToast(response.message)
+      return response.success;
+    }
+  }).catch(error => {
+    ErrorToast(error)
+    return false
+  })
+
+})
+
+export const logoutUser = createAsyncThunk('logout/authUser', async () => {
+  try {
+    return true
+  } catch (error) {
+    ErrorToast(error)
+    return false
+  }
+})
+
+export const authState = createSlice({
+  name: "userAuth",
+  initialState: {
+    signup_loading: false,
+    signin_loading: false,
+    edit_loading: false,
+    change_loading: false,
+    token: '',
+    pic_url: '',
+    user: {},
+  },
+  extraReducers: (builder) => {
+    builder.addCase(register.pending, (state) => {
+      state.signup_loading = true;
+    });
+    builder.addCase(register.fulfilled, (state, action) => {
+      state.signup_loading = false;
+      state.user = action.payload.user
+      state.token = action.payload.token,
+        state.pic_url = action.payload.profile_url
+    })
+    builder.addCase(login.pending, (state) => {
+      state.signin_loading = true
+    })
+    builder.addCase(login.fulfilled, (state, action) => {
+      state.signin_loading = false;
+      // console.log('why yar', action.payload)
+      state.user = action.payload.user
+      state.token = action.payload.token,
+        state.pic_url = action.payload.profile_url
+    })
+    builder.addCase(editProfile.pending, (state) => {
+      state.edit_loading = true
+    })
+    builder.addCase(editProfile.fulfilled, (state, action) => {
+      state.edit_loading = false,
+        state.user = action.payload.data
+    })
+    builder.addCase(changePassword.pending, (state) => {
+      state.change_loading = true
+    })
+    builder.addCase(changePassword.fulfilled, (state) => {
+      state.change_loading = false
+    })
+    builder.addCase(logoutUser.fulfilled, (state) => {
+      state.token = '',
+        state.user = {},
+        state.pic_url = ''
+    })
+  }
+});
+
+export default authState.reducer;

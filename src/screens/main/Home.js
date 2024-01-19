@@ -18,7 +18,6 @@ import Subheading from '../../components/Subheading';
 import Card from '../../components/Card';
 import ProductCard from '../../components/ProductCard';
 import ShortcutBox from '../../components/ShortcutBox';
-import { products } from '../../dummyData';
 import images from '../../assets/images';
 import { useSelector } from 'react-redux';
 
@@ -55,10 +54,7 @@ const cartData2 = [
 
 const Home = ({ navigation }) => {
 
-  const state = useSelector(state => state);
-  console.log('====================================');
-  console.log(state, 'my redux state test.');
-
+  const { user } = useSelector(state => state.userData)
 
   return (
     <>
@@ -75,7 +71,7 @@ const Home = ({ navigation }) => {
             <ProfileHeader />
             {/* home title */}
             <View style={{ paddingHorizontal: wp('8%') }}>
-              <Text style={styles.home_heading}>Hi Sarah,</Text>
+              <Text style={styles.home_heading}>Hi {user?.first_name + user?.last_name},</Text>
               <Text style={styles.home_title}>Lets make a new style!</Text>
             </View>
             {/* home shorcuts boxes */}
@@ -144,7 +140,7 @@ const Home = ({ navigation }) => {
                   {cartData2.map(item => (
                     <TouchableOpacity
                       activeOpacity={0.9}
-                      key={item?.id} 
+                      key={item?.id}
                       onPress={() => navigation.navigate('RecentProducts')}>
                       <ProductCard rating={3} item={item} />
                     </TouchableOpacity>

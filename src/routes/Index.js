@@ -5,10 +5,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import AppNavigation from './AppNavigation';
 import TabNavigation from './TabNavigation';
 import AppStatusBar from '../components/AppStatusBar';
+import { useSelector } from 'react-redux';
 
 const Stack = createNativeStackNavigator();
 
 const Routes = () => {
+
+  const { token } = useSelector(state => state.userData)
+
   return (
     <>
       <AppStatusBar />
@@ -19,8 +23,12 @@ const Routes = () => {
           screenOptions={{
             headerShown: false,
           }}>
-          <Stack.Screen name="AppNavigation" component={AppNavigation} />
-          <Stack.Screen name="TabNavigation" component={TabNavigation} />
+          {token ?
+            <Stack.Screen name="TabNavigation" component={TabNavigation} />
+            :
+            <Stack.Screen name="AppNavigation" component={AppNavigation} />
+
+          }
         </Stack.Navigator>
       </NavigationContainer>
     </>

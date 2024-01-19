@@ -12,8 +12,14 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import PrimaryButton from '../../components/PrimaryButton';
+import { useSelector } from 'react-redux';
 
 const Welcome = ({ navigation }) => {
+
+  
+  const state = useSelector(state => state.userData);
+  console.log(state, 'my redux state test.');
+
   return (
     <View style={styles.container}>
 
