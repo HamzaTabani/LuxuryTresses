@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   StyleSheet,
@@ -16,11 +16,33 @@ import OutlineButton from '../../components/OutlineButton';
 import MessageOption from '../../components/MessageOption';
 import {useNavigation} from '@react-navigation/native';
 import UserDetailCard from '../../components/UserDetailCard';
-import {historyImages} from '../../dummyData';
+import {historyImages, products} from '../../dummyData';
+import {useDispatch, useSelector} from 'react-redux';
+import {getProductDetails} from '../../redux/slices/ECommerceSlice';
+import {addSpacesInString} from '../../utils/index';
+import Loader from '../../components/Loader';
 
-const SingleProduct = () => {
+const SingleProduct = ({route}) => {
   const navigation = useNavigation();
   const [quantity, setQuantity] = useState(1);
+
+  const dispatch = useDispatch();
+
+  const {productDetails, detail_loading, detail_error} = useSelector(
+    state => state.ecommerceReducer,
+  );
+  // console.log('product detailssss from screens =========>', productDetails);
+
+  const id = route?.params?.productID;
+  // console.log('product id ======>', Object.keys(productDetails?.product_name).length);
+
+  useEffect(() => {
+    fetchProductDetails();
+  }, []);
+
+  const fetchProductDetails = async () => {
+    await dispatch(getProductDetails(id));
+  };
 
   const incrementQuantity = () => {
     setQuantity(quantity + 1);
@@ -34,111 +56,138 @@ const SingleProduct = () => {
 
   return (
     <Container>
-      <ProfileHeader icon={true} username={true} text={'Deep mask'} />
-      <ScrollView style={styles.container}>
-        {/* product images.. */}
-        <View style={{height: hp("35%")}}>
-          <Swiper
-            style={styles.wrapper}
-            activeDotColor={colors.orange}
-            dotStyle={{borderWidth: 1, borderColor: colors.orange}}>
-            {historyImages.map(item => (
-              <Image
-                source={item.image}
-                borderRadius={20}
-                // resizeMode="contain"
-                style={{
-                  width: hp('37%'),
-                  height: hp('35%'),
-                  alignSelf: 'center',
-                }}
-              />
-            ))}
-          </Swiper>
+      {detail_loading ? (
+        <>
+          <View
+            style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+            <Loader size={'large'} />
+          </View>
+        </>
+      ) : detail_error ? (
+        <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+          <Text style={styles.errorMessage}>{detail_error}</Text>
         </View>
-        {/* product detail */}
-        <View style={{marginTop: 30}}>
-          {/* product owner.. */}
-          <UserDetailCard />
-          {/* product description */}
-          <View>
-            <Text
-              style={{
-                fontWeight: 'bold',
-                fontSize: hp('2.2%'),
-                color: '#fff',
-                marginTop: 20,
-              }}>
-              Description
-            </Text>
-            <Text
-              style={{
-                fontWeight: 'light',
-                fontSize: hp('1.5%'),
-                color: '#efefef',
-                marginTop: 20,
-              }}>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
+      ) : (
+        <>
+          <ProfileHeader
+            icon={true}
+            username={true}
+            text={addSpacesInString(productDetails?.product_name)}
+          />
+          <ScrollView style={styles.container}>
+            {/* product images.. */}
+            <View style={{height: hp('35%')}}>
+              <Swiper
+                style={styles.wrapper}
+                activeDotColor={colors.orange}
+                dotStyle={{borderWidth: 1, borderColor: colors.orange}}>
+                {historyImages.map(item => (
+                  <Image
+                    source={item.image}
+                    borderRadius={20}
+                    // resizeMode="contain"
+                    style={{
+                      width: hp('37%'),
+                      height: hp('35%'),
+                      alignSelf: 'center',
+                    }}
+                  />
+                ))}
+              </Swiper>
+            </View>
+            {/* product detail */}
+            <View style={{marginTop: 30}}>
+              {/* product owner.. */}
+              <UserDetailCard
+                username={
+                  productDetails?.user.first_name +
+                  ' ' +
+                  productDetails?.user.last_name
+                }
+                email={productDetails?.user.email}
+              />
+              {/* product description */}
+              <View>
+                <Text
+                  style={{
+                    fontWeight: 'bold',
+                    fontSize: hp('2.2%'),
+                    color: '#fff',
+                    marginTop: 20,
+                  }}>
+                  Description
+                </Text>
+                <Text
+                  style={{
+                    fontWeight: 'light',
+                    fontSize: hp('1.5%'),
+                    color: '#efefef',
+                    marginTop: 20,
+                  }}>
+                  {/* Lorem Ipsum is simply dummy text of the printing and typesetting
               industry. Lorem Ipsum has been the industry's standard dummy text
               ever since the 1500s, when an unknown printer took a galley of
               type and scrambled it to make a type specimen book. It has
-              survived not only five centuries
-            </Text>
-          </View>
-
-          {/* product quantity buttons */}
-          <View style={styles.productQuantityBox}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 5,
-                marginLeft: 20,
-              }}>
-              <Text style={{color: '#D49621', fontSize: hp('2.4%')}}>
-                $24.00
-              </Text>
-              <Text style={{color: '#efefef', fontSize: hp('1.6%')}}>
-                (24 available)
-              </Text>
-            </View>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <TouchableOpacity
-                onPress={decrementQuantity}
-                style={styles.button}>
-                <Text style={styles.buttonText}>-</Text>
-              </TouchableOpacity>
-              <View style={styles.quantityButton}>
-                <Text style={styles.quantityText}>{quantity}</Text>
+              survived not only five centuries */}
+                  {productDetails?.description}
+                </Text>
               </View>
-              <TouchableOpacity
-                onPress={incrementQuantity}
-                style={styles.button}>
-                <Text style={styles.buttonText}>+</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
 
-          {/* add to card button */}
-          <View
-            style={{
-              marginTop: 15,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              gap: 10,
-            }}>
-            <OutlineButton
-              title={'Add to cart'}
-              onPress={() =>
-                navigation.navigate('SecondaryStack', {screen: 'Checkout'})
-              }
-              textStyle={{color: '#fff'}}
-              buttonStyle={{width: '82%'}}
-            />
-            <MessageOption />
-          </View>
-        </View>
-      </ScrollView>
+              {/* product quantity buttons */}
+              <View style={styles.productQuantityBox}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 5,
+                    marginLeft: 20,
+                  }}>
+                  <Text style={{color: '#D49621', fontSize: hp('2.4%')}}>
+                    ${productDetails?.regular_price}
+                  </Text>
+                  <Text style={{color: '#efefef', fontSize: hp('1.6%')}}>
+                    (24 available)
+                  </Text>
+                </View>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <TouchableOpacity
+                    onPress={decrementQuantity}
+                    style={styles.button}>
+                    <Text style={styles.buttonText}>-</Text>
+                  </TouchableOpacity>
+                  <View style={styles.quantityButton}>
+                    <Text style={styles.quantityText}>{quantity}</Text>
+                  </View>
+                  <TouchableOpacity
+                    onPress={incrementQuantity}
+                    style={styles.button}>
+                    <Text style={styles.buttonText}>+</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              {/* add to card button */}
+              <View
+                style={{
+                  marginTop: 15,
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  gap: 10,
+                }}>
+                <OutlineButton
+                  title={'Add to cart'}
+                  onPress={() =>
+                    navigation.navigate('SecondaryStack', {screen: 'Checkout'})
+                  }
+                  textStyle={{color: '#fff'}}
+                  buttonStyle={{width: '82%'}}
+                />
+                <MessageOption />
+              </View>
+            </View>
+          </ScrollView>
+        </>
+      )}
     </Container>
   );
 };
@@ -212,6 +261,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#fff',
     fontWeight: 'bold',
+  },
+  errorMessage: {
+    color: colors.orange,
+    fontSize: hp('2.4%'),
   },
 });
 

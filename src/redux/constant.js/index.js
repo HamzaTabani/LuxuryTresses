@@ -1,0 +1,1 @@
+export const BASE_URL = 'https://demowebapp.digital/custom/luxury_tresses_app/public/api'

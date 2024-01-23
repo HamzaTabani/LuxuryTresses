@@ -9,7 +9,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 
-const VenderCardBox = ({name, img}) => {
+const VenderCardBox = ({name, img, email}) => {
   const navigation = useNavigation();
   return (
     <View style={styles.cardBox}>
@@ -19,14 +19,15 @@ const VenderCardBox = ({name, img}) => {
           <Image
             source={img}
             style={{width: '100%', height: '100%'}}
-            resizeMode="contain"
+            resizeMode="cover"
           />
         </View>
         {/* vender details */}
         <View style={{height: '100%', justifyContent: 'space-evenly'}}>
           <Text style={styles.venderNameText}>{name}</Text>
           <Text style={styles.venderDistanceText}>
-            1609 Oak,St. <Text style={{color: '#000'}}>(2km)</Text>
+            {email}
+            {/* <Text style={{color: '#000'}}>(2km)</Text> */}
           </Text>
 
           <View style={{flexDirection: 'row', gap: 5}}>

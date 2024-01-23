@@ -26,13 +26,20 @@ const Nearby = () => {
   const [changeTab, setChangeTab] = useState(1);
   const [selectKilometers, setSelectKilometers] = useState('');
   const [isDetailOpen, setIsDetailOpen] = useState(false);
+  // const [cardStates, setCardStates] = useState(Array().fill(false))
   const flatListRef = useRef(null);
 
   let circleRadius = 1500;
 
-  const onIconPress = () => {
+  const onIconPress = (index) => {
     flatListRef.current.setNativeProps({ scrollEnabled: true });
     setIsDetailOpen(!isDetailOpen)
+    // setCardStates(prevState => {
+    //   const newState = [...prevState]
+    //   newState[index] = !newState[index]
+    //   console.log('hui hui', newState[index])
+    //   return newState
+    // })
   };
 
   const handleRegionChange = (region) => {
@@ -99,7 +106,7 @@ const Nearby = () => {
             </View>
           </View>
         </View>
-        <View style={[styles.barStyle, isDetailOpen ? { bottom: hp("28%") } : { bottom: hp('29%') }]}>
+        <View style={[styles.barStyle, { bottom: hp("28%") }]}>
           <FlatList
             ref={flatListRef}
             data={stylistInformations}

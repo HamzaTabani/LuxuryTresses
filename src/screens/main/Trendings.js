@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   ScrollView,
@@ -6,6 +6,7 @@ import {
   Text,
   Image,
   Pressable,
+  FlatList,
 } from 'react-native';
 import PageWrapper from '../../components/PageWrapper';
 import ProfileHeader from '../../components/ProfileHeader';
@@ -15,6 +16,11 @@ import {
 } from 'react-native-responsive-screen';
 import VenderCardBox from '../../components/VenderCardBox';
 import ProductCardBox from '../../components/ProductCardBox';
+import {useSelector, useDispatch} from 'react-redux';
+import images from '../../assets/images';
+import Loader from '../../components/Loader';
+import {trendingStylists} from '../../redux/slices/StylistSlice';
+import colors from '../../assets/colors';
 
 const cartData = [
   {
@@ -85,6 +91,24 @@ const cartData2 = [
 const Trendings = () => {
   const [filterTab, setFilterTab] = useState('tab1');
 
+  const {trending_stylists, trending_error, trending_loader} = useSelector(
+    state => state.stylistReducer,
+  );
+
+  const {pic_url} = useSelector(state => state.userData);
+
+  // console.log('trending stylists ==========>', trending_error);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    fetchTrendingStylists();
+  }, []);
+
+  const fetchTrendingStylists = async () => {
+    await dispatch(trendingStylists());
+  };
+
   return (
     <PageWrapper>
       <ProfileHeader username={true} />
@@ -92,7 +116,7 @@ const Trendings = () => {
         {/* ///////// title and filter buttons container ///////*/}
         <View style={styles.filterContainer}>
           <Text style={styles.mainTitleText}>Trending</Text>
-          <View style={{ flexDirection: 'row', gap: 8 }}>
+          <View style={{flexDirection: 'row', gap: 8}}>
             {/* filter tab */}
             <View style={styles.filterTabs}>
               <Pressable onPress={() => setFilterTab('tab1')}>
@@ -122,21 +146,56 @@ const Trendings = () => {
             </View>
           </View>
         </View>
-
         {/*/////////////  filter items container ////////////// */}
         {/* venders listing */}
         {filterTab === 'tab1' ? (
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: 100 }}>
-            {cartData?.map(item => (
-              <VenderCardBox key={item.id} name={item.name} img={item.img} />
-            ))}
-          </ScrollView>
+          trending_loader ? (
+            <>
+              <View
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flex: 1,
+                }}>
+                <Loader size={'large'} />
+              </View>
+            </>
+          ) : trending_stylists.length > 0 ? (
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{paddingBottom: 100}}
+              data={trending_stylists}
+              renderItem={({item}) => (
+                <VenderCardBox
+                  key={item.id}
+                  name={item.first_name + ' ' + item.last_name}
+                  img={
+                    item?.profile_pic == null
+                      ? images.cart2
+                      : {uri: pic_url + item.profile_pic}
+                  }
+                  email={item.email}
+                />
+              )}
+            />
+          ) : (
+            trending_error !== '' && (
+              <>
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flex: 1,
+                  }}>
+                  <Text style={styles.errorMessage}>{trending_error}</Text>
+                </View>
+              </>
+            )
+          )
         ) : (
           <ScrollView
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: 100 }}>
+            contentContainerStyle={{paddingBottom: 100}}>
             {cartData2?.map(item => (
               <ProductCardBox key={item.id} name={item.name} img={item.img} />
             ))}
@@ -159,7 +218,7 @@ const styles = StyleSheet.create({
   filterContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingBottom: hp("1.2%")
+    paddingBottom: hp('1.2%'),
   },
   mainTitleText: {
     fontSize: hp('4%'),
@@ -197,6 +256,10 @@ const styles = StyleSheet.create({
   filter_tab: {
     paddingVertical: 10,
     paddingHorizontal: 20,
+  },
+  errorMessage: {
+    color: colors.orange,
+    fontSize: hp('2%'),
   },
 });
 

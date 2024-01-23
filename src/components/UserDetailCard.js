@@ -6,7 +6,7 @@ import colors from '../assets/colors';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native';
 
-const UserDetailCard = () => {
+const UserDetailCard = ({username, email}) => {
 
   const navigation = useNavigation()
 
@@ -31,14 +31,14 @@ const UserDetailCard = () => {
         </View>
 
         <View style={{justifyContent: 'center'}}>
-          <Text style={{color: '#fff', fontSize: hp('2.0%')}}>Omnis iste</Text>
+          <Text style={{color: '#fff', fontSize: hp('2.0%')}}>{username}</Text>
           <Text
             style={{
               color: '#efefef',
               fontSize: hp('1.5%'),
               marginTop: 2,
             }}>
-            1069 Oak St. (600km)
+            {email}
           </Text>
         </View>
       </View>

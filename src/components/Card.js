@@ -10,8 +10,10 @@ import {
   Pressable,
 } from 'react-native';
 import Svg, {Circle} from 'react-native-svg';
+import images from '../assets/images';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-const Card = ({rating, item}) => {
+const Card = ({rating, stylist_name, stylist_email, image}) => {
   const progress = useRef(new Animated.Value(0)).current;
   const navigation = useNavigation();
 
@@ -38,11 +40,10 @@ const Card = ({rating, item}) => {
         {/* card box img */}
         <View style={styles.card_box_img}>
           <Image
-            source={item?.img}
+            source={image}
             resizeMode="contain"
             style={{width: '100%'}}
           />
-
           {/* small icons */}
           <View style={styles.card_box_img_icon1}>
             <Image
@@ -99,12 +100,11 @@ const Card = ({rating, item}) => {
         </View>
         <View
           style={{
-            paddingTop: 25,
+            paddingTop: hp('4.7%'),
           }}>
-          <Text style={{color: '#fff', fontWeight: 'bold'}}>Omnis iste</Text>
-          <Text style={{color: '#f6f6f6'}}>
-            1609 Oak, st{' '}
-            <Text style={{fontWeight: 'bold', color: '#fff'}}>(2km)</Text>{' '}
+          <Text style={{color: '#fff', fontWeight: 'bold'}}>{stylist_name}</Text>
+          <Text style={{color: '#f6f6f6', fontSize: hp('1.6%')}}>
+            {stylist_email}
           </Text>
         </View>
       </View>
@@ -117,7 +117,7 @@ export default Card;
 const styles = StyleSheet.create({
   card_box: {
     width: 150,
-    height: 205,
+    height: 220,
     backgroundColor: '#D49621',
     borderRadius: 15,
     alignItems: 'center',

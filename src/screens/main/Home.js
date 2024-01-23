@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   Text,
   StyleSheet,
@@ -8,6 +8,7 @@ import {
   Image,
   Pressable,
   TouchableOpacity,
+  FlatList,
 } from 'react-native';
 import ProfileHeader from '../../components/ProfileHeader';
 import {
@@ -19,42 +20,36 @@ import Card from '../../components/Card';
 import ProductCard from '../../components/ProductCard';
 import ShortcutBox from '../../components/ShortcutBox';
 import images from '../../assets/images';
-import { useSelector } from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {fetchRecentProducts} from '../../redux/slices/ECommerceSlice';
+import Loader from '../../components/Loader';
+import colors from '../../assets/colors';
+import {getTopStylists} from '../../redux/slices/StylistSlice';
 
-const cartData = [
-  {
-    id: 1,
-    img: require('../../assets/images/cart1.png'),
-  },
-  {
-    id: 2,
-    img: require('../../assets/images/cart2.png'),
-  },
-  {
-    id: 3,
-    img: require('../../assets/images/cart3.png'),
-  },
-];
+const Home = ({navigation}) => {
+  const {user, pic_url} = useSelector(state => state.userData);
+  const {recentProducts, recent_error} = useSelector(
+    state => state.ecommerceReducer,
+  );
+  const {topStylists, loading, topStylist_error} = useSelector(
+    state => state.stylistReducer,
+  );
 
-const cartData2 = [
-  {
-    id: 4,
-    image: images.product2,
-  },
-  {
-    id: 5,
-    image: images.product3,
-  },
-  {
-    id: 6,
-    image: images.product4,
-  },
-];
+  // console.log('stylists profile ======>', topStylists);
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    getRecentProducts();
+    getTopStylistsProfile();
+  }, []);
 
-const Home = ({ navigation }) => {
+  const getRecentProducts = async () => {
+    await dispatch(fetchRecentProducts());
+  };
 
-  const { user } = useSelector(state => state.userData)
+  const getTopStylistsProfile = async () => {
+    await dispatch(getTopStylists());
+  };
 
   return (
     <>
@@ -67,11 +62,13 @@ const Home = ({ navigation }) => {
           resizeMode="cover"
           style={styles.bg_home}>
           {/* home header */}
-          <ScrollView style={{ flex: 1 }}>
+          <ScrollView style={{flex: 1}}>
             <ProfileHeader />
             {/* home title */}
-            <View style={{ paddingHorizontal: wp('8%') }}>
-              <Text style={styles.home_heading}>Hi {user?.first_name + user?.last_name},</Text>
+            <View style={{paddingHorizontal: wp('8%')}}>
+              <Text style={styles.home_heading}>
+                Hi {user?.first_name + user?.last_name},
+              </Text>
               <Text style={styles.home_title}>Lets make a new style!</Text>
             </View>
             {/* home shorcuts boxes */}
@@ -102,54 +99,126 @@ const Home = ({ navigation }) => {
               </Pressable>
             </View>
             {/* Top Style */}
-            <View style={styles.topStylesContainer}>
-              <View>
-                <View style={{ paddingHorizontal: wp('8%') }}>
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate('TopStylists')}>
-                    <Subheading title={'Top stylists'} />
-                  </TouchableOpacity>
+            {loading ? (
+              <>
+                <View style={{paddingTop: hp('2%')}}>
+                  <Loader size={'large'} />
                 </View>
-                <ScrollView
-                  style={{ marginTop: 20, marginHorizontal: hp('-3%') }}
-                  horizontal
-                  contentContainerStyle={{ paddingHorizontal: hp('5%') }}
-                  showsHorizontalScrollIndicator={false}>
-                  {cartData.map(item => (
-                    <TouchableOpacity
-                      activeOpacity={0.9}
-                      key={item?.id}
-                      onPress={() => navigation.navigate('ProfileDetail')}>
-                      <Card rating={3} item={item} />
-                    </TouchableOpacity>
-                  ))}
-                </ScrollView>
-              </View>
-            </View>
-            {/* Recent */}
-            <View style={styles.recentContainer}>
-              <View>
-                <View style={{ paddingHorizontal: wp('8%') }}>
-                  <Subheading title={'Recent products'} />
+              </>
+            ) : topStylist_error !== '' ? (
+              <>
+                (
+                <View style={{alignItems: 'center'}}>
+                  <Text style={styles.errorText}>{topStylist_error}</Text>
                 </View>
-                <ScrollView
+                )
+              </>
+            ) : (
+              <>
+                <View style={styles.topStylesContainer}>
+                  <View>
+                    <View style={{paddingHorizontal: wp('8%')}}>
+                      <TouchableOpacity
+                        onPress={() => navigation.navigate('TopStylists')}>
+                        <Subheading title={'Top stylists'} />
+                      </TouchableOpacity>
+                    </View>
+                    <ScrollView
+                      style={{marginTop: 20, marginHorizontal: hp('-3%')}}
+                      horizontal
+                      contentContainerStyle={{paddingHorizontal: hp('5%')}}
+                      showsHorizontalScrollIndicator={false}>
+                      {topStylists.map(item => (
+                        <TouchableOpacity
+                          activeOpacity={0.9}
+                          key={item?.id}
+                          onPress={() =>
+                            navigation.navigate('ProfileDetail', {
+                              profile_id: item.id,
+                            })
+                          }>
+                          <Card
+                            rating={3}
+                            stylist_name={item.first_name + item.last_name}
+                            stylist_email={
+                              item.email === 'undefined'
+                                ? 'testuser123@gmail.com'
+                                : item.email
+                            }
+                            image={
+                              item.profile_pic == null
+                                ? images.cart1
+                                : {uri: pic_url + item.profile_pic}
+                            }
+                          />
+                        </TouchableOpacity>
+                      ))}
+                    </ScrollView>
+                  </View>
+                </View>
+                {/* Recent */}
+                <View style={styles.recentContainer}>
+                  {recentProducts.length > 0 ? (
+                    <View>
+                      <View style={{paddingHorizontal: wp('8%')}}>
+                        <Subheading title={'Recent products'} />
+                      </View>
+                      {/* <ScrollView
                   style={{ marginTop: 20, marginHorizontal: hp('-3%') }}
                   showsHorizontalScrollIndicator={false}
                   contentContainerStyle={{ paddingHorizontal: hp('5%') }}
-                  horizontal>
-                  {cartData2.map(item => (
+                  horizontal> */}
+                      {/* {cartData2.map(item => (
                     <TouchableOpacity
                       activeOpacity={0.9}
                       key={item?.id}
                       onPress={() => navigation.navigate('RecentProducts')}>
                       <ProductCard rating={3} item={item} />
                     </TouchableOpacity>
-                  ))}
-                </ScrollView>
-              </View>
-            </View>
+                  ))} */}
+                      <FlatList
+                        data={recentProducts}
+                        contentContainerStyle={{paddingHorizontal: hp('5%')}}
+                        style={{marginTop: 20, marginHorizontal: hp('-3%')}}
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}
+                        renderItem={({item, index}) => {
+                          //  console.log('hululu', item)
+                          return (
+                            <TouchableOpacity
+                              activeOpacity={0.9}
+                              onPress={() =>
+                                navigation.navigate('SingleProduct', {
+                                  productID: item.id,
+                                })
+                              }>
+                              <ProductCard
+                                username={
+                                  item?.user.first_name + item?.user.last_name
+                                }
+                                productName={item.product_name}
+                                price={item.regular_price}
+                                avatar={{uri: pic_url + item?.user.profile_pic}}
+                                rating={3}
+                              />
+                            </TouchableOpacity>
+                          );
+                        }}
+                      />
+                      {/* </ScrollView> */}
+                    </View>
+                  ) : (
+                    recent_error !== '' && (
+                      <View style={{alignItems: 'center'}}>
+                        <Text style={styles.errorText}>{recent_error}</Text>
+                      </View>
+                    )
+                  )}
+                </View>
+              </>
+            )}
             {/* banner 1 */}
-            <View style={{ paddingHorizontal: wp('8%'), marginBottom: 8 }}>
+            <View style={{paddingHorizontal: wp('8%'), marginBottom: 8}}>
               <View style={styles.bannerOneContainer}>
                 <Image
                   source={require('../../assets/images/homebanner1.png')}
@@ -174,7 +243,7 @@ const Home = ({ navigation }) => {
               </View>
             </View>
             {/* banner 2 */}
-            <View style={{ paddingHorizontal: wp('8%'), marginBottom: 80 }}>
+            <View style={{paddingHorizontal: wp('8%'), marginBottom: 80}}>
               <View style={styles.bannerOneContainer}>
                 <Image
                   source={require('../../assets/images/homebanner2.png')}
@@ -208,8 +277,7 @@ const Home = ({ navigation }) => {
                     Explore stylists
                   </Text>
                   <Pressable>
-                    <View
-                      style={styles.bannerButton}>
+                    <View style={styles.bannerButton}>
                       <Image
                         source={require('../../assets/images/topleftarrow.png')}
                         resizeMode="contain"
@@ -217,10 +285,7 @@ const Home = ({ navigation }) => {
                           width: 20,
                         }}
                       />
-                      <Text
-                        style={styles.bannerButtonText}>
-                        START NOW
-                      </Text>
+                      <Text style={styles.bannerButtonText}>START NOW</Text>
                     </View>
                   </Pressable>
                 </View>
@@ -242,8 +307,8 @@ const Home = ({ navigation }) => {
               />
             </View>
           </ScrollView>
-        </ImageBackground >
-      </ScrollView >
+        </ImageBackground>
+      </ScrollView>
     </>
   );
 };
@@ -341,5 +406,9 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: '#EDBA1B',
     fontSize: hp('1.5%'),
-  }
+  },
+  errorText: {
+    color: colors.orange,
+    fontSize: hp('2%'),
+  },
 });

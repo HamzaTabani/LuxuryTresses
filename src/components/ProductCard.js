@@ -14,8 +14,9 @@ import {
 } from 'react-native-responsive-screen';
 import colors from '../assets/colors';
 import images from '../assets/images';
+import { useSelector } from 'react-redux';
 
-const ProductCard = ({ rating, item, product }) => {
+const ProductCard = ({ rating, item, product, username, avatar, productName, price }) => {
   const progress = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -36,18 +37,18 @@ const ProductCard = ({ rating, item, product }) => {
   });
 
   return (
-    <View style={styles.card_box}>
-      {/* card box img */}
+    <View style={[styles.card_box, {height: product ? 210 : 245}]}>
+      {/* card box img,  */}
       <View style={styles.card_box_img}>
         <Image
-          source={item?.image}
+          source={images.product2}
           resizeMode="contain"
           style={styles.productImage}
         />
         {/* small icons */}
         <View style={styles.card_box_img_icon1}>
           <Image
-            source={require('../assets/images/profile2.png')}
+            source={avatar}
             resizeMode="contain"
             style={{ width: 25, height: 25 }}
           />
@@ -56,7 +57,7 @@ const ProductCard = ({ rating, item, product }) => {
               fontWeight: 'bold',
               color: '#fff',
             }}>
-            Sarah J.
+            {username}
           </Text>
         </View>
 
@@ -121,10 +122,10 @@ const ProductCard = ({ rating, item, product }) => {
               />
             </View>
           </> : <>
-            <Text style={styles.productName}>Omnis iste</Text>
+            <Text style={[styles.productName,{marginTop: !product && hp('2%')}]}>{productName}</Text>
             <Text style={styles.text}>
-              1609 Oak, st{' '}
-              <Text style={styles.productName}>(2km)</Text>{' '}
+              ${price}
+              {/* <Text style={styles.productName}>(2km)</Text>{' '} */}
             </Text>
           </>
         }
@@ -138,7 +139,6 @@ export default ProductCard;
 const styles = StyleSheet.create({
   card_box: {
     width: 150,
-    height: 205,
     backgroundColor: '#D49621',
     borderRadius: 15,
     alignItems: 'center',
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     height: 30,
-    minWidth: wp('23%'),
+    minWidth: wp('30%'),
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     alignItems: 'center',
     justifyContent: 'center',
@@ -183,13 +183,14 @@ const styles = StyleSheet.create({
   },
   productName: {
     color: '#fff',
+    marginBottom: hp('0.5%'),
     fontWeight: 'bold'
   },
   text: {
     color: '#f6f6f6'
   },
   productImage: {
-    height: hp('17.2%'),
-    width: hp('17.2%')
+    height: hp('18.2%'),
+    width: hp('18.2%')
   },
 });

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   ImageBackground,
   StyleSheet,
@@ -12,93 +12,131 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { useNavigation } from '@react-navigation/native'
+import {useNavigation} from '@react-navigation/native';
 import FontAwesome5 from 'react-native-vector-icons/Ionicons';
 import OutlineButton from '../../components/OutlineButton';
 import InputText from '../../components/InputText';
-import { useDispatch, useSelector } from 'react-redux';
-import { editProfile, register } from '../../redux/slices/AuthSlice';
-import { ShowToast } from '../../utils';
-import { launchImageLibrary } from 'react-native-image-picker';
+import {useDispatch, useSelector} from 'react-redux';
+import {editProfile, register} from '../../redux/slices/AuthSlice';
+import {ShowToast} from '../../utils';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {Picker} from '@react-native-picker/picker';
+import colors from '../../assets/colors';
 
-const InitialProfile = ({ route }) => {
+const cities = [
+  {
+    id: 1,
+    text: 'Los Angeles',
+  },
+  {
+    id: 2,
+    text: 'Washington',
+  },
+  {
+    id: 3,
+    text: 'Chicago',
+  },
+];
 
-  const email = route?.params?.userData || null
-  const { user, selectedCity, selectedState } = route?.params || null;
-  const { signup_loading, pic_url, edit_loading } = useSelector(state => state.userData)
+const states = [
+  {
+    id: 1,
+    text: 'Texas',
+  },
+  {
+    id: 2,
+    text: 'California',
+  },
+  {
+    id: 3,
+    text: 'Illinois',
+  },
+];
 
-  // console.log('user email =========>', selectedState)
+const InitialProfile = ({route}) => {
+  const email = route?.params?.userData || null;
+  const {user} = route?.params || null;
+  const {signup_loading, pic_url, edit_loading} = useSelector(
+    state => state.userData,
+  );
+  const [firstname, setFirstName] = useState(user ? user?.first_name : '');
+  const [lastname, setLastName] = useState(user ? user?.last_name : '');
+  const [phonenumber, setPhoneNumber] = useState(
+    user ? user?.phone_number : '',
+  );
+  const [password, setPassword] = useState('');
+  const [cpassword, setCPassword] = useState('');
+  const [photoURL, setPhotoURL] = useState(
+    user ? pic_url + user?.profile_pic : '',
+  );
+  const [address, setAddress] = useState(user ? user?.address : '');
+  const [selectedCity, setSelectedCity] = useState('Los Angeles');
+  const [selectedState, setSelectedState] = useState('Texas');
 
-  const [firstname, setFirstName] = useState(user ? user?.first_name : '')
-  const [lastname, setLastName] = useState(user ? user?.last_name : '')
-  const [phonenumber, setPhoneNumber] = useState(user ? user?.phone_number : '')
-  const [password, setPassword] = useState('')
-  const [cpassword, setCPassword] = useState('')
-  const [photoURL, setPhotoURL] = useState(user ? pic_url + user?.profile_pic : '')
-  const [address, setAddress] = useState(user ? user?.address : '')
+  console.log('user email =========>', selectedCity)
+
 
   // console.log('photo uri', photoURL)
 
-
-
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   // console.log('loader', edit_loading)
 
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   // console.log('asdasdasd', navigation.getState().routeNames[1])
 
   const clearState = () => {
-    setFirstName('')
-    setLastName('')
-    setPhoneNumber('')
-    setPassword('')
-    setCPassword('')
-    setPhotoURL('')
-  }
+    setFirstName('');
+    setLastName('');
+    setPhoneNumber('');
+    setPassword('');
+    setCPassword('');
+    setPhotoURL('');
+  };
 
   const onButtonPress = async () => {
-
     if (navigation.getState().routeNames[0] === 'Profile') {
       if (!photoURL) {
-        return ShowToast('Profile update failed')
+        return ShowToast('Profile update failed');
       } else {
-        const res = await dispatch(editProfile({
-          first_name: firstname,
-          last_name: lastname,
-          phone_number: phonenumber,
-          address: address,
-          state: selectedState,
-          city: selectedCity,
-          profile_pic: photoURL,
-        }))
+        const res = await dispatch(
+          editProfile({
+            first_name: firstname,
+            last_name: lastname,
+            phone_number: phonenumber,
+            address: address,
+            state: selectedState,
+            city: selectedCity,
+            profile_pic: photoURL,
+          }),
+        );
         // console.log('response from action', res)
         if (res.payload) {
-          navigation.goBack()
-          return ShowToast('Profile updated successfully')
+          navigation.goBack();
+          return ShowToast('Profile updated successfully');
         }
       }
     } else {
       if (!firstname) {
-        return ShowToast('Please type your details')
+        return ShowToast('Please type your details');
       } else if (cpassword !== password) {
-        return ShowToast('Password does not match')
+        return ShowToast('Password does not match');
       } else if (password.length < 8) {
-        return ShowToast('Password is too short')
+        return ShowToast('Password is too short');
       } else {
-        await dispatch(register({
-          first_name: firstname,
-          last_name: lastname,
-          phone_number: phonenumber,
-          email: email,
-          password: password,
-          address: address,
-          profile_pic: photoURL
-        }))
-        clearState()
+        await dispatch(
+          register({
+            first_name: firstname,
+            last_name: lastname,
+            phone_number: phonenumber,
+            email: email,
+            password: password,
+            profile_pic: photoURL,
+          }),
+        );
+        clearState();
       }
     }
-
-  }
+  };
 
   const onUploadPhoto = async () => {
     const options = {
@@ -107,18 +145,17 @@ const InitialProfile = ({ route }) => {
         skipBackup: true,
         path: 'images',
         quality: 0.5,
-      }
-    }
+      },
+    };
 
     await launchImageLibrary(options, async response => {
       if (response.didCancel) {
-        console.log('cancelled', response.didCancel)
+        console.log('cancelled', response.didCancel);
       } else {
-        setPhotoURL(response.assets[0].uri)
+        setPhotoURL(response.assets[0].uri);
       }
-
-    })
-  }
+    });
+  };
 
   return (
     <View
@@ -129,7 +166,10 @@ const InitialProfile = ({ route }) => {
         source={require('../../assets/images/otpbg.png')}
         resizeMode="cover"
         style={styles.bg_signup}>
-        <TouchableOpacity style={styles.back_header} onPress={() => onButtonPress()} activeOpacity={0.9}>
+        <TouchableOpacity
+          style={styles.back_header}
+          onPress={() => onButtonPress()}
+          activeOpacity={0.9}>
           <View style={styles.back_button}>
             <Text
               style={{
@@ -140,7 +180,8 @@ const InitialProfile = ({ route }) => {
             </Text>
           </View>
         </TouchableOpacity>
-        <ScrollView contentContainerStyle={{ paddingBottom: user ? hp('50%') : hp('70%') }}>
+        <ScrollView
+          contentContainerStyle={{paddingBottom: user ? hp('55%') : hp('60%')}}>
           <View
             style={{
               flex: 0.2,
@@ -164,7 +205,7 @@ const InitialProfile = ({ route }) => {
                 borderTopLeftRadius: 20,
                 marginTop: hp('3%'),
               }}>
-              <View style={{ width: wp('80%') }}>
+              <View style={{width: wp('80%')}}>
                 <View>
                   <Text style={styles.input_lable}>Add profile picture</Text>
                   <TouchableOpacity
@@ -179,11 +220,10 @@ const InitialProfile = ({ route }) => {
                       left: 'center',
                     }}
                     activeOpacity={0.9}
-                    onPress={() => onUploadPhoto()}
-                  >
+                    onPress={() => onUploadPhoto()}>
                     <Image
-                      source={{ uri: photoURL }}
-                      resizeMode='contain'
+                      source={{uri: photoURL}}
+                      resizeMode="contain"
                       borderRadius={100}
                       style={{
                         position: 'absolute',
@@ -238,42 +278,110 @@ const InitialProfile = ({ route }) => {
                     placeholderTextColor="#bbb9bd"
                   />
                 </View> */}
-                <View style={{ paddingTop: hp('4%') }}>
+                <View style={{paddingTop: hp('4%')}}>
                   <InputText
                     placeholder={'First Name'}
                     value={firstname}
                     label={'Enter your first name'}
-                    onChangeText={(text) => setFirstName(text)}
+                    onChangeText={text => setFirstName(text)}
                     icon={'person-outline'}
                   />
                   <InputText
                     placeholder={'Last Name'}
                     value={lastname}
                     label={'Enter your last name'}
-                    onChangeText={(text) => setLastName(text)}
+                    onChangeText={text => setLastName(text)}
                     icon={'person-outline'}
                   />
                   <InputText
                     placeholder={'Phone number'}
                     value={phonenumber}
                     keyboardType={'numeric'}
-                    onChangeText={(text) => setPhoneNumber(text)}
+                    onChangeText={text => setPhoneNumber(text)}
                     label={'Enter your phone number'}
                     icon={'call-outline'}
                   />
+                 {user && 
+                 <>
                   <InputText
                     placeholder={'Address'}
                     value={address}
-                    onChangeText={(text) => setAddress(text)}
+                    onChangeText={text => setAddress(text)}
                     label={'Enter your address'}
-                  // icon={'person-outline'}
+                    // icon={'person-outline'}
                   />
-                  {!user &&
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}>
+                    <View>
+                      <Text style={styles.label}>City</Text>
+                      <View
+                        style={{
+                          height: 50,
+                          borderWidth: 0.5,
+                          borderColor: '#D49621',
+                          borderRadius: 40,
+                          borderRadius: 50,
+                          width: 140,
+                        }}>
+                        <Picker
+                          selectedValue={selectedCity}
+                          dropdownIconColor={colors.orange}
+                          dropdownIconRippleColor={colors.orange}
+                          onValueChange={(itemValue, itemIndex) =>
+                            setSelectedCity(itemValue)
+                          }>
+                          {cities.map(item => (
+                            <Picker.Item
+                              key={item.id}
+                              label={item.text}
+                              value={item.text}
+                              style={{color: colors.darkgray}}
+                            />
+                           ))} 
+                        </Picker>
+                      </View>
+                    </View>
+                    <View>
+                      <Text style={styles.label}>State</Text>
+                    <View
+                      style={{
+                        height: 50,
+                        borderWidth: 0.5,
+                        borderColor: '#D49621',
+                        borderRadius: 40,
+                        borderRadius: 50,
+                        width: 140,
+                      }}>
+                      <Picker
+                        selectedValue={selectedState}
+                        dropdownIconColor={colors.orange}
+                        dropdownIconRippleColor={colors.orange}
+                        onValueChange={(itemValue, itemIndex) =>
+                          setSelectedState(itemValue)
+                        }>
+                        {states.map(item => (
+                          <Picker.Item
+                            key={item.id}
+                            label={item.text}
+                            value={item.text}
+                            style={{color: colors.darkgray}}
+                          />
+                        ))}
+                      </Picker>
+                      </View>
+                    </View>
+                  </View>
+                  </>
+                  }
+                  {!user && (
                     <>
                       <InputText
                         placeholder={'Password'}
                         secureTextEntry={true}
-                        onChangeText={(text) => setPassword(text)}
+                        onChangeText={text => setPassword(text)}
                         value={password}
                         label={'Enter your password'}
                         icon={'lock-closed-outline'}
@@ -281,16 +389,16 @@ const InitialProfile = ({ route }) => {
                       <InputText
                         placeholder={'Confirm Password'}
                         secureTextEntry={true}
-                        onChangeText={(text) => setCPassword(text)}
+                        onChangeText={text => setCPassword(text)}
                         value={cpassword}
                         label={'Confirm password'}
                         icon={'lock-closed-outline'}
                       />
                     </>
-                  }
+                  )}
                 </View>
               </View>
-              <View style={{ alignItems: 'center', marginTop: 40 }}>
+              <View style={{alignItems: 'center', marginTop: 40}}>
                 <OutlineButton
                   title="done"
                   indicator={user ? edit_loading : signup_loading}
@@ -307,7 +415,6 @@ const InitialProfile = ({ route }) => {
 
 export default InitialProfile;
 
-
 const styles = StyleSheet.create({
   bg_signup: {
     flex: 1,
@@ -316,7 +423,7 @@ const styles = StyleSheet.create({
   back_header: {
     height: hp('10%'),
     paddingTop: hp('3%'),
-    paddingBottom: hp("12%")
+    paddingBottom: hp('12%'),
   },
   back_button: {
     marginTop: 20,
@@ -370,4 +477,10 @@ const styles = StyleSheet.create({
     height: 30,
     marginLeft: 10,
   },
+  label: {
+    fontSize: hp('2%'),
+    color: '#bbb9bd',
+    marginBottom: 15,
+    marginTop: 10,
+},
 });

@@ -1,5 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './slices/AuthSlice';
+import ecommerceReducer from './slices/ECommerceSlice'
+import stylistReducer from './slices/StylistSlice'
 import { combineReducers } from 'redux';
 import {
   persistStore,
@@ -19,7 +21,9 @@ const persistConfig = {
   version: 1,
   storage: AsyncStorage,
   whitelist: [
-    'userData'
+    'userData',
+    'ecommerceReducer',
+    'stylistReducer'
   ],
   blacklist: [], 
 };
@@ -28,6 +32,8 @@ const persistConfig = {
 const rootReducer = combineReducers({
   // [contact.reducerPath]: contact.reducer,
   userData: authReducer,
+  ecommerceReducer: ecommerceReducer,
+  stylistReducer: stylistReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

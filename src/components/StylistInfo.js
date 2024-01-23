@@ -14,7 +14,8 @@ import * as Progress from 'react-native-progress';
 import { stylistImages } from '../dummyData';
 import OutlineButton from './OutlineButton';
 
-const StylistInfo = ({ image, isActive, onArrowPress, flatListRef }) => {
+const StylistInfo = ({ image, isActive, onArrowPress, flatListRef, cardStyle }) => {
+  // console.log('isActive =====>', isActive)
   return (
     <View
       style={[
@@ -22,7 +23,7 @@ const StylistInfo = ({ image, isActive, onArrowPress, flatListRef }) => {
         isActive
           ? { height: hp('66%'), width: hp("43%") }
           : { marginRight: hp('1%') },
-      ]}>
+      cardStyle]}>
       <Arrow
         name={isActive ? 'arrow-down' : 'arrow-up'}
         color={colors.white}

@@ -25,41 +25,12 @@ import PrimaryButton from '../../components/PrimaryButton';
 import Logout from 'react-native-vector-icons/MaterialIcons'
 import { logoutUser } from '../../redux/slices/AuthSlice';
 import { ShowToast } from '../../utils';
+import FastImage from 'react-native-fast-image'
 
-const cities = [
-  {
-    id: 1,
-    text: 'Los Angeles',
-  },
-  {
-    id: 2,
-    text: 'Washington',
-  },
-  {
-    id: 3,
-    text: 'Chicago',
-  },
-];
 
-const states = [
-  {
-    id: 1,
-    text: 'Texas',
-  },
-  {
-    id: 2,
-    text: 'California',
-  },
-  {
-    id: 3,
-    text: 'Illinois',
-  },
-];
 const Profile = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [tab, setTab] = useState('general');
-  const [selectedCity, setSelectedCity] = useState('Los Angeles');
-  const [selectedState, setSelectedState] = useState('Texas');
   const [address, setAddress] = useState('')
   const navigation = useNavigation();
 
@@ -119,9 +90,9 @@ const Profile = () => {
                   position: 'relative',
                 }}
                 onPress={() => setModalVisible(true)}>
-                <Image
-                  source={user?.profile_pic ? { uri: pic_url + user?.profile_pic } : require('../../assets/images/profiledp.png')}
-                  resizeMode="contain"
+                <FastImage
+                  source={user?.profile_pic ? { uri: pic_url + user?.profile_pic, priority: FastImage.priority.normal } : require('../../assets/images/profiledp.png')}
+                  resizeMode={FastImage.resizeMode.cover}
                   style={{ height: hp("22%"), width: hp("22%"), borderRadius: 30 }}
                 />
                 <AntDesign
@@ -185,7 +156,7 @@ const Profile = () => {
                   width: '100%',
                 }}>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('ProfileStack', { screen: 'InitialProfile', params: { user, selectedCity, selectedState, address } })}>
+                  onPress={() => navigation.navigate('ProfileStack', { screen: 'InitialProfile', params: { user } })}>
                   <ImageBackground
                     source={require('../../assets/images/profilebanner.png')}
                     resizeMode="contain"
@@ -309,22 +280,7 @@ const Profile = () => {
                             borderRadius: 50,
                             width: 140,
                           }}>
-                          <Picker
-                            selectedValue={selectedCity}
-                            dropdownIconColor={colors.orange}
-                            dropdownIconRippleColor={colors.orange}
-                            onValueChange={(itemValue, itemIndex) =>
-                              setSelectedCity(itemValue)
-                            }>
-                            {cities.map(item => (
-                              <Picker.Item
-                                key={item.id}
-                                label={item.text}
-                                value={item.text}
-                                style={{ color: colors.darkgray }}
-                              />
-                            ))}
-                          </Picker>
+                             <Text style={styles.labelStyle}>{user?.city ? user?.city : 'City'}</Text> 
                         </View>
                       </View>
                       <View>
@@ -338,22 +294,7 @@ const Profile = () => {
                             borderRadius: 50,
                             width: 140,
                           }}>
-                          <Picker
-                            selectedValue={selectedState}
-                            dropdownIconColor={colors.orange}
-                            dropdownIconRippleColor={colors.orange}
-                            onValueChange={(itemValue, itemIndex) =>
-                              setSelectedState(itemValue)
-                            }>
-                            {states.map(item => (
-                              <Picker.Item
-                                key={item.id}
-                                label={item.text}
-                                value={item.text}
-                                style={{ color: colors.darkgray }}
-                              />
-                            ))}
-                          </Picker>
+                            <Text style={styles.labelStyle}>{user?.state ? user?.state : 'State'}</Text>  
                         </View>
                       </View>
                     </View>
@@ -362,7 +303,7 @@ const Profile = () => {
                   <Text style={styles.label}>Your address</Text>
                   <View style={styles.inputs_container}>
                     <FontAwesome5
-                      name="call-outline"
+                      name="person-outline"
                       type="Ionicons"
                       color="#6D6C7B"
                       size={22}
@@ -371,7 +312,7 @@ const Profile = () => {
                     <TextInput
                       style={styles.inputs}
                       editable={false}
-                      value={user?.address}
+                      value={user?.address ? user?.address : 'Add your address'}
                       onChangeText={(text) => setAddress(text)}
                       placeholder="Address"
                       placeholderTextColor="#bbb9bd"
@@ -443,9 +384,9 @@ const Profile = () => {
         </ScrollView>
       </ImageBackground >
       {/* profile pic change modal */}
-      < ModalChangeProfilePic
+      <ModalChangeProfilePic
         modalVisible={modalVisible}
-        source={user?.profile_pic ? { uri: pic_url + user?.profile_pic } : require('../../assets/images/profiledp.png')}
+        source={user?.profile_pic ? { uri: pic_url + user?.profile_pic, priority: FastImage.priority.normal } : require('../../assets/images/profiledp.png')}
         setModalVisible={setModalVisible}
       />
     </>
@@ -535,6 +476,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 15,
   },
+  labelStyle:{
+    color: '#bbb9bd',
+    marginLeft: hp('2.7%'),
+    marginTop: hp('1.7%')
+  }
 });
 
 export default Profile;

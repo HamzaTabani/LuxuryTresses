@@ -15,6 +15,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import FastImage from 'react-native-fast-image'
 
 const ModalChangeProfilePic = ({modalVisible, setModalVisible, source}) => {
   return (
@@ -47,8 +48,9 @@ const ModalChangeProfilePic = ({modalVisible, setModalVisible, source}) => {
 
           {/* profile pic view */}
           <View style={styles.profilePicViewer}>
-            <Image
+            <FastImage
               source={source}
+              resizeMode={FastImage.resizeMode.cover}
               style={styles.dp_img}
             />
           </View>

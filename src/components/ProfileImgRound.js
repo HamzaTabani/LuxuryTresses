@@ -1,12 +1,12 @@
-import { useNavigation } from '@react-navigation/native';
-import { TouchableOpacity, Image } from 'react-native';
-import { useSelector } from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
+import {TouchableOpacity, Image} from 'react-native';
+import {useSelector} from 'react-redux';
+import FastImage from 'react-native-fast-image';
 
-const ProfileImgRound = ({ imgSrc }) => {
+const ProfileImgRound = ({imgSrc}) => {
   const navigation = useNavigation();
 
-  const { user, pic_url } = useSelector(state => state.userData)
-
+  const {user, pic_url} = useSelector(state => state.userData);
 
   return (
     <TouchableOpacity
@@ -21,19 +21,21 @@ const ProfileImgRound = ({ imgSrc }) => {
         top: 'center',
         left: 'center',
       }}>
-
-      <Image
-        borderRadius={100}
+      <FastImage
         source={
           imgSrc
             ? require('../assets/images/profileimg.png')
-            :
-            user ?
-              { uri: pic_url + user?.profile_pic }
-              : require('../assets/images/dp.png')
+            : user
+            ? {
+                uri: pic_url + user?.profile_pic,
+                priority: FastImage.priority.normal,
+              }
+            : require('../assets/images/dp.png')
         }
+        resizeMode={FastImage.resizeMode.cover}
         style={{
           position: 'absolute',
+          borderRadius: 100,
           top: 'center',
           left: 'center',
           width: 55,

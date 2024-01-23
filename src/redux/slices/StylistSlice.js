@@ -1,0 +1,124 @@
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import axios from 'axios';
+import {BASE_URL} from '../constant.js';
+import {ErrorToast} from '../../utils';
+
+export const getTopStylists = createAsyncThunk(
+  'topStylists',
+  async (_, {getState}) => {
+    const stateData = getState().userData;
+    const token = stateData.token;
+    return await axios
+      .get(`${BASE_URL}/top-stylist-profile`, {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(res => {
+        // console.log('topStylists =============>', res);
+        return res.data;
+      })
+      .catch(error => {
+        ErrorToast(error);
+      });
+  },
+);
+
+export const stylistProfileById = createAsyncThunk(
+  'profileDetail',
+  async (stylist_id, {getState}) => {
+    const stateData = getState().userData;
+    const token = stateData.token;
+
+    return await axios
+      .get(`${BASE_URL}/stylist-profile/${stylist_id}/detail`, {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(res => {
+        // console.log('stylist profile detail =============>', res.data);
+        return res.data;
+      })
+      .catch(error => {
+        ErrorToast(error);
+      });
+  },
+);
+
+export const trendingStylists = createAsyncThunk(
+  'trending',
+  async (_, {getState}) => {
+    const stateData = getState().userData;
+    const token = stateData.token;
+
+    return await axios
+      .get(`${BASE_URL}/trending-stylist-profile`, {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(res => {
+        // console.log('trending stylists response ============>', res.data);
+        return res.data;
+      })
+      .catch(error => {
+        ErrorToast(error);
+      });
+  },
+);
+
+export const StylistSlice = createSlice({
+  name: 'stylistDetails',
+  initialState: {
+    topStylists: [],
+    loading: false,
+    topStylist_error: '',
+    stylistDetail: {},
+    stylistDetail_error: '',
+    stylistDetail_loading: false,
+    trending_stylists: [],
+    trending_loader: false,
+    trending_error: '',
+  },
+  extraReducers: builders => {
+    builders.addCase(getTopStylists.pending, state => {
+      state.loading = true;
+    });
+    builders.addCase(getTopStylists.fulfilled, (state, action) => {
+      state.loading = false;
+      state.topStylists = action.payload.data;
+    });
+    builders.addCase(getTopStylists.rejected, state => {
+      (state.topStylist_error = 'Some problem occured'),
+        (state.loading = false);
+    });
+    builders.addCase(stylistProfileById.pending, state => {
+      state.stylistDetail_loading = true;
+    });
+    builders.addCase(stylistProfileById.fulfilled, (state, action) => {
+      (state.stylistDetail_loading = false),
+        (state.stylistDetail = action.payload.data);
+    });
+    builders.addCase(stylistProfileById.rejected, state => {
+      (state.stylistDetail_error = 'Some problem occured'),
+        (state.stylistDetail_loading = false);
+    });
+    builders.addCase(trendingStylists.pending, state => {
+      state.trending_loader = true;
+    });
+    builders.addCase(trendingStylists.fulfilled, (state, action) => {
+      (state.trending_stylists = action.payload.data),
+        (state.trending_loader = false);
+    });
+    builders.addCase(trendingStylists.rejected, state => {
+      (state.trending_loader = false),
+        (state.trending_error = 'Some problem occured');
+    });
+  },
+});
+
+export default StylistSlice.reducer;

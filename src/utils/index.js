@@ -14,3 +14,7 @@ export const ErrorToast = (message) => {
     })
 }
 
+export const addSpacesInString = (str) => {
+    return str.replace(/(.{6})/g, ' $1');
+};
+
