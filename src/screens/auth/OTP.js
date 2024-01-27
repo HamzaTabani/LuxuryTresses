@@ -1,12 +1,10 @@
-import React, {useState, useRef} from 'react';
-
+import React, {useEffect, useState} from 'react';
 import {
   ImageBackground,
   StyleSheet,
   View,
   ScrollView,
   Text,
-  TextInput,
   TouchableOpacity,
 } from 'react-native';
 import {
@@ -16,20 +14,74 @@ import {
 import BackHeader from '../../components/BackHeader';
 import FontAwesome5 from 'react-native-vector-icons/Ionicons';
 import PrimaryButton from '../../components/PrimaryButton';
-import OutlineButton from '../../components/OutlineButton';
+import CodeInput from '../../components/CodeInput';
+import colors from '../../assets/colors';
+import {generateOTP, verifyCode} from '../../redux/slices/AuthSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import {ShowToast} from '../../utils';
 
-const OTP = ({navigation}) => {
-  const [verificationCode, setVerificationCode] = useState(['', '', '', '']);
-  const otpInputs = [useRef(null), useRef(null), useRef(null), useRef(null)];
+const OTP = ({navigation, route}) => {
+  const info = route.params.data;
 
-  const handleOTPChange = (text, index) => {
-    if (text.length === 1 && index < 3) {
-      otpInputs[index + 1].current.focus();
+  const [verificationCode, setVerificationCode] = useState(
+    info ? info.code.toString() : '',
+  );
+  const [seconds, setSeconds] = useState(60);
+
+  const { otpcode_loading } = useSelector(state => state.userData)
+
+  const dispatch = useDispatch();
+
+  console.log('otp timer', info);
+
+  useEffect(() => {
+    return () => clearInterval();
+  }, []);
+
+  const StartTimer = () => {
+    let interval = setInterval(() => {
+      setSeconds(prevSeconds => {
+        const timer = prevSeconds > 0 && prevSeconds - 1;
+        if (timer === 0) {
+          clearInterval(interval);
+          setSeconds(60);
+        }
+        return timer;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  };
+
+  const onResendCode = async () => {
+    StartTimer();
+    const res = await dispatch(generateOTP(info.email));
+    if (res.payload.success) {
+      setVerificationCode(res.payload.data.code.toString());
+      return ShowToast(res.payload.message);
+    } else {
+      return ShowToast('Unable to send OTP code');
     }
+  };
 
-    const newOtp = [...verificationCode];
-    newOtp[index] = text;
-    setVerificationCode(newOtp);
+  const onVerifyPress = async () => {
+    if (!verificationCode) {
+      return ShowToast('Please type your 4 digit code');
+    } else {
+      const res = await dispatch(
+        verifyCode({
+          code: verificationCode,
+          id: info.id,
+        }),
+      );
+      console.log('from screeen =========>', res)
+      if (res.payload.success) {
+        navigation.navigate('ChangePassword', {type: 'forgot', userid: info.id});
+        return ShowToast(res.payload.message);
+      } else {
+        return ShowToast(res.payload.message);
+      }
+    }
   };
 
   return (
@@ -57,62 +109,64 @@ const OTP = ({navigation}) => {
               }}>
               <Text style={styles.signup_heading}>Confirmation</Text>
               <Text style={styles.signup_title}>
-                Enter 4 digit code we sent to your email
+                Enter 4 digit code we sent to {info.email}
               </Text>
             </View>
             <View
               style={{
                 flex: 0.5,
                 marginTop: hp('14%'),
-                paddingBottom: 10
+                paddingBottom: 10,
               }}>
               <View>
                 <Text style={styles.input_lable}>Enter code</Text>
                 <View style={styles.inputs_container}>
-                  {verificationCode.map((digit, index) => (
-                    <TextInput
-                      key={index}
-                      ref={otpInputs[index]}
-                      style={styles.inputs}
-                      keyboardType="numeric"
-                      maxLength={1}
-                      value={digit}
-                      onChangeText={text => handleOTPChange(text, index)}
-                    />
-                  ))}
+                  <CodeInput
+                    value={verificationCode}
+                    setValue={text => setVerificationCode(text)}
+                  />
                 </View>
               </View>
               <View style={styles.seperator}>
-                <TouchableOpacity>
-                  <FontAwesome5
-                    name="refresh-outline"
-                    type="Ionicons"
-                    color="#e0e0e0"
-                    size={32}
-                    style={{textAlign: 'center', color: '#D49621'}}
-                  />
-                </TouchableOpacity>
-                <Text
-                  style={{
-                    color: '#D49621',
-                    textAlign: 'center',
-                    marginTop: 10,
-                  }}>
-                  Resend code
-                </Text>
+                {seconds < 60 ? (
+                  <Text style={styles.timerDigits}>
+                    {seconds < 10 ? seconds : '0:' + seconds}
+                  </Text>
+                ) : (
+                  <TouchableOpacity
+                    activeOpacity={0.9}
+                    onPress={() => onResendCode()}>
+                    <FontAwesome5
+                      name="refresh-outline"
+                      type="Ionicons"
+                      color="#e0e0e0"
+                      size={32}
+                      style={{textAlign: 'center', color: '#D49621'}}
+                    />
+                    <Text
+                      style={{
+                        color: '#D49621',
+                        textAlign: 'center',
+                        marginTop: 10,
+                      }}>
+                      Resend code
+                    </Text>
+                  </TouchableOpacity>
+                )}
               </View>
               <View style={{alignItems: 'center', marginTop: 40}}>
                 <PrimaryButton
                   title="continue"
-                  onPress={() => navigation.navigate('initialprofile')}
+                  indicator={otpcode_loading}
+                  onPress={() => onVerifyPress()}
                 />
               </View>
-              <View style={{alignItems: 'center', marginTop: 20}}>
+              {/* <View style={{alignItems: 'center', marginTop: 20}}>
                 <OutlineButton
                   title="other methods"
                   onPress={() => navigation.goBack()}
                 />
-              </View>
+              </View> */}
             </View>
           </View>
         </ScrollView>
@@ -134,6 +188,7 @@ const styles = StyleSheet.create({
   },
   signup_title: {
     fontSize: hp('2%'),
+    marginTop: hp('2%'),
     color: '#bbb9bd',
   },
   inputs_container: {
@@ -175,5 +230,10 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     marginLeft: 10,
+  },
+  timerDigits: {
+    color: colors.orange,
+    fontSize: hp('1.9%'),
+    alignSelf: 'center',
   },
 });

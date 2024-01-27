@@ -62,8 +62,7 @@ const ProfileDetail = ({route}) => {
         </>
       ) : stylistDetail_error ? (
         <>
-          <View
-            style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+          <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
             <Text style={styles.errorMessage}>{detail_error}</Text>
           </View>
         </>
@@ -85,7 +84,7 @@ const ProfileDetail = ({route}) => {
                     : {uri: pic_url + stylistDetail.profile_pic}
                 }
                 style={styles.imageStyle}
-                resizeMode='cover'
+                resizeMode="cover"
                 borderRadius={20}
               />
               <View style={styles.textWrapper}>
@@ -290,13 +289,15 @@ const styles = StyleSheet.create({
     color: colors.white,
   },
   image: {
-    height: hp('10%'),
-    width: hp('10%'),
+    height: 75,
+    width: 75,
   },
   imageWrapper: {
     paddingTop: hp('5%'),
+    height: '19%',
+    width: '19%',
     flexDirection: 'row',
-    gap: 10,
+    gap: 9,
   },
   moreText: {
     color: colors.white,

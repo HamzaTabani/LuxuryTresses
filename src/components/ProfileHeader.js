@@ -11,7 +11,7 @@ const ProfileHeader = ({username, icon, text}) => {
   const [searchActive, setSearchActive] = useState(false);
   const navigation = useNavigation();
 
-  // console.log(text?.length == 32);
+  // console.log(text?.length);
 
   return (
     <View style={styles.profile_header}>
@@ -30,7 +30,7 @@ const ProfileHeader = ({username, icon, text}) => {
             style={{
               color: '#fff',
               fontWeight: '500',
-              width: text?.length === 32 && hp('32%'),
+              width: text?.length === 28 && hp('32%'),
               fontSize: hp('2.5%'),
               fontFamily: 'Lora-Medium',
             }}>

@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {ErrorToast, ShowToast} from '../../utils';
-import { BASE_URL } from '../constant.js';
+import {BASE_URL} from '../constant.js';
+import axios from 'axios';
 
 var formData = require('form-data');
 
@@ -176,6 +177,49 @@ export const changePassword = createAsyncThunk(
   },
 );
 
+export const generateOTP = createAsyncThunk('verifyEmail', async email => {
+  var data = new formData();
+
+  data.append('email', email);
+
+  return await axios
+    .post(`${BASE_URL}/forget-password-email`, data, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    .then(res => {
+      console.log('forgetpassword response ===========>', res.data);
+      return res.data;
+    })
+    .catch(error => {
+      ErrorToast(error);
+    });
+});
+
+export const verifyCode = createAsyncThunk('verifyCode', async ({code, id}) => {
+  var data = new formData();
+
+  data.append('code', code);
+  data.append('id', id);
+  return await axios
+    .post(`${BASE_URL}/check-forget-password-code`, data, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    .then(res => {
+      console.log('verifyCode res =========>', res.data);
+      return res.data;
+    })
+    .catch(error => {
+      ErrorToast(error);
+    });
+});
+
 export const logoutUser = createAsyncThunk('logout/authUser', async () => {
   try {
     return true;
@@ -185,6 +229,31 @@ export const logoutUser = createAsyncThunk('logout/authUser', async () => {
   }
 });
 
+export const updateForgetPassword = createAsyncThunk(
+  'updatePasswprd',
+  async ({id, password}) => {
+    var data = new formData();
+
+    data.append('id', id);
+    data.append('password', password);
+
+    return await axios
+      .post(`${BASE_URL}/update-forget-password`, data, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then(res => {
+        console.log('update password response ============>', res.data);
+        return res.data;
+      })
+      .catch(error => {
+        ErrorToast(error);
+      });
+  },
+);
+
 export const authState = createSlice({
   name: 'userAuth',
   initialState: {
@@ -192,6 +261,9 @@ export const authState = createSlice({
     signin_loading: false,
     edit_loading: false,
     change_loading: false,
+    forget_password_loading: false,
+    otpcode_loading: false,
+    update_loading: false,
     token: '',
     pic_url: '',
     user: {},
@@ -228,8 +300,26 @@ export const authState = createSlice({
     builder.addCase(changePassword.fulfilled, state => {
       state.change_loading = false;
     });
+    builder.addCase(generateOTP.pending, state => {
+      state.forget_password_loading = true;
+    });
+    builder.addCase(generateOTP.fulfilled, state => {
+      state.forget_password_loading = false;
+    });
     builder.addCase(logoutUser.fulfilled, state => {
       (state.token = ''), (state.user = {}), (state.pic_url = '');
+    });
+    builder.addCase(verifyCode.pending, state => {
+      state.otpcode_loading = true;
+    });
+    builder.addCase(verifyCode.fulfilled, state => {
+      state.otpcode_loading = false;
+    });
+    builder.addCase(updateForgetPassword.pending, state => {
+      state.update_loading = true;
+    });
+    builder.addCase(updateForgetPassword.fulfilled, state => {
+      state.update_loading = false;
     });
   },
 });

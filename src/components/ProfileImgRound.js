@@ -2,6 +2,7 @@ import {useNavigation} from '@react-navigation/native';
 import {TouchableOpacity, Image} from 'react-native';
 import {useSelector} from 'react-redux';
 import FastImage from 'react-native-fast-image';
+import images from '../assets/images';
 
 const ProfileImgRound = ({imgSrc}) => {
   const navigation = useNavigation();
@@ -25,12 +26,12 @@ const ProfileImgRound = ({imgSrc}) => {
         source={
           imgSrc
             ? require('../assets/images/profileimg.png')
-            : user
+            : user.profile_pic
             ? {
                 uri: pic_url + user?.profile_pic,
                 priority: FastImage.priority.normal,
               }
-            : require('../assets/images/dp.png')
+            : images.profile
         }
         resizeMode={FastImage.resizeMode.cover}
         style={{

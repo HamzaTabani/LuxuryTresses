@@ -5,8 +5,9 @@ import images from '../assets/images';
 import colors from '../assets/colors';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native';
+import FastImage from 'react-native-fast-image'
 
-const UserDetailCard = ({username, email}) => {
+const UserDetailCard = ({username, email, image}) => {
 
   const navigation = useNavigation()
 
@@ -22,9 +23,9 @@ const UserDetailCard = ({username, email}) => {
             width: 70,
             height: 70,
           }}>
-          <Image
-            source={images.stylist1}
-            resizeMode="cover"
+          <FastImage
+            source={image}
+            resizeMode={FastImage.resizeMode.cover}
             style={{width: '100%', height: '100%'}}
           />
           {/* online status button */}

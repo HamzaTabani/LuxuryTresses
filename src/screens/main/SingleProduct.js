@@ -16,11 +16,15 @@ import OutlineButton from '../../components/OutlineButton';
 import MessageOption from '../../components/MessageOption';
 import {useNavigation} from '@react-navigation/native';
 import UserDetailCard from '../../components/UserDetailCard';
-import {historyImages, products} from '../../dummyData';
+import {historyImages} from '../../dummyData';
 import {useDispatch, useSelector} from 'react-redux';
-import {getProductDetails} from '../../redux/slices/ECommerceSlice';
-import {addSpacesInString} from '../../utils/index';
+import {
+  addProductinCart,
+  getProductDetails,
+} from '../../redux/slices/ECommerceSlice';
 import Loader from '../../components/Loader';
+import images from '../../assets/images';
+import {ShowToast} from '../../utils';
 
 const SingleProduct = ({route}) => {
   const navigation = useNavigation();
@@ -28,16 +32,24 @@ const SingleProduct = ({route}) => {
 
   const dispatch = useDispatch();
 
-  const {productDetails, detail_loading, detail_error} = useSelector(
-    state => state.ecommerceReducer,
-  );
-  // console.log('product detailssss from screens =========>', productDetails);
+  const {
+    productDetails,
+    detail_loading,
+    detail_error,
+    cart_product,
+    cart_error,
+  } = useSelector(state => state.ecommerceReducer);
+
+  const {pic_url} = useSelector(state => state.userData);
+  // console.log('product detailssss from screens =========>', cart_product);
 
   const id = route?.params?.productID;
   // console.log('product id ======>', Object.keys(productDetails?.product_name).length);
 
   useEffect(() => {
-    fetchProductDetails();
+    if (Object.keys(productDetails).length < 1 || productDetails) {
+      fetchProductDetails();
+    }
   }, []);
 
   const fetchProductDetails = async () => {
@@ -52,6 +64,49 @@ const SingleProduct = ({route}) => {
     if (quantity > 1) {
       setQuantity(quantity - 1);
     }
+  };
+
+  const onAddtoCartPress = async () => {
+    const cartDetails = {
+      productDetail: {
+        product_id: productDetails?.id,
+        title: productDetails?.product_name,
+        price: productDetails?.regular_price,
+        image: productDetails?.product_image,
+      },
+      quantity: quantity,
+    };
+    let confirmedDetails = [...cart_product, cartDetails];
+    const index = cart_product?.findIndex(
+      item => item.productDetail.product_id == id,
+    );
+    // console.log(
+    //   'indexxx',
+    //   cart_product[index].productDetail.product_id == productDetails.id,
+    // );
+
+    if (cart_product[index]?.productDetail.product_id == productDetails.id) {
+      const updatedCart = cart_product.map(item => {
+        return {
+          ...item,
+          quantity: item.quantity + 1,
+        };
+      });
+      //  console.log('updated', updatedCart)
+      await dispatch(addProductinCart(updatedCart));
+      navigation.navigate('SecondaryStack', {screen: 'Checkout'});
+      return ShowToast('Item has been added to your cart');
+    } else {
+      const res = await dispatch(addProductinCart(confirmedDetails));
+      if (res) {
+        navigation.navigate('SecondaryStack', {screen: 'Checkout'});
+        // alert('hello world');
+      } else {
+        return ShowToast(cart_error);
+      }
+    }
+
+    // console.log('cart details =======>', confirmedDetails);
   };
 
   return (
@@ -72,7 +127,7 @@ const SingleProduct = ({route}) => {
           <ProfileHeader
             icon={true}
             username={true}
-            text={addSpacesInString(productDetails?.product_name)}
+            text={productDetails?.product_name}
           />
           <ScrollView style={styles.container}>
             {/* product images.. */}
@@ -100,11 +155,16 @@ const SingleProduct = ({route}) => {
               {/* product owner.. */}
               <UserDetailCard
                 username={
-                  productDetails?.user.first_name +
+                  productDetails?.user?.first_name +
                   ' ' +
-                  productDetails?.user.last_name
+                  productDetails?.user?.last_name
                 }
-                email={productDetails?.user.email}
+                email={productDetails?.user?.email}
+                image={
+                  productDetails?.user?.profile_pic == null
+                    ? images.stylist1
+                    : {uri: pic_url + productDetails?.user?.profile_pic}
+                }
               />
               {/* product description */}
               <View>
@@ -176,9 +236,7 @@ const SingleProduct = ({route}) => {
                 }}>
                 <OutlineButton
                   title={'Add to cart'}
-                  onPress={() =>
-                    navigation.navigate('SecondaryStack', {screen: 'Checkout'})
-                  }
+                  onPress={() => onAddtoCartPress()}
                   textStyle={{color: '#fff'}}
                   buttonStyle={{width: '82%'}}
                 />

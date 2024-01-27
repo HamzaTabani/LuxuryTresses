@@ -7,19 +7,20 @@ import {
 import RatingIcon from './RatingIcon';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const VenderCardBox = ({name, img, email}) => {
   const navigation = useNavigation();
   return (
     <View style={styles.cardBox}>
-      <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
+      <View style={{flexDirection: 'row', alignItems: 'center', gap: 6}}>
         {/* vender image */}
         <View style={styles.cardImage}>
           <Image
             source={img}
             style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
+            borderRadius={10}
+            resizeMode="contain"
           />
         </View>
         {/* vender details */}
@@ -44,10 +45,10 @@ const VenderCardBox = ({name, img, email}) => {
       {/* vender contact and ratings*/}
       <View style={{justifyContent: 'space-between'}}>
         <View style={styles.ratingButton}>
-          <Pressable onPress={()=>navigation.navigate("Reviews")}>
-          <RatingIcon rating={5} w={30} h={30} r={10} />
+          <Pressable onPress={() => navigation.navigate('Reviews')}>
+            <RatingIcon rating={5} w={30} h={30} r={10} />
           </Pressable>
-          <Text style={{color: '#fff', fontSize: hp('1.4%')}}>4.5 Rating</Text>
+          <Text style={{color: '#fff', fontSize: hp('1.2%')}}>4.5 Rating</Text>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Pressable>
@@ -68,7 +69,6 @@ const VenderCardBox = ({name, img, email}) => {
               />
             </View>
           </Pressable>
-
           <Pressable>
             <View
               style={{
@@ -96,7 +96,7 @@ const VenderCardBox = ({name, img, email}) => {
 const styles = StyleSheet.create({
   cardBox: {
     width: '100%',
-    height: 110,
+    height: 100,
     backgroundColor: '#F4F4F4',
     borderRadius: 15,
     borderWidth: 0.5,
@@ -108,8 +108,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   cardImage: {
-    height: 100,
-    width: 100,
+    height: 90,
+    width: 85,
   },
   venderNameText: {
     color: '#000',
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   },
   venderDistanceText: {
     color: 'gray',
-    fontSize: hp('1.7%'),
+    fontSize: hp('1.4%'),
   },
   filter_tab_active: {
     width: 30,
@@ -132,7 +132,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
     backgroundColor: '#D49621',
-    height: hp('5.5%'),
+    // height: hp('5.5%'),
+    padding: hp('0.4%'),
     width: hp('12%'),
     borderRadius: 10,
   },

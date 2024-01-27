@@ -71,6 +71,31 @@ export const trendingStylists = createAsyncThunk(
   },
 );
 
+export const getNearbyStylists = createAsyncThunk(
+  'nearbyStylists',
+  async ({lat, long}, {getState}) => {
+    const stateData = getState().userData;
+    const token = stateData.token;
+
+    // console.log('latttt', lat)
+
+    return await axios
+      .get(`${BASE_URL}/near-by-stylists?latitude=${lat}&longitude=${long}`, {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(res => {
+        // console.log('nearbyStylists res ============>', res.data);
+        return res.data;
+      })
+      .catch(error => {
+        ErrorToast(error);
+      });
+  },
+);
+
 export const StylistSlice = createSlice({
   name: 'stylistDetails',
   initialState: {
@@ -83,6 +108,7 @@ export const StylistSlice = createSlice({
     trending_stylists: [],
     trending_loader: false,
     trending_error: '',
+    nearbyStylists: [],
   },
   extraReducers: builders => {
     builders.addCase(getTopStylists.pending, state => {
@@ -117,6 +143,10 @@ export const StylistSlice = createSlice({
     builders.addCase(trendingStylists.rejected, state => {
       (state.trending_loader = false),
         (state.trending_error = 'Some problem occured');
+    });
+    builders.addCase(getNearbyStylists.fulfilled, (state, action) => {
+      state.nearbyStylists = action.payload.data;
+      // console.log('redux state',action.payload.data)
     });
   },
 });

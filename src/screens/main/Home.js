@@ -39,8 +39,10 @@ const Home = ({navigation}) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    getRecentProducts();
-    getTopStylistsProfile();
+    if (recentProducts.length < 1 || topStylists.length < 1) {
+      getRecentProducts();
+      getTopStylistsProfile();
+    }
   }, []);
 
   const getRecentProducts = async () => {
@@ -128,31 +130,38 @@ const Home = ({navigation}) => {
                       horizontal
                       contentContainerStyle={{paddingHorizontal: hp('5%')}}
                       showsHorizontalScrollIndicator={false}>
-                      {topStylists.map(item => (
-                        <TouchableOpacity
-                          activeOpacity={0.9}
-                          key={item?.id}
-                          onPress={() =>
-                            navigation.navigate('ProfileDetail', {
-                              profile_id: item.id,
-                            })
-                          }>
-                          <Card
-                            rating={3}
-                            stylist_name={item.first_name + item.last_name}
-                            stylist_email={
-                              item.email === 'undefined'
-                                ? 'testuser123@gmail.com'
-                                : item.email
-                            }
-                            image={
-                              item.profile_pic == null
-                                ? images.cart1
-                                : {uri: pic_url + item.profile_pic}
-                            }
-                          />
-                        </TouchableOpacity>
-                      ))}
+                      {topStylists.map(item => {
+                        // console.log(
+                        //   'stylist profile image ==============>',
+                        //   item.profile_pic,
+                        // );
+                        return (
+                          <TouchableOpacity
+                            activeOpacity={0.9}
+                            key={item?.id}
+                            a
+                            onPress={() =>
+                              navigation.navigate('ProfileDetail', {
+                                profile_id: item.id,
+                              })
+                            }>
+                            <Card
+                              rating={3}
+                              stylist_name={item.first_name + item.last_name}
+                              stylist_email={
+                                item.email === 'undefined'
+                                  ? 'testuser123@gmail.com'
+                                  : item.email
+                              }
+                              image={
+                                item.profile_pic == null
+                                  ? images.cart1
+                                  : {uri: pic_url + item.profile_pic}
+                              }
+                            />
+                          </TouchableOpacity>
+                        );
+                      })}
                     </ScrollView>
                   </View>
                 </View>

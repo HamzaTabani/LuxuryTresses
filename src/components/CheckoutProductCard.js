@@ -1,32 +1,29 @@
-import React, { useState } from 'react';
-import {
-  Text,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import React, {useState} from 'react';
+import {Text, StyleSheet, View, TouchableOpacity, Image} from 'react-native';
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import images from '../assets/images';
 
-const CheckoutProductCard = ({ image, name, price }) => {
-  const [quantity, setQuantity] = useState(1);
+const CheckoutProductCard = ({image, name, price, quantity, increment, decrement}) => {
+  // const [quantity, setQuantity] = useState(1);
 
-  const incrementQuantity = () => {
-    setQuantity(quantity + 1);
-  };
+  // const incrementQuantity = () => {
+  //   setQuantity(quantity + 1);
+  // };
 
-  const decrementQuantity = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
-    }
-  };
+  // const decrementQuantity = () => {
+  //   if (quantity > 1) {
+  //     setQuantity(quantity - 1);
+  //   }
+  // };
+
+  // console.log('title', name.length);
 
   return (
     <View style={styles.productQuantityBox}>
       <View
         style={{
           flexDirection: 'row',
-          gap: 15,
+          gap: 10,
         }}>
         <View
           style={{
@@ -34,38 +31,32 @@ const CheckoutProductCard = ({ image, name, price }) => {
             height: 70,
           }}>
           <Image
-            source={image}
+            source={images.cart5}
             resizeMode="cover"
-            style={{ width: '100%', height: '100%', borderRadius: 15 }}
+            style={{width: '100%', height: '100%', borderRadius: 15}}
           />
           {/* online status button */}
         </View>
-        <View style={{ justifyContent: 'center' }}>
-          <Text style={{ color: '#fff', fontSize: hp('2.0%') }}>
-            Deep mask
-          </Text>
+        <View style={{justifyContent: 'center', width: '55%'}}>
+          <Text style={{color: '#fff', fontSize: hp('1.7%')}}>{name}</Text>
           <Text
             style={{
               color: '#efefef',
               fontSize: hp('1.5%'),
               marginTop: 2,
             }}>
-            {price}
+            ${price}
           </Text>
         </View>
       </View>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <TouchableOpacity
-          onPress={decrementQuantity}
-          style={styles.button}>
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <TouchableOpacity onPress={decrement} style={styles.button}>
           <Text style={styles.buttonText}>-</Text>
         </TouchableOpacity>
         <View style={styles.quantityButton}>
           <Text style={styles.quantityText}>{quantity}</Text>
         </View>
-        <TouchableOpacity
-          onPress={incrementQuantity}
-          style={styles.button}>
+        <TouchableOpacity onPress={increment} style={styles.button}>
           <Text style={styles.buttonText}>+</Text>
         </TouchableOpacity>
       </View>
@@ -77,19 +68,19 @@ const styles = StyleSheet.create({
   productQuantityBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     borderWidth: 1,
     borderColor: '#D49621',
     borderRadius: 15,
     paddingVertical: 5,
-    paddingHorizontal: 5,
+    paddingHorizontal: '7%',
     backgroundColor: '#020116',
     marginTop: hp('2%'),
     marginBottom: hp('2%'),
   },
   button: {
-    width: 40,
-    height: 40,
+    width: 35,
+    height: 35,
     borderRadius: 50,
     marginHorizontal: 5,
     justifyContent: 'center',
@@ -99,12 +90,12 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontWeight: 'bold',
-    fontSize: 25,
+    fontSize: 22,
     color: '#D49621',
   },
   quantityButton: {
-    width: 40,
-    height: 40,
+    width: 35,
+    height: 35,
     borderRadius: 50,
     marginHorizontal: 5,
     justifyContent: 'center',

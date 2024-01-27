@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   ImageBackground,
   StyleSheet,
@@ -15,19 +15,18 @@ import {
 import BackHeader from '../../components/BackHeader';
 import FontAwesome5 from 'react-native-vector-icons/Ionicons';
 import PrimaryButton from '../../components/PrimaryButton';
-import { ShowToast } from '../../utils';
+import {ShowToast} from '../../utils';
 
-const Signup = ({ navigation }) => {
-  const [email, setEmail] = useState('')
-
+const Signup = ({navigation}) => {
+  const [email, setEmail] = useState('');
 
   const onContinuePress = () => {
     if (!email) {
-      return ShowToast('Please type your email')
+      return ShowToast('Please type your email');
     } else {
-      navigation.navigate('initialprofile',  { userData: email })
+      navigation.navigate('initialprofile', {userData: email});
     }
-  }
+  };
 
   return (
     <ImageBackground
@@ -35,13 +34,12 @@ const Signup = ({ navigation }) => {
       resizeMode="cover"
       style={styles.bg_signup}>
       <BackHeader />
-      <ScrollView contentContainerStyle={{ paddingHorizontal: wp('10%') }}>
+      <ScrollView contentContainerStyle={{paddingHorizontal: wp('10%')}}>
         <View
           style={{
             flex: 1,
             marginTop: hp('5%'),
-          }}
-        >
+          }}>
           <View
             style={{
               flex: 0.5,
@@ -55,8 +53,8 @@ const Signup = ({ navigation }) => {
           <View
             style={{
               flex: 0.5,
-              marginTop: hp("13%"),
-              paddingBottom: 10
+              marginTop: hp('13%'),
+              paddingBottom: 10,
             }}>
             <View>
               <Text style={styles.input_lable}>Enter your email</Text>
@@ -66,21 +64,21 @@ const Signup = ({ navigation }) => {
                   type="Ionicons"
                   color="#e0e0e0"
                   size={32}
-                  style={{ marginLeft: 10 }}
+                  style={{marginLeft: 10}}
                 />
                 <TextInput
                   style={styles.inputs}
                   value={email}
-                  onChangeText={(text) => setEmail(text)}
+                  onChangeText={text => setEmail(text)}
                   placeholder="Email"
-                  keyboardType='email-address'
+                  keyboardType="email-address"
                   placeholderTextColor="#bbb9bd"
                 />
               </View>
             </View>
 
             <View style={styles.seperator}>
-              <Text style={{ color: '#bbb9bd', textAlign: 'center' }}>OR</Text>
+              <Text style={{color: '#bbb9bd', textAlign: 'center'}}>OR</Text>
             </View>
 
             <View style={styles.button_container}>
@@ -88,7 +86,7 @@ const Signup = ({ navigation }) => {
                 source={require('../../assets/images/google_icon.png')}
                 style={styles.btn_icon}
               />
-              <View style={{ width: '75%' }}>
+              <View style={{width: '75%'}}>
                 <Text
                   style={{
                     fontSize: hp('2%'),
@@ -104,7 +102,7 @@ const Signup = ({ navigation }) => {
                 source={require('../../assets/images/facebook_icon.png')}
                 style={styles.btn_icon}
               />
-              <View style={{ width: '75%' }}>
+              <View style={{width: '75%'}}>
                 <Text
                   style={{
                     fontSize: hp('2%'),
@@ -115,14 +113,14 @@ const Signup = ({ navigation }) => {
                 </Text>
               </View>
             </View>
-            <View style={{ alignItems: 'center', marginTop: 40 }}>
+            <View style={{alignItems: 'center', marginTop: 40}}>
               <PrimaryButton
                 title="continue"
                 onPress={() => onContinuePress()}
               />
-              <View style={{ paddingTop: hp('3%') }}>
+              <View style={{paddingTop: hp('3%')}}>
                 <PrimaryButton
-                  title="Login"
+                  title="Already a user ?"
                   onPress={() => navigation.navigate('Login')}
                 />
               </View>

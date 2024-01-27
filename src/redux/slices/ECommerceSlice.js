@@ -44,6 +44,12 @@ export const getProductDetails = createAsyncThunk(
   },
 );
 
+export const addProductinCart = createAsyncThunk('productCart', async data => {
+  // console.log('from action =========>', data)
+  return data;
+});
+
+
 export const HomeSlice = createSlice({
   name: 'ecommerce',
   initialState: {
@@ -51,6 +57,8 @@ export const HomeSlice = createSlice({
     recent_error: '',
     productDetails: {},
     detail_loading: false,
+    cart_product: [],
+    cart_error: '',
     detail_error: '',
   },
   extraReducers: builder => {
@@ -70,6 +78,13 @@ export const HomeSlice = createSlice({
     builder.addCase(getProductDetails.rejected, state => {
       (state.detail_loading = false),
         (state.detail_error = 'Some problem occured');
+    });
+    builder.addCase(addProductinCart.fulfilled, (state, action) => {
+      // console.log('cart state ========>', action.payload);
+      state.cart_product = action.payload;
+    });
+    builder.addCase(addProductinCart.rejected, state => {
+      state.cart_error = 'Error adding product in your cart';
     });
   },
 });

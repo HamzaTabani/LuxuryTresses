@@ -5,11 +5,11 @@ import {
   View,
   FlatList,
 } from 'react-native';
-import React, { useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import PageWrapper from '../../components/PageWrapper';
 import ProfileHeader from '../../components/ProfileHeader';
-import MapView, { Marker, Circle } from 'react-native-maps';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import MapView, {Marker, Circle} from 'react-native-maps';
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import colors from '../../assets/colors';
 import {
   initialRegion,
@@ -18,32 +18,56 @@ import {
   stylistInformations,
   tabs,
 } from '../../dummyData';
-import { Picker } from '@react-native-picker/picker';
+import {Picker} from '@react-native-picker/picker';
 import images from '../../assets/images';
 import StylistInfo from '../../components/StylistInfo';
+import {useDispatch, useSelector} from 'react-redux';
+import {getNearbyStylists} from '../../redux/slices/StylistSlice';
 
 const Nearby = () => {
   const [changeTab, setChangeTab] = useState(1);
   const [selectKilometers, setSelectKilometers] = useState('');
-  const [isDetailOpen, setIsDetailOpen] = useState(false);
-  // const [cardStates, setCardStates] = useState(Array().fill(false))
+  // const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [cardStates, setCardStates] = useState(Array().fill(false));
   const flatListRef = useRef(null);
+
+  const dispatch = useDispatch();
+  const {nearbyStylists} = useSelector(state => state.stylistReducer);
+
+  // console.log(
+  //   'nearbyStylists from screeen ==================>',
+  //   initialRegion.latitude,
+  //   initialRegion.longitude,
+  // );
 
   let circleRadius = 1500;
 
-  const onIconPress = (index) => {
-    flatListRef.current.setNativeProps({ scrollEnabled: true });
-    setIsDetailOpen(!isDetailOpen)
-    // setCardStates(prevState => {
-    //   const newState = [...prevState]
-    //   newState[index] = !newState[index]
-    //   console.log('hui hui', newState[index])
-    //   return newState
-    // })
+  useEffect(() => {
+    fetchNearbyStylists();
+  });
+
+  const fetchNearbyStylists = async () => {
+    await dispatch(
+      getNearbyStylists({
+        lat: initialRegion.latitude,
+        long: initialRegion.longitude,
+      }),
+    );
   };
 
-  const handleRegionChange = (region) => {
-    console.log('moye moye', region)
+  const onIconPress = index => {
+    flatListRef.current.setNativeProps({scrollEnabled: true});
+    // setIsDetailOpen(!isDetailOpen);
+    setCardStates(prevState => {
+      const newState = [...prevState];
+      newState[index] = !newState[index];
+      // console.log('hui hui', newState[index])
+      return newState;
+    });
+  };
+
+  const handleRegionChange = region => {
+    // console.log('moye moye', region);
   };
 
   return (
@@ -51,7 +75,7 @@ const Nearby = () => {
       <ProfileHeader username={true} />
       <View style={styles.screen}>
         <MapView
-          onRegionChange={(region) => handleRegionChange(region)}
+          onRegionChange={region => handleRegionChange(region)}
           initialRegion={initialRegion}
           mapType="terrain"
           style={styles.mapStyle}>
@@ -59,14 +83,14 @@ const Nearby = () => {
             <Marker
               key={item.id}
               image={item.image}
-              coordinate={{ latitude: item.lat, longitude: item.long }}
+              coordinate={{latitude: item.lat, longitude: item.long}}
             />
           ))}
           <Circle
-            center={{ latitude: 44.474621, longitude: -70.250395 }}
+            center={{latitude: 44.474621, longitude: -70.250395}}
             radius={circleRadius}
             strokeWidth={0.5}
-            fillColor='rgba(239, 229, 204, 0.3)'
+            fillColor="rgba(239, 229, 204, 0.3)"
             strokeColor={colors.orange}
           />
         </MapView>
@@ -79,9 +103,7 @@ const Nearby = () => {
                   activeOpacity={0.9}
                   onPress={() => setChangeTab(item.id)}
                   style={changeTab == item.id && styles.background}>
-                  <Image
-                    source={item.icon}
-                  />
+                  <Image source={item.icon} />
                 </TouchableOpacity>
               ))}
             </View>
@@ -96,7 +118,7 @@ const Nearby = () => {
                     key={item.id}
                     label={item.text}
                     value={item.text}
-                    style={{ color: colors.black }}
+                    style={{color: colors.black}}
                   />
                 ))}
               </Picker>
@@ -106,7 +128,7 @@ const Nearby = () => {
             </View>
           </View>
         </View>
-        <View style={[styles.barStyle, { bottom: hp("28%") }]}>
+        <View style={[styles.barStyle, {bottom: hp('28%')}]}>
           <FlatList
             ref={flatListRef}
             data={stylistInformations}
@@ -114,10 +136,10 @@ const Nearby = () => {
             showsHorizontalScrollIndicator={false}
             nestedScrollEnabled
             pagingEnabled={true}
-            renderItem={({ item, index }) => (
+            renderItem={({item, index}) => (
               <StylistInfo
                 image={item.image}
-                isActive={isDetailOpen}
+                isActive={cardStates[index]}
                 onArrowPress={() => onIconPress(index)}
                 flatListRef={flatListRef}
               />
@@ -145,7 +167,7 @@ const styles = StyleSheet.create({
   },
   mapHeaderWrapper: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   tabView: {
     padding: hp('0.1%'),
@@ -211,11 +233,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     // bottom: 0,
     // right: 0,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     // height: hp("50%"),
-    width: "100%",
-    left: 0
-
+    width: '100%',
+    left: 0,
   },
 });
