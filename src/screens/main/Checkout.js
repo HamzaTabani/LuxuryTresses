@@ -79,13 +79,12 @@ const Checkout = () => {
             />
           ))}
         </View>
-        {/* checkou summary */}
+        {/* checkout summary */}
         <View style={{marginTop: 15}}>
           <Text
             style={{color: '#fff', fontWeight: 'bold', fontSize: hp('2.5%')}}>
             Payment Summary
           </Text>
-
           <View style={styles.summaryDetailsContainer}>
             <View style={styles.summaryItem}>
               <Text style={styles.summaryItemTitleText}>Total</Text>

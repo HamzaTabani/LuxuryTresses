@@ -41,10 +41,10 @@ const SingleProduct = ({route}) => {
   } = useSelector(state => state.ecommerceReducer);
 
   const {pic_url} = useSelector(state => state.userData);
-  // console.log('product detailssss from screens =========>', cart_product);
-
+  console.log('product detailssss from screens =========>', cart_product);
+  //
   const id = route?.params?.productID;
-  // console.log('product id ======>', Object.keys(productDetails?.product_name).length);
+  console.log('product id ======>', id);
 
   useEffect(() => {
     if (Object.keys(productDetails).length < 1 || productDetails) {
@@ -86,11 +86,16 @@ const SingleProduct = ({route}) => {
     // );
 
     if (cart_product[index]?.productDetail.product_id == productDetails.id) {
-      const updatedCart = cart_product.map(item => {
-        return {
-          ...item,
-          quantity: item.quantity + 1,
-        };
+      const updatedCart = cart_product.map((item, i) => {
+        //  return console.log('condition check', item.productDetail.product_id == productDetails.id)
+        if (i == index) {
+          return {
+            ...item,
+            quantity: item.quantity + 1,
+          };
+        } else {
+          return item;
+        }
       });
       //  console.log('updated', updatedCart)
       await dispatch(addProductinCart(updatedCart));

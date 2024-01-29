@@ -49,6 +49,24 @@ export const addProductinCart = createAsyncThunk('productCart', async data => {
   return data;
 });
 
+export const Payment = createAsyncThunk(
+  'pay',
+  async ({product, total, note, stripe_token}, {getState}) => {
+    const stateData = getState().userData;
+    const token = stateData.token;
+
+    let payload = {
+      order: {
+        product: product,
+        grand_total: total,
+        note: note,
+        stripeToken: stripe_token,
+      },
+    };
+
+    return await axios.post(`${BASE_URL}/order`);
+  },
+);
 
 export const HomeSlice = createSlice({
   name: 'ecommerce',
@@ -57,6 +75,8 @@ export const HomeSlice = createSlice({
     recent_error: '',
     productDetails: {},
     detail_loading: false,
+    payment_loading: false,
+    payment_error: '',
     cart_product: [],
     cart_error: '',
     detail_error: '',
@@ -85,6 +105,16 @@ export const HomeSlice = createSlice({
     });
     builder.addCase(addProductinCart.rejected, state => {
       state.cart_error = 'Error adding product in your cart';
+    });
+    builder.addCase(Payment.pending, state => {
+      state.payment_loading = true;
+    });
+    builder.addCase(Payment.fulfilled, state => {
+      state.payment_loading = false;
+    });
+    builder.addCase(Payment.rejected, state => {
+      (state.payment_loading = false),
+        (state.payment_error = 'Some problem occured');
     });
   },
 });
