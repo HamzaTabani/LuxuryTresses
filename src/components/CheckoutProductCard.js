@@ -50,13 +50,13 @@ const CheckoutProductCard = ({image, name, price, quantity, increment, decrement
         </View>
       </View>
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <TouchableOpacity onPress={decrement} style={styles.button}>
+        <TouchableOpacity onPress={decrement} style={styles.button} activeOpacity={0.9}>
           <Text style={styles.buttonText}>-</Text>
         </TouchableOpacity>
         <View style={styles.quantityButton}>
           <Text style={styles.quantityText}>{quantity}</Text>
         </View>
-        <TouchableOpacity onPress={increment} style={styles.button}>
+        <TouchableOpacity onPress={increment} style={styles.button} activeOpacity={0.9}>
           <Text style={styles.buttonText}>+</Text>
         </TouchableOpacity>
       </View>

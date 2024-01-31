@@ -5,6 +5,9 @@ import axios from 'axios';
 
 var formData = require('form-data');
 
+export const STRIPE_KEY =
+  'pk_test_51JALRfB7jkIJnWKxOqpPPz0kO8JUONib6u2FFsp4ZtASuMxlzDYnoPq7BC7Yekm8DIUQh9ACseyY0sn286dAg5DM00AQ0xCDSt';
+
 export const register = createAsyncThunk(
   'signup',
   async ({
@@ -254,6 +257,42 @@ export const updateForgetPassword = createAsyncThunk(
   },
 );
 
+export const Payment = createAsyncThunk(
+  'pay',
+  async ({product, total, note, stripe_token}, {getState}) => {
+    const stateData = getState().userData;
+    const token = stateData.token;
+
+    let payload = {
+      order: {
+        products: product,
+        grand_total: total,
+        note: note,
+        stripeToken: stripe_token,
+      },
+    };
+
+    return await axios
+      .post(`${BASE_URL}/order`, payload, {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(res => {
+        console.log('payment res ================>', res.data);
+        return res.data
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+);
+
+export const createCard = createAsyncThunk('async', data => {
+  return data;
+});
+
 export const authState = createSlice({
   name: 'userAuth',
   initialState: {
@@ -267,6 +306,8 @@ export const authState = createSlice({
     token: '',
     pic_url: '',
     user: {},
+    card: [],
+    payment_loading: false,
   },
   extraReducers: builder => {
     builder.addCase(register.pending, state => {
@@ -320,6 +361,18 @@ export const authState = createSlice({
     });
     builder.addCase(updateForgetPassword.fulfilled, state => {
       state.update_loading = false;
+    });
+    builder.addCase(Payment.pending, state => {
+      state.payment_loading = true;
+    });
+    builder.addCase(Payment.fulfilled, state => {
+      state.payment_loading = false;
+    });
+    builder.addCase(Payment.rejected, state => {
+      (state.payment_loading = false)
+    });
+    builder.addCase(createCard.fulfilled, (state, action) => {
+      state.card = action.payload;
     });
   },
 });

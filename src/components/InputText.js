@@ -3,11 +3,11 @@ import React from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-const InputText = ({ label, value, placeholder, onChangeText, icon, keyboardType, secureTextEntry }) => {
+const InputText = ({ label, value, placeholder, onChangeText, icon, keyboardType, secureTextEntry, style, innerStyle, length }) => {
     return (
         <View style={{ marginBottom: hp('2%') }}>
             <Text style={styles.label}>{label}</Text>
-            <View style={styles.inputStyle}>
+            <View style={[styles.inputStyle,style]}>
                 <Icon
                     name={icon}
                     color="#bbb9bd"
@@ -19,9 +19,10 @@ const InputText = ({ label, value, placeholder, onChangeText, icon, keyboardType
                     value={value}
                     secureTextEntry={secureTextEntry}
                     placeholderTextColor={'#bbb9bd'}
+                    maxLength={length}
                     keyboardType={keyboardType}
                     onChangeText={onChangeText}
-                    style={styles.input}
+                    style={[styles.input,innerStyle]}
                 />
             </View>
         </View>

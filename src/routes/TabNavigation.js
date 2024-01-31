@@ -24,6 +24,7 @@ import OrderHistory from '../screens/main/OrderHistory';
 import SelectLocation from '../screens/main/SelectLocation';
 import InitialProfile from '../screens/auth/InitialProfile';
 import ChangePassword from '../screens/auth/ChangePassword';
+import AddNewCard from '../screens/main/AddNewCard';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -87,6 +88,7 @@ const SecondaryStack = () => {
       <Tab.Screen name="PaymentMethod" component={PaymentMethod} />
       <Tab.Screen name="SelectLocation" component={SelectLocation} />
       <Stack.Screen name="ChangePassword" component={ChangePassword} />
+      <Stack.Screen name='AddNewCard' component={AddNewCard} />
     </Stack.Navigator>
   )
 }

@@ -41,19 +41,20 @@ const SingleProduct = ({route}) => {
   } = useSelector(state => state.ecommerceReducer);
 
   const {pic_url} = useSelector(state => state.userData);
-  console.log('product detailssss from screens =========>', cart_product);
   //
-  const id = route?.params?.productID;
-  console.log('product id ======>', id);
+  const product_id = route?.params?.productID;
+  // console.log('product detailssss from screens =========>', productDetails[id].product_name);
+
+  // console.log('product id ======>', id);
 
   useEffect(() => {
-    if (Object.keys(productDetails).length < 1 || productDetails) {
-      fetchProductDetails();
-    }
+    // if (Object.keys(productDetails).length < 1 || !productDetails) {
+    fetchProductDetails();
+    // }
   }, []);
 
   const fetchProductDetails = async () => {
-    await dispatch(getProductDetails(id));
+    await dispatch(getProductDetails(product_id));
   };
 
   const incrementQuantity = () => {
@@ -74,24 +75,30 @@ const SingleProduct = ({route}) => {
         price: productDetails?.regular_price,
         image: productDetails?.product_image,
       },
-      quantity: quantity,
+      quantity: quantity !== 1 ? quantity : 1,
     };
     let confirmedDetails = [...cart_product, cartDetails];
     const index = cart_product?.findIndex(
       item => item.productDetail.product_id == id,
     );
-    // console.log(
-    //   'indexxx',
-    //   cart_product[index].productDetail.product_id == productDetails.id,
-    // );
+    //  return console.log(
+    //     'indexxx',
+    //     cart_product[index].productDetail.product_id == productDetails.id,
+    //   );
 
     if (cart_product[index]?.productDetail.product_id == productDetails.id) {
+      console.log(
+        'auto quantityy',
+        cart_product[index].quantity,
+        'selected quantity',
+        quantity,
+      );
       const updatedCart = cart_product.map((item, i) => {
         //  return console.log('condition check', item.productDetail.product_id == productDetails.id)
         if (i == index) {
           return {
             ...item,
-            quantity: item.quantity + 1,
+            quantity: quantity !== 1 ? quantity : item.quantity + 1,
           };
         } else {
           return item;

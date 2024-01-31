@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Text, StyleSheet, View, ScrollView} from 'react-native';
 import Container from '../../components/Container';
 import ProfileHeader from '../../components/ProfileHeader';
@@ -9,8 +9,12 @@ import {useNavigation} from '@react-navigation/native';
 import {checkoutss} from '../../dummyData';
 import {useSelector, useDispatch} from 'react-redux';
 import {addProductinCart} from '../../redux/slices/ECommerceSlice';
+import InputText from '../../components/InputText';
 
 const Checkout = () => {
+  const [note, setNote] = useState('');
+  const [grandTotal, setGrandTotal] = useState('');
+
   const navigation = useNavigation();
 
   const {cart_product} = useSelector(state => state.ecommerceReducer);
@@ -50,11 +54,16 @@ const Checkout = () => {
     dispatch(addProductinCart(updatedCart));
   };
 
+  useEffect(() => {
+    calculateTotal();
+  });
+
   const calculateTotal = () => {
-    return cart_product.reduce(
+    const total = cart_product.reduce(
       (total, item) => total + item.productDetail.price * item.quantity,
       0,
     );
+    setGrandTotal(total);
   };
 
   return (
@@ -88,9 +97,7 @@ const Checkout = () => {
           <View style={styles.summaryDetailsContainer}>
             <View style={styles.summaryItem}>
               <Text style={styles.summaryItemTitleText}>Total</Text>
-              <Text style={styles.summaryItemTitleText}>
-                ${calculateTotal()}
-              </Text>
+              <Text style={styles.summaryItemTitleText}>${grandTotal}</Text>
             </View>
             {/* <View style={styles.summaryItem}>
               <Text style={styles.summaryItemTitleText}>Delivery</Text>
@@ -102,11 +109,21 @@ const Checkout = () => {
             </View> */}
           </View>
         </View>
+        <InputText
+          placeholder={'Note...'}
+          value={note}
+          onChangeText={text => setNote(text)}
+        />
         {/* Pay Button */}
         <View style={{marginTop: hp('4%'), alignItems: 'center'}}>
           <PrimaryButton
             title="Pay now"
-            onPress={() => navigation.navigate('PaymentMethod')}
+            onPress={() =>
+              navigation.navigate('PaymentMethod', {
+                total: grandTotal,
+                note: note,
+              })
+            }
           />
         </View>
       </ScrollView>
