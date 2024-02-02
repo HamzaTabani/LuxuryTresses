@@ -26,7 +26,7 @@ const UserDetailCard = ({username, email, image}) => {
           <FastImage
             source={image}
             resizeMode={FastImage.resizeMode.cover}
-            style={{width: '100%', height: '100%'}}
+            style={{width: '100%', height: '100%', borderRadius: 10}}
           />
           {/* online status button */}
         </View>

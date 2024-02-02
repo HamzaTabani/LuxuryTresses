@@ -50,6 +50,7 @@ const ProductCard = ({ rating, item, product, username, avatar, productName, pri
           <Image
             source={avatar}
             resizeMode="contain"
+            borderRadius={100}
             style={{ width: 25, height: 25 }}
           />
           <Text
@@ -155,6 +156,7 @@ const styles = StyleSheet.create({
   },
   card_box_img_icon1: {
     flexDirection: 'row',
+    gap: 5,
     justifyContent: 'space-evenly',
     height: 30,
     minWidth: wp('30%'),

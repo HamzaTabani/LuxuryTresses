@@ -22,39 +22,6 @@ import Loader from '../../components/Loader';
 import {trendingStylists} from '../../redux/slices/StylistSlice';
 import colors from '../../assets/colors';
 
-const cartData = [
-  {
-    id: 1,
-    name: 'Omnis iste',
-    img: require('../../assets/images/cart1.png'),
-  },
-  {
-    id: 2,
-    name: 'Omnis iste',
-    img: require('../../assets/images/cart2.png'),
-  },
-  {
-    id: 3,
-    name: 'Omnis iste',
-    img: require('../../assets/images/cart3.png'),
-  },
-  {
-    id: 4,
-    name: 'Omnis iste',
-    img: require('../../assets/images/cart4.png'),
-  },
-  {
-    id: 5,
-    name: 'Omnis iste',
-    img: require('../../assets/images/cart5.png'),
-  },
-  {
-    id: 6,
-    name: 'Omnis iste',
-    img: require('../../assets/images/cart6.png'),
-  },
-];
-
 const cartData2 = [
   {
     id: 1,
@@ -102,7 +69,9 @@ const Trendings = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchTrendingStylists();
+    if (trendingStylists.length < 1) {
+      fetchTrendingStylists();
+    }
   }, []);
 
   const fetchTrendingStylists = async () => {

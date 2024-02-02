@@ -12,9 +12,11 @@ import InputText from '../../components/InputText';
 import PrimaryButton from '../../components/PrimaryButton';
 import {createCard} from '../../redux/slices/AuthSlice';
 import {ShowToast} from '../../utils';
+import uuid from 'react-native-uuid';
 
 const AddNewCard = () => {
   const [state, setState] = useState({
+    card_id: '',
     card_holder: '',
     card_number: '',
     exp_year: '',
@@ -27,10 +29,12 @@ const AddNewCard = () => {
   const sheetRef = useRef();
 
   const {card} = useSelector(state => state.userData);
-  console.log('card details ============>', card);
+
+  console.log('card details ==========>', state.card_id);
 
   const onOpenSheet = () => {
     sheetRef.current.open();
+    clearState();
   };
 
   const onTextChange = (value, text) => {
@@ -40,22 +44,62 @@ const AddNewCard = () => {
     });
   };
 
+  const clearState = () => {
+    setState({
+      ...state,
+      card_id: '',
+      card_holder: '',
+      card_number: '',
+      exp_month: '',
+      exp_year: '',
+      cvc: '',
+    });
+  };
+
   const onAddCard = () => {
     if (!state.card_holder) {
       return ShowToast('Please give your card details');
     } else if (state.card_number.length < 16) {
       return ShowToast('Please enter the valid card number');
     } else {
-      const newCard = [...card, state];
-      dispatch(createCard(newCard));
-      sheetRef.current.close();
+      const cardExist = card.find(item => item.card_id == state.card_id);
+      if (cardExist) {
+        // alert('or kesa hai');
+        const updatedCard = card.map(item =>
+          item.card_id === state.card_id ? {...state} : item,
+        );
+        dispatch(createCard(updatedCard));
+        sheetRef.current.close();
+        return ShowToast('Card has been updated successfully');
+      } else {
+        state.card_id = uuid.v4();
+        const newCard = [...card, state];
+        dispatch(createCard(newCard));
+        sheetRef.current.close();
+        clearState();
+      }
     }
+  };
+
+  const onOpenCardDetails = card => {
+    setState({
+      ...state,
+      card_id: card.card_id,
+      card_holder: card.card_holder,
+      card_number: card.card_number,
+      cvc: card.cvc,
+      exp_month: card.exp_month,
+      exp_year: card.exp_year,
+    });
+    sheetRef.current.open();
   };
 
   return (
     <Container>
       <ProfileHeader icon={true} username={true} text={'Add Card'} />
-      <ScrollView contentContainerStyle={styles.screen} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={styles.screen}
+        showsVerticalScrollIndicator={false}>
         {card.length > 0 &&
           card.map((item, i) => (
             <View style={{marginBottom: hp('8%')}}>
@@ -65,6 +109,7 @@ const AddNewCard = () => {
                 date={item.exp_month + '/' + item.exp_year}
                 cardStyle={{width: '100%'}}
                 masterStyle={{width: '22%'}}
+                onCardPress={() => onOpenCardDetails(item)}
               />
             </View>
           ))}
@@ -72,7 +117,7 @@ const AddNewCard = () => {
       <TouchableOpacity
         style={styles.addCardButton}
         onPress={() => onOpenSheet()}>
-        <Add name={'add'} color={colors.orange} size={30} />
+        <Add name={'add'} color={colors.white} size={30} />
       </TouchableOpacity>
       <View style={styles.sheetWrapper}>
         <RBSheet
@@ -134,7 +179,10 @@ const AddNewCard = () => {
               />
             </View>
             <View style={{alignItems: 'center', paddingTop: hp('4%')}}>
-              <PrimaryButton title={'Add Card'} onPress={() => onAddCard()} />
+              <PrimaryButton
+                title={state.card_id == '' ? 'Add Card' : 'Update Card'}
+                onPress={() => onAddCard()}
+              />
             </View>
           </ScrollView>
         </RBSheet>
@@ -152,7 +200,7 @@ const styles = StyleSheet.create({
   },
   addCardButton: {
     borderWidth: 1,
-    borderColor: colors.orange,
+    backgroundColor: colors.secondary,
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',

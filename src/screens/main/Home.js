@@ -120,10 +120,10 @@ const Home = ({navigation}) => {
                 <View style={styles.topStylesContainer}>
                   <View>
                     <View style={{paddingHorizontal: wp('8%')}}>
-                      <TouchableOpacity
-                        onPress={() => navigation.navigate('TopStylists')}>
-                        <Subheading title={'Top stylists'} />
-                      </TouchableOpacity>
+                      {/* <TouchableOpacity
+                        onPress={() => navigation.navigate('TopStylists')}> */}
+                      <Subheading title={'Top stylists'} />
+                      {/* </TouchableOpacity> */}
                     </View>
                     <ScrollView
                       style={{marginTop: 20, marginHorizontal: hp('-3%')}}
@@ -139,7 +139,6 @@ const Home = ({navigation}) => {
                           <TouchableOpacity
                             activeOpacity={0.9}
                             key={item?.id}
-                            a
                             onPress={() =>
                               navigation.navigate('ProfileDetail', {
                                 profile_id: item.id,

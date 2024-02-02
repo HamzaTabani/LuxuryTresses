@@ -6,7 +6,6 @@ import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import CheckoutProductCard from '../../components/CheckoutProductCard';
 import PrimaryButton from '../../components/PrimaryButton';
 import {useNavigation} from '@react-navigation/native';
-import {checkoutss} from '../../dummyData';
 import {useSelector, useDispatch} from 'react-redux';
 import {addProductinCart} from '../../redux/slices/ECommerceSlice';
 import InputText from '../../components/InputText';
@@ -60,9 +59,7 @@ const Checkout = () => {
 
   const calculateTotal = () => {
     const total = cart_product.reduce(
-      (total, item) => total + item.productDetail.price * item.quantity,
-      0,
-    );
+      (total, item) => total + item.productDetail.price * item.quantity, 0);
     setGrandTotal(total);
   };
 

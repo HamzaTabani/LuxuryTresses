@@ -41,21 +41,16 @@ const SingleProduct = ({route}) => {
   } = useSelector(state => state.ecommerceReducer);
 
   const {pic_url} = useSelector(state => state.userData);
-  //
   const product_id = route?.params?.productID;
   // console.log('product detailssss from screens =========>', productDetails[id].product_name);
 
-  // console.log('product id ======>', id);
+  // console.log('product id ======>', product_id);
 
   useEffect(() => {
     // if (Object.keys(productDetails).length < 1 || !productDetails) {
-    fetchProductDetails();
+    dispatch(getProductDetails(product_id));
     // }
   }, []);
-
-  const fetchProductDetails = async () => {
-    await dispatch(getProductDetails(product_id));
-  };
 
   const incrementQuantity = () => {
     setQuantity(quantity + 1);
@@ -79,7 +74,7 @@ const SingleProduct = ({route}) => {
     };
     let confirmedDetails = [...cart_product, cartDetails];
     const index = cart_product?.findIndex(
-      item => item.productDetail.product_id == id,
+      item => item.productDetail.product_id == product_id,
     );
     //  return console.log(
     //     'indexxx',
@@ -121,143 +116,146 @@ const SingleProduct = ({route}) => {
     // console.log('cart details =======>', confirmedDetails);
   };
 
+  if (detail_loading || detail_error) {
+    return (
+      <View
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          flex: 1,
+          backgroundColor: colors.primary,
+        }}>
+        {detail_loading && <Loader size={'large'} />}
+        {detail_error !== '' && (
+          <Text style={styles.errorMessage}>{detail_error}</Text>
+        )}
+      </View>
+    );
+  }
+
   return (
     <Container>
-      {detail_loading ? (
-        <>
-          <View
-            style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
-            <Loader size={'large'} />
+      <>
+        <ProfileHeader
+          icon={true}
+          username={true}
+          text={productDetails?.product_name}
+        />
+        <ScrollView style={styles.container}>
+          {/* product images.. */}
+          <View style={{height: hp('35%')}}>
+            <Swiper
+              style={styles.wrapper}
+              activeDotColor={colors.orange}
+              dotStyle={{borderWidth: 1, borderColor: colors.orange}}>
+              {historyImages.map(item => (
+                <Image
+                  source={item.image}
+                  borderRadius={20}
+                  // resizeMode="contain"
+                  style={{
+                    width: hp('37%'),
+                    height: hp('35%'),
+                    alignSelf: 'center',
+                  }}
+                />
+              ))}
+            </Swiper>
           </View>
-        </>
-      ) : detail_error ? (
-        <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
-          <Text style={styles.errorMessage}>{detail_error}</Text>
-        </View>
-      ) : (
-        <>
-          <ProfileHeader
-            icon={true}
-            username={true}
-            text={productDetails?.product_name}
-          />
-          <ScrollView style={styles.container}>
-            {/* product images.. */}
-            <View style={{height: hp('35%')}}>
-              <Swiper
-                style={styles.wrapper}
-                activeDotColor={colors.orange}
-                dotStyle={{borderWidth: 1, borderColor: colors.orange}}>
-                {historyImages.map(item => (
-                  <Image
-                    source={item.image}
-                    borderRadius={20}
-                    // resizeMode="contain"
-                    style={{
-                      width: hp('37%'),
-                      height: hp('35%'),
-                      alignSelf: 'center',
-                    }}
-                  />
-                ))}
-              </Swiper>
-            </View>
-            {/* product detail */}
-            <View style={{marginTop: 30}}>
-              {/* product owner.. */}
-              <UserDetailCard
-                username={
-                  productDetails?.user?.first_name +
-                  ' ' +
-                  productDetails?.user?.last_name
-                }
-                email={productDetails?.user?.email}
-                image={
-                  productDetails?.user?.profile_pic == null
-                    ? images.stylist1
-                    : {uri: pic_url + productDetails?.user?.profile_pic}
-                }
-              />
-              {/* product description */}
-              <View>
-                <Text
-                  style={{
-                    fontWeight: 'bold',
-                    fontSize: hp('2.2%'),
-                    color: '#fff',
-                    marginTop: 20,
-                  }}>
-                  Description
-                </Text>
-                <Text
-                  style={{
-                    fontWeight: 'light',
-                    fontSize: hp('1.5%'),
-                    color: '#efefef',
-                    marginTop: 20,
-                  }}>
-                  {/* Lorem Ipsum is simply dummy text of the printing and typesetting
+          {/* product detail */}
+          <View style={{marginTop: 30}}>
+            {/* product owner.. */}
+            <UserDetailCard
+              username={
+                productDetails?.user?.first_name +
+                ' ' +
+                productDetails?.user?.last_name
+              }
+              email={productDetails?.user?.email}
+              image={
+                productDetails?.user?.profile_pic == null
+                  ? images.stylist1
+                  : {uri: pic_url + productDetails?.user?.profile_pic}
+              }
+            />
+            {/* product description */}
+            <View>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  fontSize: hp('2.2%'),
+                  color: '#fff',
+                  marginTop: 20,
+                }}>
+                Description
+              </Text>
+              <Text
+                style={{
+                  fontWeight: 'light',
+                  fontSize: hp('1.5%'),
+                  color: '#efefef',
+                  marginTop: 20,
+                }}>
+                {/* Lorem Ipsum is simply dummy text of the printing and typesetting
               industry. Lorem Ipsum has been the industry's standard dummy text
               ever since the 1500s, when an unknown printer took a galley of
               type and scrambled it to make a type specimen book. It has
               survived not only five centuries */}
-                  {productDetails?.description}
-                </Text>
-              </View>
-
-              {/* product quantity buttons */}
-              <View style={styles.productQuantityBox}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: 5,
-                    marginLeft: 20,
-                  }}>
-                  <Text style={{color: '#D49621', fontSize: hp('2.4%')}}>
-                    ${productDetails?.regular_price}
-                  </Text>
-                  <Text style={{color: '#efefef', fontSize: hp('1.6%')}}>
-                    (24 available)
-                  </Text>
-                </View>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <TouchableOpacity
-                    onPress={decrementQuantity}
-                    style={styles.button}>
-                    <Text style={styles.buttonText}>-</Text>
-                  </TouchableOpacity>
-                  <View style={styles.quantityButton}>
-                    <Text style={styles.quantityText}>{quantity}</Text>
-                  </View>
-                  <TouchableOpacity
-                    onPress={incrementQuantity}
-                    style={styles.button}>
-                    <Text style={styles.buttonText}>+</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-
-              {/* add to card button */}
+                {productDetails?.description}
+              </Text>
+            </View>
+            {/* product quantity buttons */}
+            <View style={styles.productQuantityBox}>
               <View
                 style={{
-                  marginTop: 15,
                   flexDirection: 'row',
-                  justifyContent: 'center',
-                  gap: 10,
+                  alignItems: 'center',
+                  gap: 5,
+                  marginLeft: 20,
                 }}>
-                <OutlineButton
-                  title={'Add to cart'}
-                  onPress={() => onAddtoCartPress()}
-                  textStyle={{color: '#fff'}}
-                  buttonStyle={{width: '82%'}}
-                />
-                <MessageOption />
+                <Text style={{color: '#D49621', fontSize: hp('2.4%')}}>
+                  ${productDetails?.regular_price}
+                </Text>
+                <Text style={{color: '#efefef', fontSize: hp('1.6%')}}>
+                  (24 available)
+                </Text>
+              </View>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <TouchableOpacity
+                  onPress={decrementQuantity}
+                  style={styles.button}>
+                  <Text style={styles.buttonText}>-</Text>
+                </TouchableOpacity>
+                <View style={styles.quantityButton}>
+                  <Text style={styles.quantityText}>{quantity}</Text>
+                </View>
+                <TouchableOpacity
+                  onPress={incrementQuantity}
+                  style={styles.button}>
+                  <Text style={styles.buttonText}>+</Text>
+                </TouchableOpacity>
               </View>
             </View>
-          </ScrollView>
-        </>
-      )}
+
+            {/* add to card button */}
+            <View
+              style={{
+                marginTop: 15,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                gap: 10,
+              }}>
+              <OutlineButton
+                title={'Add to cart'}
+                onPress={() => onAddtoCartPress()}
+                textStyle={{color: '#fff'}}
+                buttonStyle={{width: '82%'}}
+              />
+              <MessageOption />
+            </View>
+          </View>
+        </ScrollView>
+      </>
     </Container>
   );
 };
@@ -334,7 +332,8 @@ const styles = StyleSheet.create({
   },
   errorMessage: {
     color: colors.orange,
-    fontSize: hp('2.4%'),
+    fontFamily: 'Lora-Medium',
+    fontSize: hp('2.6%'),
   },
 });
 

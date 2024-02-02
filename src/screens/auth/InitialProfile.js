@@ -227,6 +227,7 @@ const InitialProfile = ({route}) => {
                       borderRadius={100}
                       style={{
                         position: 'absolute',
+                        alignSelf: 'center',
                         top: 'center',
                         left: 'center',
                         width: 100,
