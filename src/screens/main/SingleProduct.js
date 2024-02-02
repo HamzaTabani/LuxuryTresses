@@ -42,15 +42,12 @@ const SingleProduct = ({route}) => {
 
   const {pic_url} = useSelector(state => state.userData);
   const product_id = route?.params?.productID;
-  // console.log('product detailssss from screens =========>', productDetails[id].product_name);
-
-  // console.log('product id ======>', product_id);
-
+  // console.log('product detailssss from screens =========>', productDetails);
   useEffect(() => {
-    // if (Object.keys(productDetails).length < 1 || !productDetails) {
-    dispatch(getProductDetails(product_id));
-    // }
-  }, []);
+    if (!productDetails[product_id]) {
+      dispatch(getProductDetails(product_id));
+    }
+  }, [product_id]);
 
   const incrementQuantity = () => {
     setQuantity(quantity + 1);
@@ -65,10 +62,10 @@ const SingleProduct = ({route}) => {
   const onAddtoCartPress = async () => {
     const cartDetails = {
       productDetail: {
-        product_id: productDetails?.id,
-        title: productDetails?.product_name,
-        price: productDetails?.regular_price,
-        image: productDetails?.product_image,
+        product_id: productDetails[product_id]?.id,
+        title: productDetails[product_id]?.product_name,
+        price: productDetails[product_id]?.regular_price,
+        image: productDetails[product_id]?.product_image,
       },
       quantity: quantity !== 1 ? quantity : 1,
     };
@@ -81,7 +78,10 @@ const SingleProduct = ({route}) => {
     //     cart_product[index].productDetail.product_id == productDetails.id,
     //   );
 
-    if (cart_product[index]?.productDetail.product_id == productDetails.id) {
+    if (
+      cart_product[index]?.productDetail.product_id ==
+      productDetails[product_id].id
+    ) {
       console.log(
         'auto quantityy',
         cart_product[index].quantity,
@@ -139,7 +139,7 @@ const SingleProduct = ({route}) => {
         <ProfileHeader
           icon={true}
           username={true}
-          text={productDetails?.product_name}
+          text={productDetails[product_id]?.product_name}
         />
         <ScrollView style={styles.container}>
           {/* product images.. */}
@@ -167,15 +167,18 @@ const SingleProduct = ({route}) => {
             {/* product owner.. */}
             <UserDetailCard
               username={
-                productDetails?.user?.first_name +
+                productDetails[product_id]?.user?.first_name +
                 ' ' +
-                productDetails?.user?.last_name
+                productDetails[product_id]?.user?.last_name
               }
-              email={productDetails?.user?.email}
+              email={productDetails[product_id]?.user?.email}
               image={
-                productDetails?.user?.profile_pic == null
+                productDetails[product_id]?.user?.profile_pic == null
                   ? images.stylist1
-                  : {uri: pic_url + productDetails?.user?.profile_pic}
+                  : {
+                      uri:
+                        pic_url + productDetails[product_id]?.user?.profile_pic,
+                    }
               }
             />
             {/* product description */}
@@ -201,7 +204,7 @@ const SingleProduct = ({route}) => {
               ever since the 1500s, when an unknown printer took a galley of
               type and scrambled it to make a type specimen book. It has
               survived not only five centuries */}
-                {productDetails?.description}
+                {productDetails[product_id]?.description}
               </Text>
             </View>
             {/* product quantity buttons */}
@@ -214,7 +217,7 @@ const SingleProduct = ({route}) => {
                   marginLeft: 20,
                 }}>
                 <Text style={{color: '#D49621', fontSize: hp('2.4%')}}>
-                  ${productDetails?.regular_price}
+                  ${productDetails[product_id]?.regular_price}
                 </Text>
                 <Text style={{color: '#efefef', fontSize: hp('1.6%')}}>
                   (24 available)

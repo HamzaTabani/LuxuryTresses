@@ -41,11 +41,13 @@ const ProfileDetail = ({route}) => {
     useSelector(state => state.stylistReducer);
 
   const {pic_url} = useSelector(state => state.userData);
-  // console.log('profile details from screen =========>', stylistDetail);
+  console.log('profile details from screen =========>', stylistDetail[id]);
 
   useEffect(() => {
-    fetchProfileDetails();
-  }, []);
+    if (!stylistDetail[id]) {
+      fetchProfileDetails();
+    }
+  }, [id]);
 
   const fetchProfileDetails = async () => {
     await dispatch(stylistProfileById(id));
@@ -60,9 +62,10 @@ const ProfileDetail = ({route}) => {
             <Loader size={'large'} />
           </View>
         </>
-      ) : stylistDetail_error ? (
+      ) : stylistDetail_error !== '' ? (
         <>
-          <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+          <View
+            style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
             <Text style={styles.errorMessage}>{detail_error}</Text>
           </View>
         </>
@@ -71,7 +74,9 @@ const ProfileDetail = ({route}) => {
           <ProfileHeader
             username={true}
             icon={true}
-            text={stylistDetail.first_name + ' ' + stylistDetail.last_name}
+            text={
+              stylistDetail[id]?.first_name + ' ' + stylistDetail[id]?.last_name
+            }
           />
           <ScrollView
             contentContainerStyle={styles.screen}
@@ -79,9 +84,9 @@ const ProfileDetail = ({route}) => {
             <View style={styles.wrapper}>
               <Image
                 source={
-                  stylistDetail.profile_pic == null
+                  stylistDetail[id]?.profile_pic == null
                     ? images.stylist1
-                    : {uri: pic_url + stylistDetail.profile_pic}
+                    : {uri: pic_url + stylistDetail[id]?.profile_pic}
                 }
                 style={styles.imageStyle}
                 resizeMode="cover"
@@ -89,10 +94,14 @@ const ProfileDetail = ({route}) => {
               />
               <View style={styles.textWrapper}>
                 <Text style={styles.name}>
-                  {stylistDetail.first_name + ' ' + stylistDetail.last_name}
+                  {stylistDetail[id]?.first_name +
+                    ' ' +
+                    stylistDetail[id]?.last_name}
                 </Text>
                 <Text style={styles.location}>
-                  {stylistDetail.email}
+                  {stylistDetail[id]?.email === 'undefined'
+                    ? 'test123@gmail.com'
+                    : stylistDetail[id]?.email}
                   {/* <Text style={{color: colors.white, fontWeight: 'bold'}}>
                 (2km)
               </Text> */}
@@ -158,7 +167,9 @@ const ProfileDetail = ({route}) => {
                 <View style={styles.textContainer}>
                   <Text style={styles.heading}>
                     About{' '}
-                    {stylistDetail.first_name + ' ' + stylistDetail.last_name}
+                    {stylistDetail[id]?.first_name +
+                      ' ' +
+                      stylistDetail[id]?.last_name}
                   </Text>
                   <Text style={styles.message}>
                     Sed ut perspiciatis unde omnis iste natus error sit
@@ -211,7 +222,7 @@ const ProfileDetail = ({route}) => {
                     <TouchableOpacity
                       style={{marginBottom: hp('3.5%')}}
                       activeOpacity={0.9}
-                      onPress={() => navigation.navigate('SingleProduct')}>
+                      onPress={() => alert('working in progress')}>
                       <ProductCard rating={3} item={item} product={true} />
                     </TouchableOpacity>
                   )}
@@ -248,11 +259,12 @@ const styles = StyleSheet.create({
   },
   name: {
     color: colors.white,
-    fontSize: hp('2.4%'),
+    fontSize: hp('2%'),
     fontWeight: 'bold',
   },
   location: {
     color: colors.white,
+    fontSize: hp('1.6%'),
     marginTop: hp('1%'),
   },
   iconView: {

@@ -73,7 +73,7 @@ export const HomeSlice = createSlice({
     });
     builder.addCase(getProductDetails.fulfilled, (state, action) => {
       (state.detail_loading = false);
-        state.productDetails = action.payload.data;
+        state.productDetails[action.payload.data.id] = action.payload.data;
     });
     builder.addCase(getProductDetails.rejected, state => {
       (state.detail_loading = false),

@@ -28,14 +28,13 @@ import {getTopStylists} from '../../redux/slices/StylistSlice';
 
 const Home = ({navigation}) => {
   const {user, pic_url} = useSelector(state => state.userData);
-  const {recentProducts, recent_error} = useSelector(
+  const {recentProducts, recent_error, productDetails} = useSelector(
     state => state.ecommerceReducer,
   );
   const {topStylists, loading, topStylist_error} = useSelector(
     state => state.stylistReducer,
   );
 
-  // console.log('stylists profile ======>', topStylists);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -149,7 +148,7 @@ const Home = ({navigation}) => {
                               stylist_name={item.first_name + item.last_name}
                               stylist_email={
                                 item.email === 'undefined'
-                                  ? 'testuser123@gmail.com'
+                                  ? 'test123@gmail.com'
                                   : item.email
                               }
                               image={

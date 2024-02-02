@@ -127,7 +127,7 @@ export const StylistSlice = createSlice({
     });
     builders.addCase(stylistProfileById.fulfilled, (state, action) => {
       (state.stylistDetail_loading = false),
-        (state.stylistDetail = action.payload.data);
+        (state.stylistDetail[action.payload.data.id] = action.payload.data);
     });
     builders.addCase(stylistProfileById.rejected, state => {
       (state.stylistDetail_error = 'Some problem occured'),
