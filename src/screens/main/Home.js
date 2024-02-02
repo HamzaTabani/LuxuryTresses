@@ -28,7 +28,7 @@ import {getTopStylists} from '../../redux/slices/StylistSlice';
 
 const Home = ({navigation}) => {
   const {user, pic_url} = useSelector(state => state.userData);
-  const {recentProducts, recent_error, productDetails} = useSelector(
+  const {recentProducts, recent_error} = useSelector(
     state => state.ecommerceReducer,
   );
   const {topStylists, loading, topStylist_error} = useSelector(

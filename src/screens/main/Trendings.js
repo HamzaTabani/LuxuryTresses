@@ -64,12 +64,12 @@ const Trendings = () => {
 
   const {pic_url} = useSelector(state => state.userData);
 
-  // console.log('trending stylists ==========>', trending_error);
+  // console.log('trending stylists ==========>', trending_stylists);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (trendingStylists.length < 1) {
+    if (trending_stylists.length < 1) {
       fetchTrendingStylists();
     }
   }, []);
