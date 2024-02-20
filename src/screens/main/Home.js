@@ -52,6 +52,17 @@ const Home = ({navigation}) => {
     await dispatch(getTopStylists());
   };
 
+  const onStylistDetail = item => {
+    const stylistImages = topStylists.map(item => ({
+      stylist_image: item.profile_pic,
+    }));
+
+    navigation.navigate('ProfileDetail', {
+      profile_id: item.id,
+      stylists: stylistImages,
+    });
+  };
+
   return (
     <>
       <ScrollView
@@ -138,11 +149,7 @@ const Home = ({navigation}) => {
                           <TouchableOpacity
                             activeOpacity={0.9}
                             key={item?.id}
-                            onPress={() =>
-                              navigation.navigate('ProfileDetail', {
-                                profile_id: item.id,
-                              })
-                            }>
+                            onPress={() => onStylistDetail(item)}>
                             <Card
                               rating={3}
                               stylist_name={item.first_name + item.last_name}

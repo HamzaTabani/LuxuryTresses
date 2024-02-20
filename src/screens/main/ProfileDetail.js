@@ -33,7 +33,8 @@ const ProfileDetail = ({route}) => {
   const navigation = useNavigation();
 
   const id = route?.params?.profile_id;
-  console.log('profile_id', id);
+  const moreStylist = route?.params?.stylists;
+  console.log('profile_id', moreStylist.length);
 
   const dispatch = useDispatch();
 
@@ -41,7 +42,7 @@ const ProfileDetail = ({route}) => {
     useSelector(state => state.stylistReducer);
 
   const {pic_url} = useSelector(state => state.userData);
-  console.log('profile details from screen =========>', stylistDetail[id]);
+  // console.log('profile details from screen =========>', stylistDetail[id]);
 
   useEffect(() => {
     if (!stylistDetail[id]) {
@@ -181,22 +182,25 @@ const ProfileDetail = ({route}) => {
                   </Text>
                 </View>
                 <View style={styles.imageWrapper}>
-                  {stylistImages.map(item => (
-                    <>
-                      <Image
-                        key={item.id}
-                        source={item.image}
-                        borderRadius={15}
-                        blurRadius={item.id == 4 ? 25 : 0}
-                        style={styles.image}
-                      />
-                      <View style={styles.absoluteText}>
-                        <Text style={styles.moreText}>
-                          {item.id == 4 && 'More'}
-                        </Text>
-                      </View>
-                    </>
-                  ))}
+                  {moreStylist.slice(20, 24).map((item, i) => {
+                    // console.log(item.profile_pic)
+                    return (
+                      <>
+                        <Image
+                          key={item.id}
+                          source={{uri: pic_url + item.stylist_image}}
+                          borderRadius={15}
+                          blurRadius={i == 3 ? 25 : 0}
+                          style={styles.image}
+                        />
+                        <View style={styles.absoluteText}>
+                          <Text style={styles.moreText}>
+                            {i == 3 && 'More'}
+                          </Text>
+                        </View>
+                      </>
+                    );
+                  })}
                 </View>
                 <View style={{paddingTop: hp('4%')}}>
                   <TimingCard />
@@ -205,7 +209,11 @@ const ProfileDetail = ({route}) => {
                       title={'BOOK NOW'}
                       buttonStyle={{width: '80%'}}
                       textStyle={{color: colors.white}}
-                      onPress={() => navigation.navigate('Booking')}
+                      onPress={() =>
+                        navigation.navigate('Booking', {
+                          bookingData: stylistDetail[id],
+                        })
+                      }
                     />
                     <View style={{marginLeft: hp('2%')}}>
                       <MessageOption />
@@ -306,10 +314,11 @@ const styles = StyleSheet.create({
   },
   imageWrapper: {
     paddingTop: hp('5%'),
+    // marginRight: hp()
     height: '19%',
     width: '19%',
     flexDirection: 'row',
-    gap: 9,
+    gap: 12,
   },
   moreText: {
     color: colors.white,

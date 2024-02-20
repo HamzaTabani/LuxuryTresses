@@ -2,6 +2,7 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
 import {BASE_URL} from '../constant.js';
 import {ErrorToast} from '../../utils';
+import FormData from 'form-data';
 
 export const getTopStylists = createAsyncThunk(
   'topStylists',
@@ -96,6 +97,41 @@ export const getNearbyStylists = createAsyncThunk(
   },
 );
 
+export const Appointment = createAsyncThunk(
+  'appointment',
+  async (
+    {stylist_id, service_id, appointment_date, no_of_guests},
+    {getState},
+  ) => {
+    const stateData = getState().userData;
+    const token = stateData.token;
+
+    var data = new FormData();
+
+    // console.log('attributes',data)
+
+    data.append('service_provider_id', stylist_id);
+    data.append('service_id', service_id);
+    data.append('appointment_date', appointment_date);
+    data.append('no_of_guests', no_of_guests);
+
+    return await axios
+      .post(`${BASE_URL}/appointment`, data, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(res => {
+        return res.data;
+      })
+      .catch(error => {
+        console.log('appointment error =========>', error);
+      });
+  },
+);
+
 export const StylistSlice = createSlice({
   name: 'stylistDetails',
   initialState: {
@@ -109,6 +145,7 @@ export const StylistSlice = createSlice({
     trending_loader: false,
     trending_error: '',
     nearbyStylists: [],
+    appointment_loader: false,
   },
   extraReducers: builders => {
     builders.addCase(getTopStylists.pending, state => {
@@ -147,6 +184,12 @@ export const StylistSlice = createSlice({
     builders.addCase(getNearbyStylists.fulfilled, (state, action) => {
       state.nearbyStylists = action.payload.data;
       // console.log('redux state',action.payload.data)
+    });
+    builders.addCase(Appointment.pending, state => {
+      state.appointment_loader = true;
+    });
+    builders.addCase(Appointment.fulfilled, state => {
+      state.appointment_loader = false;
     });
   },
 });

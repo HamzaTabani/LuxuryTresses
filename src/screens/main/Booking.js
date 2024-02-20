@@ -20,32 +20,43 @@ import {Picker} from '@react-native-picker/picker';
 import CalendarPicker from 'react-native-calendar-picker';
 import colors from '../../assets/colors';
 import Next from 'react-native-vector-icons/MaterialIcons';
+import moment from 'moment';
+import {useDispatch, useSelector} from 'react-redux';
+import { Appointment } from '../../redux/slices/StylistSlice';
+import { ShowToast } from '../../utils';
 
-const services = [
-  {
-    id: 1,
-    text: 'Haircut',
-  },
-  {
-    id: 2,
-    text: 'Facial',
-  },
-];
+// const services = [
+//   {
+//     id: 1,
+//     text: 'Haircut',
+//   },
+//   {
+//     id: 2,
+//     text: 'Facial',
+//   },
+// ];
 
-const Booking = () => {
+const Booking = ({route}) => {
   const navigation = useNavigation();
-  const [selectedLanguage, setSelectedLanguage] = useState('city');
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedServices, setSelectedServices] = useState('');
+  const [selectedDate, setSelectedDate] = useState(moment(new Date()).format('YY/MM/DD'));
+  const [guest, setGuest] = useState(1);
 
-  const [quantity, setQuantity] = useState(1);
+  const dispatch = useDispatch()
+
+  const { appointment_loader } = useSelector(state => state.stylistReducer)
+
+  const data = route.params.bookingData;
+  // console.log('service id', selectedServices.pivot.service_id, 'guest quantity', guest, 'date', selectedDate);
+  console.log(selectedServices)
 
   const incrementQuantity = () => {
-    setQuantity(quantity + 1);
+    setGuest(guest + 1);
   };
 
   const decrementQuantity = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
+    if (guest > 1) {
+      setGuest(guest - 1);
     }
   };
 
@@ -63,6 +74,31 @@ const Booking = () => {
         <Next name={'navigate-before'} color={colors.white} size={25} />
       </View>
     );
+  };
+
+  const onGetDate = date => {
+    setSelectedDate(moment(date).format('YY/MM/DD'));
+  };
+
+  const onAppointmentBook = async () => {
+
+   if(selectedServices === ''){
+      return ShowToast('Please select a service')
+   } else { 
+    const res = await dispatch(Appointment({
+      stylist_id: selectedServices.pivot.user_id,
+      service_id: selectedServices.pivot.service_id,
+      appointment_date: selectedDate,
+      no_of_guests: guest
+    }))
+   if(res.payload.success){
+      navigation.navigate('home')
+      return ShowToast(res.payload.message)
+   } else {
+      return ShowToast(res.payload.message)
+   }
+  }
+
   };
 
   return (
@@ -86,107 +122,118 @@ const Booking = () => {
             </Pressable>
           </View>
         </View>
-        <View
-          style={{
-            marginTop: 10,
-            paddingBottom: 20,
-            borderBottomWidth: 0.5,
-            borderColor: '#D49621',
-          }}>
-          {/* select box  */}
+        {data.services.length < 1 ? (
+          <View
+            style={{justifyContent: 'center', alignItems: 'center', flex: 0.8}}>
+            <Text style={styles.message}>
+              No services available for this stylist
+            </Text>
+          </View>
+        ) : (
           <View
             style={{
-              width: '100%',
-              padding: hp('0.2%'),
-              borderWidth: 0.8,
+              marginTop: 10,
+              paddingBottom: 20,
+              // backgroundColor: 'red',
+              borderBottomWidth: 0.5,
               borderColor: '#D49621',
-              borderRadius: 40,
-              backgroundColor: '#F4F4F4',
             }}>
-            <Picker
-              selectedValue={selectedLanguage}
-              dropdownIconColor={colors.orange}
-              dropdownIconRippleColor={colors.orange}
-              onValueChange={(itemValue, itemIndex) =>
-                setSelectedLanguage(itemValue)
-              }>
-              {services.map(item => (
-                <Picker.Item
-                  key={item.id}
-                  label={item.text}
-                  value={item.text}
-                  style={{color: colors.darkgray}}
-                />
-              ))}
-            </Picker>
-          </View>
-        </View>
-
-        {/*/////////////  filter items container ////////////// */}
-        {/* reviews listing */}
-
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{paddingBottom: 100}}>
-          {/* calender */}
-          <View style={styles.calenderBackground}>
-            <CalendarPicker
-              startFromMonday={true}
-              onDateChange={date => setSelectedDate(date)}
-              textStyle={{color: colors.white}}
-              scaleFactor={400}
-              dayLabelsWrapper={{
-                borderTopWidth: 0,
-                borderBottomWidth: 0,
-              }}
-              nextComponent={RenderNext()}
-              previousComponent={RenderPrevious()}
-              selectedDayColor={'rgba(230, 171, 22, 1)'}
-              selectedDayTextColor={colors.white}
-              todayBackgroundColor={'rgba(230, 171, 22,15)'}
-              allowRangeSelection={true}
-              previousTitleStyle={{color: colors.white}}
-              nextTitleStyle={{color: colors.white}}
-              headerWrapperStyle={styles.headerStyle}
-            />
-          </View>
-          {/* guest select button */}
-          <View style={styles.productQuantityBox}>
+            {/* select box  */}
             <View
               style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 5,
-                marginLeft: 20,
+                width: '100%',
+                padding: hp('0.2%'),
+                borderWidth: 0.8,
+                borderColor: '#D49621',
+                borderRadius: 40,
+                backgroundColor: '#F4F4F4',
               }}>
-              <Text style={{color: '#000', fontSize: hp('1.8%')}}>
-                Select Guest
-              </Text>
+              <Picker
+                selectedValue={selectedServices}
+                dropdownIconColor={colors.orange}
+                dropdownIconRippleColor={colors.orange}
+                onValueChange={(itemValue, itemIndex) =>
+                  setSelectedServices(itemValue)
+                }>
+                   <Picker.Item label="Select a service" value={{ userId: null, serviceId: null, label: "Select a service" }} />
+                {data.services.map(item => (
+                  <Picker.Item
+                    key={item.id}
+                    label={item.title}
+                    value={item}
+                    style={{color: colors.darkgray}}
+                  />
+                ))}
+              </Picker>
             </View>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <TouchableOpacity
-                onPress={decrementQuantity}
-                style={styles.button}>
-                <Text style={styles.buttonText}>-</Text>
-              </TouchableOpacity>
-              <View style={styles.quantityButton}>
-                <Text style={styles.quantityText}>{quantity}</Text>
+            {/*/////////////  filter items container ////////////// */}
+            {/* reviews listing */}
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{paddingBottom: 100}}>
+              {/* calender */}
+              <View style={styles.calenderBackground}>
+                <CalendarPicker
+                  startFromMonday={true}
+                  onDateChange={date => onGetDate(date)}
+                  textStyle={{color: colors.white}}
+                  scaleFactor={400}
+                  dayLabelsWrapper={{
+                    borderTopWidth: 0,
+                    borderBottomWidth: 0,
+                  }}
+                  nextComponent={RenderNext()}
+                  previousComponent={RenderPrevious()}
+                  selectedDayColor={'rgba(230, 171, 22, 1)'}
+                  selectedDayTextColor={colors.white}
+                  todayBackgroundColor={'rgba(230, 171, 22,15)'}
+                  allowRangeSelection={false}
+                  previousTitleStyle={{color: colors.white}}
+                  nextTitleStyle={{color: colors.white}}
+                  headerWrapperStyle={styles.headerStyle}
+                />
               </View>
-              <TouchableOpacity
-                onPress={incrementQuantity}
-                style={styles.button}>
-                <Text style={styles.buttonText}>+</Text>
-              </TouchableOpacity>
-            </View>
+              {/* guest select button */}
+              <View style={styles.productQuantityBox}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 5,
+                    marginLeft: 20,
+                  }}>
+                  <Text style={{color: '#000', fontSize: hp('1.8%')}}>
+                    Select Guest
+                  </Text>
+                </View>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <TouchableOpacity
+                    onPress={decrementQuantity}
+                    style={styles.button}>
+                    <Text style={styles.buttonText}>-</Text>
+                  </TouchableOpacity>
+                  <View style={styles.quantityButton}>
+                    <Text style={styles.quantityText}>{guest}</Text>
+                  </View>
+                  <TouchableOpacity
+                    onPress={incrementQuantity}
+                    style={styles.button}>
+                    <Text style={styles.buttonText}>+</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={{alignItems: 'center', marginTop: 20}}>
+                <OutlineButton
+                  title="Book now"
+                  textStyle={{color: '#000'}}
+                  indicator={appointment_loader}
+                  onPress={() => onAppointmentBook()}
+                  buttonStyle={{width: '100%'}}
+                />
+              </View>
+            </ScrollView>
           </View>
-          <View style={{alignItems: 'center', marginTop: 20}}>
-            <OutlineButton
-              title="Book now"
-              textStyle={{color: '#000'}}
-              buttonStyle={{width: '100%'}}
-            />
-          </View>
-        </ScrollView>
+        )}
       </View>
     </PageWrapper>
   );
@@ -264,6 +311,7 @@ const styles = StyleSheet.create({
   },
   calenderBackground: {
     backgroundColor: colors.orange,
+    marginVertical: hp('2.4%'),
     borderRadius: 20,
   },
   headerStyle: {
@@ -282,7 +330,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: hp('4%'),
+    marginHorizontal: hp('2%'),
     width: hp('4%'),
+  },
+  message: {
+    color: '#D49621',
+    fontSize: hp('2.4%'),
+    fontFamily: 'Lora-Bold',
   },
 });
 
