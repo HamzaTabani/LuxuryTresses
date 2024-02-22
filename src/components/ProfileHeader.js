@@ -30,7 +30,7 @@ const ProfileHeader = ({username, icon, text}) => {
             style={{
               color: '#fff',
               fontWeight: '500',
-              width: text?.length === 28 && hp('32%'),
+              // width: text?.length === 28 && hp('32%'),
               fontSize: hp('2.5%'),
               fontFamily: 'Lora-Medium',
             }}>

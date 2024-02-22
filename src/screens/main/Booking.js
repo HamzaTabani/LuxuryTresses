@@ -48,7 +48,7 @@ const Booking = ({route}) => {
 
   const data = route.params.bookingData;
   // console.log('service id', selectedServices.pivot.service_id, 'guest quantity', guest, 'date', selectedDate);
-  console.log(selectedServices)
+  console.log('data: ',data)
 
   const incrementQuantity = () => {
     setGuest(guest + 1);
@@ -122,7 +122,7 @@ const Booking = ({route}) => {
             </Pressable>
           </View>
         </View>
-        {data.services.length < 1 ? (
+        {data?.services?.length < 1 ? (
           <View
             style={{justifyContent: 'center', alignItems: 'center', flex: 0.8}}>
             <Text style={styles.message}>
@@ -156,7 +156,7 @@ const Booking = ({route}) => {
                   setSelectedServices(itemValue)
                 }>
                    <Picker.Item label="Select a service" value={{ userId: null, serviceId: null, label: "Select a service" }} />
-                {data.services.map(item => (
+                {data.services?.map(item => (
                   <Picker.Item
                     key={item.id}
                     label={item.title}
@@ -169,8 +169,9 @@ const Booking = ({route}) => {
             {/*/////////////  filter items container ////////////// */}
             {/* reviews listing */}
             <ScrollView
+            style={{backgroundColor:'red'}}
               showsVerticalScrollIndicator={false}
-              contentContainerStyle={{paddingBottom: 100}}>
+              contentContainerStyle={{paddingBottom: 120}}>
               {/* calender */}
               <View style={styles.calenderBackground}>
                 <CalendarPicker

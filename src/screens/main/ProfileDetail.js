@@ -42,7 +42,7 @@ const ProfileDetail = ({route}) => {
     useSelector(state => state.stylistReducer);
 
   const {pic_url} = useSelector(state => state.userData);
-  // console.log('profile details from screen =========>', stylistDetail[id]);
+  console.log('profile details from screen =========>', stylistDetail[id]);
 
   useEffect(() => {
     if (!stylistDetail[id]) {

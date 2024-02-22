@@ -1,11 +1,11 @@
-import {StyleSheet, Text, View, Image, ScrollView, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
 import React from 'react';
 import colors from '../assets/colors';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Arrow from 'react-native-vector-icons/SimpleLineIcons';
 import images from '../assets/images';
 import * as Progress from 'react-native-progress';
-import {stylistImages} from '../dummyData';
+import { imageUrl, stylistImages } from '../dummyData';
 import OutlineButton from './OutlineButton';
 
 const StylistInfo = ({
@@ -14,36 +14,43 @@ const StylistInfo = ({
   onArrowPress,
   flatListRef,
   cardStyle,
+  name,
+  address,
+  distance
 }) => {
+  const milesToKilometers = miles => {
+    const kilometers = miles * 1.60934;
+    return kilometers.toFixed(2);
+  };
   return (
     <View
       style={[
         styles.card,
         isActive
-          ? {height: hp('66%'), width: hp('43%')}
-          : {marginRight: hp('1%'), height: hp('19.5%'), alignSelf: 'flex-end'},
+          ? { height: hp('66%'), width: hp('43%') }
+          : { marginRight: hp('1%'), height: hp('19.5%'), alignSelf: 'flex-end' },
         cardStyle,
       ]}>
-      <TouchableOpacity activeOpacity={0.9} onPress={onArrowPress}>  
-      <Arrow
-        name={isActive ? 'arrow-down' : 'arrow-up'}
-        color={colors.white}
-        style={{alignSelf: 'center'}}
-        size={35}
-      />
+      <TouchableOpacity activeOpacity={0.9} onPress={onArrowPress}>
+        <Arrow
+          name={isActive ? 'arrow-down' : 'arrow-up'}
+          color={colors.white}
+          style={{ alignSelf: 'center' }}
+          size={35}
+        />
       </TouchableOpacity>
-      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-        <View style={{flexDirection: 'row'}}>
-          <Image source={image} style={styles.image} borderRadius={10} />
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <View style={{ flexDirection: 'row' }}>
+          <Image source={imageUrl + image !=null ? { uri: imageUrl + image } : images.stylist1} style={styles.image} borderRadius={10} />
           <View style={styles.textWrapper}>
-            <Text style={styles.name}>Omnis iste</Text>
+            <Text style={styles.name}>{name}</Text>
             <Text style={styles.location}>
-              1609 Oak, St.{' '}
-              <Text style={{color: colors.white, fontWeight: 'bold'}}>
-                (2km)
+              {address ? address : 'abc'}
+              <Text style={{ color: colors.white, fontWeight: 'bold' }}>
+                {'  (' + milesToKilometers(parseFloat(distance)) + 'Km)'}
               </Text>
             </Text>
-            <View style={{flexDirection: 'row', gap: 8}}>
+            <View style={{ flexDirection: 'row', gap: 8 }}>
               <View style={styles.iconView}>
                 <Image source={images.tab1} />
               </View>
@@ -59,17 +66,17 @@ const StylistInfo = ({
               progress={0.7}
               color={colors.lightgreen}
               size={40}
-              style={{marginTop: hp('0.5%')}}
+              style={{ marginTop: hp('0.5%') }}
               borderColor="transparent"
             />
             <View style={styles.imageWrapper}>
               <Image
                 source={images.star}
-                style={{height: hp('2.3%'), width: hp('2.3%')}}
+                style={{ height: hp('2.3%'), width: hp('2.3%') }}
               />
             </View>
           </View>
-          <Text style={{color: colors.white, marginTop: hp('0.4%')}}>
+          <Text style={{ color: colors.white, marginTop: hp('0.4%') }}>
             4.5 rating
           </Text>
         </View>
@@ -79,8 +86,8 @@ const StylistInfo = ({
           <ScrollView
             contentContainerStyle={styles.textView}
             showsVerticalScrollIndicator={false}>
-            <Text style={styles.heading}>About Omnis iste</Text>
-            <Text style={{color: colors.white, marginTop: hp('2%')}}>
+            <Text style={styles.heading}>About {name}</Text>
+            <Text style={{ color: colors.white, marginTop: hp('2%') }}>
               Sed ut perspiciatis unde omnis iste natus error sit{'\n'}{' '}
               voluptatem accusantium doloremque laudantium, totam{'\n'} rem
               aperiam, eaque ipsa quae ab illo inventore veritatis{'\n'} et
@@ -90,10 +97,10 @@ const StylistInfo = ({
           <ScrollView
             horizontal={true}
             onTouchStart={() => {
-              flatListRef.current.setNativeProps({scrollEnabled: false});
+              flatListRef.current.setNativeProps({ scrollEnabled: false });
             }}
             onTouchEnd={() => {
-              flatListRef.current.setNativeProps({scrollEnabled: true});
+              flatListRef.current.setNativeProps({ scrollEnabled: true });
             }}
             style={styles.scrollWrapper}
             showsHorizontalScrollIndicator={false}>
@@ -114,7 +121,7 @@ const StylistInfo = ({
               alignSelf: 'center',
               width: '95%',
             }}
-            textStyle={{color: colors.white}}
+            textStyle={{ color: colors.white }}
             title={'SEE TIMES'}
           />
         </>

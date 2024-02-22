@@ -5,40 +5,55 @@ import {
   View,
   FlatList,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PageWrapper from '../../components/PageWrapper';
 import ProfileHeader from '../../components/ProfileHeader';
-import MapView, {Marker, Circle} from 'react-native-maps';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import MapView, { Marker, Circle } from 'react-native-maps';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import colors from '../../assets/colors';
 import {
+  imageUrl,
   initialRegion,
   kilometers,
   markerImages,
   stylistInformations,
   tabs,
 } from '../../dummyData';
-import {Picker} from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker';
 import images from '../../assets/images';
 import StylistInfo from '../../components/StylistInfo';
-import {useDispatch, useSelector} from 'react-redux';
-import {getNearbyStylists} from '../../redux/slices/StylistSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { getNearbyStylists } from '../../redux/slices/StylistSlice';
+import GetLocation from 'react-native-get-location'
 
 const Nearby = () => {
   const [changeTab, setChangeTab] = useState(1);
   const [selectKilometers, setSelectKilometers] = useState('');
+  // const [currentLatitude, setCurrentLatitude] = useState('');
+  // const [currentLongitude, setCurrentLongitude] = useState('');
+  const [currentRegion, setCurrentregion] = useState(null);
+  // const [currentRegion, setCurrentregion] = useState({
+  //   latitude: 36.778261,
+  //   latitudeDelta: 0.015,
+  //   longitude: -119.4179324,
+  //   longitudeDelta: 0.0121
+  // });
   // const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [cardStates, setCardStates] = useState(Array().fill(false));
   const flatListRef = useRef(null);
 
   const dispatch = useDispatch();
-  const {nearbyStylists} = useSelector(state => state.stylistReducer);
+  const { nearbyStylists } = useSelector(state => state.stylistReducer);
+
+  // console.log('nearbyStylists: ',nearbyStylists.length)
 
   // console.log(
   //   'nearbyStylists from screeen ==================>',
   //   initialRegion.latitude,
   //   initialRegion.longitude,
   // );
+
+  // console.log('currentLongitude: ',currentLongitude)
 
   let circleRadius = 1500;
 
@@ -47,16 +62,17 @@ const Nearby = () => {
   });
 
   const fetchNearbyStylists = async () => {
-    await dispatch(
+    const res = await dispatch(
       getNearbyStylists({
-        lat: initialRegion.latitude,
-        long: initialRegion.longitude,
+        lat: currentRegion.latitude,
+        long: currentRegion.longitude,
       }),
     );
+    // console.log('from screen', res.payload.data)
   };
 
   const onIconPress = index => {
-    flatListRef.current.setNativeProps({scrollEnabled: true});
+    flatListRef.current.setNativeProps({ scrollEnabled: true });
     // setIsDetailOpen(!isDetailOpen);
     setCardStates(prevState => {
       const newState = [...prevState];
@@ -67,33 +83,72 @@ const Nearby = () => {
   };
 
   const handleRegionChange = region => {
+    setCurrentregion(region);
     // console.log('moye moye', region);
+    console.log('currentRegion: ', currentRegion);
   };
+
+
+  useEffect(() => {
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 60000,
+    })
+      .then(location => {
+        console.log('location: ', location);
+        setCurrentregion({
+          latitude: location.latitude,
+          longitude: location.longitude,
+          latitudeDelta: 0.012,
+          longitudeDelta: 0.045
+        });
+      })
+      .catch(error => {
+        console.log('object')
+        const { code, message } = error;
+        console.warn(code, message);
+      })
+  }, []);
+
 
   return (
     <PageWrapper>
       <ProfileHeader username={true} />
       <View style={styles.screen}>
-        <MapView
-          onRegionChange={region => handleRegionChange(region)}
-          initialRegion={initialRegion}
-          mapType="terrain"
-          style={styles.mapStyle}>
-          {markerImages.map(item => (
-            <Marker
-              key={item.id}
-              image={item.image}
-              coordinate={{latitude: item.lat, longitude: item.long}}
+        {currentRegion != null ? (
+
+          <MapView
+            // onRegionChange={handleRegionChange}
+            initialRegion={currentRegion}
+            mapType="terrain"
+            style={styles.mapStyle}>
+            {nearbyStylists.map(item => {
+              // console.log('objectssssss',item.profile_pic)
+              return (
+              <Marker
+                key={item.id}
+
+                // image={imageUrl + item.profile_pic}
+                // image={imageUrl + item.profile_pic ? imageUrl + item.profile_pic : images.star}
+                // style={{backgroundColor:'red',height:10,width:10}}
+                coordinate={{ latitude: parseFloat(item.lat), longitude: parseFloat(item.lng) }}
+              >
+                <Image
+                  source={item.profile_pic != null ? { uri: imageUrl + item.profile_pic } : images.stylist1}
+                  style={{ height: 30, width: 30, borderRadius: 20, borderWidth: 2, borderColor: 'white' }}
+                />
+              </Marker>
+              )
+            })}
+            <Circle
+              center={currentRegion}
+              radius={circleRadius}
+              strokeWidth={0.5}
+              fillColor="rgba(239, 229, 204, 0.3)"
+              strokeColor={colors.orange}
             />
-          ))}
-          <Circle
-            center={{latitude: 44.474621, longitude: -70.250395}}
-            radius={circleRadius}
-            strokeWidth={0.5}
-            fillColor="rgba(239, 229, 204, 0.3)"
-            strokeColor={colors.orange}
-          />
-        </MapView>
+          </MapView>
+        ) : null}
         <View style={styles.workingmapView}>
           <View style={styles.mapHeaderWrapper}>
             <View style={styles.tabView}>
@@ -118,7 +173,7 @@ const Nearby = () => {
                     key={item.id}
                     label={item.text}
                     value={item.text}
-                    style={{color: colors.black}}
+                    style={{ color: colors.black }}
                   />
                 ))}
               </Picker>
@@ -128,20 +183,23 @@ const Nearby = () => {
             </View>
           </View>
         </View>
-        <View style={[styles.barStyle, {bottom: hp('28%')}]}>
+        <View style={[styles.barStyle, { bottom: hp('28%') }]}>
           <FlatList
             ref={flatListRef}
-            data={stylistInformations}
+            data={nearbyStylists}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             nestedScrollEnabled
             pagingEnabled={true}
-            renderItem={({item, index}) => (
+            renderItem={({ item, index }) => (
               <StylistInfo
-                image={item.image}
+                image={item.profile_pic}
                 isActive={cardStates[index]}
                 onArrowPress={() => onIconPress(index)}
                 flatListRef={flatListRef}
+                name={item.first_name + item.last_name}
+                address={item.address}
+                distance={item.distance}
               />
             )}
           />

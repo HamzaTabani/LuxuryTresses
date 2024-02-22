@@ -205,3 +205,5 @@ export const initialRegion = {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
 }
+
+export const imageUrl = 'https://demowebapp.digital/custom/luxury_tresses_app/public/assets/images/'
