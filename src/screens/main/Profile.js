@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Text,
   StyleSheet,
@@ -10,19 +10,19 @@ import {
   TextInput,
   Alert,
 } from 'react-native';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import BackHeader from '../../components/BackHeader';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome5 from 'react-native-vector-icons/Ionicons';
-import {Picker} from '@react-native-picker/picker';
-import {useNavigation} from '@react-navigation/native';
+import { Picker } from '@react-native-picker/picker';
+import { useNavigation } from '@react-navigation/native';
 import ModalChangeProfilePic from '../../components/ModalChangeProfilePic';
 import colors from '../../assets/colors';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PrimaryButton from '../../components/PrimaryButton';
 import Logout from 'react-native-vector-icons/MaterialIcons';
-import {logoutUser} from '../../redux/slices/AuthSlice';
-import {ShowToast} from '../../utils';
+import { logoutUser } from '../../redux/slices/AuthSlice';
+import { ShowToast } from '../../utils';
 import FastImage from 'react-native-fast-image';
 import images from '../../assets/images';
 
@@ -32,8 +32,8 @@ const Profile = () => {
   const [address, setAddress] = useState('');
   const navigation = useNavigation();
 
-  const {user, pic_url} = useSelector(state => state.userData);
-  console.log('waittt', user);
+  const { user, pic_url } = useSelector(state => state.userData);
+  console.log('waittt', user.address);
 
   const dispatch = useDispatch();
 
@@ -44,8 +44,8 @@ const Profile = () => {
 
   const onLogoutPress = () => {
     return Alert.alert('Logout', 'Are you sure you want to logout?', [
-      {text: 'Yes', onPress: onSignOut},
-      {text: 'No'},
+      { text: 'Yes', onPress: onSignOut },
+      { text: 'No' },
     ]);
   };
 
@@ -88,9 +88,9 @@ const Profile = () => {
                   source={
                     user?.profile_pic
                       ? {
-                          uri: pic_url + user?.profile_pic,
-                          priority: FastImage.priority.normal,
-                        }
+                        uri: pic_url + user?.profile_pic,
+                        priority: FastImage.priority.normal,
+                      }
                       : images.profile
                   }
                   resizeMode={FastImage.resizeMode.cover}
@@ -127,7 +127,7 @@ const Profile = () => {
                   }}
                   onPress={() => onLogoutPress()}>
                   <Logout name={'logout'} color={colors.orange} size={20} />
-                  <Text style={[styles.statusText, {color: colors.orange}]}>
+                  <Text style={[styles.statusText, { color: colors.orange }]}>
                     LOGOUT
                   </Text>
                 </TouchableOpacity>
@@ -169,7 +169,7 @@ const Profile = () => {
                   onPress={() =>
                     navigation.navigate('ProfileStack', {
                       screen: 'InitialProfile',
-                      params: {user},
+                      params: { user },
                     })
                   }>
                   <ImageBackground
@@ -189,10 +189,10 @@ const Profile = () => {
                         paddingHorizontal: 20,
                       }}>
                       <View>
-                        <Text style={{fontWeight: '500', color: '#000'}}>
+                        <Text style={{ fontWeight: '500', color: '#000' }}>
                           Complete Profile
                         </Text>
-                        <Text style={{fontSize: hp('1.3%'), color: 'grey'}}>
+                        <Text style={{ fontSize: hp('1.3%'), color: 'grey' }}>
                           Sed ut perspiciatis unde amnis
                         </Text>
                       </View>
@@ -249,7 +249,7 @@ const Profile = () => {
                       type="Ionicons"
                       color="#6D6C7B"
                       size={22}
-                      style={{marginLeft: 10}}
+                      style={{ marginLeft: 10 }}
                     />
                     <TextInput
                       style={styles.inputs}
@@ -267,7 +267,7 @@ const Profile = () => {
                       type="Ionicons"
                       color="#6D6C7B"
                       size={22}
-                      style={{marginLeft: 10}}
+                      style={{ marginLeft: 10 }}
                     />
                     <TextInput
                       style={styles.inputs}
@@ -283,7 +283,7 @@ const Profile = () => {
                 // form 2
                 <View style={styles.first_form_container}>
                   <View style={styles.inputs_container2}>
-                    <View style={{flexDirection: 'row', gap: 10}}>
+                    <View style={{ flexDirection: 'row', gap: 10 }}>
                       <View>
                         <Text style={styles.label}>City</Text>
                         <View
@@ -317,7 +317,7 @@ const Profile = () => {
                         </View>
                       </View>
                     </View>
-                    <View style={{flexDirection: 'row'}}></View>
+                    <View style={{ flexDirection: 'row' }}></View>
                   </View>
                   <Text style={styles.label}>Your address</Text>
                   <View style={styles.inputs_container}>
@@ -326,13 +326,13 @@ const Profile = () => {
                       type="Ionicons"
                       color="#6D6C7B"
                       size={22}
-                      style={{marginLeft: 10}}
+                      style={{ marginLeft: 10 }}
                     />
                     <TextInput
                       style={styles.inputs}
                       editable={false}
                       value={
-                        user?.address !== null
+                        user?.address != 'null'
                           ? user?.address
                           : 'Add your address'
                       }
@@ -395,10 +395,10 @@ const Profile = () => {
                   </View>
                 </View>
               </View>
-              <View style={{paddingTop: hp('5%')}}>
+              <View style={{ paddingTop: hp('5%') }}>
                 <PrimaryButton
                   title={'Change password'}
-                  style={{width: '110%'}}
+                  style={{ width: '110%' }}
                   onPress={() =>
                     navigation.navigate('SecondaryStack', {
                       screen: 'ChangePassword',
@@ -416,9 +416,9 @@ const Profile = () => {
         source={
           user?.profile_pic
             ? {
-                uri: pic_url + user?.profile_pic,
-                priority: FastImage.priority.normal,
-              }
+              uri: pic_url + user?.profile_pic,
+              priority: FastImage.priority.normal,
+            }
             : images.profile
         }
         setModalVisible={setModalVisible}

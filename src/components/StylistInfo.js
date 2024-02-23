@@ -41,11 +41,11 @@ const StylistInfo = ({
       </TouchableOpacity>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <View style={{ flexDirection: 'row' }}>
-          <Image source={imageUrl + image !=null ? { uri: imageUrl + image } : images.stylist1} style={styles.image} borderRadius={10} />
+          <Image resizeMode='contain' source={imageUrl && image ? { uri: imageUrl + image } : images.stylist1} style={styles.image} borderRadius={10} />
           <View style={styles.textWrapper}>
             <Text style={styles.name}>{name}</Text>
             <Text style={styles.location}>
-              {address ? address : 'abc'}
+              {address != null && address != 'undefined' ? address : 'address'}
               <Text style={{ color: colors.white, fontWeight: 'bold' }}>
                 {'  (' + milesToKilometers(parseFloat(distance)) + 'Km)'}
               </Text>

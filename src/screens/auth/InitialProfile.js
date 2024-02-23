@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   ImageBackground,
   StyleSheet,
@@ -12,15 +12,15 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import FontAwesome5 from 'react-native-vector-icons/Ionicons';
 import OutlineButton from '../../components/OutlineButton';
 import InputText from '../../components/InputText';
-import {useDispatch, useSelector} from 'react-redux';
-import {editProfile, register} from '../../redux/slices/AuthSlice';
-import {ShowToast} from '../../utils';
-import {launchImageLibrary} from 'react-native-image-picker';
-import {Picker} from '@react-native-picker/picker';
+import { useDispatch, useSelector } from 'react-redux';
+import { editProfile, register } from '../../redux/slices/AuthSlice';
+import { ShowToast } from '../../utils';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { Picker } from '@react-native-picker/picker';
 import colors from '../../assets/colors';
 
 const cities = [
@@ -53,10 +53,10 @@ const states = [
   },
 ];
 
-const InitialProfile = ({route}) => {
+const InitialProfile = ({ route }) => {
   const email = route?.params?.userData || null;
-  const {user} = route?.params || null;
-  const {signup_loading, pic_url, edit_loading} = useSelector(
+  const { user } = route?.params || null;
+  const { signup_loading, pic_url, edit_loading } = useSelector(
     state => state.userData,
   );
   const [firstname, setFirstName] = useState(user ? user?.first_name : '');
@@ -181,7 +181,7 @@ const InitialProfile = ({route}) => {
           </View>
         </TouchableOpacity>
         <ScrollView
-          contentContainerStyle={{paddingBottom: user ? hp('55%') : hp('60%')}}>
+          contentContainerStyle={{ paddingBottom: user ? hp('55%') : hp('60%') }}>
           <View
             style={{
               flex: 0.2,
@@ -205,7 +205,7 @@ const InitialProfile = ({route}) => {
                 borderTopLeftRadius: 20,
                 marginTop: hp('3%'),
               }}>
-              <View style={{width: wp('80%')}}>
+              <View style={{ width: wp('80%') }}>
                 <View>
                   <Text style={styles.input_lable}>Add profile picture</Text>
                   <TouchableOpacity
@@ -222,7 +222,7 @@ const InitialProfile = ({route}) => {
                     activeOpacity={0.9}
                     onPress={() => onUploadPhoto()}>
                     <Image
-                      source={{uri: photoURL}}
+                      source={{ uri: photoURL }}
                       resizeMode="contain"
                       borderRadius={100}
                       style={{
@@ -279,7 +279,7 @@ const InitialProfile = ({route}) => {
                     placeholderTextColor="#bbb9bd"
                   />
                 </View> */}
-                <View style={{paddingTop: hp('4%')}}>
+                <View style={{ paddingTop: hp('4%') }}>
                   <InputText
                     placeholder={'First Name'}
                     value={firstname}
@@ -302,80 +302,83 @@ const InitialProfile = ({route}) => {
                     label={'Enter your phone number'}
                     icon={'call-outline'}
                   />
-                 {user && 
-                 <>
-                  <InputText
-                    placeholder={'Address'}
-                    value={address}
-                    onChangeText={text => setAddress(text)}
-                    label={'Enter your address'}
-                    // icon={'person-outline'}
-                  />
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                    }}>
-                    <View>
-                      <Text style={styles.label}>City</Text>
+                  {user &&
+                    <>
+                      <InputText
+                        placeholder={'Address'}
+                        // value={address}
+                        value={address != 'null'
+                          ? address
+                          : 'Add your address'}
+                        onChangeText={text => setAddress(text)}
+                        label={'Enter your address'}
+                      // icon={'person-outline'}
+                      />
                       <View
                         style={{
-                          height: 50,
-                          borderWidth: 0.5,
-                          borderColor: '#D49621',
-                          borderRadius: 40,
-                          borderRadius: 50,
-                          width: 140,
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
                         }}>
-                        <Picker
-                          selectedValue={selectedCity}
-                          dropdownIconColor={colors.orange}
-                          dropdownIconRippleColor={colors.orange}
-                          onValueChange={(itemValue, itemIndex) =>
-                            setSelectedCity(itemValue)
-                          }>
-                          {cities.map(item => (
-                            <Picker.Item
-                              key={item.id}
-                              label={item.text}
-                              value={item.text}
-                              style={{color: colors.darkgray}}
-                            />
-                           ))} 
-                        </Picker>
+                        <View>
+                          <Text style={styles.label}>City</Text>
+                          <View
+                            style={{
+                              height: 50,
+                              borderWidth: 0.5,
+                              borderColor: '#D49621',
+                              borderRadius: 40,
+                              borderRadius: 50,
+                              width: 140,
+                            }}>
+                            <Picker
+                              selectedValue={selectedCity}
+                              dropdownIconColor={colors.orange}
+                              dropdownIconRippleColor={colors.orange}
+                              onValueChange={(itemValue, itemIndex) =>
+                                setSelectedCity(itemValue)
+                              }>
+                              {cities.map(item => (
+                                <Picker.Item
+                                  key={item.id}
+                                  label={item.text}
+                                  value={item.text}
+                                  style={{ color: colors.darkgray }}
+                                />
+                              ))}
+                            </Picker>
+                          </View>
+                        </View>
+                        <View>
+                          <Text style={styles.label}>State</Text>
+                          <View
+                            style={{
+                              height: 50,
+                              borderWidth: 0.5,
+                              borderColor: '#D49621',
+                              borderRadius: 40,
+                              borderRadius: 50,
+                              width: 140,
+                            }}>
+                            <Picker
+                              selectedValue={selectedState}
+                              dropdownIconColor={colors.orange}
+                              dropdownIconRippleColor={colors.orange}
+                              onValueChange={(itemValue, itemIndex) =>
+                                setSelectedState(itemValue)
+                              }>
+                              {states.map(item => (
+                                <Picker.Item
+                                  key={item.id}
+                                  label={item.text}
+                                  value={item.text}
+                                  style={{ color: colors.darkgray }}
+                                />
+                              ))}
+                            </Picker>
+                          </View>
+                        </View>
                       </View>
-                    </View>
-                    <View>
-                      <Text style={styles.label}>State</Text>
-                    <View
-                      style={{
-                        height: 50,
-                        borderWidth: 0.5,
-                        borderColor: '#D49621',
-                        borderRadius: 40,
-                        borderRadius: 50,
-                        width: 140,
-                      }}>
-                      <Picker
-                        selectedValue={selectedState}
-                        dropdownIconColor={colors.orange}
-                        dropdownIconRippleColor={colors.orange}
-                        onValueChange={(itemValue, itemIndex) =>
-                          setSelectedState(itemValue)
-                        }>
-                        {states.map(item => (
-                          <Picker.Item
-                            key={item.id}
-                            label={item.text}
-                            value={item.text}
-                            style={{color: colors.darkgray}}
-                          />
-                        ))}
-                      </Picker>
-                      </View>
-                    </View>
-                  </View>
-                  </>
+                    </>
                   }
                   {!user && (
                     <>
@@ -399,7 +402,7 @@ const InitialProfile = ({route}) => {
                   )}
                 </View>
               </View>
-              <View style={{alignItems: 'center', marginTop: 40}}>
+              <View style={{ alignItems: 'center', marginTop: 40 }}>
                 <OutlineButton
                   title="done"
                   indicator={user ? edit_loading : signup_loading}
@@ -483,5 +486,5 @@ const styles = StyleSheet.create({
     color: '#bbb9bd',
     marginBottom: 15,
     marginTop: 10,
-},
+  },
 });

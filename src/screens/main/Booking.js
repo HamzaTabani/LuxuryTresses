@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   ScrollView,
@@ -14,14 +14,14 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import FontAwesome5 from 'react-native-vector-icons/AntDesign';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import OutlineButton from '../../components/OutlineButton';
-import {Picker} from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker';
 import CalendarPicker from 'react-native-calendar-picker';
 import colors from '../../assets/colors';
 import Next from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Appointment } from '../../redux/slices/StylistSlice';
 import { ShowToast } from '../../utils';
 
@@ -36,7 +36,7 @@ import { ShowToast } from '../../utils';
 //   },
 // ];
 
-const Booking = ({route}) => {
+const Booking = ({ route }) => {
   const navigation = useNavigation();
   const [selectedServices, setSelectedServices] = useState('');
   const [selectedDate, setSelectedDate] = useState(moment(new Date()).format('YY/MM/DD'));
@@ -48,7 +48,7 @@ const Booking = ({route}) => {
 
   const data = route.params.bookingData;
   // console.log('service id', selectedServices.pivot.service_id, 'guest quantity', guest, 'date', selectedDate);
-  console.log('data: ',data)
+  console.log('data: ', data)
 
   const incrementQuantity = () => {
     setGuest(guest + 1);
@@ -82,22 +82,22 @@ const Booking = ({route}) => {
 
   const onAppointmentBook = async () => {
 
-   if(selectedServices === ''){
+    if (selectedServices === '') {
       return ShowToast('Please select a service')
-   } else { 
-    const res = await dispatch(Appointment({
-      stylist_id: selectedServices.pivot.user_id,
-      service_id: selectedServices.pivot.service_id,
-      appointment_date: selectedDate,
-      no_of_guests: guest
-    }))
-   if(res.payload.success){
-      navigation.navigate('home')
-      return ShowToast(res.payload.message)
-   } else {
-      return ShowToast(res.payload.message)
-   }
-  }
+    } else {
+      const res = await dispatch(Appointment({
+        stylist_id: selectedServices.pivot.user_id,
+        service_id: selectedServices.pivot.service_id,
+        appointment_date: selectedDate,
+        no_of_guests: guest
+      }))
+      if (res.payload.success) {
+        navigation.navigate('home')
+        return ShowToast(res.payload.message)
+      } else {
+        return ShowToast(res.payload.message)
+      }
+    }
 
   };
 
@@ -108,7 +108,7 @@ const Booking = ({route}) => {
         {/* ///////// title and filter buttons container ///////*/}
         <View style={styles.filterContainer}>
           <Text style={styles.mainTitleText}>Booking</Text>
-          <View style={{flexDirection: 'row', gap: 8}}>
+          <View style={{ flexDirection: 'row', gap: 8 }}>
             {/* filter icon */}
             <Pressable onPress={() => navigation.goBack()}>
               <View style={styles.filterButton}>
@@ -124,7 +124,7 @@ const Booking = ({route}) => {
         </View>
         {data?.services?.length < 1 ? (
           <View
-            style={{justifyContent: 'center', alignItems: 'center', flex: 0.8}}>
+            style={{ justifyContent: 'center', alignItems: 'center', flex: 0.8 }}>
             <Text style={styles.message}>
               No services available for this stylist
             </Text>
@@ -155,13 +155,13 @@ const Booking = ({route}) => {
                 onValueChange={(itemValue, itemIndex) =>
                   setSelectedServices(itemValue)
                 }>
-                   <Picker.Item label="Select a service" value={{ userId: null, serviceId: null, label: "Select a service" }} />
+                <Picker.Item label="Select a service" value={{ userId: null, serviceId: null, label: "Select a service" }} />
                 {data.services?.map(item => (
                   <Picker.Item
                     key={item.id}
                     label={item.title}
                     value={item}
-                    style={{color: colors.darkgray}}
+                    style={{ color: colors.darkgray }}
                   />
                 ))}
               </Picker>
@@ -169,15 +169,14 @@ const Booking = ({route}) => {
             {/*/////////////  filter items container ////////////// */}
             {/* reviews listing */}
             <ScrollView
-            style={{backgroundColor:'red'}}
               showsVerticalScrollIndicator={false}
-              contentContainerStyle={{paddingBottom: 120}}>
+              contentContainerStyle={{ paddingBottom: 150 }}>
               {/* calender */}
               <View style={styles.calenderBackground}>
                 <CalendarPicker
                   startFromMonday={true}
                   onDateChange={date => onGetDate(date)}
-                  textStyle={{color: colors.white}}
+                  textStyle={{ color: colors.white }}
                   scaleFactor={400}
                   dayLabelsWrapper={{
                     borderTopWidth: 0,
@@ -189,8 +188,8 @@ const Booking = ({route}) => {
                   selectedDayTextColor={colors.white}
                   todayBackgroundColor={'rgba(230, 171, 22,15)'}
                   allowRangeSelection={false}
-                  previousTitleStyle={{color: colors.white}}
-                  nextTitleStyle={{color: colors.white}}
+                  previousTitleStyle={{ color: colors.white }}
+                  nextTitleStyle={{ color: colors.white }}
                   headerWrapperStyle={styles.headerStyle}
                 />
               </View>
@@ -203,11 +202,11 @@ const Booking = ({route}) => {
                     gap: 5,
                     marginLeft: 20,
                   }}>
-                  <Text style={{color: '#000', fontSize: hp('1.8%')}}>
+                  <Text style={{ color: '#000', fontSize: hp('1.8%') }}>
                     Select Guest
                   </Text>
                 </View>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <TouchableOpacity
                     onPress={decrementQuantity}
                     style={styles.button}>
@@ -223,13 +222,13 @@ const Booking = ({route}) => {
                   </TouchableOpacity>
                 </View>
               </View>
-              <View style={{alignItems: 'center', marginTop: 20}}>
+              <View style={{ alignItems: 'center', marginTop: 20}}>
                 <OutlineButton
                   title="Book now"
-                  textStyle={{color: '#000'}}
+                  textStyle={{ color: '#000' }}
                   indicator={appointment_loader}
                   onPress={() => onAppointmentBook()}
-                  buttonStyle={{width: '100%'}}
+                  buttonStyle={{ width: '100%' }}
                 />
               </View>
             </ScrollView>

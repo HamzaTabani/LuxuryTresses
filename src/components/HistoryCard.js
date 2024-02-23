@@ -43,7 +43,7 @@ const HistoryCard = ({ image, onPress }) => {
                         </View>
                         <Text style={styles.ratingText}>4.5 Rating</Text>
                     </View>
-                    <View style={{ marginTop: hp('1%'), alignItems: 'flex-end' }}>
+                    <View style={{ marginTop: hp('1%'), alignItems: 'flex-end',right:25 }}>
                         <Text style={styles.location}>Date</Text>
                         <Text style={styles.location}>18.10.2023</Text>
                     </View>
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     },
     iconView: {
         backgroundColor: colors.white,
-        marginRight: hp('1%'),
+        marginRight: hp('2%'),
         height: hp('3.5%'),
         alignItems: 'center',
         justifyContent: 'center',
@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
         width: '85%',
         flexDirection: 'row',
         borderRadius: 10,
+        right:5
     },
     ratingCard: {
         backgroundColor: colors.white,

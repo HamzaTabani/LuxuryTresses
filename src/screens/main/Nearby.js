@@ -29,46 +29,31 @@ import GetLocation from 'react-native-get-location'
 const Nearby = () => {
   const [changeTab, setChangeTab] = useState(1);
   const [selectKilometers, setSelectKilometers] = useState('');
-  // const [currentLatitude, setCurrentLatitude] = useState('');
-  // const [currentLongitude, setCurrentLongitude] = useState('');
   const [currentRegion, setCurrentregion] = useState(null);
-  // const [currentRegion, setCurrentregion] = useState({
-  //   latitude: 36.778261,
-  //   latitudeDelta: 0.015,
-  //   longitude: -119.4179324,
-  //   longitudeDelta: 0.0121
-  // });
-  // const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [imageUrls, setImageUrls] = useState([]);
   const [cardStates, setCardStates] = useState(Array().fill(false));
   const flatListRef = useRef(null);
 
   const dispatch = useDispatch();
   const { nearbyStylists } = useSelector(state => state.stylistReducer);
 
-  // console.log('nearbyStylists: ',nearbyStylists.length)
+  console.log('imageUrls: ', imageUrls)
 
-  // console.log(
-  //   'nearbyStylists from screeen ==================>',
-  //   initialRegion.latitude,
-  //   initialRegion.longitude,
-  // );
-
-  // console.log('currentLongitude: ',currentLongitude)
 
   let circleRadius = 1500;
 
   useEffect(() => {
+    getCurrentLocation()
     fetchNearbyStylists();
-  });
+  }, []);
 
   const fetchNearbyStylists = async () => {
-    const res = await dispatch(
+    await dispatch(
       getNearbyStylists({
         lat: currentRegion.latitude,
         long: currentRegion.longitude,
       }),
     );
-    // console.log('from screen', res.payload.data)
   };
 
   const onIconPress = index => {
@@ -77,19 +62,16 @@ const Nearby = () => {
     setCardStates(prevState => {
       const newState = [...prevState];
       newState[index] = !newState[index];
-      // console.log('hui hui', newState[index])
       return newState;
     });
   };
 
   const handleRegionChange = region => {
     setCurrentregion(region);
-    // console.log('moye moye', region);
     console.log('currentRegion: ', currentRegion);
   };
 
-
-  useEffect(() => {
+  const getCurrentLocation = () => {
     GetLocation.getCurrentPosition({
       enableHighAccuracy: true,
       timeout: 60000,
@@ -99,8 +81,10 @@ const Nearby = () => {
         setCurrentregion({
           latitude: location.latitude,
           longitude: location.longitude,
-          latitudeDelta: 0.012,
-          longitudeDelta: 0.045
+          // latitudeDelta: 0.012,
+          // longitudeDelta: 0.045
+          latitudeDelta: 0.060,
+          longitudeDelta: 0.008 * (15 / 20),
         });
       })
       .catch(error => {
@@ -108,57 +92,90 @@ const Nearby = () => {
         const { code, message } = error;
         console.warn(code, message);
       })
-  }, []);
+
+  }
+
+  const PreLoadImages = async () => {
+
+    const urls = [];
+    for (const item of nearbyStylists) {
+      if (item.profile_pic) {
+        const uri = imageUrl + item.profile_pic;
+        await Image.prefetch(uri);
+        urls.push(uri);
+      }
+    }
+    setImageUrls(urls);
+
+  }
+  useEffect(() => {
+
+    PreLoadImages();
+  }, [nearbyStylists]);
+
+  const renderMarkers = () => {
+    if (!imageUrls || imageUrls.length === 0) return null;
+    return nearbyStylists.map((item, index) => (
+      <Marker
+        key={item.id}
+        coordinate={{
+          latitude: parseFloat(item.lat),
+          longitude: parseFloat(item.lng)
+        }}
+      >
+        <Image
+          source={imageUrls[index] ? { uri: imageUrls[index] } : images.stylist1}
+          style={{
+            height: 30,
+            width: 30,
+            borderRadius: 20,
+            borderWidth: 2,
+            borderColor: 'white'
+          }}
+        />
+      </Marker>
+    ));
+  };
+
 
 
   return (
     <PageWrapper>
       <ProfileHeader username={true} />
       <View style={styles.screen}>
-        {currentRegion != null ? (
-
-          <MapView
-            // onRegionChange={handleRegionChange}
-            initialRegion={currentRegion}
-            mapType="terrain"
-            style={styles.mapStyle}>
-            {nearbyStylists.map(item => {
-              // console.log('objectssssss',item.profile_pic)
-              return (
-              <Marker
-                key={item.id}
-
-                // image={imageUrl + item.profile_pic}
-                // image={imageUrl + item.profile_pic ? imageUrl + item.profile_pic : images.star}
-                // style={{backgroundColor:'red',height:10,width:10}}
-                coordinate={{ latitude: parseFloat(item.lat), longitude: parseFloat(item.lng) }}
-              >
-                <Image
-                  source={item.profile_pic != null ? { uri: imageUrl + item.profile_pic } : images.stylist1}
-                  style={{ height: 30, width: 30, borderRadius: 20, borderWidth: 2, borderColor: 'white' }}
-                />
-              </Marker>
-              )
-            })}
-            <Circle
-              center={currentRegion}
-              radius={circleRadius}
-              strokeWidth={0.5}
-              fillColor="rgba(239, 229, 204, 0.3)"
-              strokeColor={colors.orange}
-            />
-          </MapView>
-        ) : null}
-        <View style={styles.workingmapView}>
-          <View style={styles.mapHeaderWrapper}>
+        {/* MapView Container */}
+        <View style={styles.mapContainer}>
+          {currentRegion != null ? (
+            <MapView
+              initialRegion={currentRegion}
+              mapType="terrain"
+              style={styles.mapStyle}>
+              {renderMarkers()}
+              <Circle
+                center={currentRegion}
+                radius={circleRadius}
+                strokeWidth={0.5}
+                fillColor="rgba(239, 229, 204, 0.3)"
+                strokeColor={colors.orange}
+              />
+            </MapView>
+          ) : (
+            <MapView
+              initialRegion={currentRegion}
+              mapType="terrain"
+              style={styles.mapStyle} />
+          )}
+          {/* Top Component */}
+          <View style={styles.topComponent}>
             <View style={styles.tabView}>
               {tabs.map(item => (
                 <TouchableOpacity
                   key={item.id}
                   activeOpacity={0.9}
                   onPress={() => setChangeTab(item.id)}
+                  // onPress={() => console.log('changeTabcd:', item.id)}
                   style={changeTab == item.id && styles.background}>
-                  <Image source={item.icon} />
+                  <Image source={item.icon} style={changeTab != item.id && { marginHorizontal: 10 }} />
                 </TouchableOpacity>
               ))}
             </View>
@@ -182,27 +199,30 @@ const Nearby = () => {
               <Image source={images.locationIcon} />
             </View>
           </View>
-        </View>
-        <View style={[styles.barStyle, { bottom: hp('28%') }]}>
-          <FlatList
-            ref={flatListRef}
-            data={nearbyStylists}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            nestedScrollEnabled
-            pagingEnabled={true}
-            renderItem={({ item, index }) => (
-              <StylistInfo
-                image={item.profile_pic}
-                isActive={cardStates[index]}
-                onArrowPress={() => onIconPress(index)}
-                flatListRef={flatListRef}
-                name={item.first_name + item.last_name}
-                address={item.address}
-                distance={item.distance}
+          {/* Bottom Component */}
+          {currentRegion != null ? (
+            <View style={styles.bottomComponent}>
+              <FlatList
+                ref={flatListRef}
+                data={nearbyStylists}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                nestedScrollEnabled
+                pagingEnabled={true}
+                renderItem={({ item, index }) => (
+                  <StylistInfo
+                    image={item.profile_pic}
+                    isActive={cardStates[index]}
+                    onArrowPress={() => onIconPress(index)}
+                    flatListRef={flatListRef}
+                    name={item.first_name + item.last_name}
+                    address={item.address}
+                    distance={item.distance}
+                  />
+                )}
               />
-            )}
-          />
+            </View>
+          ) : null}
         </View>
       </View>
     </PageWrapper>
@@ -213,88 +233,69 @@ export default Nearby;
 
 const styles = StyleSheet.create({
   screen: {
-    overflow: 'hidden',
-    borderRadius: 30,
+    flex: 1,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    overflow: 'hidden'
+  },
+  mapContainer: {
+    flex: 1,
   },
   mapStyle: {
-    height: '100%',
-    width: '100%',
+    flex: 1,
   },
-  workingmapView: {
+  topComponent: {
     position: 'absolute',
-  },
-  mapHeaderWrapper: {
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingHorizontal: 10,
+    paddingTop: 10,
+  },
+  bottomComponent: {
+    position: 'absolute',
+    bottom: 80,
+    left: 0,
+    right: 0,
+    zIndex: 1,
+    paddingBottom: 10,
   },
   tabView: {
-    padding: hp('0.1%'),
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingHorizontal: hp('1%'),
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
     borderWidth: 2,
     borderColor: 'lightgrey',
     borderRadius: 50,
     alignItems: 'center',
-    width: hp('16%'),
-    top: 20,
-    left: 10,
     backgroundColor: colors.white2,
+    width: 130
   },
   background: {
     backgroundColor: '#ffffff',
-    paddingHorizontal: hp('3%'),
+    // backgroundColor: 'red',
+    paddingHorizontal: 20,
     borderRadius: 50,
-    padding: hp('1.7%'),
+    paddingVertical: 15,
   },
   pickerStyle: {
     backgroundColor: colors.white2,
     borderWidth: 2,
     borderColor: 'lightgrey',
-    left: 10,
     borderRadius: 50,
-    top: 20,
     width: '40%',
-    padding: hp('0.4%'),
+    paddingVertical: 5,
   },
   locationView: {
     backgroundColor: colors.darkblue,
-    top: 24,
-    left: 40,
-    height: hp('7%'),
+    height: 60,
+    width: 60,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 50,
-    width: hp('7%'),
-  },
-  radiusWrapper: {
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    right: 0,
-    left: 0,
-    bottom: 160,
-    top: 0,
-  },
-  mapRadius: {
-    borderRadius: 200,
-    borderWidth: 1,
-    borderColor: colors.orange,
-    position: 'absolute',
-    padding: hp('15%'),
-    // height: 200,
-    // width: 200,
-    backgroundColor: 'rgba(239, 229, 204, 0.3)',
-  },
-  barStyle: {
-    flexDirection: 'row',
-    position: 'absolute',
-    // bottom: 0,
-    // right: 0,
-    justifyContent: 'center',
-    alignItems: 'center',
-    // height: hp("50%"),
-    width: '100%',
-    left: 0,
+    borderRadius: 30,
+    // marginTop:10
   },
 });
