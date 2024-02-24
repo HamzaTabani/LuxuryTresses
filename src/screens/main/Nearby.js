@@ -5,11 +5,11 @@ import {
   View,
   FlatList,
 } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import PageWrapper from '../../components/PageWrapper';
 import ProfileHeader from '../../components/ProfileHeader';
-import MapView, { Marker, Circle } from 'react-native-maps';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import MapView, {Marker, Circle} from 'react-native-maps';
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import colors from '../../assets/colors';
 import {
   imageUrl,
@@ -19,12 +19,12 @@ import {
   stylistInformations,
   tabs,
 } from '../../dummyData';
-import { Picker } from '@react-native-picker/picker';
+import {Picker} from '@react-native-picker/picker';
 import images from '../../assets/images';
 import StylistInfo from '../../components/StylistInfo';
-import { useDispatch, useSelector } from 'react-redux';
-import { getNearbyStylists } from '../../redux/slices/StylistSlice';
-import GetLocation from 'react-native-get-location'
+import {useDispatch, useSelector} from 'react-redux';
+import {getNearbyStylists} from '../../redux/slices/StylistSlice';
+import GetLocation from 'react-native-get-location';
 
 const Nearby = () => {
   const [changeTab, setChangeTab] = useState(1);
@@ -35,15 +35,14 @@ const Nearby = () => {
   const flatListRef = useRef(null);
 
   const dispatch = useDispatch();
-  const { nearbyStylists } = useSelector(state => state.stylistReducer);
+  const {nearbyStylists} = useSelector(state => state.stylistReducer);
 
-  console.log('imageUrls: ', imageUrls)
-
+  console.log('imageUrls: ', imageUrls);
 
   let circleRadius = 1500;
 
   useEffect(() => {
-    getCurrentLocation()
+    getCurrentLocation();
     fetchNearbyStylists();
   }, []);
 
@@ -57,7 +56,7 @@ const Nearby = () => {
   };
 
   const onIconPress = index => {
-    flatListRef.current.setNativeProps({ scrollEnabled: true });
+    flatListRef.current.setNativeProps({scrollEnabled: true});
     // setIsDetailOpen(!isDetailOpen);
     setCardStates(prevState => {
       const newState = [...prevState];
@@ -83,20 +82,18 @@ const Nearby = () => {
           longitude: location.longitude,
           // latitudeDelta: 0.012,
           // longitudeDelta: 0.045
-          latitudeDelta: 0.060,
+          latitudeDelta: 0.06,
           longitudeDelta: 0.008 * (15 / 20),
         });
       })
       .catch(error => {
-        console.log('object')
-        const { code, message } = error;
+        console.log('object');
+        const {code, message} = error;
         console.warn(code, message);
-      })
-
-  }
+      });
+  };
 
   const PreLoadImages = async () => {
-
     const urls = [];
     for (const item of nearbyStylists) {
       if (item.profile_pic) {
@@ -106,10 +103,8 @@ const Nearby = () => {
       }
     }
     setImageUrls(urls);
-
-  }
+  };
   useEffect(() => {
-
     PreLoadImages();
   }, [nearbyStylists]);
 
@@ -120,24 +115,21 @@ const Nearby = () => {
         key={item.id}
         coordinate={{
           latitude: parseFloat(item.lat),
-          longitude: parseFloat(item.lng)
-        }}
-      >
+          longitude: parseFloat(item.lng),
+        }}>
         <Image
-          source={imageUrls[index] ? { uri: imageUrls[index] } : images.stylist1}
+          source={imageUrls[index] ? {uri: imageUrls[index]} : images.stylist1}
           style={{
             height: 30,
             width: 30,
             borderRadius: 20,
             borderWidth: 2,
-            borderColor: 'white'
+            borderColor: 'white',
           }}
         />
       </Marker>
     ));
   };
-
-
 
   return (
     <PageWrapper>
@@ -163,7 +155,8 @@ const Nearby = () => {
             <MapView
               initialRegion={currentRegion}
               mapType="terrain"
-              style={styles.mapStyle} />
+              style={styles.mapStyle}
+            />
           )}
           {/* Top Component */}
           <View style={styles.topComponent}>
@@ -175,7 +168,10 @@ const Nearby = () => {
                   onPress={() => setChangeTab(item.id)}
                   // onPress={() => console.log('changeTabcd:', item.id)}
                   style={changeTab == item.id && styles.background}>
-                  <Image source={item.icon} style={changeTab != item.id && { marginHorizontal: 10 }} />
+                  <Image
+                    source={item.icon}
+                    style={changeTab != item.id && {marginHorizontal: 10}}
+                  />
                 </TouchableOpacity>
               ))}
             </View>
@@ -190,7 +186,7 @@ const Nearby = () => {
                     key={item.id}
                     label={item.text}
                     value={item.text}
-                    style={{ color: colors.black }}
+                    style={{color: colors.black}}
                   />
                 ))}
               </Picker>
@@ -203,13 +199,15 @@ const Nearby = () => {
           {currentRegion != null ? (
             <View style={styles.bottomComponent}>
               <FlatList
+              // contentContainerStyle={{backgroundColor:'red',paddingHorizontal:40}}
+                // style={{paddingHorizontal:50}}
                 ref={flatListRef}
                 data={nearbyStylists}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 nestedScrollEnabled
                 pagingEnabled={true}
-                renderItem={({ item, index }) => (
+                renderItem={({item, index}) => (
                   <StylistInfo
                     image={item.profile_pic}
                     isActive={cardStates[index]}
@@ -236,7 +234,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   mapContainer: {
     flex: 1,
@@ -262,6 +260,9 @@ const styles = StyleSheet.create({
     right: 0,
     zIndex: 1,
     paddingBottom: 10,
+    width: '100%', // Ensure the container spans the full width
+    backgroundColor: 'transparent', // Set a transparent background
+    // paddingHorizontal:50
   },
   tabView: {
     flexDirection: 'row',
@@ -272,7 +273,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     alignItems: 'center',
     backgroundColor: colors.white2,
-    width: 130
+    width: 130,
   },
   background: {
     backgroundColor: '#ffffff',

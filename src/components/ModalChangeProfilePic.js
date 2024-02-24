@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Modal,
   StyleSheet,
@@ -15,9 +15,30 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import FastImage from 'react-native-fast-image'
+import FastImage from 'react-native-fast-image';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 const ModalChangeProfilePic = ({modalVisible, setModalVisible, source}) => {
+  const [photoURL, setPhotoURL] = useState('');
+  console.log('photoURL: ', photoURL);
+  const onUploadPhoto = async () => {
+    const options = {
+      title: 'Select Image',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+        quality: 0.5,
+      },
+    };
+
+    await launchImageLibrary(options, async response => {
+      if (response.didCancel) {
+        console.log('cancelled', response.didCancel);
+      } else {
+        setPhotoURL(response.assets[0].uri);
+      }
+    });
+  };
   return (
     <Modal
       animationType="fade"
@@ -56,7 +77,9 @@ const ModalChangeProfilePic = ({modalVisible, setModalVisible, source}) => {
           </View>
 
           {/* select from gallery.. */}
-          <TouchableOpacity style={styles.select_from_gallery_button}>
+          <TouchableOpacity
+            onPress={() => onUploadPhoto()}
+            style={styles.select_from_gallery_button}>
             <View>
               <Text style={styles.select_from_gallery_text}>
                 Select photo from gallery
@@ -120,7 +143,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,0.5)',
-
   },
   modalView: {
     position: 'relative',
@@ -162,8 +184,8 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   profilePicViewer: {
-    height: hp("40"),
-    width: hp("40"),
+    height: hp('40'),
+    width: hp('40'),
     borderWidth: 1,
     borderColor: '#D49621',
     borderRadius: 57,
@@ -175,7 +197,8 @@ const styles = StyleSheet.create({
   dp_img: {
     width: '100%',
     height: '100%',
-    borderRadius: 57
+    borderRadius: 57,
+    // backgroundColor:'red'
   },
   select_from_gallery_button: {
     height: 45,
@@ -209,15 +232,15 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   more_images_box: {
-    width: hp("11%"),
-    height: hp("11%"),
+    width: hp('11%'),
+    height: hp('11%'),
     marginLeft: 10,
     borderRadius: 10,
   },
   more_image: {
     borderRadius: 20,
-    width: hp("11%"),
-    height: hp("11%"),
+    width: hp('11%'),
+    height: hp('11%'),
   },
 });
 
