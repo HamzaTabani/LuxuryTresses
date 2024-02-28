@@ -281,7 +281,7 @@ export const Payment = createAsyncThunk(
       })
       .then(res => {
         console.log('payment res ================>', res.data);
-        return res.data
+        return res.data;
       })
       .catch(error => {
         console.log(error);
@@ -289,7 +289,10 @@ export const Payment = createAsyncThunk(
   },
 );
 
-export const createCard = createAsyncThunk('async', data => {
+export const createCard = createAsyncThunk('card', async data => {
+  return data;
+});
+export const postLatLng = createAsyncThunk('latlong', async data => {
   return data;
 });
 
@@ -307,6 +310,7 @@ export const authState = createSlice({
     pic_url: '',
     user: {},
     card: [],
+    latLng: {},
     payment_loading: false,
   },
   extraReducers: builder => {
@@ -369,10 +373,13 @@ export const authState = createSlice({
       state.payment_loading = false;
     });
     builder.addCase(Payment.rejected, state => {
-      (state.payment_loading = false)
+      state.payment_loading = false;
     });
     builder.addCase(createCard.fulfilled, (state, action) => {
       state.card = action.payload;
+    });
+    builder.addCase(postLatLng.fulfilled, (state, action) => {
+      state.latLng = action.payload;
     });
   },
 });

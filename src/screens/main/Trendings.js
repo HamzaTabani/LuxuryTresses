@@ -7,6 +7,7 @@ import {
   Image,
   Pressable,
   FlatList,
+  TouchableOpacity,
 } from 'react-native';
 import PageWrapper from '../../components/PageWrapper';
 import ProfileHeader from '../../components/ProfileHeader';
@@ -135,16 +136,18 @@ const Trendings = () => {
               contentContainerStyle={{paddingBottom: 100}}
               data={trending_stylists}
               renderItem={({item}) => (
-                <VenderCardBox
-                  key={item.id}
-                  name={item.first_name + ' ' + item.last_name}
-                  img={
-                    item?.profile_pic == null
-                      ? images.cart2
-                      : {uri: pic_url + item.profile_pic}
-                  }
-                  email={item.email}
-                />
+                <TouchableOpacity onPress={()=>console.log('item.id: ',item)}>
+                  <VenderCardBox
+                    key={item.id}
+                    name={item.first_name + ' ' + item.last_name}
+                    img={
+                      item?.profile_pic == null
+                        ? images.cart2
+                        : {uri: pic_url + item.profile_pic}
+                    }
+                    email={item.email}
+                  />
+                </TouchableOpacity>
               )}
             />
           ) : (
