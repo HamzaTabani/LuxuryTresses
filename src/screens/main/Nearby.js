@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   View,
   FlatList,
+  Text,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import PageWrapper from '../../components/PageWrapper';
@@ -33,16 +34,23 @@ const Nearby = () => {
   const [imageUrls, setImageUrls] = useState([]);
   const [cardStates, setCardStates] = useState(Array().fill(false));
   const flatListRef = useRef(null);
-
+  console.log('selectKilometers: ', selectKilometers);
   const dispatch = useDispatch();
   const {nearbyStylists} = useSelector(state => state.stylistReducer);
 
+  const regionLat = useSelector(state => state.userData.latLng);
+  console.log('defLatcd: ', regionLat);
+
+  useEffect(() => {
+    setCurrentregion(regionLat);
+    console.log('defLat: ', regionLat);
+  }, [regionLat]);
+  console.log('currentRegion:', currentRegion);
   console.log('imageUrls: ', imageUrls);
 
   let circleRadius = 1500;
 
   useEffect(() => {
-    getCurrentLocation();
     fetchNearbyStylists();
   }, []);
 
@@ -57,7 +65,6 @@ const Nearby = () => {
 
   const onIconPress = index => {
     flatListRef.current.setNativeProps({scrollEnabled: true});
-    // setIsDetailOpen(!isDetailOpen);
     setCardStates(prevState => {
       const newState = [...prevState];
       newState[index] = !newState[index];
@@ -68,29 +75,6 @@ const Nearby = () => {
   const handleRegionChange = region => {
     setCurrentregion(region);
     console.log('currentRegion: ', currentRegion);
-  };
-
-  const getCurrentLocation = () => {
-    GetLocation.getCurrentPosition({
-      enableHighAccuracy: true,
-      timeout: 60000,
-    })
-      .then(location => {
-        console.log('location: ', location);
-        setCurrentregion({
-          latitude: location.latitude,
-          longitude: location.longitude,
-          // latitudeDelta: 0.012,
-          // longitudeDelta: 0.045
-          latitudeDelta: 0.06,
-          longitudeDelta: 0.008 * (15 / 20),
-        });
-      })
-      .catch(error => {
-        console.log('object');
-        const {code, message} = error;
-        console.warn(code, message);
-      });
   };
 
   const PreLoadImages = async () => {
@@ -135,7 +119,6 @@ const Nearby = () => {
     <PageWrapper>
       <ProfileHeader username={true} />
       <View style={styles.screen}>
-        {/* MapView Container */}
         <View style={styles.mapContainer}>
           {currentRegion != null ? (
             <MapView
@@ -158,23 +141,7 @@ const Nearby = () => {
               style={styles.mapStyle}
             />
           )}
-          {/* Top Component */}
           <View style={styles.topComponent}>
-            <View style={styles.tabView}>
-              {tabs.map(item => (
-                <TouchableOpacity
-                  key={item.id}
-                  activeOpacity={0.9}
-                  onPress={() => setChangeTab(item.id)}
-                  // onPress={() => console.log('changeTabcd:', item.id)}
-                  style={changeTab == item.id && styles.background}>
-                  <Image
-                    source={item.icon}
-                    style={changeTab != item.id && {marginHorizontal: 10}}
-                  />
-                </TouchableOpacity>
-              ))}
-            </View>
             <View style={styles.pickerStyle}>
               <Picker
                 selectedValue={selectKilometers}
@@ -191,33 +158,29 @@ const Nearby = () => {
                 ))}
               </Picker>
             </View>
-            <View style={styles.locationView}>
-              <Image source={images.locationIcon} />
-            </View>
           </View>
-          {/* Bottom Component */}
           {currentRegion != null ? (
             <View style={styles.bottomComponent}>
               <FlatList
-              // contentContainerStyle={{backgroundColor:'red',paddingHorizontal:40}}
-                // style={{paddingHorizontal:50}}
                 ref={flatListRef}
                 data={nearbyStylists}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 nestedScrollEnabled
                 pagingEnabled={true}
-                renderItem={({item, index}) => (
-                  <StylistInfo
-                    image={item.profile_pic}
-                    isActive={cardStates[index]}
-                    onArrowPress={() => onIconPress(index)}
-                    flatListRef={flatListRef}
-                    name={item.first_name + item.last_name}
-                    address={item.address}
-                    distance={item.distance}
-                  />
-                )}
+                renderItem={({item, index}) => {
+                  return (
+                    <StylistInfo
+                      image={item.profile_pic}
+                      isActive={cardStates[index]}
+                      onArrowPress={() => onIconPress(index)}
+                      flatListRef={flatListRef}
+                      name={item.first_name + item.last_name}
+                      address={item.address}
+                      distance={item.distance}
+                    />
+                  );
+                }}
               />
             </View>
           ) : null}

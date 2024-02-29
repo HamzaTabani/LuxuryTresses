@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import MapView, {Marker, Circle} from 'react-native-maps';
 import MapHeader from '../../components/MapHeader';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -7,19 +7,29 @@ import LocationCard from '../../components/LocationCard';
 import colors from '../../assets/colors';
 import {initialRegion} from '../../dummyData';
 import images from '../../assets/images';
+import {useSelector} from 'react-redux';
 
 const SelectLocation = () => {
   const [currentRegion, setCurrentregion] = useState(null);
   const mapRef = useRef(null);
-  let circleRadius = 1500;
-  console.log('initialRegion: ', initialRegion);
-  console.log('currentRegion---: ', currentRegion);
-  const dataReigions = data => {
-    setCurrentregion(data);
-  };
+  const regionLat = useSelector(state => state.userData.latLng);
+  console.log('defLatcd: ', regionLat);
 
-  async function moveToLocation(latitude, longitude) {
-    mapRef.current.animateToRegion(
+  useEffect(() => {
+    setCurrentregion(regionLat);
+    console.log('fgffgff: ', regionLat);
+  }, [regionLat]);
+
+  let circleRadius = 1500;
+  // console.log('initialRegion: ', initialRegion);
+  console.log('currentRegion---: ', currentRegion);
+
+  useEffect(() => {
+    mapRef.current = mapRef.current || {};
+  }, []);
+
+  function moveToLocation(latitude, longitude) {
+    mapRef.current?.animateToRegion(
       {
         latitude,
         longitude,
@@ -29,13 +39,17 @@ const SelectLocation = () => {
       2000,
     );
   }
+
+  const dataReigions = data => {
+    setCurrentregion(data);
+  };
+
   return (
     <>
       {currentRegion != null ? (
         <MapView
           ref={mapRef}
           initialRegion={currentRegion}
-          //   onRegionChangeComplete={currentRegion}
           mapType="terrain"
           style={styles.mapStyle}>
           <Marker
@@ -55,21 +69,10 @@ const SelectLocation = () => {
         </MapView>
       ) : (
         <MapView
-          initialRegion={initialRegion}
+          ref={mapRef}
+          initialRegion={currentRegion}
           mapType="terrain"
-          style={styles.mapStyle}>
-          {/* <Marker
-          coordinate={{latitude: currentRegion.latitude, longitude: currentRegion.longitude}}
-          image={images.locationMarker}
-        />
-        <Circle
-          center={{latitude: currentRegion.latitude, longitude: currentRegion.longitude}}
-          strokeWidth={0.5}
-          radius={circleRadius}
-          fillColor="rgba(239, 229, 204, 0.3)"
-          strokeColor={colors.orange}
-        /> */}
-        </MapView>
+          style={styles.mapStyle}></MapView>
       )}
       <MapHeader />
       <LocationCard

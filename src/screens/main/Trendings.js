@@ -136,7 +136,8 @@ const Trendings = () => {
               contentContainerStyle={{paddingBottom: 100}}
               data={trending_stylists}
               renderItem={({item}) => (
-                <TouchableOpacity onPress={()=>console.log('item.id: ',item)}>
+                <TouchableOpacity
+                  onPress={() => console.log('item.id: ', item)}>
                   <VenderCardBox
                     key={item.id}
                     name={item.first_name + ' ' + item.last_name}
@@ -145,7 +146,13 @@ const Trendings = () => {
                         ? images.cart2
                         : {uri: pic_url + item.profile_pic}
                     }
-                    email={item.email}
+                    email={
+                      item.address != 'null' &&
+                      item.address != null &&
+                      item.address != 'undefined'
+                        ? item.address
+                        : 'address'
+                    }
                   />
                 </TouchableOpacity>
               )}

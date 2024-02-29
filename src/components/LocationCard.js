@@ -1,4 +1,4 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState, useRef} from 'react';
 import colors from '../assets/colors';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -7,41 +7,55 @@ import images from '../assets/images';
 import OutlineButton from './OutlineButton';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import {useSelector, useDispatch} from 'react-redux';
-import { postLatLng } from '../redux/slices/AuthSlice';
-
+import {postLatLng} from '../redux/slices/AuthSlice';
+import GetLocation from 'react-native-get-location';
+import { ShowToast } from '../utils';
+import { useNavigation } from '@react-navigation/native';
 
 const LocationCard = ({reigions, moveToLocation}) => {
   const [currentRegion, setCurrentregion] = useState(null);
   const [moveTo, setMoveTo] = useState('');
   const dispatch = useDispatch();
-  dispatch(postLatLng({currentRegion}));
-//   const {latLng} = useSelector(state => state.userData);
+  const navigation = useNavigation();
 
-//   console.log('latLng: ',latLng)
-  //   const mapRef = useRef(null);
-  console.log('currentRegion: ', currentRegion);
+
   useEffect(() => {
     reigions(currentRegion);
   }, [currentRegion]);
-  console.log('moveToLocation: ', moveToLocation);
 
-  //   function moveToLocation(latitude, longitude) {
-  //     mapRef?.current?.animateToRegion(
-  //       {
-  //         latitude,
-  //         longitude,
-  //         latitudeDelta: 0.06,
-  //         longitudeDelta: 0.008 * (15 / 20),
-  //       },
-  //       2000,
-  //     );
-  //   }
+  const onSubmit = () => {
+    dispatch(postLatLng(currentRegion));
+    ShowToast('Location has been saved.');
+    navigation.navigate('profile');
+  };
+
+  const getCurrentLocation = () => {
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 60000,
+    })
+      .then(location => {
+        setCurrentregion({
+          latitude: location.latitude,
+          longitude: location.longitude,
+          latitudeDelta: 0.06,
+          longitudeDelta: 0.008 * (15 / 20),
+        });
+        reigions(currentRegion);
+        moveToLocation(location.latitude, location.longitude);
+        console.log('location: ', location);
+      })
+      .catch(error => {
+        const {code, message} = error;
+        console.warn(code, message);
+      });
+  };
+  console.log('-=-=-=-=-=', currentRegion);
 
   return (
     <View style={styles.cardStyle}>
       <Text style={styles.addressText}>Your Address</Text>
       <View style={{paddingTop: hp('2%'), flexDirection: 'row'}}>
-        {/* <InputField /> */}
         <GooglePlacesAutocomplete
           styles={{
             textInput: {
@@ -69,12 +83,10 @@ const LocationCard = ({reigions, moveToLocation}) => {
           enablePoweredByContainer={false}
           textInputProps={{
             placeholderTextColor: '#E6C07A',
-            // returnKeyType: "search"
           }}
           fetchDetails={true}
           placeholder="Address"
           onPress={(data, details = null) => {
-            // 'details' is provided when fetchDetails = true
             console.log(details.geometry.location.lng);
             moveToLocation(
               details?.geometry?.location.lat,
@@ -92,12 +104,14 @@ const LocationCard = ({reigions, moveToLocation}) => {
             language: 'en',
           }}
         />
-        <View style={styles.locationStyle}>
+        <TouchableOpacity
+          onPress={() => getCurrentLocation()}
+          style={styles.locationStyle}>
           <Image source={images.locationIcon} />
-        </View>
+        </TouchableOpacity>
       </View>
       <OutlineButton
-        //   onPress={}
+        onPress={() => onSubmit()}
         buttonStyle={styles.button}
         title={'SET UP YOUR LOCATION'}
       />
