@@ -20,6 +20,7 @@ import FontAwesome5 from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import ReviewDetailCard from '../../components/ReviewDetailCard';
+import images from '../../assets/images';
 
 const cartData = [
   {
@@ -84,7 +85,11 @@ const Reviews = () => {
             borderBottomWidth: 0.5,
             borderColor: '#D49621',
           }}>
-          <UserDetailCard />
+          <UserDetailCard
+            username={'Omnis iste'}
+            email={'1609 Oak, st.'}
+            image={images.cart1}
+          />
         </View>
         <View
           style={{
@@ -96,7 +101,7 @@ const Reviews = () => {
             alignItems: 'center',
             marginTop: 17,
             padding: 3,
-            marginBottom: 10
+            marginBottom: 10,
           }}>
           <TextInput
             placeholder="Add comment"
@@ -117,7 +122,7 @@ const Reviews = () => {
 
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{paddingBottom: 100,}}>
+          contentContainerStyle={{paddingBottom: 100}}>
           <ReviewDetailCard />
           <ReviewDetailCard />
           <ReviewDetailCard />

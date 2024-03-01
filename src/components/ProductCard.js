@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, {useRef, useEffect} from 'react';
 import {
   Text,
   View,
@@ -6,18 +6,32 @@ import {
   Animated,
   Easing,
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
-import Svg, { Circle } from 'react-native-svg';
+import Svg, {Circle} from 'react-native-svg';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import colors from '../assets/colors';
 import images from '../assets/images';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
 
-const ProductCard = ({ rating, item, product, username, avatar, productName, price }) => {
+const ProductCard = ({
+  rating,
+  item,
+  product,
+  username,
+  avatar,
+  productName,
+  price,
+}) => {
+  const navigation = useNavigation();
   const progress = useRef(new Animated.Value(0)).current;
+  const {recentProducts, recent_error} = useSelector(
+    state => state.ecommerceReducer,
+  );
 
   useEffect(() => {
     const ratingToProgress = rating / 5;
@@ -37,7 +51,7 @@ const ProductCard = ({ rating, item, product, username, avatar, productName, pri
   });
 
   return (
-    <View style={[styles.card_box, {height: product ? 210 : 245}]}>
+    <View style={[styles.card_box, {height: product ? 210 : 270}]}>
       {/* card box img,  */}
       <View style={styles.card_box_img}>
         <Image
@@ -51,19 +65,22 @@ const ProductCard = ({ rating, item, product, username, avatar, productName, pri
             source={avatar}
             resizeMode="contain"
             borderRadius={100}
-            style={{ width: 25, height: 25 }}
+            style={{width: 25, height: 25, marginLeft: 5, marginTop: 3}}
           />
           <Text
             style={{
               fontWeight: 'bold',
               color: '#fff',
+              marginTop: 3,
+              // backgroundColor:'red',
+              // marginLeft:hp('2%')
             }}>
             {username}
           </Text>
         </View>
 
         {/* rating icon */}
-        {!product &&
+        {!product && (
           <View
             style={{
               height: 40,
@@ -73,8 +90,10 @@ const ProductCard = ({ rating, item, product, username, avatar, productName, pri
               justifyContent: 'center',
               borderRadius: 50,
               position: 'absolute',
-              bottom: -35,
-              right: 10,
+              // bottom: -35,
+              top: 150,
+              // bottom:0,
+              right: 0,
               borderWidth: 0.3,
             }}>
             <Svg width="40" height="40">
@@ -101,35 +120,55 @@ const ProductCard = ({ rating, item, product, username, avatar, productName, pri
               />
             </Svg>
           </View>
-        }
+        )}
       </View>
       <View
         style={{
-          paddingTop: 25,
-          flexDirection: product && 'row',
-          gap: product && hp('3%'),
-          justifyContent: product && 'space-between',
+          paddingTop: hp('5%'),
+          // paddingHorizontal:hp('1%'),
+          // marginLeft:hp('-6%')
+          left: hp('1%'),
+          top: hp('17%'),
+          position: 'absolute',
+          width: hp('14%'),
+          // paddingTop: 25,
+          // backgroundColor: 'black',
+          // flexDirection: product && 'row',
+          // gap: product && hp('3%'),
+          // justifyContent: product && 'space-between',
         }}>
-        {product ?
+        {product ? (
           <>
             <View>
               <Text style={styles.productName}>Deep Mask</Text>
               <Text style={styles.text}>$59.00</Text>
             </View>
             <View style={styles.iconView}>
-              <Image
-                source={images.shoppingIcon}
-                style={styles.image}
-              />
+              <Image source={images.shoppingIcon} style={styles.image} />
             </View>
-          </> : <>
-            <Text style={[styles.productName,{marginTop: !product && hp('2%')}]}>{productName}</Text>
+          </>
+        ) : (
+          <View
+            style={
+              {
+                // backgroundColor: 'green',
+                // width:hp('13%')
+                // paddingLeft:0
+                // left: hp('2%'),
+                // top: hp('17%'),
+                // position: 'absolute',
+              }
+            }>
+            <Text
+              style={[styles.productName, {marginTop: !product && hp('2%')}]}>
+              {productName}
+            </Text>
             <Text style={styles.text}>
               ${price}
               {/* <Text style={styles.productName}>(2km)</Text>{' '} */}
             </Text>
-          </>
-        }
+          </View>
+        )}
       </View>
     </View>
   );
@@ -139,7 +178,7 @@ export default ProductCard;
 
 const styles = StyleSheet.create({
   card_box: {
-    width: 150,
+    width: 170,
     backgroundColor: '#D49621',
     borderRadius: 15,
     alignItems: 'center',
@@ -152,22 +191,23 @@ const styles = StyleSheet.create({
     height: 130,
     alignItems: 'center',
     borderRadius: 15,
-    position: 'relative',
+    // backgroundColor:'red'
+    // position: 'relative',
   },
   card_box_img_icon1: {
     flexDirection: 'row',
     gap: 5,
-    justifyContent: 'space-evenly',
+    // justifyContent: 'space-between',
     height: 30,
     minWidth: wp('30%'),
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    alignItems: 'center',
-    justifyContent: 'center',
+    // alignItems: 'center',
+    // justifyContent: 'center',
     borderRadius: 50,
     position: 'absolute',
-    top: 5,
-    left: 5,
-    borderWidth: 0.3,
+    top: 10,
+    left: 0,
+    borderWidth: 0.5,
     borderColor: '#D49621',
   },
   iconView: {
@@ -177,22 +217,23 @@ const styles = StyleSheet.create({
     backgroundColor: colors.darkblue,
     alignItems: 'center',
     alignSelf: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   image: {
     height: hp('1.5%'),
-    width: hp('1.5%')
+    width: hp('1.5%'),
   },
   productName: {
     color: '#fff',
     marginBottom: hp('0.5%'),
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    // backgroundColor: 'red',
   },
   text: {
-    color: '#f6f6f6'
+    color: '#f6f6f6',
   },
   productImage: {
-    height: hp('18.2%'),
-    width: hp('18.2%')
+    height: hp('22%'),
+    width: hp('21%'),
   },
 });

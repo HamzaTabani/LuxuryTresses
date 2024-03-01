@@ -4,7 +4,7 @@ import {Text, View, Image, Animated, Easing, StyleSheet} from 'react-native';
 import Svg, {Circle} from 'react-native-svg';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-const Card = ({rating, stylist_name, stylist_email, image}) => {
+const Card = ({rating, stylist_name, stylist_email, image, allTopStylist}) => {
   const progress = useRef(new Animated.Value(0)).current;
   const navigation = useNavigation();
 
@@ -33,7 +33,7 @@ const Card = ({rating, stylist_name, stylist_email, image}) => {
           source={image}
           resizeMode="cover"
           borderRadius={10}
-          style={{width: '100%', height: '100%'}}
+          style={{width: hp('20%'), height: hp('22%')}}
         />
         {/* small icons */}
         <View style={styles.card_box_img_icon1}>
@@ -60,8 +60,8 @@ const Card = ({rating, stylist_name, stylist_email, image}) => {
             justifyContent: 'center',
             borderRadius: 50,
             position: 'absolute',
-            bottom: -25,
-            right: 10,
+            bottom: -60,
+            right: 0,
             borderWidth: 0.3,
           }}>
           <Svg width="40" height="40">
@@ -89,15 +89,36 @@ const Card = ({rating, stylist_name, stylist_email, image}) => {
           </Svg>
         </View>
       </View>
-      <View
-        style={{
-          paddingTop: hp('4%'),
-        }}>
-        <Text style={{color: '#fff', fontWeight: 'bold'}}>{stylist_name}</Text>
-        <Text style={{color: '#f6f6f6', fontSize: hp('1.4%')}}>
-          {stylist_email}
-        </Text>
-      </View>
+      {allTopStylist ? (
+        <View
+          style={{
+            paddingTop: hp('4%'),
+            left: hp('2%'),
+            top: hp('19%'),
+            position: 'absolute',
+            width:hp('13%'),
+            // backgroundColor:'red'
+          }}>
+          <Text style={{color: '#fff', fontWeight: 'bold'}}>
+            {stylist_name}
+          </Text>
+          <Text style={{color: '#f6f6f6', fontSize: hp('1.4%')}}>
+            {stylist_email}
+          </Text>
+        </View>
+      ) : (
+        <View
+          style={{
+            paddingTop: hp('4%'),
+          }}>
+          <Text style={{color: '#fff', fontWeight: 'bold'}}>
+            {stylist_name}
+          </Text>
+          <Text style={{color: '#f6f6f6', fontSize: hp('1.4%')}}>
+            {stylist_email}
+          </Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -106,8 +127,8 @@ export default Card;
 
 const styles = StyleSheet.create({
   card_box: {
-    width: 150,
-    height: 220,
+    width: 170,
+    height: 240,
     backgroundColor: '#D49621',
     borderRadius: 15,
     alignItems: 'center',
@@ -121,6 +142,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 15,
     position: 'relative',
+    // backgroundColor:'red'
   },
   card_box_img_icon1: {
     height: 30,
@@ -131,8 +153,8 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     position: 'absolute',
     top: 5,
-    left: 5,
-    borderWidth: 0.3,
+    left: 0,
+    borderWidth: 0.5,
     borderColor: '#D49621',
   },
   card_box_img_icon2: {
@@ -144,8 +166,8 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     position: 'absolute',
     top: 5,
-    left: 40,
-    borderWidth: 0.3,
+    left: 35,
+    borderWidth: 0.5,
     borderColor: '#D49621',
   },
 });

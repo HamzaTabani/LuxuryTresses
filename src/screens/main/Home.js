@@ -25,6 +25,7 @@ import {fetchRecentProducts} from '../../redux/slices/ECommerceSlice';
 import Loader from '../../components/Loader';
 import colors from '../../assets/colors';
 import {getTopStylists} from '../../redux/slices/StylistSlice';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Home = ({navigation}) => {
   const {user, pic_url} = useSelector(state => state.userData);
@@ -129,44 +130,49 @@ const Home = ({navigation}) => {
               <>
                 <View style={styles.topStylesContainer}>
                   <View>
-                    <View style={{paddingHorizontal: wp('8%')}}>
-                      {/* <TouchableOpacity
-                        onPress={() => navigation.navigate('TopStylists')}> */}
-                      <Subheading title={'Top stylists'} />
-                      {/* </TouchableOpacity> */}
+                    <View
+                      style={{
+                        paddingHorizontal: wp('7%'),
+                      }}>
+                      <Subheading
+                        title={'Top stylists'}
+                        expandIcon={true}
+                        nav={'stylist'}
+                      />
                     </View>
                     <ScrollView
                       style={{marginTop: 20, marginHorizontal: hp('-3%')}}
                       horizontal
                       contentContainerStyle={{paddingHorizontal: hp('5%')}}
                       showsHorizontalScrollIndicator={false}>
-                      {topStylists.map(item => {
-                        // console.log(
-                        //   'stylist profile image ==============>',
-                        //   item.profile_pic,
-                        // );
-                        return (
-                          <TouchableOpacity
-                            activeOpacity={0.9}
-                            key={item?.id}
-                            onPress={() => onStylistDetail(item)}>
-                            <Card
-                              rating={3}
-                              stylist_name={item.first_name + item.last_name}
-                              stylist_email={
-                                item.email === 'undefined'
-                                  ? 'test123@gmail.com'
-                                  : item.email
-                              }
-                              image={
-                                item.profile_pic == null
-                                  ? images.cart1
-                                  : {uri: pic_url + item.profile_pic}
-                              }
-                            />
-                          </TouchableOpacity>
-                        );
-                      })}
+                      {topStylists
+                        .map(item => {
+                          return (
+                            <TouchableOpacity
+                              activeOpacity={0.9}
+                              key={item?.id}
+                              onPress={() => onStylistDetail(item)}>
+                              <Card
+                                allTopStylist={true}
+                                rating={3}
+                                stylist_name={item.first_name + item.last_name}
+                                stylist_email={
+                                  item.address != 'null' &&
+                                  item.address != null &&
+                                  item.address != 'undefined'
+                                    ? item.address
+                                    : 'address'
+                                }
+                                image={
+                                  item.profile_pic == null
+                                    ? images.cart1
+                                    : {uri: pic_url + item.profile_pic}
+                                }
+                              />
+                            </TouchableOpacity>
+                          );
+                        })
+                        .slice(0, 4)}
                     </ScrollView>
                   </View>
                 </View>
@@ -175,7 +181,10 @@ const Home = ({navigation}) => {
                   {recentProducts.length > 0 ? (
                     <View>
                       <View style={{paddingHorizontal: wp('8%')}}>
-                        <Subheading title={'Recent products'} />
+                        <Subheading
+                          title={'Recent products'}
+                          expandIcon={true}
+                        />
                       </View>
                       {/* <ScrollView
                   style={{ marginTop: 20, marginHorizontal: hp('-3%') }}
@@ -359,6 +368,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 0.5,
     borderBottomWidth: 0.5,
     borderColor: '#D49621',
+    // backgroundColor: 'red',
   },
   recentContainer: {
     marginBottom: 40,

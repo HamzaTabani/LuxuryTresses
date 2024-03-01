@@ -1,8 +1,8 @@
-import { configureStore } from '@reduxjs/toolkit';
+import {configureStore} from '@reduxjs/toolkit';
 import authReducer from './slices/AuthSlice';
-import ecommerceReducer from './slices/ECommerceSlice'
-import stylistReducer from './slices/StylistSlice'
-import { combineReducers } from 'redux';
+import ecommerceReducer from './slices/ECommerceSlice';
+import stylistReducer from './slices/StylistSlice';
+import {combineReducers} from 'redux';
 import {
   persistStore,
   persistReducer,
@@ -20,26 +20,28 @@ const persistConfig = {
   key: 'root',
   version: 1,
   storage: AsyncStorage,
-  whitelist: [
-    'userData',
-    'ecommerceReducer',
-    'stylistReducer'
-  ],
-  blacklist: [], 
+  whitelist: ['userData', 'ecommerceReducer', 'stylistReducer'],
+  blacklist: [],
 };
-
 
 const rootReducer = combineReducers({
   // [contact.reducerPath]: contact.reducer,
   userData: authReducer,
   ecommerceReducer: ecommerceReducer,
-  stylistReducer: stylistReducer
+  stylistReducer: stylistReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
   reducer: persistedReducer,
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+  // middleware: []
   // middleware: getDefaultMiddleware =>
   //   getDefaultMiddleware({
   //     serializableCheck: {

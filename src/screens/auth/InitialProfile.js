@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   ImageBackground,
   StyleSheet,
@@ -12,16 +12,17 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import FontAwesome5 from 'react-native-vector-icons/Ionicons';
 import OutlineButton from '../../components/OutlineButton';
 import InputText from '../../components/InputText';
-import { useDispatch, useSelector } from 'react-redux';
-import { editProfile, register } from '../../redux/slices/AuthSlice';
-import { ShowToast } from '../../utils';
-import { launchImageLibrary } from 'react-native-image-picker';
-import { Picker } from '@react-native-picker/picker';
+import {useDispatch, useSelector} from 'react-redux';
+import {editProfile, register} from '../../redux/slices/AuthSlice';
+import {ShowToast} from '../../utils';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {Picker} from '@react-native-picker/picker';
 import colors from '../../assets/colors';
+import images from '../../assets/images';
 
 const cities = [
   {
@@ -53,10 +54,10 @@ const states = [
   },
 ];
 
-const InitialProfile = ({ route }) => {
+const InitialProfile = ({route}) => {
   const email = route?.params?.userData || null;
-  const { user } = route?.params || null;
-  const { signup_loading, pic_url, edit_loading } = useSelector(
+  const {user} = route?.params || null;
+  const {signup_loading, pic_url, edit_loading} = useSelector(
     state => state.userData,
   );
   const [firstname, setFirstName] = useState(user ? user?.first_name : '');
@@ -73,8 +74,7 @@ const InitialProfile = ({ route }) => {
   const [selectedCity, setSelectedCity] = useState('Los Angeles');
   const [selectedState, setSelectedState] = useState('Texas');
 
-  console.log('user email =========>', selectedCity)
-
+  console.log('user email =========>', selectedCity);
 
   // console.log('photo uri', photoURL)
 
@@ -181,7 +181,8 @@ const InitialProfile = ({ route }) => {
           </View>
         </TouchableOpacity>
         <ScrollView
-          contentContainerStyle={{ paddingBottom: user ? hp('55%') : hp('60%') }}>
+          // contentContainerStyle={{paddingBottom: user ? hp('55%') : hp('50%')}}
+          >
           <View
             style={{
               flex: 0.2,
@@ -197,15 +198,15 @@ const InitialProfile = ({ route }) => {
             <View
               style={{
                 backgroundColor: '#0C0A22',
-                height: hp('75%'),
-                flex: 1,
+                height: hp('130%'),
+                // flex: 1,
                 // width: '100%',
                 alignItems: 'center',
                 borderTopRightRadius: 20,
                 borderTopLeftRadius: 20,
                 marginTop: hp('3%'),
               }}>
-              <View style={{ width: wp('80%') }}>
+              <View style={{width: wp('80%')}}>
                 <View>
                   <Text style={styles.input_lable}>Add profile picture</Text>
                   <TouchableOpacity
@@ -222,7 +223,11 @@ const InitialProfile = ({ route }) => {
                     activeOpacity={0.9}
                     onPress={() => onUploadPhoto()}>
                     <Image
-                      source={{ uri: photoURL }}
+                      source={
+                        photoURL != ''
+                          ? {uri: photoURL}
+                          : images.initialProfileCam
+                      }
                       resizeMode="contain"
                       borderRadius={100}
                       style={{
@@ -243,6 +248,7 @@ const InitialProfile = ({ route }) => {
                         position: 'absolute',
                         bottom: 0,
                         right: 0,
+                        // left:5
                       }}
                     />
                   </TouchableOpacity>
@@ -279,7 +285,7 @@ const InitialProfile = ({ route }) => {
                     placeholderTextColor="#bbb9bd"
                   />
                 </View> */}
-                <View style={{ paddingTop: hp('4%') }}>
+                <View style={{paddingTop: hp('4%')}}>
                   <InputText
                     placeholder={'First Name'}
                     value={firstname}
@@ -302,17 +308,15 @@ const InitialProfile = ({ route }) => {
                     label={'Enter your phone number'}
                     icon={'call-outline'}
                   />
-                  {user &&
+                  {user && (
                     <>
                       <InputText
                         placeholder={'Address'}
                         // value={address}
-                        value={address != 'null'
-                          ? address
-                          : 'Add your address'}
+                        value={address != 'null' ? address : 'Add your address'}
                         onChangeText={text => setAddress(text)}
                         label={'Enter your address'}
-                      // icon={'person-outline'}
+                        // icon={'person-outline'}
                       />
                       <View
                         style={{
@@ -342,7 +346,7 @@ const InitialProfile = ({ route }) => {
                                   key={item.id}
                                   label={item.text}
                                   value={item.text}
-                                  style={{ color: colors.darkgray }}
+                                  style={{color: colors.darkgray}}
                                 />
                               ))}
                             </Picker>
@@ -371,7 +375,7 @@ const InitialProfile = ({ route }) => {
                                   key={item.id}
                                   label={item.text}
                                   value={item.text}
-                                  style={{ color: colors.darkgray }}
+                                  style={{color: colors.darkgray}}
                                 />
                               ))}
                             </Picker>
@@ -379,7 +383,7 @@ const InitialProfile = ({ route }) => {
                         </View>
                       </View>
                     </>
-                  }
+                  )}
                   {!user && (
                     <>
                       <InputText
@@ -401,13 +405,13 @@ const InitialProfile = ({ route }) => {
                     </>
                   )}
                 </View>
-              </View>
-              <View style={{ alignItems: 'center', marginTop: 40 }}>
-                <OutlineButton
-                  title="done"
-                  indicator={user ? edit_loading : signup_loading}
-                  onPress={() => onButtonPress()}
-                />
+                <View style={{alignItems: 'center', marginTop: 40}}>
+                  <OutlineButton
+                    title="done"
+                    indicator={user ? edit_loading : signup_loading}
+                    onPress={() => onButtonPress()}
+                  />
+                </View>
               </View>
             </View>
           </View>
