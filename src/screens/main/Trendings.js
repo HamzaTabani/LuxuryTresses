@@ -131,32 +131,58 @@ const Trendings = () => {
               </View>
             </>
           ) : trending_stylists.length > 0 ? (
-            <FlatList
+            <ScrollView
               showsVerticalScrollIndicator={false}
-              contentContainerStyle={{paddingBottom: 100}}
-              data={trending_stylists}
-              renderItem={({item}) => (
-                <TouchableOpacity
-                  onPress={() => console.log('item.id: ', item)}>
-                  <VenderCardBox
-                    key={item.id}
-                    name={item.first_name + ' ' + item.last_name}
-                    img={
-                      item?.profile_pic == null
-                        ? images.cart2
-                        : {uri: pic_url + item.profile_pic}
-                    }
-                    email={
-                      item.address != 'null' &&
-                      item.address != null &&
-                      item.address != 'undefined'
-                        ? item.address
-                        : 'address'
-                    }
-                  />
-                </TouchableOpacity>
-              )}
-            />
+              style={{marginBottom: 50}}>
+              <FlatList
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                  // paddingBottom: 100,
+                  marginBottom: 60,
+                  // backgroundColor: 'green',
+                }}
+                data={trending_stylists}
+                renderItem={({item}) => (
+                  <TouchableOpacity
+                    onPress={() => console.log('item.id: ', item)}>
+                    <VenderCardBox
+                      key={item.id}
+                      name={item.first_name + ' ' + item.last_name}
+                      img={
+                        item?.profile_pic == null
+                          ? images.cart2
+                          : {uri: pic_url + item.profile_pic}
+                      }
+                      email={
+                        item.address != 'null' &&
+                        item.address != null &&
+                        item.address != 'undefined'
+                          ? item.address
+                          : 'address'
+                      }
+                    />
+                  </TouchableOpacity>
+                )}
+              />
+              <View
+                style={{
+                  paddingHorizontal: wp('8%'),
+                  // marginTop: 30,
+                  marginBottom: 50,
+                  alignItems: 'center',
+                  // position: 'absolute',
+                  // bottom: 80,
+                  // backgroundColor: 'red',
+                }}>
+                <Image
+                  source={require('../../assets/images/bottom_linesA.png')}
+                  resizeMode="contain"
+                  style={{
+                    width: 40,
+                  }}
+                />
+              </View>
+            </ScrollView>
           ) : (
             trending_error !== '' && (
               <>
@@ -178,6 +204,24 @@ const Trendings = () => {
             {cartData2?.map(item => (
               <ProductCardBox key={item.id} name={item.name} img={item.img} />
             ))}
+            <View
+              style={{
+                paddingHorizontal: wp('8%'),
+                marginTop: 30,
+                // marginBottom: 100,
+                alignItems: 'center',
+                // position: 'absolute',
+                // bottom: 80,
+                // backgroundColor: 'red',
+              }}>
+              <Image
+                source={require('../../assets/images/bottom_linesA.png')}
+                resizeMode="contain"
+                style={{
+                  width: 40,
+                }}
+              />
+            </View>
           </ScrollView>
         )}
       </View>

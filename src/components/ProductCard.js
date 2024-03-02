@@ -61,12 +61,25 @@ const ProductCard = ({
         />
         {/* small icons */}
         <View style={styles.card_box_img_icon1}>
-          <Image
-            source={avatar}
-            resizeMode="contain"
-            borderRadius={100}
-            style={{width: 25, height: 25, marginLeft: 5, marginTop: 3}}
-          />
+          <View
+            style={{
+              height: 23,
+              width: 23,
+              borderRadius: 20,
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginLeft: 5,
+              borderColor: colors.white,
+              borderWidth: 1,
+              marginTop: 3,
+            }}>
+            <Image
+              source={avatar}
+              resizeMode="contain"
+              borderRadius={100}
+              style={{width: 20, height: 20}}
+            />
+          </View>
           <Text
             style={{
               fontWeight: 'bold',

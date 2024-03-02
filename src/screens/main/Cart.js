@@ -12,18 +12,18 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { useState } from 'react';
+import {useState} from 'react';
 import images from '../../assets/images';
 import colors from '../../assets/colors';
 import HistoryCard from '../../components/HistoryCard';
 import Container from '../../components/Container';
-import { histories } from '../../dummyData';
-import { useNavigation } from '@react-navigation/native';
+import {histories} from '../../dummyData';
+import {useNavigation} from '@react-navigation/native';
 
 const Cart = () => {
   const [tabActive, setTabActive] = useState('');
 
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
   console.log(tabActive);
   return (
@@ -35,33 +35,47 @@ const Cart = () => {
           <TouchableOpacity
             style={tabActive === 'order' ? styles.btns_active : styles.btns}
             onPress={() => setTabActive('order')}>
-            <Text style={{ color: 'white' }}>Orders</Text>
+            <Text style={{color: 'white'}}>Orders</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={tabActive !== 'order' ? styles.btns_active : styles.btns}
             onPress={() => setTabActive('history')}>
-            <Text style={{ color: 'white' }}>History</Text>
+            <Text style={{color: 'white'}}>History</Text>
           </TouchableOpacity>
         </View>
-        {tabActive === 'order' ?
-          <View style={{ flex: 0.8, justifyContent: 'center' }}>
-            <Image
-              source={images.orders1}
-              style={styles.orderImage}
-            />
+        {tabActive === 'order' ? (
+          <View style={{flex: 0.8, justifyContent: 'center'}}>
+            <Image source={images.orders1} style={styles.orderImage} />
             <Text style={styles.text}>{'You have no favourites :('}</Text>
           </View>
-          :
-          <ScrollView contentContainerStyle={styles.historyWrapper}>
-            {histories.map((item) => (
+        ) : (
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.historyWrapper}>
+            {histories.map(item => (
               <HistoryCard
                 key={item.id}
                 image={item.image}
                 onPress={() => navigation.navigate('OrderHistory')}
               />
             ))}
+            <View
+              style={{
+                paddingHorizontal: wp('8%'),
+                marginTop: 50,
+                // marginBottom: 150,
+                alignItems: 'center',
+              }}>
+              <Image
+                source={require('../../assets/images/bottom_linesA.png')}
+                resizeMode="contain"
+                style={{
+                  width: 40,
+                }}
+              />
+            </View>
           </ScrollView>
-        }
+        )}
       </View>
     </Container>
   );
@@ -93,8 +107,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.secondary,
     paddingVertical: 10,
     borderRadius: 50,
-    width: hp("20%"),
-    alignItems:"center"
+    width: hp('20%'),
+    alignItems: 'center',
   },
   btns: {
     backgroundColor: 'transparent',
@@ -105,19 +119,19 @@ const styles = StyleSheet.create({
   orderImage: {
     height: hp('30%'),
     alignSelf: 'center',
-    width: hp('30%')
+    width: hp('30%'),
   },
   text: {
     color: colors.secondary,
     width: '40%',
     fontSize: hp('3%'),
     marginTop: hp('3.5%'),
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   historyWrapper: {
     paddingTop: hp('5%'),
-    paddingBottom: hp('14%')
-  }
+    paddingBottom: hp('14%'),
+  },
 });
 
 export default Cart;

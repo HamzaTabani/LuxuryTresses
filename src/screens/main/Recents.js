@@ -132,6 +132,21 @@ const Recents = () => {
             {cartData?.map(item => (
               <VenderCardBox key={item.id} name={item.name} img={item.img} />
             ))}
+            <View
+              style={{
+                paddingHorizontal: wp('8%'),
+                marginTop: 50,
+                // marginBottom: 150,
+                alignItems: 'center',
+              }}>
+              <Image
+                source={require('../../assets/images/bottom_linesA.png')}
+                resizeMode="contain"
+                style={{
+                  width: 40,
+                }}
+              />
+            </View>
           </ScrollView>
         ) : (
           <ScrollView
@@ -140,6 +155,21 @@ const Recents = () => {
             {cartData2?.map(item => (
               <ProductCardBox key={item.id} name={item.name} img={item.img} />
             ))}
+            <View
+              style={{
+                paddingHorizontal: wp('8%'),
+                marginTop: 50,
+                // marginBottom: 150,
+                alignItems: 'center',
+              }}>
+              <Image
+                source={require('../../assets/images/bottom_linesA.png')}
+                resizeMode="contain"
+                style={{
+                  width: 40,
+                }}
+              />
+            </View>
           </ScrollView>
         )}
       </View>
@@ -159,8 +189,7 @@ const styles = StyleSheet.create({
   filterContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingBottom: hp("1.2%")
-
+    paddingBottom: hp('1.2%'),
   },
   mainTitleText: {
     fontSize: hp('4%'),
