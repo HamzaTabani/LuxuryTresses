@@ -14,6 +14,7 @@ import images from '../assets/images';
 import * as Progress from 'react-native-progress';
 import {imageUrl, stylistImages} from '../dummyData';
 import OutlineButton from './OutlineButton';
+import { SvgCardPopularIcon, SvgGoldBagIcon, SvgGoldSeatIcon } from './SvgImages';
 
 const StylistInfo = ({
   image,
@@ -66,10 +67,13 @@ const StylistInfo = ({
             </Text>
             <View style={{flexDirection: 'row', gap: 8}}>
               <View style={styles.iconView}>
-                <Image source={images.tab1} />
+                {/* <Image source={images.tab1} /> */}
+                <SvgGoldSeatIcon/>
+
               </View>
               <View style={styles.iconView}>
-                <Image source={images.tab2} />
+                {/* <Image source={images.tab2} /> */}
+                <SvgGoldBagIcon/>
               </View>
             </View>
           </View>
@@ -84,10 +88,7 @@ const StylistInfo = ({
               borderColor="transparent"
             />
             <View style={styles.imageWrapper}>
-              <Image
-                source={images.star}
-                style={{height: hp('2.3%'), width: hp('2.3%')}}
-              />
+            <SvgCardPopularIcon />
             </View>
           </View>
           <Text style={{color: colors.white, marginTop: hp('0.4%')}}>
@@ -196,7 +197,7 @@ const styles = StyleSheet.create({
   },
   imageWrapper: {
     position: 'absolute',
-    top: hp('2.3%'),
+    top: hp('2%'),
   },
   detailCard: {
     backgroundColor: colors.orange,

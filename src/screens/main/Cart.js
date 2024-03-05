@@ -19,6 +19,7 @@ import HistoryCard from '../../components/HistoryCard';
 import Container from '../../components/Container';
 import {histories} from '../../dummyData';
 import {useNavigation} from '@react-navigation/native';
+import { SvgBottomLineSecondIcon } from '../../components/SvgImages';
 
 const Cart = () => {
   const [tabActive, setTabActive] = useState('');
@@ -66,13 +67,14 @@ const Cart = () => {
                 // marginBottom: 150,
                 alignItems: 'center',
               }}>
-              <Image
+              {/* <Image
                 source={require('../../assets/images/bottom_linesA.png')}
                 resizeMode="contain"
                 style={{
                   width: 40,
                 }}
-              />
+              /> */}
+              <SvgBottomLineSecondIcon/>
             </View>
           </ScrollView>
         )}

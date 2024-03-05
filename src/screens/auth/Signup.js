@@ -16,6 +16,7 @@ import BackHeader from '../../components/BackHeader';
 import FontAwesome5 from 'react-native-vector-icons/Ionicons';
 import PrimaryButton from '../../components/PrimaryButton';
 import {ShowToast} from '../../utils';
+import {SvgFacebookIcon, SvgGoogleIcon} from '../../components/SvgImages';
 
 const Signup = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -82,10 +83,13 @@ const Signup = ({navigation}) => {
             </View>
 
             <View style={styles.button_container}>
-              <Image
+              {/* <Image
                 source={require('../../assets/images/google_icon.png')}
                 style={styles.btn_icon}
-              />
+              /> */}
+              <View style={styles.btn_icon}>
+                <SvgGoogleIcon />
+              </View>
               <View style={{width: '75%'}}>
                 <Text
                   style={{
@@ -98,10 +102,13 @@ const Signup = ({navigation}) => {
               </View>
             </View>
             <View style={styles.button_container}>
-              <Image
+              {/* <Image
                 source={require('../../assets/images/facebook_icon.png')}
                 style={styles.btn_icon}
-              />
+              /> */}
+              <View style={styles.btn_icon}>
+                <SvgFacebookIcon />
+              </View>
               <View style={{width: '75%'}}>
                 <Text
                   style={{

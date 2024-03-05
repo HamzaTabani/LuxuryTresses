@@ -25,6 +25,12 @@ import {logoutUser} from '../../redux/slices/AuthSlice';
 import {ShowToast} from '../../utils';
 import FastImage from 'react-native-fast-image';
 import images from '../../assets/images';
+import {
+  SvgProfileLocationCurrentIcon,
+  SvgProfileLocationMapIcon,
+  SvgarrowUpLeftIcon,
+} from '../../components/SvgImages';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Profile = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -197,9 +203,7 @@ const Profile = () => {
                         </Text>
                       </View>
                       <View>
-                        <Image
-                          source={require('../../assets/images/blackarrow.png')}
-                        />
+                        <SvgarrowUpLeftIcon />
                       </View>
                     </View>
                   </ImageBackground>
@@ -364,13 +368,14 @@ const Profile = () => {
                     justifyContent: 'space-between',
                     gap: 8,
                   }}>
-                  <Image
+                  {/* <Image
                     source={require('../../assets/images/profilemap.png')}
                     style={{
                       width: '50%',
                       borderRadius: 15,
                     }}
-                  />
+                  /> */}
+                  <SvgProfileLocationMapIcon />
                   <View
                     style={{
                       flexDirection: 'row',
@@ -391,10 +396,11 @@ const Profile = () => {
                       />
                     </TouchableOpacity> */}
                     <View>
-                      <Image
+                      {/* <Image
                         source={require('../../assets/images/mapicon.png')}
                         resizeMode="contain"
-                      />
+                      /> */}
+                      <SvgProfileLocationCurrentIcon />
                     </View>
                     <Text
                       style={{

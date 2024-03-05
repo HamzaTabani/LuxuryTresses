@@ -12,17 +12,15 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import PrimaryButton from '../../components/PrimaryButton';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
+import {SvgLogoIcon} from '../../components/SvgImages';
 
-const Welcome = ({ navigation }) => {
-
-  
+const Welcome = ({navigation}) => {
   const state = useSelector(state => state.userData);
   console.log(state, 'my redux state test.');
 
   return (
     <View style={styles.container}>
-
       <ImageBackground
         source={require('../../assets/images/splashbg.png')}
         resizeMode="cover"
@@ -33,6 +31,7 @@ const Welcome = ({ navigation }) => {
             source={require('../../assets/images/logo.png')}
             style={styles.logo}
           />
+          
         </View>
 
         {/* splash bottom */}
@@ -41,12 +40,12 @@ const Welcome = ({ navigation }) => {
             <Text style={styles.splash_heading}>Let your hair,</Text>
             <Text style={styles.splash_heading}>Speak for itself</Text>
           </View>
-          <View style={{ marginTop: 25 }}>
+          <View style={{marginTop: 25}}>
             <Text style={styles.splash_title}>
               Lets make your hair attractive,
             </Text>
           </View>
-          <View style={{ marginTop: 45, alignItems: 'center' }}>
+          <View style={{marginTop: 45, alignItems: 'center'}}>
             <PrimaryButton
               title="Get Started"
               onPress={() => navigation.navigate('signup')}
@@ -72,7 +71,7 @@ const styles = StyleSheet.create({
   splash_header: {
     flex: 0.2,
     alignItems: 'flex-start',
-    paddingTop: hp('3%')
+    paddingTop: hp('3%'),
   },
   logo: {
     width: 80,

@@ -1,11 +1,13 @@
 import React, {useRef, useEffect} from 'react';
 import {Text, View, Image} from 'react-native';
+import {
+  SvgNearByIcon,
+  SvgPopularIcon,
+  SvgRecentsIcon,
+  SvgTrendingIcon,
+} from './SvgImages';
 
 const ShortcutBox = ({title, img}) => {
-
-
-
-
   return (
     <View
       style={{
@@ -17,12 +19,26 @@ const ShortcutBox = ({title, img}) => {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      <Image
-        source={img}
-        resizeMode="contain"
-        style={{width: 35, height: 35}}
-      />
-      <Text style={{color: '#fff'}}>{title}</Text>
+      {title == 'Trends' ? (
+        <View style={{position: 'absolute', top: 25}}>
+          <SvgTrendingIcon />
+        </View>
+      ) : title == 'Nearby' ? (
+        <View style={{position: 'absolute', top: 25}}>
+          <SvgNearByIcon />
+        </View>
+      ) : title == 'Recents' ? (
+        <View style={{position: 'absolute', top: 25}}>
+          <SvgRecentsIcon />
+        </View>
+      ) : title == 'Popular' ? (
+        <View style={{position: 'absolute', top: 25}}>
+          <SvgPopularIcon />
+        </View>
+      ) : null}
+      <Text style={{color: '#fff', position: 'absolute', bottom: 5}}>
+        {title}
+      </Text>
     </View>
   );
 };

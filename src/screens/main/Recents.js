@@ -15,6 +15,11 @@ import {
 } from 'react-native-responsive-screen';
 import VenderCardBox from '../../components/VenderCardBox';
 import ProductCardBox from '../../components/ProductCardBox';
+import {
+  SvgFilterIcon,
+  SvgGoldBagIcon,
+  SvgGoldSeatIcon,
+} from '../../components/SvgImages';
 
 const cartData = [
   {
@@ -102,7 +107,8 @@ const Recents = () => {
                       ? styles.filter_tab_active
                       : styles.filter_tab
                   }>
-                  <Image source={require('../../assets/images/goldseat.png')} />
+                  {/* <Image source={require('../../assets/images/goldseat.png')} /> */}
+                  <SvgGoldSeatIcon />
                 </View>
               </Pressable>
               <Pressable onPress={() => setFilterTab('tab2')}>
@@ -112,13 +118,15 @@ const Recents = () => {
                       ? styles.filter_tab_active
                       : styles.filter_tab
                   }>
-                  <Image source={require('../../assets/images/goldbag.png')} />
+                  {/* <Image source={require('../../assets/images/goldbag.png')} /> */}
+                  <SvgGoldBagIcon />
                 </View>
               </Pressable>
             </View>
             {/* filter icon */}
             <View style={styles.filterButton}>
-              <Image source={require('../../assets/images/filtericon.png')} />
+              {/* <Image source={require('../../assets/images/filtericon.png')} /> */}
+              <SvgFilterIcon />
             </View>
           </View>
         </View>

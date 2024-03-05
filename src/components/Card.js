@@ -3,6 +3,14 @@ import React, {useRef, useEffect} from 'react';
 import {Text, View, Image, Animated, Easing, StyleSheet} from 'react-native';
 import Svg, {Circle} from 'react-native-svg';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {
+  SvgBagWhiteIcon,
+  SvgCardPopularIcon,
+  SvgSeatWhiteIcon,
+} from './SvgImages';
+import * as Progress from 'react-native-progress';
+import images from '../assets/images';
+import colors from '../assets/colors';
 
 const Card = ({rating, stylist_name, stylist_email, image, allTopStylist}) => {
   const progress = useRef(new Animated.Value(0)).current;
@@ -37,56 +45,23 @@ const Card = ({rating, stylist_name, stylist_email, image, allTopStylist}) => {
         />
         {/* small icons */}
         <View style={styles.card_box_img_icon1}>
-          <Image
-            source={require('../assets/images/seat.png')}
-            resizeMode="contain"
-            style={{width: 17, height: 17}}
-          />
+          <SvgSeatWhiteIcon />
         </View>
         <View style={styles.card_box_img_icon2}>
-          <Image
-            source={require('../assets/images/bag.png')}
-            resizeMode="contain"
-            style={{width: 17, height: 17}}
-          />
+          <SvgBagWhiteIcon />
         </View>
         {/* rating icon */}
-        <View
-          style={{
-            height: 40,
-            width: 40,
-            backgroundColor: '#fff',
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: 50,
-            position: 'absolute',
-            bottom: -60,
-            right: 0,
-            borderWidth: 0.3,
-          }}>
-          <Svg width="40" height="40">
-            <Circle
-              cx="20"
-              cy="20"
-              r={radius}
-              fill="transparent"
-              stroke="#19CC89"
-              strokeWidth="4"
-              strokeDasharray={`${circumference} ${circumference}`}
-              strokeDashoffset={animatedStrokeDashoffset}
-            />
-            <Image
-              source={require('../assets/images/popular.png')}
-              resizeMode="contain"
-              style={{
-                width: 20,
-                height: 20,
-                position: 'absolute',
-                top: 10,
-                left: 10,
-              }}
-            />
-          </Svg>
+        <View style={styles.progressView}>
+          <Progress.Circle
+            progress={0.7}
+            color={colors.lightgreen}
+            size={40.5}
+            style={{marginTop: hp('0.5%')}}
+            borderColor="transparent"
+          />
+          <View style={styles.imageWrapper}>
+            <SvgCardPopularIcon />
+          </View>
         </View>
       </View>
       {allTopStylist ? (
@@ -96,8 +71,7 @@ const Card = ({rating, stylist_name, stylist_email, image, allTopStylist}) => {
             left: hp('2%'),
             top: hp('19%'),
             position: 'absolute',
-            width:hp('13%'),
-            // backgroundColor:'red'
+            width: hp('13%'),
           }}>
           <Text style={{color: '#fff', fontWeight: 'bold'}}>
             {stylist_name}
@@ -169,5 +143,20 @@ const styles = StyleSheet.create({
     left: 35,
     borderWidth: 0.5,
     borderColor: '#D49621',
+  },
+  progressView: {
+    backgroundColor: colors.white,
+    alignItems: 'center',
+    height: hp('6%'),
+    width: hp('6%'),
+    borderRadius: 100,
+    position: 'absolute',
+    top: hp('19%'),
+    right: 5,
+    // marginRight:10
+  },
+  imageWrapper: {
+    position: 'absolute',
+    top: hp('2%'),
   },
 });

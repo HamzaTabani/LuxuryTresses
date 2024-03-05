@@ -4,6 +4,7 @@ import colors from '../assets/colors'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import * as Progress from 'react-native-progress';
 import images from '../assets/images';
+import { SvgCardPopularIcon, SvgCardRevPopSecIcon } from './SvgImages';
 
 const ReviewCard = ({onPress}) => {
     return (
@@ -25,10 +26,7 @@ const ReviewCard = ({onPress}) => {
                         borderColor='transparent'
                     />
                     <View style={styles.imageWrapper}>
-                        <Image
-                            source={images.star}
-                            style={{ height: hp('2.5%'), width: hp('2.5%') }}
-                        />
+                    <SvgCardRevPopSecIcon />
                     </View>
                 </View>
             </View>
@@ -64,6 +62,6 @@ const styles = StyleSheet.create({
     },
     imageWrapper: {
         position: 'absolute',
-        top: hp('2%')
+        top: hp('1.8%')
     }
 })

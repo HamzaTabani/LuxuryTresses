@@ -17,6 +17,8 @@ import colors from '../assets/colors';
 import images from '../assets/images';
 import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
+import * as Progress from 'react-native-progress';
+import {SvgCardPopularIcon, SvgShoppingBagGoldIcon} from './SvgImages';
 
 const ProductCard = ({
   rating,
@@ -26,6 +28,8 @@ const ProductCard = ({
   avatar,
   productName,
   price,
+  data,
+  title
 }) => {
   const navigation = useNavigation();
   const progress = useRef(new Animated.Value(0)).current;
@@ -49,6 +53,10 @@ const ProductCard = ({
     inputRange: [0, 1],
     outputRange: [circumference, 0],
   });
+  console.log('item==> ', item);
+
+  // console.log('avatar-->',avatar)
+  // console.log('username-->',username)
 
   return (
     <View style={[styles.card_box, {height: product ? 210 : 270}]}>
@@ -94,44 +102,56 @@ const ProductCard = ({
 
         {/* rating icon */}
         {!product && (
-          <View
-            style={{
-              height: 40,
-              width: 40,
-              backgroundColor: '#fff',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: 50,
-              position: 'absolute',
-              // bottom: -35,
-              top: 150,
-              // bottom:0,
-              right: 0,
-              borderWidth: 0.3,
-            }}>
-            <Svg width="40" height="40">
-              <Circle
-                cx="20"
-                cy="20"
-                r={radius}
-                fill="transparent"
-                stroke="#19CC89"
-                strokeWidth="4"
-                strokeDasharray={`${circumference} ${circumference}`}
-                strokeDashoffset={animatedStrokeDashoffset}
-              />
-              <Image
-                source={require('../assets/images/popular.png')}
-                resizeMode="contain"
-                style={{
-                  width: 20,
-                  height: 20,
-                  position: 'absolute',
-                  top: 10,
-                  left: 10,
-                }}
-              />
-            </Svg>
+          // <View
+          //   style={{
+          //     height: 40,
+          //     width: 40,
+          //     backgroundColor: '#fff',
+          //     alignItems: 'center',
+          //     justifyContent: 'center',
+          //     borderRadius: 50,
+          //     position: 'absolute',
+          //     // bottom: -35,
+          //     top: 150,
+          //     // bottom:0,
+          //     right: 0,
+          //     borderWidth: 0.3,
+          //   }}>
+          //   <Svg width="40" height="40">
+          //     <Circle
+          //       cx="20"
+          //       cy="20"
+          //       r={radius}
+          //       fill="transparent"
+          //       stroke="#19CC89"
+          //       strokeWidth="4"
+          //       strokeDasharray={`${circumference} ${circumference}`}
+          //       strokeDashoffset={animatedStrokeDashoffset}
+          //     />
+          //     <Image
+          //       source={require('../assets/images/popular.png')}
+          //       resizeMode="contain"
+          //       style={{
+          //         width: 20,
+          //         height: 20,
+          //         position: 'absolute',
+          //         top: 10,
+          //         left: 10,
+          //       }}
+          //     />
+          //   </Svg>
+          // </View>
+          <View style={styles.progressView}>
+            <Progress.Circle
+              progress={0.7}
+              color={colors.lightgreen}
+              size={40.5}
+              style={{marginTop: hp('0.5%')}}
+              borderColor="transparent"
+            />
+            <View style={styles.imageWrapper}>
+              <SvgCardPopularIcon />
+            </View>
           </View>
         )}
       </View>
@@ -151,15 +171,24 @@ const ProductCard = ({
           // justifyContent: product && 'space-between',
         }}>
         {product ? (
-          <>
+          <View
+            style={{
+              // backgroundColor: 'red',
+              width: hp('19%'),
+              height: hp('4.5%'),
+              // marginTop: hp('1%'),
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}>
             <View>
-              <Text style={styles.productName}>Deep Mask</Text>
-              <Text style={styles.text}>$59.00</Text>
+              <Text style={styles.productName}>{title}</Text>
+              <Text style={styles.text}>{price}</Text>
             </View>
             <View style={styles.iconView}>
-              <Image source={images.shoppingIcon} style={styles.image} />
+              {/* <Image source={images.shoppingIcon} style={styles.image} /> */}
+              <SvgShoppingBagGoldIcon />
             </View>
-          </>
+          </View>
         ) : (
           <View
             style={
@@ -238,7 +267,7 @@ const styles = StyleSheet.create({
   },
   productName: {
     color: '#fff',
-    marginBottom: hp('0.5%'),
+    // marginBottom: hp('0.5%'),
     fontWeight: 'bold',
     // backgroundColor: 'red',
   },
@@ -248,5 +277,20 @@ const styles = StyleSheet.create({
   productImage: {
     height: hp('22%'),
     width: hp('21%'),
+  },
+  progressView: {
+    backgroundColor: colors.white,
+    alignItems: 'center',
+    height: hp('6%'),
+    width: hp('6%'),
+    borderRadius: 100,
+    position: 'absolute',
+    top: hp('19%'),
+    right: 5,
+    // marginRight:10
+  },
+  imageWrapper: {
+    position: 'absolute',
+    top: hp('2%'),
   },
 });

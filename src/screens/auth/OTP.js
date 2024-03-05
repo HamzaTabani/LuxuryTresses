@@ -17,8 +17,9 @@ import PrimaryButton from '../../components/PrimaryButton';
 import CodeInput from '../../components/CodeInput';
 import colors from '../../assets/colors';
 import {generateOTP, verifyCode} from '../../redux/slices/AuthSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {ShowToast} from '../../utils';
+import {SvgRefreshIcon} from '../../components/SvgImages';
 
 const OTP = ({navigation, route}) => {
   const info = route.params.data;
@@ -28,7 +29,7 @@ const OTP = ({navigation, route}) => {
   );
   const [seconds, setSeconds] = useState(60);
 
-  const { otpcode_loading } = useSelector(state => state.userData)
+  const {otpcode_loading} = useSelector(state => state.userData);
 
   const dispatch = useDispatch();
 
@@ -74,9 +75,12 @@ const OTP = ({navigation, route}) => {
           id: info.id,
         }),
       );
-      console.log('from screeen =========>', res)
+      console.log('from screeen =========>', res);
       if (res.payload.success) {
-        navigation.navigate('ChangePassword', {type: 'forgot', userid: info.id});
+        navigation.navigate('ChangePassword', {
+          type: 'forgot',
+          userid: info.id,
+        });
         return ShowToast(res.payload.message);
       } else {
         return ShowToast(res.payload.message);
@@ -136,13 +140,16 @@ const OTP = ({navigation, route}) => {
                   <TouchableOpacity
                     activeOpacity={0.9}
                     onPress={() => onResendCode()}>
-                    <FontAwesome5
+                    {/* <FontAwesome5
                       name="refresh-outline"
                       type="Ionicons"
                       color="#e0e0e0"
                       size={32}
                       style={{textAlign: 'center', color: '#D49621'}}
-                    />
+                    /> */}
+                    <View style={{alignSelf: 'center'}}>
+                      <SvgRefreshIcon />
+                    </View>
                     <Text
                       style={{
                         color: '#D49621',

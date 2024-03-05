@@ -27,6 +27,11 @@ import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {stylistProfileById} from '../../redux/slices/StylistSlice';
 import Loader from '../../components/Loader';
+import {
+  SvgGoldBagIcon,
+  SvgGoldIcon,
+  SvgGoldSeatIcon,
+} from '../../components/SvgImages';
 
 const ProfileDetail = ({route}) => {
   const [tabActive, setTabActive] = useState('order');
@@ -42,7 +47,10 @@ const ProfileDetail = ({route}) => {
     useSelector(state => state.stylistReducer);
 
   const {pic_url} = useSelector(state => state.userData);
-  console.log('profile details from screen =========>', stylistDetail[id]);
+  console.log(
+    'profile details from screen =========>',
+    stylistDetail[id].about,
+  );
 
   useEffect(() => {
     if (!stylistDetail[id]) {
@@ -109,10 +117,10 @@ const ProfileDetail = ({route}) => {
                 </Text>
                 <View style={{flexDirection: 'row'}}>
                   <View style={styles.iconView}>
-                    <Image source={images.tab1} />
+                    <SvgGoldSeatIcon />
                   </View>
                   <View style={[styles.iconView, {marginLeft: hp('1%')}]}>
-                    <Image source={images.tab2} />
+                    <SvgGoldBagIcon />
                   </View>
                 </View>
               </View>
@@ -173,12 +181,9 @@ const ProfileDetail = ({route}) => {
                       stylistDetail[id]?.last_name}
                   </Text>
                   <Text style={styles.message}>
-                    Sed ut perspiciatis unde omnis iste natus error sit
-                    voluptatem {'\n'}
-                    {'\n'} accusantium doloremque laudantium, totam rem aperiam,
-                    eaque {'\n'}
-                    {'\n'} ipsa quae ab illo inventore veritatis et quasi
-                    architecto beatae vitae dicta sunt explicabo.{' '}
+                    {stylistDetail[id].about != null
+                      ? stylistDetail[id].about
+                      : 'about'}
                   </Text>
                 </View>
                 <View style={styles.imageWrapper}>
@@ -231,7 +236,15 @@ const ProfileDetail = ({route}) => {
                       style={{marginBottom: hp('3.5%')}}
                       activeOpacity={0.9}
                       onPress={() => alert('working in progress')}>
-                      <ProductCard rating={3} item={item} product={true} />
+                      <ProductCard
+                        avatar={images.profile2}
+                        username={'username'}
+                        title={'Deep Mask'}
+                        price={'$59.00'}
+                        rating={3}
+                        item={item}
+                        product={true}
+                      />
                     </TouchableOpacity>
                   )}
                   columnWrapperStyle={{justifyContent: 'space-evenly'}}
@@ -307,6 +320,8 @@ const styles = StyleSheet.create({
   message: {
     marginTop: hp('2%'),
     color: colors.white,
+    fontSize:12,
+    lineHeight:25
   },
   image: {
     height: 75,

@@ -4,12 +4,12 @@ import * as Progress from 'react-native-progress';
 import images from '../assets/images';
 import colors from '../assets/colors';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import { useNavigation } from '@react-navigation/native';
-import FastImage from 'react-native-fast-image'
+import {useNavigation} from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
+import {SvgCardPopularIcon} from './SvgImages';
 
 const UserDetailCard = ({username, email, image}) => {
-
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
   return (
     <View style={styles.chatHeader}>
@@ -53,7 +53,10 @@ const UserDetailCard = ({username, email, image}) => {
           borderWidth: 1,
           borderColor: '#fff',
         }}>
-        <TouchableOpacity style={styles.ratingCard} activeOpacity={0.9} onPress={() => navigation.navigate('Reviews')}>
+        <TouchableOpacity
+          style={styles.ratingCard}
+          activeOpacity={0.9}
+          onPress={() => navigation.navigate('Reviews')}>
           <Progress.Circle
             progress={0.7}
             color={colors.lightgreen}
@@ -62,10 +65,11 @@ const UserDetailCard = ({username, email, image}) => {
             style={{marginLeft: 1, marginTop: 1}}
           />
           <View style={styles.imageWrapper}>
-            <Image
+            {/* <Image
               source={images.star}
               style={{height: hp('2%'), width: hp('2%')}}
-            />
+            /> */}
+            <SvgCardPopularIcon />
           </View>
         </TouchableOpacity>
         <Text style={{fontSize: hp('1.2%'), color: '#fff'}}>4.5 Rating</Text>
@@ -92,13 +96,15 @@ const styles = StyleSheet.create({
     // height: hp('5.5%'),
     borderRadius: 50,
     height: 40,
-    width: 40
+    width: 40,
     // width: hp('5.5%'),
   },
   imageWrapper: {
+    // position: 'absolute',
+    // top: 14,
     position: 'absolute',
-    left: 13,
-    top: 14,
+    top: hp('1.5%'),
+    left: hp('1.5%'),
   },
 });
 

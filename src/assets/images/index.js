@@ -37,6 +37,7 @@ export default {
   product6: require('../images/product6.png'),
   product7: require('../images/product7.png'),
   product8: require('../images/product8.png'),
+  profile2: require('../images/profile2.png'),
   locationMarker: require('../images/markerImage.png'),
   profile: require('../images/userProfile.jpeg'),
   initialProfileCam: require('../images/initialProfileCam.png'),

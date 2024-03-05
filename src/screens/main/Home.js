@@ -206,7 +206,7 @@ const Home = ({navigation}) => {
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
                         renderItem={({item, index}) => {
-                          //  console.log('hululu', item)
+                          // console.log('hululu', item?.user.first_name + item?.user.last_name);
                           return (
                             <TouchableOpacity
                               activeOpacity={0.9}
@@ -223,6 +223,7 @@ const Home = ({navigation}) => {
                                 price={item.regular_price}
                                 avatar={{uri: pic_url + item?.user.profile_pic}}
                                 rating={3}
+                                // avatar={images.profile}
                               />
                             </TouchableOpacity>
                           );
