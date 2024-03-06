@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   ScrollView,
@@ -20,6 +20,9 @@ import {
   SvgGoldBagIcon,
   SvgGoldSeatIcon,
 } from '../../components/SvgImages';
+import {getRecentStylists} from '../../redux/slices/StylistSlice';
+import {useSelector, useDispatch} from 'react-redux';
+import images from '../../assets/images';
 
 const cartData = [
   {
@@ -90,6 +93,23 @@ const cartData2 = [
 const Recents = () => {
   const [filterTab, setFilterTab] = useState('tab1');
 
+  const {recentStylists} = useSelector(state => state.stylistReducer);
+  const {user, pic_url} = useSelector(state => state.userData);
+
+  const getRecentStylistsProfile = async () => {
+    await dispatch(getRecentStylists());
+  };
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (recentStylists.length < 1) {
+    getRecentStylistsProfile();
+    }
+  }, []);
+
+  // console.log('recentStylists recent screen-->',recentStylists)
+
   return (
     <PageWrapper>
       <ProfileHeader username={true} />
@@ -137,9 +157,28 @@ const Recents = () => {
           <ScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{paddingBottom: 100}}>
-            {cartData?.map(item => (
-              <VenderCardBox key={item.id} name={item.name} img={item.img} />
-            ))}
+            {recentStylists?.map(item => {
+              // console.log('recentStylists item-->', item);
+              return (
+                <VenderCardBox
+                  itemData={recentStylists}
+                  key={item.id}
+                  name={item.first_name + ' ' + item.last_name}
+                  img={
+                    item.profile_pic != null
+                      ? {uri: pic_url + item.profile_pic}
+                      : images.cart1
+                  }
+                  email={
+                    item.address != 'null' &&
+                    item.address != null &&
+                    item.address != 'undefined'
+                      ? item.address
+                      : 'address'
+                  }
+                />
+              );
+            })}
             <View
               style={{
                 paddingHorizontal: wp('8%'),
@@ -160,9 +199,12 @@ const Recents = () => {
           <ScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{paddingBottom: 100}}>
-            {cartData2?.map(item => (
-              <ProductCardBox key={item.id} name={item.name} img={item.img} />
-            ))}
+            {cartData2?.map(item => {
+              // console.log(it)
+              return (
+                <ProductCardBox key={item.id} name={item.name} img={item.img} />
+              );
+            })}
             <View
               style={{
                 paddingHorizontal: wp('8%'),

@@ -26,6 +26,52 @@ export const getTopStylists = createAsyncThunk(
   },
 );
 
+export const getRecentStylists = createAsyncThunk(
+  'recentStylists',
+  async (_, {getState}) => {
+    const stateData = getState().userData;
+    // console.log('stateData-->',stateData)
+    const token = stateData.token;
+    return await axios
+      .get(`${BASE_URL}/recent-stylist-profile`, {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(res => {
+        // console.log('recentStylists =============>', res.data);
+        return res.data;
+      })
+      .catch(error => {
+        ErrorToast(error);
+      });
+  },
+);
+
+export const getPopularStylists = createAsyncThunk(
+  'popularStylists',
+  async (_, {getState}) => {
+    const stateData = getState().userData;
+    // console.log('stateData-->',stateData)
+    const token = stateData.token;
+    return await axios
+      .get(`${BASE_URL}/popular-stylist-profile`, {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(res => {
+        // console.log('popularStylists =============>', res.data);
+        return res.data;
+      })
+      .catch(error => {
+        ErrorToast(error);
+      });
+  },
+);
+
 export const stylistProfileById = createAsyncThunk(
   'profileDetail',
   async (stylist_id, {getState}) => {
@@ -136,8 +182,12 @@ export const StylistSlice = createSlice({
   name: 'stylistDetails',
   initialState: {
     topStylists: [],
+    recentStylists: [],
+    popularStylists: [],
     loading: false,
     topStylist_error: '',
+    recentStylist_error: '',
+    popularStylist_error: '',
     stylistDetail: {},
     stylistDetail_error: '',
     stylistDetail_loading: false,
@@ -159,6 +209,31 @@ export const StylistSlice = createSlice({
       (state.topStylist_error = 'Some problem occured'),
         (state.loading = false);
     });
+
+    builders.addCase(getRecentStylists.pending, state => {
+      state.loading = true;
+    });
+    builders.addCase(getRecentStylists.fulfilled, (state, action) => {
+      state.loading = false;
+      state.recentStylists = action.payload.data;
+    });
+    builders.addCase(getRecentStylists.rejected, state => {
+      (state.recentStylist_error = 'Some problem occured'),
+        (state.loading = false);
+    });
+
+    builders.addCase(getPopularStylists.pending, state => {
+      state.loading = true;
+    });
+    builders.addCase(getPopularStylists.fulfilled, (state, action) => {
+      state.loading = false;
+      state.popularStylists = action.payload.data;
+    });
+    builders.addCase(getPopularStylists.rejected, state => {
+      (state.popularStylist_error = 'Some problem occured'),
+        (state.loading = false);
+    });
+
     builders.addCase(stylistProfileById.pending, state => {
       state.stylistDetail_loading = true;
     });

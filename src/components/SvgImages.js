@@ -1297,3 +1297,75 @@ export const SvgFilterIcon = props => {
     </Svg>
   );
 };
+export const SvgArrowUPRightIcon = props => {
+  return (
+    <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={25.38}
+    height={25.38}
+    viewBox="0 0 25.38 25.38"
+    {...props}
+  >
+    <G
+      id="Icon_feather-arrow-up-left"
+      data-name="Icon feather-arrow-up-left"
+      transform="translate(35.173 -9.793) rotate(90)"
+    >
+      <Path
+        id="Path_6344"
+        data-name="Path 6344"
+        d="M34.466,34.466,10.5,10.5"
+        fill="none"
+        stroke="#cd8a1a"
+        strokeLinecap="round"
+        strokeWidth={1}
+      />
+      <Path
+        id="Path_6345"
+        data-name="Path 6345"
+        d="M10.5,34.466V10.5H34.466"
+        fill="none"
+        stroke="#cd8a1a"
+        strokeLinecap="round"
+        strokeWidth={1}
+      />
+    </G>
+  </Svg>
+  );
+};
+export const SvgArrowUPRighSmalltIcon = props => {
+  return (
+    <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={16.88}
+    height={16.88}
+    viewBox="0 0 16.88 16.88"
+    {...props}
+  >
+    <G
+      id="Icon_feather-arrow-up-left"
+      data-name="Icon feather-arrow-up-left"
+      transform="translate(26.673 -9.793) rotate(90)"
+    >
+      <Path
+        id="Path_6344"
+        data-name="Path 6344"
+        d="M25.966,25.966,10.5,10.5"
+        fill="none"
+        stroke="#cd8a1a"
+        strokeLinecap="round"
+        strokeWidth={1}
+      />
+      <Path
+        id="Path_6345"
+        data-name="Path 6345"
+        d="M10.5,25.966V10.5H25.966"
+        fill="none"
+        stroke="#cd8a1a"
+        strokeLinecap="round"
+        strokeWidth={1}
+      />
+    </G>
+  </Svg>
+  );
+};

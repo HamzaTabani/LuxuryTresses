@@ -8,9 +8,39 @@ import RatingIcon from './RatingIcon';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import {useNavigation} from '@react-navigation/native';
+import {SvgGoldBagIcon, SvgGoldSeatIcon} from './SvgImages';
+import {useDispatch, useSelector} from 'react-redux';
+import {getRecentStylists} from '../redux/slices/StylistSlice';
 
-const VenderCardBox = ({name, img, email}) => {
+const VenderCardBox = ({name, img, email, itemData}) => {
   const navigation = useNavigation();
+
+  // const {recentStylists} = useSelector(state => state.stylistReducer);
+  // const {user, pic_url} = useSelector(state => state.userData);
+
+  // const getRecentStylistsProfile = async () => {
+  //   await dispatch(getRecentStylists());
+  // };
+
+  // const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   // if (recentStylists.length < 1) {
+  //   getRecentStylistsProfile();
+  //   // }
+  // }, []);
+
+  // const onRecntStylistDetail = item => {
+  //   const stylistImages = recentStylists.map(item => ({
+  //     stylist_image: item.profile_pic,
+  //   }));
+
+  //   navigation.navigate('ProfileDetail', {
+  //     profile_id: item.id,
+  //     stylists: stylistImages,
+  //   });
+  // };
+
   return (
     <View style={styles.cardBox}>
       <View style={{flexDirection: 'row', alignItems: 'center', gap: 6}}>
@@ -33,10 +63,12 @@ const VenderCardBox = ({name, img, email}) => {
 
           <View style={{flexDirection: 'row', gap: 5}}>
             <View style={styles.filter_tab_active}>
-              <Image source={require('../assets/images/goldseat.png')} />
+              {/* <Image source={require('../assets/images/goldseat.png')} /> */}
+              <SvgGoldSeatIcon />
             </View>
             <View style={styles.filter_tab_active}>
-              <Image source={require('../assets/images/goldbag.png')} />
+              {/* <Image source={require('../assets/images/goldbag.png')} /> */}
+              <SvgGoldBagIcon />
             </View>
           </View>
         </View>
@@ -44,12 +76,17 @@ const VenderCardBox = ({name, img, email}) => {
 
       {/* vender contact and ratings*/}
       <View style={{justifyContent: 'space-between'}}>
-        <View style={styles.ratingButton}>
-          <Pressable onPress={() => navigation.navigate('Reviews')}>
+        <Pressable
+          // activeOpacity={0.9}
+          // key={itemData?.id}
+          onPress={() => navigation.navigate('Reviews', {name, email, img})}
+          // onPress={() => console.log('itemData.id-->', itemData.id)}
+          style={styles.ratingButton}>
+          <View>
             <RatingIcon rating={5} w={30} h={30} r={10} />
-          </Pressable>
+          </View>
           <Text style={{color: '#fff', fontSize: hp('1.2%')}}>4.5 Rating</Text>
-        </View>
+        </Pressable>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Pressable>
             <View
@@ -117,7 +154,7 @@ const styles = StyleSheet.create({
   },
   venderDistanceText: {
     color: 'gray',
-    fontSize: hp('1.4%'),
+    fontSize: hp('1.7%'),
   },
   filter_tab_active: {
     width: 30,

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   ScrollView,
@@ -15,6 +15,10 @@ import {
 } from 'react-native-responsive-screen';
 import VenderCardBox from '../../components/VenderCardBox';
 import ProductCardBox from '../../components/ProductCardBox';
+import {getPopularStylists} from '../../redux/slices/StylistSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {SvgGoldBagIcon, SvgGoldSeatIcon} from '../../components/SvgImages';
+import images from '../../assets/images';
 
 const cartData = [
   {
@@ -85,6 +89,21 @@ const cartData2 = [
 const Popular = () => {
   const [filterTab, setFilterTab] = useState('tab1');
 
+  const {popularStylists} = useSelector(state => state.stylistReducer);
+  const {user, pic_url} = useSelector(state => state.userData);
+
+  const getPopularStylistsProfile = async () => {
+    await dispatch(getPopularStylists());
+  };
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (popularStylists.length < 1) {
+      getPopularStylistsProfile();
+    }
+  }, []);
+
   return (
     <PageWrapper>
       <ProfileHeader username={true} />
@@ -102,7 +121,7 @@ const Popular = () => {
                       ? styles.filter_tab_active
                       : styles.filter_tab
                   }>
-                  <Image source={require('../../assets/images/goldseat.png')} />
+                  <SvgGoldSeatIcon />
                 </View>
               </Pressable>
               <Pressable onPress={() => setFilterTab('tab2')}>
@@ -112,7 +131,7 @@ const Popular = () => {
                       ? styles.filter_tab_active
                       : styles.filter_tab
                   }>
-                  <Image source={require('../../assets/images/goldbag.png')} />
+                  <SvgGoldBagIcon />
                 </View>
               </Pressable>
             </View>
@@ -129,14 +148,28 @@ const Popular = () => {
           <ScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{paddingBottom: 100}}>
-            {cartData?.map(item => (
-              <VenderCardBox key={item.id} name={item.name} img={item.img} />
+            {popularStylists?.map(item => (
+              <VenderCardBox
+                key={item.id}
+                name={item.first_name + ' ' + item.last_name}
+                img={
+                  item.profile_pic != null
+                    ? {uri: pic_url + item.profile_pic}
+                    : images.cart1
+                }
+                email={
+                  item.address != 'null' &&
+                  item.address != null &&
+                  item.address != 'undefined'
+                    ? item.address
+                    : 'address'
+                }
+              />
             ))}
             <View
               style={{
                 paddingHorizontal: wp('8%'),
                 marginTop: 50,
-                // marginBottom: 150,
                 alignItems: 'center',
               }}>
               <Image
@@ -159,7 +192,6 @@ const Popular = () => {
               style={{
                 paddingHorizontal: wp('8%'),
                 marginTop: 50,
-                // marginBottom: 150,
                 alignItems: 'center',
               }}>
               <Image

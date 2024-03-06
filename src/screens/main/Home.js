@@ -26,6 +26,12 @@ import Loader from '../../components/Loader';
 import colors from '../../assets/colors';
 import {getTopStylists} from '../../redux/slices/StylistSlice';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {
+  SvgArrowUPRighSmalltIcon,
+  SvgArrowUPRightIcon,
+  SvgBottomLineIcon,
+  SvgarrowUpLeftIcon,
+} from '../../components/SvgImages';
 
 const Home = ({navigation}) => {
   const {user, pic_url} = useSelector(state => state.userData);
@@ -186,19 +192,6 @@ const Home = ({navigation}) => {
                           expandIcon={true}
                         />
                       </View>
-                      {/* <ScrollView
-                  style={{ marginTop: 20, marginHorizontal: hp('-3%') }}
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={{ paddingHorizontal: hp('5%') }}
-                  horizontal> */}
-                      {/* {cartData2.map(item => (
-                    <TouchableOpacity
-                      activeOpacity={0.9}
-                      key={item?.id}
-                      onPress={() => navigation.navigate('RecentProducts')}>
-                      <ProductCard rating={3} item={item} />
-                    </TouchableOpacity>
-                  ))} */}
                       <FlatList
                         data={recentProducts}
                         contentContainerStyle={{paddingHorizontal: hp('5%')}}
@@ -206,7 +199,6 @@ const Home = ({navigation}) => {
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
                         renderItem={({item, index}) => {
-                          // console.log('hululu', item?.user.first_name + item?.user.last_name);
                           return (
                             <TouchableOpacity
                               activeOpacity={0.9}
@@ -223,7 +215,6 @@ const Home = ({navigation}) => {
                                 price={item.regular_price}
                                 avatar={{uri: pic_url + item?.user.profile_pic}}
                                 rating={3}
-                                // avatar={images.profile}
                               />
                             </TouchableOpacity>
                           );
@@ -242,7 +233,7 @@ const Home = ({navigation}) => {
               </>
             )}
             {/* banner 1 */}
-            <View style={{paddingHorizontal: wp('8%'), marginBottom: 8}}>
+            {/* <View style={{paddingHorizontal: wp('8%'), marginBottom: 8}}>
               <View style={styles.bannerOneContainer}>
                 <Image
                   source={require('../../assets/images/homebanner1.png')}
@@ -265,9 +256,46 @@ const Home = ({navigation}) => {
                   <Text style={styles.bannerOneText}>Speak for itself</Text>
                 </View>
               </View>
-            </View>
+            </View> */}
+            <ImageBackground
+              resizeMode="contain"
+              style={{
+                height: hp('30%'),
+                width: wp('90%'),
+                alignSelf: 'center',
+              }}
+              source={require('../../assets/images/homeB.png')}>
+              <View
+                style={{
+                  width: wp('40%'),
+                  flex: 1,
+                  justifyContent: 'flex-end',
+                  alignSelf: 'flex-end',
+                  paddingBottom: hp(7),
+                  marginRight: wp(5),
+                }}>
+                <View
+                  style={{
+                    justifyContent: 'flex-end',
+                    alignSelf: 'flex-end',
+                  }}>
+                  <SvgArrowUPRightIcon />
+                </View>
+                <Text
+                  style={{
+                    fontWeight: '400',
+                    color: '#fff',
+                    fontSize: hp('2.5%'),
+                    fontFamily: 'Lora-Medium',
+                    textAlign: 'right',
+                    marginTop: hp('8%'),
+                  }}>
+                  Let your hair, Speak for itself
+                </Text>
+              </View>
+            </ImageBackground>
             {/* banner 2 */}
-            <View style={{paddingHorizontal: wp('8%'), marginBottom: 80}}>
+            {/* <View style={{paddingHorizontal: wp('8%'), marginBottom: 80}}>
               <View style={styles.bannerOneContainer}>
                 <Image
                   source={require('../../assets/images/homebanner2.png')}
@@ -314,7 +342,61 @@ const Home = ({navigation}) => {
                   </Pressable>
                 </View>
               </View>
-            </View>
+            </View> */}
+            <ImageBackground
+              resizeMode="contain"
+              style={{
+                height: hp('30%'),
+                width: wp('90%'),
+                alignSelf: 'center',
+              }}
+              source={require('../../assets/images/homeA.png')}>
+              <View style={{marginLeft: wp('3%')}}>
+                <Text
+                  style={{
+                    width: wp('40%'),
+                    fontWeight: '400',
+                    color: '#000',
+                    fontSize: hp('3%'),
+                    fontFamily: 'Lora-Medium',
+                    marginTop: hp('4%'),
+                  }}>
+                  Start your hair journey
+                </Text>
+                <Text
+                  style={{
+                    width: wp('40%'),
+                    fontWeight: '400',
+                    color: '#715B1D',
+                    fontSize: hp('1.8%'),
+                    fontFamily: 'Lora-Medium',
+                    marginTop: hp('2%'),
+                  }}>
+                  Explore stylists
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-evenly',
+                    backgroundColor: '#111649',
+                    width: wp('35%'),
+                    height: hp('5%'),
+                    alignItems: 'center',
+                    borderRadius: 10,
+                    marginTop: hp('3%'),
+                  }}>
+                  <SvgArrowUPRighSmalltIcon />
+                  <Text
+                    style={{
+                      color: '#EDBA1B',
+                      fontSize: hp('1.8%'),
+                      fontFamily: 'Lora-Medium',
+                    }}>
+                    START NOW
+                  </Text>
+                </View>
+              </View>
+            </ImageBackground>
             {/* bottom lines */}
             <View
               style={{
@@ -322,13 +404,14 @@ const Home = ({navigation}) => {
                 marginBottom: 150,
                 alignItems: 'center',
               }}>
-              <Image
+              {/* <Image
                 source={require('../../assets/images/bottom_lines.png')}
                 resizeMode="contain"
                 style={{
                   width: 40,
                 }}
-              />
+              /> */}
+              <SvgBottomLineIcon />
             </View>
           </ScrollView>
         </ImageBackground>

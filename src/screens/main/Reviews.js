@@ -18,7 +18,7 @@ import VenderCardBox from '../../components/VenderCardBox';
 import UserDetailCard from '../../components/UserDetailCard';
 import FontAwesome5 from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import ReviewDetailCard from '../../components/ReviewDetailCard';
 import images from '../../assets/images';
 
@@ -57,6 +57,8 @@ const cartData = [
 
 const Reviews = () => {
   const navigation = useNavigation();
+  const route = useRoute();
+  const {name, email, img} = route?.params;
   return (
     <PageWrapper>
       <ProfileHeader username={true} />
@@ -85,11 +87,7 @@ const Reviews = () => {
             borderBottomWidth: 0.5,
             borderColor: '#D49621',
           }}>
-          <UserDetailCard
-            username={'Omnis iste'}
-            email={'1609 Oak, st.'}
-            image={images.cart1}
-          />
+          <UserDetailCard username={name} email={email} image={img} />
         </View>
         <View
           style={{
