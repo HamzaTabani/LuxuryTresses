@@ -39,7 +39,7 @@ const ProfileDetail = ({route}) => {
 
   const id = route?.params?.profile_id;
   const moreStylist = route?.params?.stylists;
-  console.log('profile_id', moreStylist.length);
+  // console.log('profile_id', moreStylist.length);
 
   const dispatch = useDispatch();
 
@@ -47,10 +47,7 @@ const ProfileDetail = ({route}) => {
     useSelector(state => state.stylistReducer);
 
   const {pic_url} = useSelector(state => state.userData);
-  console.log(
-    'profile details from screen =========>',
-    stylistDetail[id].about,
-  );
+  console.log('profile rev from screen =========>', stylistDetail[id]);
 
   useEffect(() => {
     if (!stylistDetail[id]) {
@@ -137,7 +134,26 @@ const ProfileDetail = ({route}) => {
               </TouchableOpacity>
             </View>
             <View style={{paddingTop: hp('4%')}}>
-              <ReviewCard onPress={() => navigation.navigate('Reviews')} />
+              <ReviewCard
+                onPress={() =>
+                  navigation.navigate('Reviews', {
+                    name:
+                      stylistDetail[id].first_name +
+                      stylistDetail[id].last_name,
+                    email:
+                      stylistDetail[id].address != 'null' &&
+                      stylistDetail[id].address != null &&
+                      stylistDetail[id].address != 'undefined'
+                        ? stylistDetail[id].address
+                        : 'address',
+                    img:
+                      stylistDetail[id].profile_pic != null
+                        ? {uri: pic_url + stylistDetail[id].profile_pic}
+                        : images.cart1,
+                    id: stylistDetail[id].id,
+                  })
+                }
+              />
             </View>
             <View style={{paddingTop: hp('4%')}}>
               <View style={styles.btn_wrapper}>
@@ -181,8 +197,8 @@ const ProfileDetail = ({route}) => {
                       stylistDetail[id]?.last_name}
                   </Text>
                   <Text style={styles.message}>
-                    {stylistDetail[id].about != null
-                      ? stylistDetail[id].about
+                    {stylistDetail[id]?.about != null
+                      ? stylistDetail[id]?.about
                       : 'about'}
                   </Text>
                 </View>
@@ -207,7 +223,7 @@ const ProfileDetail = ({route}) => {
                     );
                   })}
                 </View>
-                <View style={{paddingTop: hp('4%')}}>
+                <View style={{paddingTop: hp('4%'), marginTop: hp('4%')}}>
                   <TimingCard />
                   <View style={{paddingTop: hp('5%'), flexDirection: 'row'}}>
                     <OutlineButton
@@ -320,8 +336,8 @@ const styles = StyleSheet.create({
   message: {
     marginTop: hp('2%'),
     color: colors.white,
-    fontSize:12,
-    lineHeight:25
+    fontSize: 12,
+    lineHeight: 25,
   },
   image: {
     height: 75,

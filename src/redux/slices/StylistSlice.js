@@ -3,6 +3,7 @@ import axios from 'axios';
 import {BASE_URL} from '../constant.js';
 import {ErrorToast} from '../../utils';
 import FormData from 'form-data';
+import {Alert} from 'react-native';
 
 export const getTopStylists = createAsyncThunk(
   'topStylists',
@@ -87,6 +88,30 @@ export const stylistProfileById = createAsyncThunk(
       })
       .then(res => {
         // console.log('stylist profile detail =============>', res.data);
+        return res.data;
+      })
+      .catch(error => {
+        ErrorToast(error);
+      });
+  },
+);
+
+export const stylistReviewById = createAsyncThunk(
+  'stylistReview',
+  async (stylist_id, {getState}) => {
+    const stateData = getState().userData;
+    const token = stateData.token;
+    console.log('stylist_id: ', stylist_id);
+
+    return await axios
+      .get(`${BASE_URL}/stylist-profile/${stylist_id}/review`, {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(res => {
+        console.log('stylist review =============>', res.data);
         return res.data;
       })
       .catch(error => {
@@ -191,6 +216,9 @@ export const StylistSlice = createSlice({
     stylistDetail: {},
     stylistDetail_error: '',
     stylistDetail_loading: false,
+    stylistReview: [],
+    stylistReview_error: '',
+    stylistReview_loading: false,
     trending_stylists: [],
     trending_loader: false,
     trending_error: '',
@@ -245,6 +273,22 @@ export const StylistSlice = createSlice({
       (state.stylistDetail_error = 'Some problem occured'),
         (state.stylistDetail_loading = false);
     });
+
+    builders.addCase(stylistReviewById.pending, state => {
+      state.stylistReview_loading = true;
+    });
+    builders.addCase(stylistReviewById.fulfilled, (state, action) => {
+      // (state.stylistReview_loading = false),
+      // (state.stylistReview[action.payload.data.id] = action.payload.data);
+      state.stylistReview_loading = false;
+      state.stylistReview = action.payload.data.id;
+      // Alert.alert(state.stylistReview)
+    });
+    builders.addCase(stylistReviewById.rejected, state => {
+      (state.stylistReview_error = 'Some problem occured'),
+        (state.stylistReview_loading = false);
+    });
+
     builders.addCase(trendingStylists.pending, state => {
       state.trending_loader = true;
     });

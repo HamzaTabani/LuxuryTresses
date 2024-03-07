@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   ScrollView,
@@ -21,6 +21,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import ReviewDetailCard from '../../components/ReviewDetailCard';
 import images from '../../assets/images';
+import {stylistReviewById} from '../../redux/slices/StylistSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import Loader from '../../components/Loader';
 
 const cartData = [
   {
@@ -56,9 +59,24 @@ const cartData = [
 ];
 
 const Reviews = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const route = useRoute();
-  const {name, email, img} = route?.params;
+  const {name, email, img, id} = route?.params;
+  console.log('ididddd-->', id);
+  const {stylistReview, stylistReview_loading, stylistReview_error} =
+    useSelector(state => state.stylistReducer);
+  const {pic_url} = useSelector(state => state.userData);
+  console.log('stylist review screen-->', stylistReview);
+  useEffect(() => {
+    // if (!stylistReview[id]) {
+      fetchProfileReview();
+    // }
+  }, [id]);
+
+  const fetchProfileReview = async () => {
+    await dispatch(stylistReviewById(id));
+  };
   return (
     <PageWrapper>
       <ProfileHeader username={true} />
@@ -80,52 +98,41 @@ const Reviews = () => {
             </Pressable>
           </View>
         </View>
-        <View
-          style={{
-            marginTop: 10,
-            paddingBottom: 20,
-            borderBottomWidth: 0.5,
-            borderColor: '#D49621',
-          }}>
-          <UserDetailCard username={name} email={email} image={img} />
-        </View>
-        <View
-          style={{
-            borderRadius: 50,
-            borderWidth: 1,
-            borderColor: '#D49621',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginTop: 17,
-            padding: 3,
-            marginBottom: 10,
-          }}>
-          <TextInput
-            placeholder="Add comment"
-            style={{marginLeft: 10}}
-            placeholderTextColor="gray"
-          />
-          <Ionicons
-            name="send"
-            type="AntDesign"
-            color="#D49621"
-            size={22}
-            style={{marginRight: 10}}
-          />
-        </View>
+        {stylistReview_loading ? (
+          <View
+            style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+            <Loader size={'large'} />
+          </View>
+        ) : stylistReview_error !== '' ? (
+          <View
+            style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+            <Text style={styles.errorMessage}>detail_error</Text>
+          </View>
+        ) : (
+          <>
+            <View
+              style={{
+                marginTop: 10,
+                paddingBottom: 20,
+                borderBottomWidth: 0.5,
+                borderColor: '#D49621',
+              }}>
+              <UserDetailCard username={name} email={email} image={img} />
+            </View>
 
-        {/*/////////////  filter items container ////////////// */}
-        {/* reviews listing */}
+            {/*/////////////  filter items container ////////////// */}
+            {/* reviews listing */}
 
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{paddingBottom: 100}}>
-          <ReviewDetailCard />
-          <ReviewDetailCard />
-          <ReviewDetailCard />
-          <ReviewDetailCard />
-        </ScrollView>
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{paddingBottom: 100}}>
+              <ReviewDetailCard />
+              <ReviewDetailCard />
+              <ReviewDetailCard />
+              <ReviewDetailCard />
+            </ScrollView>
+          </>
+        )}
       </View>
     </PageWrapper>
   );
