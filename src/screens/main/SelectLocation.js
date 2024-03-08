@@ -46,7 +46,7 @@ const SelectLocation = () => {
 
   return (
     <>
-      {currentRegion != null ? (
+      {currentRegion != null && (
         <MapView
           ref={mapRef}
           initialRegion={currentRegion}
@@ -54,8 +54,8 @@ const SelectLocation = () => {
           style={styles.mapStyle}>
           <Marker
             coordinate={{
-              latitude: currentRegion.latitude,
-              longitude: currentRegion.longitude,
+              latitude: currentRegion?.latitude,
+              longitude: currentRegion?.longitude,
             }}
             image={images.locationMarker}
           />
@@ -67,13 +67,15 @@ const SelectLocation = () => {
             strokeColor={colors.orange}
           />
         </MapView>
-      ) : (
-        <MapView
-          ref={mapRef}
-          initialRegion={currentRegion}
-          mapType="terrain"
-          style={styles.mapStyle}></MapView>
-      )}
+      )
+      //  : (
+      //   <MapView
+      //     ref={mapRef}
+      //     initialRegion={currentRegion}
+      //     mapType="terrain"
+      //     style={styles.mapStyle}></MapView>
+      // )
+      }
       <MapHeader />
       <LocationCard
         reigions={dataReigions}

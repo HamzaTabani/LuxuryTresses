@@ -20,7 +20,10 @@ const persistConfig = {
   key: 'root',
   version: 1,
   storage: AsyncStorage,
-  whitelist: ['userData', 'ecommerceReducer', 'stylistReducer'],
+  whitelist: ['userData',
+   'ecommerceReducer',
+    'stylistReducer'
+  ],
   blacklist: [],
 };
 

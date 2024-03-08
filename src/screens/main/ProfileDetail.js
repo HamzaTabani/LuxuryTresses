@@ -43,46 +43,47 @@ const ProfileDetail = ({route}) => {
 
   const dispatch = useDispatch();
 
-  const {stylistDetail, stylistDetail_loading, stylistDetail_error} =
+  const {profileDetails, profileDetails_loading, profileDetails_error} =
     useSelector(state => state.stylistReducer);
 
   const {pic_url} = useSelector(state => state.userData);
-  console.log('profile rev from screen =========>', stylistDetail[id]);
+  console.log('profile rev from screen =========>', profileDetails);
 
   useEffect(() => {
-    if (!stylistDetail[id]) {
-      fetchProfileDetails();
-    }
-  }, [id]);
+    // if (!profileDetails) {
+    fetchProfileDetailss();
+    // }
+  }, []);
 
-  const fetchProfileDetails = async () => {
-    await dispatch(stylistProfileById(id));
+  const fetchProfileDetailss = async () => {
+    if (profileDetails?.id !== id) {
+      await dispatch(stylistProfileById(id));
+    }
   };
 
   return (
     <Container>
-      {stylistDetail_loading ? (
+      {profileDetails_loading ? (
         <>
           <View
             style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
             <Loader size={'large'} />
           </View>
         </>
-      ) : stylistDetail_error !== '' ? (
-        <>
-          <View
-            style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
-            <Text style={styles.errorMessage}>{detail_error}</Text>
-          </View>
-        </>
       ) : (
+        //  : profileDetails_error != '' ? (
+        //   <>
+        //     <View
+        //       style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+        //       <Text style={{color:'white'}}>No record Found</Text>
+        //     </View>
+        //   </>
+        // )
         <>
           <ProfileHeader
             username={true}
             icon={true}
-            text={
-              stylistDetail[id]?.first_name + ' ' + stylistDetail[id]?.last_name
-            }
+            text={profileDetails?.first_name + ' ' + profileDetails?.last_name}
           />
           <ScrollView
             contentContainerStyle={styles.screen}
@@ -90,9 +91,9 @@ const ProfileDetail = ({route}) => {
             <View style={styles.wrapper}>
               <Image
                 source={
-                  stylistDetail[id]?.profile_pic == null
+                  profileDetails?.profile_pic == null
                     ? images.stylist1
-                    : {uri: pic_url + stylistDetail[id]?.profile_pic}
+                    : {uri: pic_url + profileDetails?.profile_pic}
                 }
                 style={styles.imageStyle}
                 resizeMode="cover"
@@ -100,14 +101,12 @@ const ProfileDetail = ({route}) => {
               />
               <View style={styles.textWrapper}>
                 <Text style={styles.name}>
-                  {stylistDetail[id]?.first_name +
-                    ' ' +
-                    stylistDetail[id]?.last_name}
+                  {profileDetails?.first_name + ' ' + profileDetails?.last_name}
                 </Text>
                 <Text style={styles.location}>
-                  {stylistDetail[id]?.email === 'undefined'
+                  {profileDetails?.email === 'undefined'
                     ? 'test123@gmail.com'
-                    : stylistDetail[id]?.email}
+                    : profileDetails?.email}
                   {/* <Text style={{color: colors.white, fontWeight: 'bold'}}>
                 (2km)
               </Text> */}
@@ -137,20 +136,18 @@ const ProfileDetail = ({route}) => {
               <ReviewCard
                 onPress={() =>
                   navigation.navigate('Reviews', {
-                    name:
-                      stylistDetail[id].first_name +
-                      stylistDetail[id].last_name,
+                    name: profileDetails.first_name + profileDetails.last_name,
                     email:
-                      stylistDetail[id].address != 'null' &&
-                      stylistDetail[id].address != null &&
-                      stylistDetail[id].address != 'undefined'
-                        ? stylistDetail[id].address
+                      profileDetails.address != 'null' &&
+                      profileDetails.address != null &&
+                      profileDetails.address != 'undefined'
+                        ? profileDetails.address
                         : 'address',
                     img:
-                      stylistDetail[id].profile_pic != null
-                        ? {uri: pic_url + stylistDetail[id].profile_pic}
+                      profileDetails.profile_pic != null
+                        ? {uri: pic_url + profileDetails.profile_pic}
                         : images.cart1,
-                    id: stylistDetail[id].id,
+                    id: profileDetails.id,
                   })
                 }
               />
@@ -192,13 +189,13 @@ const ProfileDetail = ({route}) => {
                 <View style={styles.textContainer}>
                   <Text style={styles.heading}>
                     About{' '}
-                    {stylistDetail[id]?.first_name +
+                    {profileDetails?.first_name +
                       ' ' +
-                      stylistDetail[id]?.last_name}
+                      profileDetails?.last_name}
                   </Text>
                   <Text style={styles.message}>
-                    {stylistDetail[id]?.about != null
-                      ? stylistDetail[id]?.about
+                    {profileDetails?.about != null
+                      ? profileDetails?.about
                       : 'about'}
                   </Text>
                 </View>
@@ -232,7 +229,7 @@ const ProfileDetail = ({route}) => {
                       textStyle={{color: colors.white}}
                       onPress={() =>
                         navigation.navigate('Booking', {
-                          bookingData: stylistDetail[id],
+                          bookingData: profileDetails,
                         })
                       }
                     />

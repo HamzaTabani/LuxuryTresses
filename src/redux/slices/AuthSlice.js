@@ -310,7 +310,9 @@ export const authState = createSlice({
     pic_url: '',
     user: {},
     card: [],
-    latLng: {},
+    latLng: {
+      
+    },
     payment_loading: false,
   },
   extraReducers: builder => {
@@ -380,6 +382,7 @@ export const authState = createSlice({
     });
     builder.addCase(postLatLng.fulfilled, (state, action) => {
       state.latLng = action.payload;
+      console.log('action.payload', action.payload);
     });
   },
 });

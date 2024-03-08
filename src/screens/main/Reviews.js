@@ -7,6 +7,8 @@ import {
   Image,
   Pressable,
   TextInput,
+  FlatList,
+  TouchableOpacity,
 } from 'react-native';
 import PageWrapper from '../../components/PageWrapper';
 import ProfileHeader from '../../components/ProfileHeader';
@@ -21,9 +23,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import ReviewDetailCard from '../../components/ReviewDetailCard';
 import images from '../../assets/images';
-import {stylistReviewById} from '../../redux/slices/StylistSlice';
+import {PostReview, stylistReviewById} from '../../redux/slices/StylistSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../components/Loader';
+import StarRating from 'react-native-star-rating-widget';
+import colors from '../../assets/colors';
+import {ShowToast} from '../../utils';
 
 const cartData = [
   {
@@ -63,19 +68,106 @@ const Reviews = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const {name, email, img, id} = route?.params;
-  console.log('ididddd-->', id);
+  const [rating, setRating] = useState('');
+  const [postComment, setPostComment] = useState('');
+  // console.log('ididddd-->', id);
   const {stylistReview, stylistReview_loading, stylistReview_error} =
     useSelector(state => state.stylistReducer);
-  const {pic_url} = useSelector(state => state.userData);
-  console.log('stylist review screen-->', stylistReview);
+
+  const {pic_url, user} = useSelector(state => state.userData);
+  console.log('sigined in user---->', id);
   useEffect(() => {
-    // if (!stylistReview[id]) {
+    if (!stylistReview[id]) {
       fetchProfileReview();
-    // }
+    }
   }, [id]);
 
   const fetchProfileReview = async () => {
     await dispatch(stylistReviewById(id));
+  };
+
+  const onHandleSubmit = async () => {
+    if (rating == '' && postComment == '') {
+      return ShowToast('please enter rating or comment');
+    } else {
+      const res = await dispatch(
+        PostReview({
+          userId: id,
+          userRating: rating,
+          userComment: postComment,
+        }),
+      );
+      if (res.payload.success) {
+        // navigation.navigate('home');
+        // return(
+
+        ShowToast(res.payload.message);
+        await dispatch(stylistReviewById(id));
+        // )
+      } else {
+        return ShowToast(res.payload.message);
+      }
+    }
+  };
+
+  const headerComponent = () => {
+    return (
+      <View
+        style={{
+          // height: hp('25%'),
+          backgroundColor: '#D49621',
+          borderRadius: 20,
+          borderColor: colors.gray,
+          borderWidth: 0.5,
+          marginTop: hp('5%'),
+          padding: hp('1.5%'),
+        }}>
+        <Text
+          style={{
+            color: colors.white,
+            fontSize: hp('2%'),
+          }}>
+          Add your review
+        </Text>
+        <StarRating
+          rating={rating}
+          starSize={30}
+          color={colors.white}
+          starStyle={{marginTop: hp('5%')}}
+          onChange={setRating}
+        />
+        <View
+          style={{
+            borderRadius: 50,
+            borderWidth: 1,
+            borderColor: colors.white,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginTop: hp('3%'),
+            marginHorizontal: hp('1%'),
+            marginBottom: 10,
+            // backgroundColor:'red'
+          }}>
+          <TextInput
+            placeholder="Add comment"
+            style={{marginLeft: 10, color: colors.white}}
+            placeholderTextColor={colors.white}
+            value={postComment}
+            onChangeText={text => setPostComment(text)}
+          />
+          <TouchableOpacity onPress={() => onHandleSubmit()}>
+            <Ionicons
+              name="send"
+              type="AntDesign"
+              color={colors.white}
+              size={22}
+              style={{marginRight: 10}}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
   };
   return (
     <PageWrapper>
@@ -103,13 +195,14 @@ const Reviews = () => {
             style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
             <Loader size={'large'} />
           </View>
-        ) : stylistReview_error !== '' ? (
-          <View
-            style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
-            <Text style={styles.errorMessage}>detail_error</Text>
-          </View>
         ) : (
-          <>
+          // : stylistReview_error !== '' ? (
+          //   <View
+          //     style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+          //     <Text style={styles.errorMessage}>detail_error</Text>
+          //   </View>
+          // )
+          <View style={{marginBottom: hp('28')}}>
             <View
               style={{
                 marginTop: 10,
@@ -122,16 +215,100 @@ const Reviews = () => {
 
             {/*/////////////  filter items container ////////////// */}
             {/* reviews listing */}
-
             <ScrollView
               showsVerticalScrollIndicator={false}
-              contentContainerStyle={{paddingBottom: 100}}>
-              <ReviewDetailCard />
-              <ReviewDetailCard />
-              <ReviewDetailCard />
-              <ReviewDetailCard />
+              keyboardDismissMode="on-drag"
+              keyboardShouldPersistTaps="always">
+              <View
+                style={{
+                  // height: hp('25%'),
+                  backgroundColor: '#D49621',
+                  borderRadius: 20,
+                  borderColor: colors.gray,
+                  borderWidth: 0.5,
+                  marginTop: hp('5%'),
+                  padding: hp('1.5%'),
+                }}>
+                <Text
+                  style={{
+                    color: colors.white,
+                    fontSize: hp('2%'),
+                  }}>
+                  Add your review
+                </Text>
+                <StarRating
+                  rating={rating}
+                  starSize={30}
+                  color={colors.white}
+                  starStyle={{marginTop: hp('5%')}}
+                  onChange={setRating}
+                />
+                <View
+                  style={{
+                    borderRadius: 50,
+                    borderWidth: 1,
+                    borderColor: colors.white,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginTop: hp('3%'),
+                    marginHorizontal: hp('1%'),
+                    marginBottom: 10,
+                  }}>
+                  <TextInput
+                    multiline
+                    // numberOfLines={4}
+                    placeholder="Add comment"
+                    style={{marginLeft: 10, color: colors.white, width: wp(68)}}
+                    placeholderTextColor={colors.white}
+                    value={postComment}
+                    onChangeText={text => setPostComment(text)}
+                  />
+                  <TouchableOpacity onPress={() => onHandleSubmit()}>
+                    <Ionicons
+                      name="send"
+                      type="AntDesign"
+                      color={colors.white}
+                      size={22}
+                      style={{marginRight: 10}}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <FlatList
+                keyboardDismissMode={'on-drag'}
+                showsVerticalScrollIndicator={false}
+                data={[...stylistReview?.reviews].reverse()}
+                keyExtractor={item => item.id}
+                renderItem={({item}) => {
+                  // console.log('stylistReview items-->', item);
+                  return (
+                    <ReviewDetailCard
+                      profilePic={item.user.profile_pic}
+                      name={item.user.first_name + ' ' + item.user.last_name}
+                      commentTime={item.created_at}
+                      comment={item.comment}
+                      commentRating={item.rating}
+                    />
+                  );
+                }}
+                // ListHeaderComponent={headerComponent}
+                ListEmptyComponent={
+                  <Text
+                    style={{
+                      color: '#000',
+                      fontSize: 20,
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                    }}>
+                    No Review Found!
+                  </Text>
+                }
+                contentContainerStyle={{paddingBottom: hp('2')}}
+              />
             </ScrollView>
-          </>
+          </View>
         )}
       </View>
     </PageWrapper>

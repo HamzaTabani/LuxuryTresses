@@ -110,9 +110,11 @@ const TabNavigation = () => {
 const BottomStack = () => {
   return (
     <Tab.Navigator
+
       activeColor="#f0edf6"
       inactiveColor="#3e2465"
       screenOptions={{
+        tabBarHideOnKeyboard:true,
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: {

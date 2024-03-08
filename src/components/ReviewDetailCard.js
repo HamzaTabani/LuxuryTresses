@@ -1,12 +1,20 @@
 import React from 'react';
 import {Text, StyleSheet, View, Image} from 'react-native';
-import {
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import StarRating from 'react-native-star-rating-widget';
 import colors from '../assets/colors';
+import { useSelector } from 'react-redux';
+import moment from 'moment';
 
-const ReviewDetailCard = () => {
+const ReviewDetailCard = ({
+  profilePic,
+  name,
+  commentTime,
+  comment,
+  commentRating,
+}) => {
+  const {pic_url} = useSelector(state => state.userData);
+  // console.log('comment time-->',(moment(commentTime).format('DD MMM YYYY')));
   return (
     <View style={styles.cardBox}>
       <View
@@ -18,24 +26,24 @@ const ReviewDetailCard = () => {
         }}>
         <View style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
           <Image
-            source={require('../assets/images/marker3.png')}
+            // source={require('../assets/images/marker3.png')}
+            source={{uri: pic_url + profilePic}}
             style={styles.userImg}
           />
-          <Text style={styles.userNameText}>John deo</Text>
+          <Text style={styles.userNameText}>{name}</Text>
         </View>
         <Text style={{color: 'gray', fontSize: hp('1.5%')}}>
-          18 October 2023
+        {(moment(commentTime).format('DD MMM YYYY'))}
         </Text>
       </View>
       <View>
         <Text style={{lineHeight: 20, marginTop: 10, color: colors.black}}>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry.
+          {comment}
         </Text>
       </View>
       <View style={{marginTop: 5}}>
         <StarRating
-          rating={4}
+          rating={commentRating}
           starSize={20}
           color="#D59D33"
           starStyle={{marginRight: 0}}

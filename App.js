@@ -4,12 +4,19 @@ import store, {persistor} from './src/redux/store';
 import {PersistGate} from 'redux-persist/integration/react';
 import {Provider} from 'react-redux';
 import ToastMessage from './src/components/ToastMessage';
-import {LogBox, SafeAreaView, StatusBar} from 'react-native';
+import {LogBox, SafeAreaView, StatusBar, Platform} from 'react-native';
+import {requestLocationPermission} from './src/utils';
 
 function App() {
   useEffect(() => {
     LogBox.ignoreAllLogs();
+    locationAccess();
   }, []);
+  const locationAccess = () => {
+    if (Platform.OS == 'android') {
+      requestLocationPermission();
+    }
+  };
 
   return (
     <>

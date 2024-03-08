@@ -151,6 +151,7 @@ const Popular = () => {
             {popularStylists?.map(item => (
               <VenderCardBox
                 key={item.id}
+                itemId={item.id}
                 name={item.first_name + ' ' + item.last_name}
                 img={
                   item.profile_pic != null

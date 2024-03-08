@@ -142,11 +142,15 @@ const Trendings = () => {
                   // backgroundColor: 'green',
                 }}
                 data={trending_stylists}
-                renderItem={({item}) => (
+                renderItem={({item}) => {
+                  console.log('itemitem=-=->>>',item.id)
+                  return(
+
                   <TouchableOpacity
                     onPress={() => console.log('item.id: ', item)}>
                     <VenderCardBox
                       key={item.id}
+                      itemId={item.id}
                       name={item.first_name + ' ' + item.last_name}
                       img={
                         item?.profile_pic == null
@@ -162,7 +166,8 @@ const Trendings = () => {
                       }
                     />
                   </TouchableOpacity>
-                )}
+                  );
+                }}
               />
               <View
                 style={{

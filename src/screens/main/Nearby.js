@@ -26,6 +26,7 @@ import StylistInfo from '../../components/StylistInfo';
 import {useDispatch, useSelector} from 'react-redux';
 import {getNearbyStylists} from '../../redux/slices/StylistSlice';
 import GetLocation from 'react-native-get-location';
+import {requestLocationPermission} from '../../utils';
 
 const Nearby = () => {
   const [changeTab, setChangeTab] = useState(1);
@@ -34,19 +35,20 @@ const Nearby = () => {
   const [imageUrls, setImageUrls] = useState([]);
   const [cardStates, setCardStates] = useState(Array().fill(false));
   const flatListRef = useRef(null);
-  console.log('selectKilometers: ', selectKilometers);
+  // console.log('selectKilometers: ', selectKilometers);
   const dispatch = useDispatch();
   const {nearbyStylists} = useSelector(state => state.stylistReducer);
+  // console.log('nearbyStylists===>', nearbyStylists);
 
   const regionLat = useSelector(state => state.userData.latLng);
-  console.log('defLatcd: ', regionLat);
+  // console.log('defLatcd: ', regionLat);
 
   useEffect(() => {
     setCurrentregion(regionLat);
-    console.log('defLat: ', regionLat);
+    // console.log('defLat: ', regionLat);
   }, [regionLat]);
-  console.log('currentRegion:', currentRegion);
-  console.log('imageUrls: ', imageUrls);
+  // console.log('currentRegion:', currentRegion);
+  // console.log('imageUrls: ', imageUrls);
 
   let circleRadius = 1500;
 
@@ -58,7 +60,9 @@ const Nearby = () => {
     await dispatch(
       getNearbyStylists({
         lat: currentRegion.latitude,
+        // lat: 24.8800505,
         long: currentRegion.longitude,
+        // long: 67.0796143,
       }),
     );
   };
@@ -74,7 +78,7 @@ const Nearby = () => {
 
   const handleRegionChange = region => {
     setCurrentregion(region);
-    console.log('currentRegion: ', currentRegion);
+    // console.log('currentRegion: ', currentRegion);
   };
 
   const PreLoadImages = async () => {
@@ -135,11 +139,14 @@ const Nearby = () => {
               />
             </MapView>
           ) : (
-            <MapView
-              initialRegion={currentRegion}
-              mapType="terrain"
-              style={styles.mapStyle}
-            />
+            <TouchableOpacity onPress={() => requestLocationPermission()}>
+              <Text>Allow Location</Text>
+            </TouchableOpacity>
+            // <MapView
+            //   initialRegion={currentRegion}
+            //   mapType="terrain"
+            //   style={styles.mapStyle}
+            // />
           )}
           <View style={styles.topComponent}>
             <View style={styles.pickerStyle}>

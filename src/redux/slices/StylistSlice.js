@@ -74,7 +74,7 @@ export const getPopularStylists = createAsyncThunk(
 );
 
 export const stylistProfileById = createAsyncThunk(
-  'profileDetail',
+  'profileDetails',
   async (stylist_id, {getState}) => {
     const stateData = getState().userData;
     const token = stateData.token;
@@ -111,7 +111,7 @@ export const stylistReviewById = createAsyncThunk(
         },
       })
       .then(res => {
-        console.log('stylist review =============>', res.data);
+        // console.log('stylist review =============>', res.data);
         return res.data;
       })
       .catch(error => {
@@ -149,7 +149,7 @@ export const getNearbyStylists = createAsyncThunk(
     const stateData = getState().userData;
     const token = stateData.token;
 
-    // console.log('latttt', lat)
+    console.log('latttt', lat,long)
 
     return await axios
       .get(`${BASE_URL}/near-by-stylists?latitude=${lat}&longitude=${long}`, {
@@ -203,6 +203,34 @@ export const Appointment = createAsyncThunk(
   },
 );
 
+export const PostReview = createAsyncThunk(
+  'review',
+  async ({userId, userRating, userComment}, {getState}) => {
+    const stateData = getState().userData;
+    const token = stateData.token;
+
+    var data = new FormData();
+
+    data.append('rating', userRating);
+    data.append('comment', userComment);
+
+    return await axios
+      .post(`${BASE_URL}/stylist-profile/${userId}/review`, data, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(res => {
+        return res.data;
+      })
+      .catch(error => {
+        console.log('PostReview error =========>', error);
+      });
+  },
+);
+
 export const StylistSlice = createSlice({
   name: 'stylistDetails',
   initialState: {
@@ -219,6 +247,11 @@ export const StylistSlice = createSlice({
     stylistReview: [],
     stylistReview_error: '',
     stylistReview_loading: false,
+
+    profileDetails:[],
+    profileDetails_error: '',
+    profileDetails_loading: false,
+
     trending_stylists: [],
     trending_loader: false,
     trending_error: '',
@@ -262,17 +295,28 @@ export const StylistSlice = createSlice({
         (state.loading = false);
     });
 
+
+
+
+
     builders.addCase(stylistProfileById.pending, state => {
-      state.stylistDetail_loading = true;
+      state.profileDetails_loading = true;
     });
     builders.addCase(stylistProfileById.fulfilled, (state, action) => {
-      (state.stylistDetail_loading = false),
-        (state.stylistDetail[action.payload.data.id] = action.payload.data);
+      (state.profileDetails_loading = false),
+        (state.profileDetails = action.payload.data);
     });
     builders.addCase(stylistProfileById.rejected, state => {
-      (state.stylistDetail_error = 'Some problem occured'),
-        (state.stylistDetail_loading = false);
+      (state.profileDetails_error = 'Some problem occured'),
+        (state.profileDetails_loading = false);
     });
+
+
+
+
+
+
+
 
     builders.addCase(stylistReviewById.pending, state => {
       state.stylistReview_loading = true;
@@ -281,7 +325,8 @@ export const StylistSlice = createSlice({
       // (state.stylistReview_loading = false),
       // (state.stylistReview[action.payload.data.id] = action.payload.data);
       state.stylistReview_loading = false;
-      state.stylistReview = action.payload.data.id;
+      state.stylistReview = action.payload.data;
+      // console.log('action.payload.data.id:=-=',action.payload.data)
       // Alert.alert(state.stylistReview)
     });
     builders.addCase(stylistReviewById.rejected, state => {
@@ -302,7 +347,7 @@ export const StylistSlice = createSlice({
     });
     builders.addCase(getNearbyStylists.fulfilled, (state, action) => {
       state.nearbyStylists = action.payload.data;
-      // console.log('redux state',action.payload.data)
+      console.log('redux state',action.payload.data)
     });
     builders.addCase(Appointment.pending, state => {
       state.appointment_loader = true;
