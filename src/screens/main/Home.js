@@ -35,20 +35,23 @@ import {
 
 const Home = ({navigation}) => {
   const {user, pic_url} = useSelector(state => state.userData);
-  const {recentProducts, recent_error} = useSelector(
+  const {recentProducts, recent_error, pic_baseUrl} = useSelector(
     state => state.ecommerceReducer,
   );
   const {topStylists, loading, topStylist_error} = useSelector(
     state => state.stylistReducer,
   );
 
+  // console.log('pic_baseUrl====>>', pic_baseUrl);
+  // console.log('recentProducts from screen====>>', recentProducts);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (recentProducts.length < 1 || topStylists.length < 1) {
-      getRecentProducts();
-      getTopStylistsProfile();
-    }
+    // if (recentProducts.length < 1 || topStylists.length < 1) {
+    getRecentProducts();
+    getTopStylistsProfile();
+    // }
   }, []);
 
   const getRecentProducts = async () => {
@@ -193,12 +196,16 @@ const Home = ({navigation}) => {
                         />
                       </View>
                       <FlatList
-                        data={recentProducts}
+                        data={recentProducts.slice(0, 4)}
                         contentContainerStyle={{paddingHorizontal: hp('5%')}}
                         style={{marginTop: 20, marginHorizontal: hp('-3%')}}
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
                         renderItem={({item, index}) => {
+                          // console.log(
+                          //   'recentProducts items=-=-->',
+                          //   item?.user.first_name + item?.user.last_name,
+                          // );
                           return (
                             <TouchableOpacity
                               activeOpacity={0.9}
@@ -213,8 +220,10 @@ const Home = ({navigation}) => {
                                 }
                                 productName={item.product_name}
                                 price={item.regular_price}
-                                avatar={{uri: pic_url + item?.user.profile_pic}}
+                                avatar={item?.user.profile_pic}
                                 rating={3}
+                                productImage={item.product_image}
+                                productFromdetail={true}
                               />
                             </TouchableOpacity>
                           );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   Text,
   StyleSheet,
@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  FlatList,
 } from 'react-native';
 import CartHeader from '../../components/CartHeader';
 import {
@@ -19,12 +20,29 @@ import HistoryCard from '../../components/HistoryCard';
 import Container from '../../components/Container';
 import {histories} from '../../dummyData';
 import {useNavigation} from '@react-navigation/native';
-import { SvgBottomLineSecondIcon } from '../../components/SvgImages';
+import {SvgBottomLineSecondIcon} from '../../components/SvgImages';
+import {getCompletedOrders} from '../../redux/slices/ECommerceSlice';
+import {useDispatch, useSelector} from 'react-redux';
 
 const Cart = () => {
   const [tabActive, setTabActive] = useState('');
 
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const {completedOrders, completedOrders_error, completedOrders_loading} =
+    useSelector(state => state.ecommerceReducer);
+
+  // console.log('completedOrders from screen==>', completedOrders);
+
+  useEffect(() => {
+    // if (recentProducts.length < 1 || topStylists.length < 1) {
+    fetchCompletedOrders();
+    // }
+  }, []);
+
+  const fetchCompletedOrders = async () => {
+    await dispatch(getCompletedOrders());
+  };
 
   console.log(tabActive);
   return (
@@ -50,33 +68,73 @@ const Cart = () => {
             <Text style={styles.text}>{'You have no favourites :('}</Text>
           </View>
         ) : (
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.historyWrapper}>
-            {histories.map(item => (
-              <HistoryCard
-                key={item.id}
-                image={item.image}
-                onPress={() => navigation.navigate('OrderHistory')}
-              />
-            ))}
-            <View
-              style={{
-                paddingHorizontal: wp('8%'),
-                marginTop: 50,
-                // marginBottom: 150,
-                alignItems: 'center',
-              }}>
-              {/* <Image
-                source={require('../../assets/images/bottom_linesA.png')}
-                resizeMode="contain"
-                style={{
-                  width: 40,
-                }}
-              /> */}
-              <SvgBottomLineSecondIcon/>
-            </View>
-          </ScrollView>
+          <View style={{marginBottom: hp('15%'), marginTop: hp('2%')}}>
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              // contentContainerStyle={{backgroundColor:'red'}}
+              keyExtractor={item => item.id}
+              data={completedOrders}
+              renderItem={({item}) => {
+                console.log('completedOrders items==>', completedOrders);
+                return (
+                  <HistoryCard
+                    key={item.id}
+                    image={item.image}
+                    onPress={() =>
+                      navigation.navigate('OrderHistory', {
+                        productImages: item.product,
+                      })
+                    }
+                    // userPic={}
+                    // userName={}
+                    // userAddress={}
+                    // userRating={}
+                    productDate={item.created_at}
+                  />
+                );
+              }}
+              ListFooterComponent={
+                <View
+                  style={{
+                    paddingHorizontal: wp('8%'),
+                    // marginTop: 50,
+                    marginBottom: hp('5%'),
+                    alignItems: 'center',
+                    // backgroundColor:'white'
+                  }}>
+                  <SvgBottomLineSecondIcon />
+                </View>
+              }
+            />
+          </View>
+
+          // <ScrollView
+          //   showsVerticalScrollIndicator={false}
+          //   contentContainerStyle={styles.historyWrapper}>
+          //   {histories.map(item => (
+          //     <HistoryCard
+          //       key={item.id}
+          //       image={item.image}
+          //       onPress={() => navigation.navigate('OrderHistory')}
+          //     />
+          //   ))}
+          //   <View
+          //     style={{
+          //       paddingHorizontal: wp('8%'),
+          //       marginTop: 50,
+          //       // marginBottom: 150,
+          //       alignItems: 'center',
+          //     }}>
+          //     {/* <Image
+          //       source={require('../../assets/images/bottom_linesA.png')}
+          //       resizeMode="contain"
+          //       style={{
+          //         width: 40,
+          //       }}
+          //     /> */}
+          //     <SvgBottomLineSecondIcon/>
+          //   </View>
+          // </ScrollView>
         )}
       </View>
     </Container>

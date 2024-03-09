@@ -4,9 +4,14 @@ import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import colors from '../assets/colors';
 import images from '../assets/images';
 import * as Progress from 'react-native-progress';
-import {SvgCardPopularHistoryIcon, SvgCardPopularIcon, SvgGoldBagIcon} from './SvgImages';
+import {
+  SvgCardPopularHistoryIcon,
+  SvgCardPopularIcon,
+  SvgGoldBagIcon,
+} from './SvgImages';
+import moment from 'moment';
 
-const HistoryCard = ({image, onPress}) => {
+const HistoryCard = ({image, onPress, productDate}) => {
   return (
     <TouchableOpacity
       style={styles.cardStyle}
@@ -51,7 +56,9 @@ const HistoryCard = ({image, onPress}) => {
           <View
             style={{marginTop: hp('1%'), alignItems: 'flex-end', right: 25}}>
             <Text style={styles.location}>Date</Text>
-            <Text style={styles.location}>18.10.2023</Text>
+            <Text style={styles.location}>
+              {moment(productDate).format('DD MMM YYYY')}
+            </Text>
           </View>
         </View>
       </View>

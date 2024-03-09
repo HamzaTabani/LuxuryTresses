@@ -14,7 +14,7 @@ const RecentProducts = ({route}) => {
   const {recentProducts} = useSelector(state => state.ecommerceReducer);
 
   const recentItems = route?.params?.product;
-  console.log('paramss dataa =======>', recentItems);
+  // console.log('paramss dataa =======>', recentItems);
 
   return (
     <Container>
@@ -24,7 +24,7 @@ const RecentProducts = ({route}) => {
           data={recentProducts}
           keyExtractor={item => item.id}
           renderItem={({item}) => {
-            console.log('recent product123: ', item.id);
+            // console.log('recent product123: ', item.id);
             return (
               <TouchableOpacity
                 activeOpacity={0.9}
@@ -39,7 +39,9 @@ const RecentProducts = ({route}) => {
                   username={item?.user.first_name + item?.user.last_name}
                   productName={item?.product_name}
                   price={item.regular_price}
-                  avatar={images.marker5}
+                  avatar={item?.user.profile_pic}
+                  productImage={item.product_image}
+                  productFromdetail={true}
                 />
               </TouchableOpacity>
             );

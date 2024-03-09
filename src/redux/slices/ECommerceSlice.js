@@ -25,6 +25,28 @@ export const fetchRecentProducts = createAsyncThunk(
   },
 );
 
+export const getCompletedOrders = createAsyncThunk(
+  'completedOrders',
+  async (_, {getState}) => {
+    const stateData = getState().userData;
+    const token = stateData.token;
+    return await axios
+      .get(`${BASE_URL}/completed-orders`, {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(res => {
+        // console.log('completed orders =========>', res.data);
+        return res.data;
+      })
+      .catch(error => {
+        ErrorToast(error);
+      });
+  },
+);
+
 export const getProductDetails = createAsyncThunk(
   'productDetails',
   async (product_id, {getState}) => {
@@ -49,7 +71,6 @@ export const addProductinCart = createAsyncThunk('productCart', async data => {
   return data;
 });
 
-
 export const HomeSlice = createSlice({
   name: 'ecommerce',
   initialState: {
@@ -60,20 +81,37 @@ export const HomeSlice = createSlice({
     cart_product: [],
     cart_error: '',
     detail_error: '',
+    pic_baseUrl: '',
+    completedOrders: [],
+    completedOrders_error: '',
+    completedOrders_loading: false,
   },
   extraReducers: builder => {
     builder.addCase(fetchRecentProducts.fulfilled, (state, action) => {
       state.recentProducts = action.payload.data;
+      state.pic_baseUrl = action.payload.base_url;
     });
     builder.addCase(fetchRecentProducts.rejected, state => {
       state.recent_error = 'Some problem occured';
     });
+
+    builder.addCase(getCompletedOrders.pending, state => {
+      state.completedOrders_loading = true;
+    });
+    builder.addCase(getCompletedOrders.fulfilled, (state, action) => {
+      state.completedOrders_loading = false;
+      state.completedOrders = action.payload.data;
+    });
+    builder.addCase(getCompletedOrders.rejected, state => {
+      state.recent_error = 'Some problem occured';
+    });
+
     builder.addCase(getProductDetails.pending, state => {
       state.detail_loading = true;
     });
     builder.addCase(getProductDetails.fulfilled, (state, action) => {
-      (state.detail_loading = false);
-        state.productDetails[action.payload.data.id] = action.payload.data;
+      state.detail_loading = false;
+      state.productDetails[action.payload.data.id] = action.payload.data;
     });
     builder.addCase(getProductDetails.rejected, state => {
       (state.detail_loading = false),
@@ -85,7 +123,6 @@ export const HomeSlice = createSlice({
     builder.addCase(addProductinCart.rejected, state => {
       state.cart_error = 'Error adding product in your cart';
     });
-  
   },
 });
 

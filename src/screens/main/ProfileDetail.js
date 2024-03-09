@@ -34,12 +34,14 @@ import {
 } from '../../components/SvgImages';
 
 const ProfileDetail = ({route}) => {
-  const [tabActive, setTabActive] = useState('order');
+  const [tabActive, setTabActive] = useState('');
   const navigation = useNavigation();
 
   const id = route?.params?.profile_id;
   const moreStylist = route?.params?.stylists;
   // console.log('profile_id', moreStylist.length);
+
+
 
   const dispatch = useDispatch();
 
@@ -47,7 +49,7 @@ const ProfileDetail = ({route}) => {
     useSelector(state => state.stylistReducer);
 
   const {pic_url} = useSelector(state => state.userData);
-  console.log('profile rev from screen =========>', profileDetails);
+  // console.log('profile rev from screen =========>', profileDetails);
 
   useEffect(() => {
     // if (!profileDetails) {
@@ -60,6 +62,20 @@ const ProfileDetail = ({route}) => {
       await dispatch(stylistProfileById(id));
     }
   };
+
+  useEffect(() => {
+    if (
+      profileDetails.services.length < 1 &&
+      profileDetails.products.length >= 1
+    ) {
+      setTabActive('product');
+    } else if (
+      profileDetails.products.length < 1 &&
+      profileDetails.services.length >= 1
+    ) {
+      setTabActive('service');
+    }
+  }, [profileDetails.services.length, profileDetails.products.length]);
 
   return (
     <Container>
@@ -152,39 +168,103 @@ const ProfileDetail = ({route}) => {
                 }
               />
             </View>
-            <View style={{paddingTop: hp('4%')}}>
-              <View style={styles.btn_wrapper}>
-                <TouchableOpacity
-                  style={
-                    tabActive === 'order' ? styles.btns_active : styles.btns
-                  }
-                  onPress={() => setTabActive('order')}>
-                  <Text
-                    style={
-                      tabActive == 'order'
-                        ? styles.btns_active_text
-                        : styles.btns_text
-                    }>
-                    Orders
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={
-                    tabActive !== 'order' ? styles.btns_active : styles.btns
-                  }
-                  onPress={() => setTabActive('product')}>
-                  <Text
-                    style={
-                      tabActive !== 'order'
-                        ? styles.btns_active_text
-                        : styles.btns_text
-                    }>
-                    Products
-                  </Text>
-                </TouchableOpacity>
+            {tabActive === 'product' ? (
+              <View style={[styles.btn_wrapperA, {marginTop: hp('4%')}]}>
+                <View style={styles.btns_activeA}>
+                  <Text style={styles.btns_active_textA}>Products</Text>
+                </View>
               </View>
-            </View>
-            {tabActive === 'order' ? (
+            ) : tabActive === 'service' ? (
+              <View style={[styles.btn_wrapperA, {marginTop: hp('4%')}]}>
+                <View style={styles.btns_activeA}>
+                  <Text style={styles.btns_active_textA}>Services</Text>
+                </View>
+              </View>
+            ) : profileDetails.services.length < 1 &&
+              profileDetails.products.length < 1 ? null : (
+              <View style={{paddingTop: hp('4%')}}>
+                <View style={styles.btn_wrapper}>
+                  <TouchableOpacity
+                    style={
+                      tabActive === 'service' ? styles.btns_active : styles.btns
+                    }
+                    onPress={() => setTabActive('service')}>
+                    <Text
+                      style={
+                        tabActive == 'service'
+                          ? styles.btns_active_text
+                          : styles.btns_text
+                      }>
+                      Services
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={
+                      tabActive !== 'service' ? styles.btns_active : styles.btns
+                    }
+                    onPress={() => setTabActive('product')}>
+                    <Text
+                      style={
+                        tabActive !== 'service'
+                          ? styles.btns_active_text
+                          : styles.btns_text
+                      }>
+                      Products
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
+
+            {/* {tabActive === 'product' ? (
+              <View style={[styles.btn_wrapperA, {marginTop: hp('4%')}]}>
+                <View style={styles.btns_activeA}>
+                  <Text style={styles.btns_active_textA}>Products</Text>
+                </View>
+              </View>
+            ) : tabActive === 'service' ? (
+              <View style={[styles.btn_wrapperA, {marginTop: hp('4%')}]}>
+                <View style={styles.btns_activeA}>
+                  <Text style={styles.btns_active_textA}>Services</Text>
+                </View>
+              </View>
+            ) : profileDetails.services.length < 1 &&
+              profileDetails.products.length < 1 ? null : (
+              <View style={{paddingTop: hp('4%')}}>
+                <View style={styles.btn_wrapper}>
+                  <TouchableOpacity
+                    style={
+                      tabActive === 'service' ? styles.btns_active : styles.btns
+                    }
+                    onPress={() => setTabActive('service')}>
+                    <Text
+                      style={
+                        tabActive == 'service'
+                          ? styles.btns_active_text
+                          : styles.btns_text
+                      }>
+                      Services
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={
+                      tabActive !== 'service' ? styles.btns_active : styles.btns
+                    }
+                    onPress={() => setTabActive('product')}>
+                    <Text
+                      style={
+                        tabActive !== 'service'
+                          ? styles.btns_active_text
+                          : styles.btns_text
+                      }>
+                      Products
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )} */}
+
+            {tabActive === 'service' ? (
               <View style={{paddingTop: hp('4%')}}>
                 <View style={styles.textContainer}>
                   <Text style={styles.heading}>
@@ -239,32 +319,37 @@ const ProfileDetail = ({route}) => {
                   </View>
                 </View>
               </View>
-            ) : (
+            ) : tabActive === 'product' ? (
               <View style={{paddingTop: hp('4%')}}>
                 <FlatList
-                  data={products}
+                  data={profileDetails.products}
                   keyExtractor={item => item.id}
-                  renderItem={({item}) => (
-                    <TouchableOpacity
-                      style={{marginBottom: hp('3.5%')}}
-                      activeOpacity={0.9}
-                      onPress={() => alert('working in progress')}>
-                      <ProductCard
-                        avatar={images.profile2}
-                        username={'username'}
-                        title={'Deep Mask'}
-                        price={'$59.00'}
-                        rating={3}
-                        item={item}
-                        product={true}
-                      />
-                    </TouchableOpacity>
-                  )}
+                  renderItem={({item}) => {
+                    // console.log('profileDetails.products items==>', item);
+                    return (
+                      <TouchableOpacity
+                        style={{marginBottom: hp('3.5%')}}
+                        activeOpacity={0.9}
+                        onPress={() => alert('working in progress')}>
+                        <ProductCard
+                          avatar={images.profile2}
+                          username={'username'}
+                          title={item.product_name}
+                          price={item.regular_price}
+                          rating={3}
+                          item={item}
+                          product={true}
+                          productImage={ item.product_image}
+                          productFromdetail={false}
+                        />
+                      </TouchableOpacity>
+                    );
+                  }}
                   columnWrapperStyle={{justifyContent: 'space-evenly'}}
                   numColumns={2}
                 />
               </View>
-            )}
+            ) : null}
           </ScrollView>
         </>
       )}
@@ -364,6 +449,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     gap: 5,
+    // backgroundColor:'red'
+  },
+  btn_wrapperA: {
+    borderWidth: 1.2,
+    borderColor: colors.secondary,
+    borderRadius: 50,
+    padding: 4,
+    // flexDirection: 'row',
+    // justifyContent: 'space-between',
+    // gap: 5,
+    // backgroundColor:'red'
   },
   btns_active: {
     backgroundColor: colors.secondary,
@@ -371,6 +467,14 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     width: hp('20%'),
     alignItems: 'center',
+  },
+  btns_activeA: {
+    backgroundColor: colors.secondary,
+    paddingVertical: 10,
+    borderRadius: 50,
+    width: hp('45%'),
+    alignItems: 'center',
+    alignSelf: 'center',
   },
   btns: {
     backgroundColor: 'transparent',
@@ -380,6 +484,10 @@ const styles = StyleSheet.create({
   },
   btns_active_text: {
     color: '#000',
+  },
+  btns_active_textA: {
+    color: '#000',
+    textAlign: 'center',
   },
   btns_text: {
     color: '#fff',

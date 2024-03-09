@@ -18,9 +18,14 @@ import UserDetailCard from '../../components/UserDetailCard';
 import StarRating from 'react-native-star-rating-widget';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import images from '../../assets/images';
+import {useSelector} from 'react-redux';
 
-const OrderHistory = () => {
+const OrderHistory = ({route}) => {
   const [rating, setRating] = useState(0);
+  const productImg = route?.params?.productImages;
+  const {pic_baseUrl} = useSelector(state => state.ecommerceReducer);
+  console.log('productImg data==>', productImg);
+  // console.log('pic_baseUrl==>', pic_baseUrl);
   return (
     <Container>
       <ProfileHeader icon={true} text={'Omnis iste'} username={true} />
@@ -33,14 +38,14 @@ const OrderHistory = () => {
           // autoplay
           activeDotColor={'#D49621'}
           dotStyle={{borderWidth: 1, borderColor: colors.orange}}>
-          {historyImages.map(item => (
-            <Image
-              source={item.image}
-              borderRadius={15}
-              style={styles.image}
-              resizeMode="cover"
-            />
-          ))}
+          {/* {historyImages.map(item => ( */}
+          <Image
+            source={{uri: pic_baseUrl + '/' + productImg.product_image}}
+            borderRadius={15}
+            style={styles.image}
+            resizeMode="cover"
+          />
+          {/* ))} */}
         </Swiper>
         <View style={{paddingTop: hp('3%')}}>
           <UserDetailCard
@@ -63,10 +68,13 @@ const OrderHistory = () => {
         <View style={styles.line} />
         <Text style={styles.descriptionText}>Description</Text>
         <Text style={styles.textStyle}>
-          Sed ut perspiciatis unde omnis iste natus error sit voluptatem{'\n'}
+          {productImg.description != null
+            ? productImg.description
+            : 'decription here'}
+          {/* Sed ut perspiciatis unde omnis iste natus error sit voluptatem{'\n'}
           {'\n'} accusantium doloremque laudantium, totam rem aperiam, {'\n'}
           {'\n'} eaque ipsa quae ab illo inventore veritatis et quasi architecto
-          beatae vitae dicta sunt explicabo.
+          beatae vitae dicta sunt explicabo. */}
         </Text>
         <View style={styles.cardStyle}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -209,6 +217,8 @@ const styles = StyleSheet.create({
   textStyle: {
     color: colors.white,
     marginTop: hp('2%'),
+    // fontSize: 12,
+    lineHeight: 25,
   },
   cardStyle: {
     // backgroundColor: colors.primary,

@@ -29,13 +29,17 @@ const ProductCard = ({
   productName,
   price,
   data,
-  title
+  title,
+  productImage,
+  productFromdetail,
 }) => {
   const navigation = useNavigation();
   const progress = useRef(new Animated.Value(0)).current;
   const {recentProducts, recent_error} = useSelector(
     state => state.ecommerceReducer,
   );
+  const {pic_baseUrl} = useSelector(state => state.ecommerceReducer);
+  const {pic_url} = useSelector(state => state.userData);
 
   useEffect(() => {
     const ratingToProgress = rating / 5;
@@ -53,8 +57,9 @@ const ProductCard = ({
     inputRange: [0, 1],
     outputRange: [circumference, 0],
   });
-  console.log('item==> ', item);
-
+  // console.log('avatar==> ', avatar);
+  // console.log('productImage===>', pic_baseUrl);
+  // console.log('productImage===>', productImage);
   // console.log('avatar-->',avatar)
   // console.log('username-->',username)
 
@@ -63,42 +68,52 @@ const ProductCard = ({
       {/* card box img,  */}
       <View style={styles.card_box_img}>
         <Image
-          source={images.product2}
+          source={{uri: pic_baseUrl + '/' + productImage}}
           resizeMode="contain"
           style={styles.productImage}
+          onError={({currentTarget}) => {
+            currentTarget.onerror = null; // prevents looping
+            currentTarget.src = images.cart2;
+          }}
         />
         {/* small icons */}
-        <View style={styles.card_box_img_icon1}>
-          <View
-            style={{
-              height: 23,
-              width: 23,
-              borderRadius: 20,
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginLeft: 5,
-              borderColor: colors.white,
-              borderWidth: 1,
-              marginTop: 3,
-            }}>
-            <Image
-              source={avatar}
-              resizeMode="contain"
-              borderRadius={100}
-              style={{width: 20, height: 20}}
-            />
+        {productFromdetail === true ? (
+          <View style={styles.card_box_img_icon1}>
+            <View
+              style={{
+                height: 23,
+                width: 23,
+                borderRadius: 20,
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginLeft: 5,
+                borderColor: colors.white,
+                borderWidth: 1,
+                marginTop: 3,
+              }}>
+              <Image
+                source={
+                  avatar != 'null' && avatar != null && avatar != 'undefined'
+                    ? {uri: pic_url + avatar}
+                    : {uri: pic_url + images.marker1}
+                }
+                resizeMode="contain"
+                borderRadius={100}
+                style={{width: 20, height: 20}}
+              />
+            </View>
+            <Text
+              style={{
+                fontWeight: 'bold',
+                color: '#fff',
+                marginTop: 3,
+                // backgroundColor:'red',
+                // marginLeft:hp('2%')
+              }}>
+              {username}
+            </Text>
           </View>
-          <Text
-            style={{
-              fontWeight: 'bold',
-              color: '#fff',
-              marginTop: 3,
-              // backgroundColor:'red',
-              // marginLeft:hp('2%')
-            }}>
-            {username}
-          </Text>
-        </View>
+        ) : null}
 
         {/* rating icon */}
         {!product && (
@@ -180,7 +195,7 @@ const ProductCard = ({
               flexDirection: 'row',
               justifyContent: 'space-between',
             }}>
-            <View>
+            <View style={{width: hp('17%')}}>
               <Text style={styles.productName}>{title}</Text>
               <Text style={styles.text}>{price}</Text>
             </View>
@@ -241,7 +256,7 @@ const styles = StyleSheet.create({
     gap: 5,
     // justifyContent: 'space-between',
     height: 30,
-    minWidth: wp('30%'),
+    minWidth: wp('37%'),
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     // alignItems: 'center',
     // justifyContent: 'center',
@@ -277,6 +292,9 @@ const styles = StyleSheet.create({
   productImage: {
     height: hp('22%'),
     width: hp('21%'),
+    // backgroundColor:'white',
+    // borderRadius:10,
+    // marginTop:hp('0.5')
   },
   progressView: {
     backgroundColor: colors.white,
