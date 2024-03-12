@@ -47,6 +47,28 @@ export const getCompletedOrders = createAsyncThunk(
   },
 );
 
+export const getActiveOrders = createAsyncThunk(
+  'activeOrders',
+  async (_, {getState}) => {
+    const stateData = getState().userData;
+    const token = stateData.token;
+    return await axios
+      .get(`${BASE_URL}/active-orders`, {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(res => {
+        console.log('active orders =========>', res.data);
+        return res.data;
+      })
+      .catch(error => {
+        ErrorToast(error);
+      });
+  },
+);
+
 export const getProductDetails = createAsyncThunk(
   'productDetails',
   async (product_id, {getState}) => {
@@ -85,6 +107,9 @@ export const HomeSlice = createSlice({
     completedOrders: [],
     completedOrders_error: '',
     completedOrders_loading: false,
+    activeOrders: [],
+    activeOrders_error: '',
+    activeOrders_loading: false,
   },
   extraReducers: builder => {
     builder.addCase(fetchRecentProducts.fulfilled, (state, action) => {
@@ -104,6 +129,17 @@ export const HomeSlice = createSlice({
     });
     builder.addCase(getCompletedOrders.rejected, state => {
       state.recent_error = 'Some problem occured';
+    });
+
+    builder.addCase(getActiveOrders.pending, state => {
+      state.activeOrders_loading = true;
+    });
+    builder.addCase(getActiveOrders.fulfilled, (state, action) => {
+      state.activeOrders_loading = false;
+      state.activeOrders = action.payload.data;
+    });
+    builder.addCase(getActiveOrders.rejected, state => {
+      state.activeOrders_error = 'Some problem occured';
     });
 
     builder.addCase(getProductDetails.pending, state => {

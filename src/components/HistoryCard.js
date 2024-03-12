@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import colors from '../assets/colors';
 import images from '../assets/images';
@@ -10,21 +10,56 @@ import {
   SvgGoldBagIcon,
 } from './SvgImages';
 import moment from 'moment';
+import {useSelector} from 'react-redux';
 
-const HistoryCard = ({image, onPress, productDate}) => {
+const HistoryCard = ({
+  image,
+  onPress,
+  productDate,
+  productImg,
+  productName,
+  productPrice,
+  productStatus,
+  productRating,
+}) => {
+  const {pic_baseUrl} = useSelector(state => state.ecommerceReducer);
+  console.log('pic_baseUrl', pic_baseUrl + '/' + productImg);
+console.log(productRating)
+  const [imageError, setImageError] = useState(false);
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
   return (
     <TouchableOpacity
       style={styles.cardStyle}
       activeOpacity={0.9}
       onPress={onPress}>
       <View style={{flexDirection: 'row'}}>
-        <Image source={image} style={styles.image} borderRadius={15} />
+        {/* {imageError ? (
+          <Image
+            source={images.product3}
+            style={styles.image}
+            borderRadius={15}
+          />
+        ) : ( */}
+        <Image
+          source={
+            imageError ? images.product3 : {uri: pic_baseUrl + '/' + productImg}
+          }
+          style={styles.image}
+          borderRadius={15}
+          onError={handleImageError}
+        />
+        {/* )} */}
         <View style={styles.textWrapper}>
-          <Text style={styles.text}>Omnis iste</Text>
+          <Text style={styles.text}>{productName}</Text>
           <Text style={styles.location}>
-            1609 Oak, St. <Text style={{color: colors.white}}>(2km)</Text>
+            {/* 1609 Oak, St. <Text style={{color: colors.white}}>(2km)</Text> */}
+            ${productPrice}
           </Text>
-          <Text style={styles.completedText}>Completed</Text>
+          <Text style={styles.completedText}>{productStatus}</Text>
         </View>
       </View>
       <View style={styles.wrapper}>
@@ -35,24 +70,26 @@ const HistoryCard = ({image, onPress, productDate}) => {
           <SvgGoldBagIcon />
         </View>
         <View>
-          <View style={styles.ratingView}>
-            <View style={styles.ratingCard}>
-              <Progress.Circle
-                progress={0.7}
-                color={colors.lightgreen}
-                size={26}
-                borderColor="transparent"
-              />
-              <View style={styles.imageWrapper}>
-                {/* <Image
-                  source={images.star}
-                  style={{height: hp('1.5%'), width: hp('1.5%')}}
-                /> */}
-                <SvgCardPopularHistoryIcon />
+          {/* {productRating != 'null' ? ( */}
+            <View style={styles.ratingView}>
+              <View style={styles.ratingCard}>
+                <Progress.Circle
+                  progress={productRating !=null ? productRating/5 : 3.5/5}
+                  color={colors.lightgreen}
+                  size={26}
+                  borderColor="transparent"
+                />
+                <View style={styles.imageWrapper}>
+                  <SvgCardPopularHistoryIcon />
+                </View>
               </View>
+              <Text style={styles.ratingText}>
+                {productRating !=null
+                  ? productRating + ' Rating'
+                  : 3.5 + ' Rating'}
+              </Text>
             </View>
-            <Text style={styles.ratingText}>4.5 Rating</Text>
-          </View>
+          {/* ) : null} */}
           <View
             style={{marginTop: hp('1%'), alignItems: 'flex-end', right: 25}}>
             <Text style={styles.location}>Date</Text>
@@ -82,11 +119,14 @@ const styles = StyleSheet.create({
   image: {
     height: hp('10%'),
     width: hp('10%'),
+    // backgroundColor:'red'
   },
   text: {
     color: colors.white,
     fontSize: hp('2%'),
     fontWeight: 'bold',
+    // backgroundColor:'red',
+    width: hp('13'),
   },
   textWrapper: {
     marginLeft: hp('2%'),

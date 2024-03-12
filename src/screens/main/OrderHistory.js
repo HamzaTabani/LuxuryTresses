@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Container from '../../components/Container';
 import ProfileHeader from '../../components/ProfileHeader';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -18,17 +18,68 @@ import UserDetailCard from '../../components/UserDetailCard';
 import StarRating from 'react-native-star-rating-widget';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import images from '../../assets/images';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {ShowToast} from '../../utils';
+import {PostReview} from '../../redux/slices/StylistSlice';
+import {
+  widthPercentageToDP as wp,
+  // heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import {useNavigation} from '@react-navigation/native';
 
 const OrderHistory = ({route}) => {
-  const [rating, setRating] = useState(0);
-  const productImg = route?.params?.productImages;
+  const navigation = useNavigation();
+  const [rating, setRating] = useState('');
+  const productData = route?.params?.product;
+  const orderData = route?.params?.order;
+  const completedOrdersData = route?.params?.completedOrders;
   const {pic_baseUrl} = useSelector(state => state.ecommerceReducer);
-  console.log('productImg data==>', productImg);
+  const {pic_url} = useSelector(state => state.userData);
+  // const [rating, setRating] = useState('');
+  const [postComment, setPostComment] = useState('');
+  const dispatch = useDispatch();
+  const [productImages, setProductImages] = useState([]);
+  console.log('productImages: ', productImages);
+  // console.log('productData data==>', productData);
+  // console.log('orderData data==>', orderData);
+  // console.log('completedOrdersData data==>', completedOrdersData);
+  useEffect(() => {
+    setProductImages([productData.product_image]);
+  }, [productData.product_image]);
+
+  const onHandleSubmit = async () => {
+    if (rating == '' && postComment == '') {
+      return ShowToast('please enter rating or comment');
+    } else {
+      const res = await dispatch(
+        PostReview({
+          userId: productData.id,
+          userRating: rating,
+          userComment: postComment,
+        }),
+      );
+      if (res.payload.success) {
+        navigation.navigate('home');
+        // return(
+        // console.log('rating data: ',rating,postComment)
+        ShowToast(res.payload.message);
+        // await dispatch(stylistReviewById(id));
+        // )
+      } else {
+        return ShowToast(res.payload.message);
+      }
+    }
+  };
+
+  // console.log('orderData data==>', orderData);
   // console.log('pic_baseUrl==>', pic_baseUrl);
   return (
     <Container>
-      <ProfileHeader icon={true} text={'Omnis iste'} username={true} />
+      <ProfileHeader
+        icon={true}
+        text={productData.product_name}
+        username={true}
+      />
       <ScrollView
         contentContainerStyle={styles.screen}
         showsVerticalScrollIndicator={false}>
@@ -38,20 +89,33 @@ const OrderHistory = ({route}) => {
           // autoplay
           activeDotColor={'#D49621'}
           dotStyle={{borderWidth: 1, borderColor: colors.orange}}>
-          {/* {historyImages.map(item => ( */}
-          <Image
-            source={{uri: pic_baseUrl + '/' + productImg.product_image}}
-            borderRadius={15}
-            style={styles.image}
-            resizeMode="cover"
-          />
+            
+          {/* {productImages.map(item => ( */}
+            <Image
+              source={{uri: pic_baseUrl + '/' + productImages}}
+              borderRadius={15}
+              style={styles.image}
+              resizeMode="cover"
+            />
           {/* ))} */}
         </Swiper>
         <View style={{paddingTop: hp('3%')}}>
           <UserDetailCard
-            username={'Omnis iste'}
-            email={'address'}
-            image={images.stylist1}
+            username={
+              productData.user.first_name + ' ' + productData.user.last_name
+            }
+            email={
+              productData.user.address != 'null' &&
+              productData.user.address != null &&
+              productData.user.address != 'undefined'
+                ? productData.user.address
+                : 'address'
+            }
+            image={
+              productData.user.profile_pic != null
+                ? {uri: pic_url + productData.user.profile_pic}
+                : images.stylist1
+            }
           />
         </View>
         <View
@@ -62,14 +126,14 @@ const OrderHistory = ({route}) => {
           }}>
           <Text style={styles.text}>Status</Text>
           <View style={styles.deliveredView}>
-            <Text style={styles.deliveredText}>Delivered</Text>
+            <Text style={styles.deliveredText}>{orderData.status}</Text>
           </View>
         </View>
         <View style={styles.line} />
         <Text style={styles.descriptionText}>Description</Text>
         <Text style={styles.textStyle}>
-          {productImg.description != null
-            ? productImg.description
+          {productData.description != null
+            ? productData.description
             : 'decription here'}
           {/* Sed ut perspiciatis unde omnis iste natus error sit voluptatem{'\n'}
           {'\n'} accusantium doloremque laudantium, totam rem aperiam, {'\n'}
@@ -78,7 +142,7 @@ const OrderHistory = ({route}) => {
         </Text>
         <View style={styles.cardStyle}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Text style={styles.price}>$24.00</Text>
+            <Text style={styles.price}>${completedOrdersData.price}</Text>
             <Text style={styles.quantityText}>
               Quantity:{' '}
               <Text
@@ -87,7 +151,7 @@ const OrderHistory = ({route}) => {
                   fontSize: hp('2%'),
                   fontWeight: 'bold',
                 }}>
-                2
+                {completedOrdersData.quantity}
               </Text>
             </Text>
           </View>
@@ -98,18 +162,8 @@ const OrderHistory = ({route}) => {
               justifyContent: 'space-between',
               paddingTop: hp('2.5%'),
             }}>
-            <Text style={[styles.text, {fontSize: hp('2%')}]}>Tax</Text>
-            <Text style={styles.quantityText}>5.000</Text>
-          </View>
-          <View style={styles.line2} />
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              paddingTop: hp('2.5%'),
-            }}>
             <Text style={[styles.text, {fontSize: hp('2%')}]}>Total</Text>
-            <Text style={styles.price}>$24.00</Text>
+            <Text style={styles.price}>${completedOrdersData.grand_total}</Text>
           </View>
         </View>
         <View
@@ -151,10 +205,13 @@ const OrderHistory = ({route}) => {
             }}>
             <TextInput
               placeholder="Add comment"
-              style={{marginLeft: 10, color: colors.white}}
+              style={{marginLeft: 10, color: colors.white, width: wp(68)}}
               placeholderTextColor={colors.white}
+              value={postComment}
+              onChangeText={text => setPostComment(text)}
+              multiline
             />
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => onHandleSubmit()}>
               <Ionicons
                 name="send"
                 type="AntDesign"

@@ -21,7 +21,10 @@ import Container from '../../components/Container';
 import {histories} from '../../dummyData';
 import {useNavigation} from '@react-navigation/native';
 import {SvgBottomLineSecondIcon} from '../../components/SvgImages';
-import {getCompletedOrders} from '../../redux/slices/ECommerceSlice';
+import {
+  getActiveOrders,
+  getCompletedOrders,
+} from '../../redux/slices/ECommerceSlice';
 import {useDispatch, useSelector} from 'react-redux';
 
 const Cart = () => {
@@ -29,19 +32,27 @@ const Cart = () => {
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const {completedOrders, completedOrders_error, completedOrders_loading} =
-    useSelector(state => state.ecommerceReducer);
+  const {
+    completedOrders,
+    completedOrders_error,
+    completedOrders_loading,
+    activeOrders,
+  } = useSelector(state => state.ecommerceReducer);
 
-  // console.log('completedOrders from screen==>', completedOrders);
+  console.log('activeOrders from screen==>', activeOrders);
 
   useEffect(() => {
     // if (recentProducts.length < 1 || topStylists.length < 1) {
     fetchCompletedOrders();
+    fetchActiveOrders();
     // }
   }, []);
 
   const fetchCompletedOrders = async () => {
     await dispatch(getCompletedOrders());
+  };
+  const fetchActiveOrders = async () => {
+    await dispatch(getActiveOrders());
   };
 
   console.log(tabActive);
@@ -63,33 +74,31 @@ const Cart = () => {
           </TouchableOpacity>
         </View>
         {tabActive === 'order' ? (
-          <View style={{flex: 0.8, justifyContent: 'center'}}>
-            <Image source={images.orders1} style={styles.orderImage} />
-            <Text style={styles.text}>{'You have no favourites :('}</Text>
-          </View>
-        ) : (
           <View style={{marginBottom: hp('15%'), marginTop: hp('2%')}}>
             <FlatList
               showsVerticalScrollIndicator={false}
               // contentContainerStyle={{backgroundColor:'red'}}
               keyExtractor={item => item.id}
-              data={completedOrders}
+              data={activeOrders}
               renderItem={({item}) => {
-                console.log('completedOrders items==>', completedOrders);
+                console.log('activeOrders items==>', item);
                 return (
                   <HistoryCard
                     key={item.id}
                     image={item.image}
                     onPress={() =>
                       navigation.navigate('OrderHistory', {
-                        productImages: item.product,
+                        product: item?.product,
+                        order: item?.order,
+                        completedOrders: item,
                       })
                     }
-                    // userPic={}
-                    // userName={}
-                    // userAddress={}
-                    // userRating={}
-                    productDate={item.created_at}
+                    productImg={item?.product?.product_image}
+                    productName={item?.product?.product_name}
+                    productPrice={item?.product?.regular_price}
+                    productStatus={item?.order?.status}
+                    productRating={item?.product?.average_rating}
+                    productDate={item?.product?.created_at}
                   />
                 );
               }}
@@ -97,10 +106,53 @@ const Cart = () => {
                 <View
                   style={{
                     paddingHorizontal: wp('8%'),
-                    // marginTop: 50,
                     marginBottom: hp('5%'),
                     alignItems: 'center',
-                    // backgroundColor:'white'
+                  }}>
+                  <SvgBottomLineSecondIcon />
+                </View>
+              }
+            />
+          </View>
+        ) : (
+          // <View style={{flex: 0.8, justifyContent: 'center'}}>
+          //   <Image source={images.orders1} style={styles.orderImage} />
+          //   <Text style={styles.text}>{'You have no favourites :('}</Text>
+          // </View>
+          <View style={{marginBottom: hp('15%'), marginTop: hp('2%')}}>
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              // contentContainerStyle={{backgroundColor:'red'}}
+              keyExtractor={item => item.id}
+              data={completedOrders}
+              renderItem={({item}) => {
+                // console.log('completedOrders items==>', item);
+                return (
+                  <HistoryCard
+                    key={item.id}
+                    image={item.image}
+                    onPress={() =>
+                      navigation.navigate('OrderHistory', {
+                        product: item?.product,
+                        order: item?.order,
+                        completedOrders: item,
+                      })
+                    }
+                    productImg={item?.product?.product_image}
+                    productName={item?.product?.product_name}
+                    productPrice={item?.product?.regular_price}
+                    productStatus={item?.order?.status}
+                    productRating={item?.product?.average_rating}
+                    productDate={item?.product?.created_at}
+                  />
+                );
+              }}
+              ListFooterComponent={
+                <View
+                  style={{
+                    paddingHorizontal: wp('8%'),
+                    marginBottom: hp('5%'),
+                    alignItems: 'center',
                   }}>
                   <SvgBottomLineSecondIcon />
                 </View>
