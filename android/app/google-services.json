@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "756702538267",
+    "project_id": "luxury-tresses",
+    "storage_bucket": "luxury-tresses.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:756702538267:android:352934dd9a0d8849ae26be",
+        "android_client_info": {
+          "package_name": "com.luxurytresses"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCce5GEfS7CXzs9lrpHV8GohieM6BRroG0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

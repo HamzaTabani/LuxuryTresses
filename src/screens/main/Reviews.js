@@ -70,14 +70,18 @@ const Reviews = () => {
   const {name, email, img, id} = route?.params;
   const [rating, setRating] = useState('');
   const [postComment, setPostComment] = useState('');
+  // console.log('user data===> ',name, email, img, id)
   // console.log('ididddd-->', id);
   const {stylistReview, stylistReview_loading, stylistReview_error} =
     useSelector(state => state.stylistReducer);
 
+    // console.log('stylistReview from screen==-->',stylistReview.reviews[0].user)
+
   const {pic_url, user} = useSelector(state => state.userData);
-  console.log('sigined in user---->', id);
+  // console.log('sigined in user---->', id);
   useEffect(() => {
     if (!stylistReview[id]) {
+      // console.log('object')
       fetchProfileReview();
     }
   }, [id]);

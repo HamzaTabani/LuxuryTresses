@@ -41,15 +41,13 @@ const ProfileDetail = ({route}) => {
   const moreStylist = route?.params?.stylists;
   // console.log('profile_id', moreStylist.length);
 
-
-
   const dispatch = useDispatch();
 
   const {profileDetails, profileDetails_loading, profileDetails_error} =
     useSelector(state => state.stylistReducer);
 
   const {pic_url} = useSelector(state => state.userData);
-  // console.log('profile rev from screen =========>', profileDetails);
+  console.log('profile detail from screen =========>', profileDetails.average_rating);
 
   useEffect(() => {
     // if (!profileDetails) {
@@ -166,6 +164,7 @@ const ProfileDetail = ({route}) => {
                     id: profileDetails.id,
                   })
                 }
+                averageRating={profileDetails.average_rating}
               />
             </View>
             {tabActive === 'product' ? (
@@ -339,7 +338,7 @@ const ProfileDetail = ({route}) => {
                           rating={3}
                           item={item}
                           product={true}
-                          productImage={ item.product_image}
+                          productImage={item.product_image}
                           productFromdetail={false}
                         />
                       </TouchableOpacity>

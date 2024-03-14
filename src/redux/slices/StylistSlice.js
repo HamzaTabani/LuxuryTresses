@@ -78,6 +78,7 @@ export const stylistProfileById = createAsyncThunk(
   async (stylist_id, {getState}) => {
     const stateData = getState().userData;
     const token = stateData.token;
+    // console.log('stylist_id===>',stylist_id)
 
     return await axios
       .get(`${BASE_URL}/stylist-profile/${stylist_id}/detail`, {
@@ -111,7 +112,7 @@ export const stylistReviewById = createAsyncThunk(
         },
       })
       .then(res => {
-        // console.log('stylist review =============>', res.data);
+        console.log('stylist review =============>', res.data);
         return res.data;
       })
       .catch(error => {

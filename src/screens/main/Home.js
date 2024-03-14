@@ -42,7 +42,7 @@ const Home = ({navigation}) => {
     state => state.stylistReducer,
   );
 
-  // console.log('pic_baseUrl====>>', pic_baseUrl);
+  console.log('topStylists====>>', topStylists);
   // console.log('recentProducts from screen====>>', recentProducts);
 
   const dispatch = useDispatch();

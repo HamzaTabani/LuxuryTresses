@@ -39,7 +39,7 @@ const OrderHistory = ({route}) => {
   const [postComment, setPostComment] = useState('');
   const dispatch = useDispatch();
   const [productImages, setProductImages] = useState([]);
-  console.log('productImages: ', productImages);
+  // console.log('productImages: ', productImages);
   // console.log('productData data==>', productData);
   // console.log('orderData data==>', orderData);
   // console.log('completedOrdersData data==>', completedOrdersData);
@@ -99,7 +99,8 @@ const OrderHistory = ({route}) => {
             />
           {/* ))} */}
         </Swiper>
-        <View style={{paddingTop: hp('3%')}}>
+        {/* vendor detail card */}
+        {/* <View style={{paddingTop: hp('3%')}}>
           <UserDetailCard
             username={
               productData.user.first_name + ' ' + productData.user.last_name
@@ -117,7 +118,7 @@ const OrderHistory = ({route}) => {
                 : images.stylist1
             }
           />
-        </View>
+        </View> */}
         <View
           style={{
             paddingTop: hp('4%'),

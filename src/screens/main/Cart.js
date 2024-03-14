@@ -39,7 +39,7 @@ const Cart = () => {
     activeOrders,
   } = useSelector(state => state.ecommerceReducer);
 
-  console.log('activeOrders from screen==>', activeOrders);
+  // console.log('activeOrders from screen==>', activeOrders);
 
   useEffect(() => {
     // if (recentProducts.length < 1 || topStylists.length < 1) {
@@ -55,7 +55,7 @@ const Cart = () => {
     await dispatch(getActiveOrders());
   };
 
-  console.log(tabActive);
+  // console.log(tabActive);
   return (
     <Container>
       <CartHeader />
@@ -81,7 +81,7 @@ const Cart = () => {
               keyExtractor={item => item.id}
               data={activeOrders}
               renderItem={({item}) => {
-                console.log('activeOrders items==>', item);
+                // console.log('activeOrders items==>', item);
                 return (
                   <HistoryCard
                     key={item.id}
