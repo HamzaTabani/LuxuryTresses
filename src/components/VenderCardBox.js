@@ -12,9 +12,9 @@ import {SvgGoldBagIcon, SvgGoldSeatIcon} from './SvgImages';
 import {useDispatch, useSelector} from 'react-redux';
 import {getRecentStylists} from '../redux/slices/StylistSlice';
 
-const VenderCardBox = ({name, img, email, itemData, itemId}) => {
+const VenderCardBox = ({name, img, email, itemData, itemId,ratings}) => {
   const navigation = useNavigation();
-  console.log('itemData vendor card box-->', itemId);
+  // console.log('itemData vendor card box-->', itemId);
   // const {recentStylists} = useSelector(state => state.stylistReducer);
   // const {user, pic_url} = useSelector(state => state.userData);
 
@@ -85,7 +85,7 @@ const VenderCardBox = ({name, img, email, itemData, itemId}) => {
           // onPress={() => console.log('itemData.id-->', itemData.id)}
           style={styles.ratingButton}>
           <View>
-            <RatingIcon rating={5} w={30} h={30} r={10} />
+            <RatingIcon rating={ratings} w={30} h={30} r={10} />
           </View>
           <Text style={{color: '#fff', fontSize: hp('1.2%')}}>4.5 Rating</Text>
         </Pressable>

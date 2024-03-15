@@ -12,7 +12,20 @@
           "package_name": "com.luxurytresses"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "756702538267-e9fj4rh7pej65grqdg67og4ejsq2769t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.luxurytresses",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "756702538267-c071cm0qib2lr7ns1qp1f37opfnm9s8g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCce5GEfS7CXzs9lrpHV8GohieM6BRroG0"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "756702538267-c071cm0qib2lr7ns1qp1f37opfnm9s8g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

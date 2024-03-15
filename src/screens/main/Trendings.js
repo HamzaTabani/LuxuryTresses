@@ -143,29 +143,31 @@ const Trendings = () => {
                 }}
                 data={trending_stylists}
                 renderItem={({item}) => {
-                  console.log('itemitem=-=->>>',item.id)
-                  return(
-
-                  <TouchableOpacity
-                    onPress={() => console.log('item.id: ', item)}>
-                    <VenderCardBox
-                      key={item.id}
-                      itemId={item.id}
-                      name={item.first_name + ' ' + item.last_name}
-                      img={
-                        item?.profile_pic == null
-                          ? images.cart2
-                          : {uri: pic_url + item.profile_pic}
-                      }
-                      email={
-                        item.address != 'null' &&
-                        item.address != null &&
-                        item.address != 'undefined'
-                          ? item.address
-                          : 'address'
-                      }
-                    />
-                  </TouchableOpacity>
+                  console.log('itemitem=-=->>>', item);
+                  return (
+                    <TouchableOpacity
+                      onPress={() => console.log('item.id: ', item)}>
+                      <VenderCardBox
+                        key={item.id}
+                        itemId={item.id}
+                        name={item.first_name + ' ' + item.last_name}
+                        img={
+                          item?.profile_pic == null
+                            ? images.cart2
+                            : {uri: pic_url + item.profile_pic}
+                        }
+                        email={
+                          item.address != 'null' &&
+                          item.address != null &&
+                          item.address != 'undefined'
+                            ? item.address
+                            : 'address'
+                        }
+                        ratings={
+                          item.average_rating != null ? item.average_rating : 3
+                        }
+                      />
+                    </TouchableOpacity>
                   );
                 }}
               />

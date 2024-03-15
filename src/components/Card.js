@@ -53,7 +53,7 @@ const Card = ({rating, stylist_name, stylist_email, image, allTopStylist}) => {
         {/* rating icon */}
         <View style={styles.progressView}>
           <Progress.Circle
-            progress={0.7}
+            progress={rating/5}
             color={colors.lightgreen}
             size={40.5}
             style={{marginTop: hp('0.5%')}}

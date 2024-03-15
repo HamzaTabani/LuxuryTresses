@@ -39,7 +39,8 @@ const ProfileDetail = ({route}) => {
 
   const id = route?.params?.profile_id;
   const moreStylist = route?.params?.stylists;
-  // console.log('profile_id', moreStylist.length);
+  // console.log('profile_id', id);
+  // console.log('moreStylist', moreStylist);
 
   const dispatch = useDispatch();
 
@@ -47,7 +48,8 @@ const ProfileDetail = ({route}) => {
     useSelector(state => state.stylistReducer);
 
   const {pic_url} = useSelector(state => state.userData);
-  console.log('profile detail from screen =========>', profileDetails.average_rating);
+  console.log('profile detail from screen =========>', profileDetails);
+  // console.log('profile loader =========>', profileDetails_loading);
 
   useEffect(() => {
     // if (!profileDetails) {
@@ -56,24 +58,26 @@ const ProfileDetail = ({route}) => {
   }, []);
 
   const fetchProfileDetailss = async () => {
-    if (profileDetails?.id !== id) {
-      await dispatch(stylistProfileById(id));
-    }
+    // if (profileDetails?.id !== id) {
+    await dispatch(stylistProfileById(id));
+    // }
   };
 
   useEffect(() => {
     if (
       profileDetails.services.length < 1 &&
-      profileDetails.products.length >= 1
+      profileDetails.products.length >= 1 &&
+      !profileDetails_loading
     ) {
       setTabActive('product');
     } else if (
       profileDetails.products.length < 1 &&
-      profileDetails.services.length >= 1
+      profileDetails.services.length >= 1 &&
+      !profileDetails_loading
     ) {
       setTabActive('service');
     }
-  }, [profileDetails.services.length, profileDetails.products.length]);
+  }, [profileDetails]);
 
   return (
     <Container>
@@ -324,7 +328,7 @@ const ProfileDetail = ({route}) => {
                   data={profileDetails.products}
                   keyExtractor={item => item.id}
                   renderItem={({item}) => {
-                    // console.log('profileDetails.products items==>', item);
+                    console.log('profileDetails.products items==>', item.id);
                     return (
                       <TouchableOpacity
                         style={{marginBottom: hp('3.5%')}}
@@ -351,6 +355,7 @@ const ProfileDetail = ({route}) => {
             ) : null}
           </ScrollView>
         </>
+        // null
       )}
     </Container>
   );

@@ -7,6 +7,7 @@ import {
   Text,
   TextInput,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -17,10 +18,15 @@ import FontAwesome5 from 'react-native-vector-icons/Ionicons';
 import PrimaryButton from '../../components/PrimaryButton';
 import {ShowToast} from '../../utils';
 import {SvgFacebookIcon, SvgGoogleIcon} from '../../components/SvgImages';
+import {SigninWithGoogle} from '../../config/firebase/GoogleSignIn';
+import {firebase} from '@react-native-firebase/auth';
+import {useDispatch} from 'react-redux';
+import { login } from '../../redux/slices/AuthSlice';
 
 const Signup = ({navigation}) => {
   const [email, setEmail] = useState('');
-
+  const [deviceToken, setDeviceToken] = useState('');
+  const dispatch = useDispatch();
   const onContinuePress = () => {
     if (!email) {
       return ShowToast('Please type your email');
@@ -28,6 +34,30 @@ const Signup = ({navigation}) => {
       navigation.navigate('initialprofile', {userData: email});
     }
   };
+
+  async function googleSignIn() {
+    SigninWithGoogle().then(data => {
+      if (!data) {
+        console.log('Error no data!');
+        return ShowToast('Google Login failed!');
+      } else {
+        console.log('succesfully google signIn data==>', data);
+        setDeviceToken(data.idToken);
+        
+        firebase.auth().onAuthStateChanged(user => {
+          if (user) {
+            console.log('user object from firebase==>', user.providerData);
+          }
+        });
+        // dispatch(
+        //   login({
+        //     email: email,
+        //     device_token: deviceToken,
+        //   }),
+        // );
+      }
+    });
+  }
 
   return (
     <ImageBackground
@@ -82,7 +112,9 @@ const Signup = ({navigation}) => {
               <Text style={{color: '#bbb9bd', textAlign: 'center'}}>OR</Text>
             </View>
 
-            <View style={styles.button_container}>
+            <TouchableOpacity
+              onPress={() => googleSignIn()}
+              style={[styles.button_container]}>
               {/* <Image
                 source={require('../../assets/images/google_icon.png')}
                 style={styles.btn_icon}
@@ -100,7 +132,7 @@ const Signup = ({navigation}) => {
                   CONTINUE WITH GOOGLE
                 </Text>
               </View>
-            </View>
+            </TouchableOpacity>
             <View style={styles.button_container}>
               {/* <Image
                 source={require('../../assets/images/facebook_icon.png')}

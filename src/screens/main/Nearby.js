@@ -38,17 +38,17 @@ const Nearby = () => {
   // console.log('selectKilometers: ', selectKilometers);
   const dispatch = useDispatch();
   const {nearbyStylists} = useSelector(state => state.stylistReducer);
-  // console.log('nearbyStylists===>', nearbyStylists);
+  console.log('nearbyStylists===>', nearbyStylists);
 
   const regionLat = useSelector(state => state.userData.latLng);
-  // console.log('defLatcd: ', regionLat);
+  console.log('defLatcd: ', regionLat);
 
   useEffect(() => {
     setCurrentregion(regionLat);
     // console.log('defLat: ', regionLat);
   }, [regionLat]);
-  // console.log('currentRegion:', currentRegion);
-  // console.log('imageUrls: ', imageUrls);
+  console.log('currentRegion:', currentRegion);
+  console.log('imageUrls: ', imageUrls);
 
   let circleRadius = 1500;
 
@@ -99,6 +99,7 @@ const Nearby = () => {
   const renderMarkers = () => {
     if (!imageUrls || imageUrls.length === 0) return null;
     return nearbyStylists.map((item, index) => (
+      // console.log(item)
       <Marker
         key={item.id}
         coordinate={{
@@ -138,6 +139,7 @@ const Nearby = () => {
                 strokeColor={colors.orange}
               />
             </MapView>
+            // <Text>abc</Text>
           ) : (
             <TouchableOpacity onPress={() => requestLocationPermission()}>
               <Text>Allow Location</Text>
@@ -230,8 +232,8 @@ const styles = StyleSheet.create({
     right: 0,
     zIndex: 1,
     paddingBottom: 10,
-    width: '100%', // Ensure the container spans the full width
-    backgroundColor: 'transparent', // Set a transparent background
+    width: '100%', 
+    backgroundColor: 'transparent', 
     // paddingHorizontal:50
   },
   tabView: {

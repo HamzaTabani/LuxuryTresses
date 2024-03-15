@@ -42,7 +42,7 @@ const Home = ({navigation}) => {
     state => state.stylistReducer,
   );
 
-  console.log('topStylists====>>', topStylists);
+  // console.log('topStylists====>>', topStylists);
   // console.log('recentProducts from screen====>>', recentProducts);
 
   const dispatch = useDispatch();
@@ -66,6 +66,8 @@ const Home = ({navigation}) => {
     const stylistImages = topStylists.map(item => ({
       stylist_image: item.profile_pic,
     }));
+
+    // console.log('stylistImages==-=-=-=->',stylistImages)
 
     navigation.navigate('ProfileDetail', {
       profile_id: item.id,
@@ -163,7 +165,11 @@ const Home = ({navigation}) => {
                               onPress={() => onStylistDetail(item)}>
                               <Card
                                 allTopStylist={true}
-                                rating={3}
+                                rating={
+                                  item.average_rating != null
+                                    ? item.average_rating
+                                    : 3
+                                }
                                 stylist_name={item.first_name + item.last_name}
                                 stylist_email={
                                   item.address != 'null' &&

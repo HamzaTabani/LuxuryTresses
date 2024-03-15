@@ -78,7 +78,7 @@ export const stylistProfileById = createAsyncThunk(
   async (stylist_id, {getState}) => {
     const stateData = getState().userData;
     const token = stateData.token;
-    // console.log('stylist_id===>',stylist_id)
+    // console.log('stylist_id===>', stylist_id);
 
     return await axios
       .get(`${BASE_URL}/stylist-profile/${stylist_id}/detail`, {
@@ -150,7 +150,7 @@ export const getNearbyStylists = createAsyncThunk(
     const stateData = getState().userData;
     const token = stateData.token;
 
-    console.log('latttt', lat,long)
+    console.log('latttt', lat, long);
 
     return await axios
       .get(`${BASE_URL}/near-by-stylists?latitude=${lat}&longitude=${long}`, {
@@ -249,14 +249,14 @@ export const StylistSlice = createSlice({
     stylistReview_error: '',
     stylistReview_loading: false,
 
-    profileDetails:[],
+    profileDetails: {},
     profileDetails_error: '',
     profileDetails_loading: false,
 
     trending_stylists: [],
     trending_loader: false,
     trending_error: '',
-    nearbyStylists: [],
+    nearbyStylists: {},
     appointment_loader: false,
   },
   extraReducers: builders => {
@@ -296,28 +296,18 @@ export const StylistSlice = createSlice({
         (state.loading = false);
     });
 
-
-
-
-
     builders.addCase(stylistProfileById.pending, state => {
       state.profileDetails_loading = true;
     });
     builders.addCase(stylistProfileById.fulfilled, (state, action) => {
       (state.profileDetails_loading = false),
         (state.profileDetails = action.payload.data);
+      // console.log('action.payload.data=-=-=>', action.payload.data);
     });
     builders.addCase(stylistProfileById.rejected, state => {
       (state.profileDetails_error = 'Some problem occured'),
         (state.profileDetails_loading = false);
     });
-
-
-
-
-
-
-
 
     builders.addCase(stylistReviewById.pending, state => {
       state.stylistReview_loading = true;
@@ -348,7 +338,7 @@ export const StylistSlice = createSlice({
     });
     builders.addCase(getNearbyStylists.fulfilled, (state, action) => {
       state.nearbyStylists = action.payload.data;
-      console.log('redux state',action.payload.data)
+      console.log('redux state', action.payload.data);
     });
     builders.addCase(Appointment.pending, state => {
       state.appointment_loader = true;

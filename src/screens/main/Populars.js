@@ -165,6 +165,7 @@ const Popular = () => {
                     ? item.address
                     : 'address'
                 }
+                ratings={item.average_rating != null ? item.average_rating : 3}
               />
             ))}
             <View

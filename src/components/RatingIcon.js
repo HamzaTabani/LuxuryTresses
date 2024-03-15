@@ -39,7 +39,7 @@ const RatingIcon = ({rating, w, h, r}) => {
         borderWidth: 0.3,
       }}>
       <Progress.Circle
-        progress={0.7}
+        progress={rating/5}
         color={colors.lightgreen}
         size={30}
         borderColor="transparent"
