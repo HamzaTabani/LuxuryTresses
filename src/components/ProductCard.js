@@ -64,7 +64,7 @@ const ProductCard = ({
   // console.log('username-->',username)
 
   return (
-    <View style={[styles.card_box, {height: product ? 210 : 270}]}>
+    <View style={[styles.card_box, {height: product ? 230 : 270}]}>
       {/* card box img,  */}
       <View style={styles.card_box_img}>
         <Image
@@ -72,7 +72,7 @@ const ProductCard = ({
           resizeMode="contain"
           style={styles.productImage}
           onError={({currentTarget}) => {
-            currentTarget.onerror = null; // prevents looping
+            currentTarget.onerror = null; 
             currentTarget.src = images.cart2;
           }}
         />

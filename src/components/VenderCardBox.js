@@ -80,7 +80,7 @@ const VenderCardBox = ({name, img, email, itemData, itemId,ratings}) => {
           // activeOpacity={0.9}
           // key={itemData?.id}
           onPress={() =>
-            navigation.navigate('Reviews', {name, email, img, id: itemId})
+            navigation.navigate('Reviews', {name, email, img, id: itemId,ratings})
           }
           // onPress={() => console.log('itemData.id-->', itemData.id)}
           style={styles.ratingButton}>

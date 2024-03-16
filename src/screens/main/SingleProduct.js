@@ -41,8 +41,15 @@ const SingleProduct = ({route}) => {
   } = useSelector(state => state.ecommerceReducer);
 
   const {pic_url} = useSelector(state => state.userData);
+  const {pic_baseUrl} = useSelector(state => state.ecommerceReducer);
   const product_id = route?.params?.productID;
-  // console.log('product detailssss from screens =========>', productDetails);
+  console.log('pic_url==>', images.stylist1);
+  console.log('product_id==>', product_id);
+  console.log('product detailssss from screens =========>', productDetails);
+  console.log(
+    'pic_baseUrl===>',
+    pic_baseUrl + '/' + productDetails[product_id]?.product_image,
+  );
   useEffect(() => {
     if (!productDetails[product_id]) {
       dispatch(getProductDetails(product_id));
@@ -148,18 +155,28 @@ const SingleProduct = ({route}) => {
               style={styles.wrapper}
               activeDotColor={colors.orange}
               dotStyle={{borderWidth: 1, borderColor: colors.orange}}>
-              {historyImages.map(item => (
-                <Image
-                  source={item.image}
-                  borderRadius={20}
-                  // resizeMode="contain"
-                  style={{
-                    width: hp('37%'),
-                    height: hp('35%'),
-                    alignSelf: 'center',
-                  }}
-                />
-              ))}
+              {/* {historyImages.map((item, ind) => ( */}
+              <Image
+                // key={ind}
+                source={{
+                  uri:
+                    pic_baseUrl +
+                    '/' +
+                    productDetails[product_id]?.product_image,
+                }}
+                borderRadius={20}
+                // resizeMode="contain"
+                style={{
+                  width: hp('37%'),
+                  height: hp('35%'),
+                  alignSelf: 'center',
+                }}
+                onError={({currentTarget}) => {
+                  currentTarget.onerror = null;
+                  currentTarget.src = images.cart2;
+                }}
+              />
+              {/* ))} */}
             </Swiper>
           </View>
           {/* product detail */}
@@ -180,6 +197,7 @@ const SingleProduct = ({route}) => {
                         pic_url + productDetails[product_id]?.user?.profile_pic,
                     }
               }
+              rating={3}
             />
             {/* product description */}
             <View>

@@ -14,7 +14,7 @@ import images from '../assets/images';
 import * as Progress from 'react-native-progress';
 import {imageUrl, stylistImages} from '../dummyData';
 import OutlineButton from './OutlineButton';
-import { SvgCardPopularIcon, SvgGoldBagIcon, SvgGoldSeatIcon } from './SvgImages';
+import {SvgCardPopularIcon, SvgGoldBagIcon, SvgGoldSeatIcon} from './SvgImages';
 
 const StylistInfo = ({
   image,
@@ -25,6 +25,7 @@ const StylistInfo = ({
   name,
   address,
   distance,
+  description,
 }) => {
   const milesToKilometers = miles => {
     const kilometers = miles * 1.60934;
@@ -68,12 +69,11 @@ const StylistInfo = ({
             <View style={{flexDirection: 'row', gap: 8}}>
               <View style={styles.iconView}>
                 {/* <Image source={images.tab1} /> */}
-                <SvgGoldSeatIcon/>
-
+                <SvgGoldSeatIcon />
               </View>
               <View style={styles.iconView}>
                 {/* <Image source={images.tab2} /> */}
-                <SvgGoldBagIcon/>
+                <SvgGoldBagIcon />
               </View>
             </View>
           </View>
@@ -88,7 +88,7 @@ const StylistInfo = ({
               borderColor="transparent"
             />
             <View style={styles.imageWrapper}>
-            <SvgCardPopularIcon />
+              <SvgCardPopularIcon />
             </View>
           </View>
           <Text style={{color: colors.white, marginTop: hp('0.4%')}}>
@@ -103,10 +103,7 @@ const StylistInfo = ({
             showsVerticalScrollIndicator={false}>
             <Text style={styles.heading}>About {name}</Text>
             <Text style={{color: colors.white, marginTop: hp('2%')}}>
-              Sed ut perspiciatis unde omnis iste natus error sit{'\n'}{' '}
-              voluptatem accusantium doloremque laudantium, totam{'\n'} rem
-              aperiam, eaque ipsa quae ab illo inventore veritatis{'\n'} et
-              quasi architecto beatae vitae dicta sunt explicabo.
+              {description != null ? description : 'about'}
             </Text>
           </ScrollView>
           <ScrollView
@@ -208,12 +205,14 @@ const styles = StyleSheet.create({
   },
   textView: {
     borderWidth: 1,
-    // height: hp('44%'),
+    // height: hp('25%'),
     borderRadius: 15,
     marginTop: hp('2%'),
     borderColor: colors.white,
     padding: hp('1%'),
-    paddingBottom: hp('2%'),
+    paddingBottom: hp('3%'),
+    // marginBottom:hp('10%'),
+    // backgroundColor:'red'
   },
   heading: {
     color: colors.white,
@@ -225,9 +224,14 @@ const styles = StyleSheet.create({
     marginLeft: hp('1.2%'),
     width: hp('9%'),
     marginTop: hp('2%'),
+    marginBottom:hp('5%')
   },
   scrollWrapper: {
     width: 305,
-    zIndex: 200,
+    height:hp('17%'),
+    // zIndex: 200,
+    // backgroundColor:'green',
+    // marginTop:hp('5%')
+    // padding:0
   },
 });

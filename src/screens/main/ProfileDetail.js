@@ -64,18 +64,20 @@ const ProfileDetail = ({route}) => {
   };
 
   useEffect(() => {
-    if (
-      profileDetails.services.length < 1 &&
-      profileDetails.products.length >= 1 &&
-      !profileDetails_loading
-    ) {
-      setTabActive('product');
-    } else if (
-      profileDetails.products.length < 1 &&
-      profileDetails.services.length >= 1 &&
-      !profileDetails_loading
-    ) {
-      setTabActive('service');
+    if (profileDetails != null) {
+      if (
+        profileDetails.services.length < 1 &&
+        profileDetails.products.length >= 1 &&
+        !profileDetails_loading
+      ) {
+        setTabActive('product');
+      } else if (
+        profileDetails.products.length < 1 &&
+        profileDetails.services.length >= 1 &&
+        !profileDetails_loading
+      ) {
+        setTabActive('service');
+      }
     }
   }, [profileDetails]);
 
@@ -183,8 +185,8 @@ const ProfileDetail = ({route}) => {
                   <Text style={styles.btns_active_textA}>Services</Text>
                 </View>
               </View>
-            ) : profileDetails.services.length < 1 &&
-              profileDetails.products.length < 1 ? null : (
+            ) : profileDetails?.services?.length < 1 &&
+              profileDetails?.products?.length < 1 ? null : (
               <View style={{paddingTop: hp('4%')}}>
                 <View style={styles.btn_wrapper}>
                   <TouchableOpacity
@@ -283,7 +285,7 @@ const ProfileDetail = ({route}) => {
                   </Text>
                 </View>
                 <View style={styles.imageWrapper}>
-                  {moreStylist.slice(20, 24).map((item, i) => {
+                  {moreStylist?.slice(20, 24).map((item, i) => {
                     // console.log(item.profile_pic)
                     return (
                       <>
@@ -328,7 +330,7 @@ const ProfileDetail = ({route}) => {
                   data={profileDetails.products}
                   keyExtractor={item => item.id}
                   renderItem={({item}) => {
-                    console.log('profileDetails.products items==>', item.id);
+                    // console.log('profileDetails.products items==>', item.id);
                     return (
                       <TouchableOpacity
                         style={{marginBottom: hp('3.5%')}}

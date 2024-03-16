@@ -62,33 +62,40 @@ export const register = createAsyncThunk(
   },
 );
 
-export const login = createAsyncThunk('signin', async ({email, password}) => {
-  var data = new formData();
-  data.append('email', email);
-  data.append('password', password);
+export const login = createAsyncThunk(
+  'signin',
+  async ({email, password, uid, provider_id, first_name, last_name}) => {
+    var data = new formData();
+    data.append('email', email);
+    data.append('password', password);
+    data.append('uid', uid);
+    data.append('provider_id', provider_id);
+    data.append('first_name', first_name);
+    data.append('last_name', last_name);
 
-  return await fetch(`${BASE_URL}/login`, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'multipart/form-data',
-    },
-    body: data,
-  })
-    .then(async res => {
-      let data = await res.json();
-      console.log('login response ============>', data);
-      if (data.success) {
-        ShowToast('Login successfully');
-      } else {
-        ShowToast(data.message);
-      }
-      return data;
+    return await fetch(`${BASE_URL}/login`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'multipart/form-data',
+      },
+      body: data,
     })
-    .catch(error => {
-      console.log('login error ================>', error);
-    });
-});
+      .then(async res => {
+        let data = await res.json();
+        console.log('login response ============>', data);
+        if (data.success) {
+          ShowToast('Login successfully');
+        } else {
+          ShowToast(data.message);
+        }
+        return data;
+      })
+      .catch(error => {
+        console.log('login error ================>', error);
+      });
+  },
+);
 
 export const editProfile = createAsyncThunk(
   'updateProfile',
@@ -310,9 +317,7 @@ export const authState = createSlice({
     pic_url: '',
     user: {},
     card: [],
-    latLng: {
-      
-    },
+    latLng: {},
     payment_loading: false,
   },
   extraReducers: builder => {

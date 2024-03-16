@@ -8,7 +8,7 @@ import {useNavigation} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import {SvgCardPopularIcon} from './SvgImages';
 
-const UserDetailCard = ({username, email, image}) => {
+const UserDetailCard = ({username, email, image,rating}) => {
   const navigation = useNavigation();
 
   return (
@@ -53,12 +53,13 @@ const UserDetailCard = ({username, email, image}) => {
           borderWidth: 1,
           borderColor: '#fff',
         }}>
-        <TouchableOpacity
+        <View
           style={styles.ratingCard}
-          activeOpacity={0.9}
-          onPress={() => navigation.navigate('Reviews')}>
+          // activeOpacity={0.9}
+          // onPress={() => navigation.navigate('Reviews')}
+        >
           <Progress.Circle
-            progress={0.7}
+            progress={rating/5}
             color={colors.lightgreen}
             size={38}
             borderColor="transparent"
@@ -71,8 +72,8 @@ const UserDetailCard = ({username, email, image}) => {
             /> */}
             <SvgCardPopularIcon />
           </View>
-        </TouchableOpacity>
-        <Text style={{fontSize: hp('1.2%'), color: '#fff'}}>4.5 Rating</Text>
+        </View>
+        <Text style={{fontSize: hp('1.2%'), color: '#fff'}}>{rating} Rating</Text>
       </View>
     </View>
   );

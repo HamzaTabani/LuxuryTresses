@@ -17,8 +17,8 @@ import colors from '../../assets/colors';
 import {useNavigation} from '@react-navigation/native';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('Abc@test.com');
+  const [password, setPassword] = useState('123456789');
 
   const dispatch = useDispatch();
   const navigation = useNavigation();

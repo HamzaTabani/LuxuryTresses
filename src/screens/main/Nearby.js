@@ -27,6 +27,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getNearbyStylists} from '../../redux/slices/StylistSlice';
 import GetLocation from 'react-native-get-location';
 import {requestLocationPermission} from '../../utils';
+import Loader from '../../components/Loader';
 
 const Nearby = () => {
   const [changeTab, setChangeTab] = useState(1);
@@ -37,35 +38,38 @@ const Nearby = () => {
   const flatListRef = useRef(null);
   // console.log('selectKilometers: ', selectKilometers);
   const dispatch = useDispatch();
-  const {nearbyStylists} = useSelector(state => state.stylistReducer);
+  const {nearbyStylists, nearbyStylists_loader} = useSelector(
+    state => state.stylistReducer,
+  );
   console.log('nearbyStylists===>', nearbyStylists);
+  console.log('nearbyStylists_loader===>', nearbyStylists_loader);
 
   const regionLat = useSelector(state => state.userData.latLng);
   console.log('defLatcd: ', regionLat);
 
-  useEffect(() => {
-    setCurrentregion(regionLat);
-    // console.log('defLat: ', regionLat);
-  }, [regionLat]);
-  console.log('currentRegion:', currentRegion);
-  console.log('imageUrls: ', imageUrls);
+  // useEffect(() => {
+  //   setCurrentregion(regionLat);
+  //   // console.log('defLat: ', regionLat);
+  // }, [regionLat]);
+  // console.log('currentRegion:', currentRegion);
+  // console.log('imageUrls: ', imageUrls);
 
   let circleRadius = 1500;
 
   useEffect(() => {
-    fetchNearbyStylists();
+    getCurrentLocation();
   }, []);
 
-  const fetchNearbyStylists = async () => {
-    await dispatch(
-      getNearbyStylists({
-        lat: currentRegion.latitude,
-        // lat: 24.8800505,
-        long: currentRegion.longitude,
-        // long: 67.0796143,
-      }),
-    );
-  };
+  // const fetchNearbyStylists = async () => {
+  //   await dispatch(
+  //     getNearbyStylists({
+  //       lat: currentRegion.latitude,
+  //       // lat: 24.8800505,
+  //       long: currentRegion.longitude,
+  //       // long: 67.0796143,
+  //     }),
+  //   );
+  // };
 
   const onIconPress = index => {
     flatListRef.current.setNativeProps({scrollEnabled: true});
@@ -120,81 +124,188 @@ const Nearby = () => {
     ));
   };
 
+  const getCurrentLocation = () => {
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 60000,
+    })
+      .then(async location => {
+        const data = {
+          latitude: location.latitude,
+          longitude: location.longitude,
+          latitudeDelta: 0.06,
+          longitudeDelta: 0.008 * (15 / 20),
+        };
+        setCurrentregion(data);
+        await dispatch(
+          getNearbyStylists({
+            lat: location.latitude,
+            // lat: 24.8800505,
+            long: location.longitude,
+            // long: 67.0796143,
+          }),
+        );
+        // reigions(currentRegion);
+        // moveToLocation(location.latitude, location.longitude);
+        // console.log('location: ', location);
+      })
+      .catch(error => {
+        const {code, message} = error;
+        console.warn(code, message);
+      });
+  };
+
   return (
     <PageWrapper>
       <ProfileHeader username={true} />
-      <View style={styles.screen}>
-        <View style={styles.mapContainer}>
-          {currentRegion != null ? (
-            <MapView
-              initialRegion={currentRegion}
-              mapType="terrain"
-              style={styles.mapStyle}>
-              {renderMarkers()}
-              <Circle
-                center={currentRegion}
-                radius={circleRadius}
-                strokeWidth={0.5}
-                fillColor="rgba(239, 229, 204, 0.3)"
-                strokeColor={colors.orange}
-              />
-            </MapView>
-            // <Text>abc</Text>
-          ) : (
-            <TouchableOpacity onPress={() => requestLocationPermission()}>
-              <Text>Allow Location</Text>
-            </TouchableOpacity>
-            // <MapView
-            //   initialRegion={currentRegion}
-            //   mapType="terrain"
-            //   style={styles.mapStyle}
-            // />
-          )}
-          <View style={styles.topComponent}>
-            <View style={styles.pickerStyle}>
-              <Picker
-                selectedValue={selectKilometers}
-                dropdownIconColor={colors.orange}
-                dropdownIconRippleColor={colors.orange}
-                onValueChange={itemValue => setSelectKilometers(itemValue)}>
-                {kilometers.map(item => (
-                  <Picker.Item
-                    key={item.id}
-                    label={item.text}
-                    value={item.text}
-                    style={{color: colors.black}}
-                  />
-                ))}
-              </Picker>
-            </View>
+      {nearbyStylists_loader ? (
+        <>
+          <View
+            style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+            <Loader size={'large'} />
           </View>
-          {currentRegion != null ? (
-            <View style={styles.bottomComponent}>
-              <FlatList
-                ref={flatListRef}
-                data={nearbyStylists}
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                nestedScrollEnabled
-                pagingEnabled={true}
-                renderItem={({item, index}) => {
-                  return (
-                    <StylistInfo
-                      image={item.profile_pic}
-                      isActive={cardStates[index]}
-                      onArrowPress={() => onIconPress(index)}
-                      flatListRef={flatListRef}
-                      name={item.first_name + item.last_name}
-                      address={item.address}
-                      distance={item.distance}
+        </>
+      ) : (
+        <View style={styles.screen}>
+          <View style={styles.mapContainer}>
+            {
+              currentRegion != null ? (
+                <>
+                  <MapView
+                    initialRegion={currentRegion}
+                    mapType="terrain"
+                    style={styles.mapStyle}>
+                    {renderMarkers()}
+                    <Circle
+                      center={currentRegion}
+                      radius={circleRadius}
+                      strokeWidth={0.5}
+                      fillColor="rgba(239, 229, 204, 0.3)"
+                      strokeColor={colors.orange}
                     />
-                  );
-                }}
-              />
-            </View>
-          ) : null}
+                  </MapView>
+                  <View style={styles.topComponent}>
+                    <View style={styles.pickerStyle}>
+                      <Picker
+                        selectedValue={selectKilometers}
+                        dropdownIconColor={colors.orange}
+                        dropdownIconRippleColor={colors.orange}
+                        onValueChange={itemValue =>
+                          setSelectKilometers(itemValue)
+                        }>
+                        {kilometers.map(item => (
+                          <Picker.Item
+                            key={item.id}
+                            label={item.text}
+                            value={item.text}
+                            style={{color: colors.black}}
+                          />
+                        ))}
+                      </Picker>
+                    </View>
+                  </View>
+                  <View style={styles.bottomComponent}>
+                    <FlatList
+                      ref={flatListRef}
+                      data={nearbyStylists}
+                      horizontal={true}
+                      showsHorizontalScrollIndicator={false}
+                      nestedScrollEnabled
+                      // pagingEnabled={true}
+                      renderItem={({item, index}) => {
+                        console.log('itemitem534=-=-=->', item);
+                        return (
+                          <StylistInfo
+                            image={item.profile_pic}
+                            isActive={cardStates[index]}
+                            onArrowPress={() => onIconPress(index)}
+                            flatListRef={flatListRef}
+                            name={item.first_name + item.last_name}
+                            address={item.address}
+                            distance={item.distance}
+                            description={item.about}
+                            
+                          />
+                        );
+                      }}
+                    />
+                  </View>
+                </>
+              ) : null
+              // <Text
+              //   style={{
+              //     color: 'white',
+              //     backgroundColor: 'red',
+              //     alignSelf: 'center',
+              //   }}>
+              //   abc
+              // </Text>
+              // <Text>abc</Text>
+              // <TouchableOpacity onPress={() => requestLocationPermission()}>
+              //   <Text
+              //     style={{
+              //       color: 'white',
+              //       // backgroundColor: 'red',
+              //       alignSelf: 'center',
+              //     }}>
+              //     Allow Location
+              //   </Text>
+              // </TouchableOpacity>
+              // <MapView
+              //   initialRegion={currentRegion}
+              //   mapType="terrain"
+              //   style={styles.mapStyle}
+              // />
+            }
+            {/* <View style={styles.topComponent}>
+              <View style={styles.pickerStyle}>
+                <Picker
+                  selectedValue={selectKilometers}
+                  dropdownIconColor={colors.orange}
+                  dropdownIconRippleColor={colors.orange}
+                  onValueChange={itemValue => setSelectKilometers(itemValue)}>
+                  {kilometers.map(item => (
+                    <Picker.Item
+                      key={item.id}
+                      label={item.text}
+                      value={item.text}
+                      style={{color: colors.black}}
+                    />
+                  ))}
+                </Picker>
+              </View>
+            </View> */}
+            {/* {currentRegion != null ? (
+              <View style={styles.bottomComponent}>
+                <FlatList
+                  ref={flatListRef}
+                  data={nearbyStylists}
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
+                  nestedScrollEnabled
+                  pagingEnabled={true}
+                  renderItem={({item, index}) => {
+                    console.log('itemitem=-=-=->',item)
+                    return (
+                      <StylistInfo
+                        image={item.profile_pic}
+                        isActive={cardStates[index]}
+                        onArrowPress={() => onIconPress(index)}
+                        flatListRef={flatListRef}
+                        name={item.first_name + item.last_name}
+                        address={item.address}
+                        distance={item.distance}
+                        description={item.about}
+                      />
+                    );
+                  }}
+                />
+              </View>
+            ) : null} */}
+          </View>
         </View>
-      </View>
+        // <Text style={{color:'white',backgroundColor:'red',alignSelf:'center'}}>abc</Text>
+      )}
     </PageWrapper>
   );
 };
@@ -232,8 +343,8 @@ const styles = StyleSheet.create({
     right: 0,
     zIndex: 1,
     paddingBottom: 10,
-    width: '100%', 
-    backgroundColor: 'transparent', 
+    width: '100%',
+    backgroundColor: 'transparent',
     // paddingHorizontal:50
   },
   tabView: {

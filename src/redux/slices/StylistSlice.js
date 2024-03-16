@@ -78,7 +78,7 @@ export const stylistProfileById = createAsyncThunk(
   async (stylist_id, {getState}) => {
     const stateData = getState().userData;
     const token = stateData.token;
-    // console.log('stylist_id===>', stylist_id);
+    console.log('stylist_id===>', stylist_id);
 
     return await axios
       .get(`${BASE_URL}/stylist-profile/${stylist_id}/detail`, {
@@ -88,7 +88,7 @@ export const stylistProfileById = createAsyncThunk(
         },
       })
       .then(res => {
-        // console.log('stylist profile detail =============>', res.data);
+        console.log('stylist profile detail =============>', res.data);
         return res.data;
       })
       .catch(error => {
@@ -112,7 +112,6 @@ export const stylistReviewById = createAsyncThunk(
         },
       })
       .then(res => {
-        console.log('stylist review =============>', res.data);
         return res.data;
       })
       .catch(error => {
@@ -160,7 +159,7 @@ export const getNearbyStylists = createAsyncThunk(
         },
       })
       .then(res => {
-        // console.log('nearbyStylists res ============>', res.data);
+        console.log('nearbyStylists res ============>', res.data);
         return res.data;
       })
       .catch(error => {
@@ -247,16 +246,17 @@ export const StylistSlice = createSlice({
     stylistDetail_loading: false,
     stylistReview: [],
     stylistReview_error: '',
-    stylistReview_loading: false,
+    stylistReview_loading: true,
 
-    profileDetails: {},
+    profileDetails: null,
     profileDetails_error: '',
-    profileDetails_loading: false,
+    profileDetails_loading: true,
 
     trending_stylists: [],
     trending_loader: false,
     trending_error: '',
     nearbyStylists: {},
+    nearbyStylists_loader: true,
     appointment_loader: false,
   },
   extraReducers: builders => {
@@ -302,7 +302,7 @@ export const StylistSlice = createSlice({
     builders.addCase(stylistProfileById.fulfilled, (state, action) => {
       (state.profileDetails_loading = false),
         (state.profileDetails = action.payload.data);
-      // console.log('action.payload.data=-=-=>', action.payload.data);
+      console.log('action.payload.data=-=-=>', action.payload.data);
     });
     builders.addCase(stylistProfileById.rejected, state => {
       (state.profileDetails_error = 'Some problem occured'),
@@ -336,7 +336,11 @@ export const StylistSlice = createSlice({
       (state.trending_loader = false),
         (state.trending_error = 'Some problem occured');
     });
+    builders.addCase(getNearbyStylists.pending, state => {
+      state.nearbyStylists_loader = true;
+    });
     builders.addCase(getNearbyStylists.fulfilled, (state, action) => {
+      state.nearbyStylists_loader = false;
       state.nearbyStylists = action.payload.data;
       console.log('redux state', action.payload.data);
     });
