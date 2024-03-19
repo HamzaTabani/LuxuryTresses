@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   StyleSheet,
@@ -32,25 +32,30 @@ import {
   SvgBottomLineIcon,
   SvgarrowUpLeftIcon,
 } from '../../components/SvgImages';
+import GetLocation from 'react-native-get-location';
+import {postLatLng} from '../../redux/slices/AuthSlice';
 
 const Home = ({navigation}) => {
-  const {user, pic_url} = useSelector(state => state.userData);
+  const {user, pic_url, latLng} = useSelector(state => state.userData);
   const {recentProducts, recent_error, pic_baseUrl} = useSelector(
     state => state.ecommerceReducer,
   );
   const {topStylists, loading, topStylist_error} = useSelector(
     state => state.stylistReducer,
   );
+  // const [currentRegion, setCurrentregion] = useState(null);
+
+  const dispatch = useDispatch();
+  // console.log('currentRegion=-=->', latLng);
 
   // console.log('topStylists====>>', topStylists);
   // console.log('recentProducts from screen====>>', recentProducts);
-
-  const dispatch = useDispatch();
 
   useEffect(() => {
     // if (recentProducts.length < 1 || topStylists.length < 1) {
     getRecentProducts();
     getTopStylistsProfile();
+    getCurrentLocation();
     // }
   }, []);
 
@@ -73,6 +78,34 @@ const Home = ({navigation}) => {
       profile_id: item.id,
       stylists: stylistImages,
     });
+  };
+
+  const getCurrentLocation = () => {
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 60000,
+    })
+      .then(location => {
+        // setCurrentregion({
+        //   latitude: location.latitude,
+        //   longitude: location.longitude,
+        //   latitudeDelta: 0.06,
+        //   longitudeDelta: 0.008 * (15 / 20),
+        // });
+        if (location) {
+          // console.log('currentRegion=-=-=>', currentRegion);
+          dispatch(postLatLng(location));
+        }
+        // reigions(currentRegion);
+        // moveToLocation(location.latitude, location.longitude);
+        // console.log('location: ', location);
+        // console.log('currentRegion6464576=-=-==>', currentRegion);
+        // dispatch(postLatLng(currentRegion));
+      })
+      .catch(error => {
+        const {code, message} = error;
+        console.warn(code, message);
+      });
   };
 
   return (

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   StyleSheet,
@@ -37,9 +37,12 @@ const Profile = () => {
   const [tab, setTab] = useState('general');
   const [address, setAddress] = useState('');
   const navigation = useNavigation();
+  const [userId, setUserId] = useState(false);
 
   const {user, pic_url} = useSelector(state => state.userData);
-  console.log('waittt', user.address);
+  console.log('waittt', user.profile_pic);
+
+  console.log('user details=-=-->', user);
 
   const dispatch = useDispatch();
 
@@ -54,6 +57,18 @@ const Profile = () => {
       {text: 'No'},
     ]);
   };
+
+  console.log('userId=-vfvfrv=-->', userId);
+
+  useEffect(() => {
+    if (user.uid != null) {
+      setUserId(true);
+      console.log('userId=-vfvfrv=', userId);
+    } else {
+      setUserId(false);
+      console.log('userId=-', userId);
+    }
+  }, [user.uid]);
 
   return (
     <>
@@ -82,6 +97,7 @@ const Profile = () => {
               }}>
               {/*Profile Image */}
               <TouchableOpacity
+                disabled={true}
                 style={{
                   borderWidth: 1,
                   borderColor: '#D49621',
@@ -89,7 +105,8 @@ const Profile = () => {
                   padding: 5,
                   position: 'relative',
                 }}
-                onPress={() => setModalVisible(true)}>
+                // onPress={() => setModalVisible(true)}
+              >
                 <FastImage
                   source={
                     user?.profile_pic
@@ -106,7 +123,7 @@ const Profile = () => {
                     borderRadius: 30,
                   }}
                 />
-                <AntDesign
+                {/* <AntDesign
                   name="pluscircleo"
                   type="AntDesign"
                   color="#fff"
@@ -116,7 +133,7 @@ const Profile = () => {
                     bottom: 20,
                     right: 17,
                   }}
-                />
+                /> */}
               </TouchableOpacity>
 
               {/* name and status... */}
@@ -413,23 +430,25 @@ const Profile = () => {
                   </View>
                 </TouchableOpacity>
               </View>
-              <View style={{paddingTop: hp('5%')}}>
-                <PrimaryButton
-                  title={'Change password'}
-                  style={{width: '110%'}}
-                  onPress={() =>
-                    navigation.navigate('SecondaryStack', {
-                      screen: 'ChangePassword',
-                    })
-                  }
-                />
-              </View>
+              {userId ? null : (
+                <View style={{paddingTop: hp('5%')}}>
+                  <PrimaryButton
+                    title={'Change password'}
+                    style={{width: '110%'}}
+                    onPress={() =>
+                      navigation.navigate('SecondaryStack', {
+                        screen: 'ChangePassword',
+                      })
+                    }
+                  />
+                </View>
+              )}
             </View>
           </View>
         </ScrollView>
       </ImageBackground>
       {/* profile pic change modal */}
-      <ModalChangeProfilePic
+      {/* <ModalChangeProfilePic
         modalVisible={modalVisible}
         source={
           user?.profile_pic
@@ -440,7 +459,7 @@ const Profile = () => {
             : images.profile
         }
         setModalVisible={setModalVisible}
-      />
+      /> */}
     </>
   );
 };

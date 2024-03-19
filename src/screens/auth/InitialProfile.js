@@ -68,7 +68,7 @@ const InitialProfile = ({route}) => {
   const [password, setPassword] = useState('');
   const [cpassword, setCPassword] = useState('');
   const [photoURL, setPhotoURL] = useState(
-    user ? pic_url + user?.profile_pic : '',
+    user?.profile_pic ? pic_url + user?.profile_pic : '',
   );
   const [address, setAddress] = useState(user ? user?.address : '');
   const [selectedCity, setSelectedCity] = useState('Los Angeles');
@@ -302,7 +302,7 @@ const InitialProfile = ({route}) => {
                   />
                   <InputText
                     placeholder={'Phone number'}
-                    value={phonenumber}
+                    value={phonenumber != 'null' && phonenumber}
                     keyboardType={'numeric'}
                     onChangeText={text => setPhoneNumber(text)}
                     label={'Enter your phone number'}
@@ -313,7 +313,7 @@ const InitialProfile = ({route}) => {
                       <InputText
                         placeholder={'Address'}
                         // value={address}
-                        value={address != 'null' ? address : 'Add your address'}
+                        value={address != 'null' && address }
                         onChangeText={text => setAddress(text)}
                         label={'Enter your address'}
                         // icon={'person-outline'}

@@ -7,22 +7,50 @@ import LocationCard from '../../components/LocationCard';
 import colors from '../../assets/colors';
 import {initialRegion} from '../../dummyData';
 import images from '../../assets/images';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import GetLocation from 'react-native-get-location';
+import {postLatLng} from '../../redux/slices/AuthSlice';
 
 const SelectLocation = () => {
+  const dispatch = useDispatch();
   const [currentRegion, setCurrentregion] = useState(null);
   const mapRef = useRef(null);
-  const regionLat = useSelector(state => state.userData.latLng);
-  console.log('defLatcd: ', regionLat);
+  const {latLng} = useSelector(state => state.userData);
+  console.log('defLatcd: ', latLng);
 
-  useEffect(() => {
-    setCurrentregion(regionLat);
-    console.log('fgffgff: ', regionLat);
-  }, [regionLat]);
+  // useEffect(() => {
+  //   // setCurrentregion(regionLat);
+  //   // console.log('fgffgff: ', regionLat);
+  //   getCurrentLocation();
+  // }, []);
+
+  const getCurrentLocation = () => {
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 60000,
+    })
+      .then(location => {
+        dispatch(
+          postLatLng({
+            latitude: location.latitude,
+            longitude: location.longitude,
+            latitudeDelta: 0.06,
+            longitudeDelta: 0.008 * (15 / 20),
+          }),
+        );
+        // reigions(currentRegion);
+        moveToLocation(location.latitude, location.longitude);
+        // console.log('location: ', location);
+      })
+      .catch(error => {
+        const {code, message} = error;
+        console.warn(code, message);
+      });
+  };
 
   let circleRadius = 1500;
   // console.log('initialRegion: ', initialRegion);
-  console.log('currentRegion---: ', currentRegion);
+  // console.log('currentRegion---: ', currentRegion);
 
   useEffect(() => {
     mapRef.current = mapRef.current || {};
@@ -40,47 +68,56 @@ const SelectLocation = () => {
     );
   }
 
-  const dataReigions = data => {
-    setCurrentregion(data);
-  };
+  // const dataReigions = data => {
+  //   console.log('data6546=-=-', data);
+  //   setCurrentregion(data);
+  // };
+
+  // console.log('dataReigions656546=-==-',dataReigions)
 
   return (
     <>
-      {currentRegion != null && (
-        <MapView
-          ref={mapRef}
-          initialRegion={currentRegion}
-          mapType="terrain"
-          style={styles.mapStyle}>
-          <Marker
-            coordinate={{
-              latitude: currentRegion?.latitude,
-              longitude: currentRegion?.longitude,
+      {
+        latLng != null && (
+          <MapView
+            ref={mapRef}
+            initialRegion={{
+              latitude: latLng?.latitude,
+              longitude: latLng?.longitude,
+              latitudeDelta: 0.06,
+              longitudeDelta: 0.008 * (15 / 20),
             }}
-            image={images.locationMarker}
-          />
-          <Circle
-            center={currentRegion}
-            strokeWidth={0.5}
-            radius={circleRadius}
-            fillColor="rgba(239, 229, 204, 0.3)"
-            strokeColor={colors.orange}
-          />
-        </MapView>
-      )
-      //  : (
-      //   <MapView
-      //     ref={mapRef}
-      //     initialRegion={currentRegion}
-      //     mapType="terrain"
-      //     style={styles.mapStyle}></MapView>
-      // )
+            mapType="terrain"
+            style={styles.mapStyle}>
+            <Marker
+              coordinate={{
+                latitude: latLng?.latitude,
+                longitude: latLng?.longitude,
+              }}
+              image={images.locationMarker}
+            />
+            <Circle
+              center={latLng}
+              strokeWidth={0.5}
+              radius={circleRadius}
+              fillColor="rgba(239, 229, 204, 0.3)"
+              strokeColor={colors.orange}
+            />
+          </MapView>
+        )
+        //  : (
+        //   <MapView
+        //     ref={mapRef}
+        //     initialRegion={currentRegion}
+        //     mapType="terrain"
+        //     style={styles.mapStyle}></MapView>
+        // )
       }
       <MapHeader />
       <LocationCard
-        reigions={dataReigions}
         mapRef={mapRef}
         moveToLocation={(lat, long) => moveToLocation(lat, long)}
+        getCurrentLocation={getCurrentLocation}
       />
     </>
   );

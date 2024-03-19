@@ -9,19 +9,18 @@ import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete'
 import {useSelector, useDispatch} from 'react-redux';
 import {postLatLng} from '../redux/slices/AuthSlice';
 import GetLocation from 'react-native-get-location';
-import { ShowToast } from '../utils';
-import { useNavigation } from '@react-navigation/native';
+import {ShowToast} from '../utils';
+import {useNavigation} from '@react-navigation/native';
 
-const LocationCard = ({reigions, moveToLocation}) => {
+const LocationCard = ({moveToLocation, getCurrentLocation}) => {
   const [currentRegion, setCurrentregion] = useState(null);
   const [moveTo, setMoveTo] = useState('');
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-
-  useEffect(() => {
-    reigions(currentRegion);
-  }, [currentRegion]);
+  // useEffect(() => {
+  //   reigions(currentRegion);
+  // }, [currentRegion]);
 
   const onSubmit = () => {
     dispatch(postLatLng(currentRegion));
@@ -29,28 +28,28 @@ const LocationCard = ({reigions, moveToLocation}) => {
     navigation.navigate('profile');
   };
 
-  const getCurrentLocation = () => {
-    GetLocation.getCurrentPosition({
-      enableHighAccuracy: true,
-      timeout: 60000,
-    })
-      .then(location => {
-        setCurrentregion({
-          latitude: location.latitude,
-          longitude: location.longitude,
-          latitudeDelta: 0.06,
-          longitudeDelta: 0.008 * (15 / 20),
-        });
-        reigions(currentRegion);
-        moveToLocation(location.latitude, location.longitude);
-        console.log('location: ', location);
-      })
-      .catch(error => {
-        const {code, message} = error;
-        console.warn(code, message);
-      });
-  };
-  console.log('-=-=-=-=-=', currentRegion);
+  // const getCurrentLocation = () => {
+  //   GetLocation.getCurrentPosition({
+  //     enableHighAccuracy: true,
+  //     timeout: 60000,
+  //   })
+  //     .then(location => {
+  //       setCurrentregion({
+  //         latitude: location.latitude,
+  //         longitude: location.longitude,
+  //         latitudeDelta: 0.06,
+  //         longitudeDelta: 0.008 * (15 / 20),
+  //       });
+  //       reigions(currentRegion);
+  //       moveToLocation(location.latitude, location.longitude);
+  //       console.log('location: ', location);
+  //     })
+  //     .catch(error => {
+  //       const {code, message} = error;
+  //       console.warn(code, message);
+  //     });
+  // };
+  // console.log('-=-=-=-=-=', currentRegion);
 
   return (
     <View style={styles.cardStyle}>
@@ -87,7 +86,7 @@ const LocationCard = ({reigions, moveToLocation}) => {
           fetchDetails={true}
           placeholder="Address"
           onPress={(data, details = null) => {
-            console.log(details.geometry.location.lng);
+            // console.log(details.geometry.location.lng);
             moveToLocation(
               details?.geometry?.location.lat,
               details?.geometry?.location.lng,

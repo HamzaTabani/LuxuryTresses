@@ -26,7 +26,7 @@ const ProfileImgRound = ({imgSrc}) => {
         source={
           imgSrc
             ? require('../assets/images/profileimg.png')
-            : user.profile_pic
+            : user?.profile_pic
             ? {
                 uri: pic_url + user?.profile_pic,
                 priority: FastImage.priority.normal,

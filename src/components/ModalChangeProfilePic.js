@@ -21,6 +21,7 @@ import {launchImageLibrary} from 'react-native-image-picker';
 const ModalChangeProfilePic = ({modalVisible, setModalVisible, source}) => {
   const [photoURL, setPhotoURL] = useState('');
   console.log('photoURL: ', photoURL);
+  console.log('source-=-->', source);
   const onUploadPhoto = async () => {
     const options = {
       title: 'Select Image',
@@ -36,6 +37,7 @@ const ModalChangeProfilePic = ({modalVisible, setModalVisible, source}) => {
         console.log('cancelled', response.didCancel);
       } else {
         setPhotoURL(response.assets[0].uri);
+        console.log('response.assets[0].uri=-=>', response.assets[0].uri);
       }
     });
   };
@@ -70,7 +72,7 @@ const ModalChangeProfilePic = ({modalVisible, setModalVisible, source}) => {
           {/* profile pic view */}
           <View style={styles.profilePicViewer}>
             <FastImage
-              source={source}
+              source={photoURL ? {uri: photoURL} : source}
               resizeMode={FastImage.resizeMode.cover}
               style={styles.dp_img}
             />
@@ -99,6 +101,13 @@ const ModalChangeProfilePic = ({modalVisible, setModalVisible, source}) => {
               />
             </View>
           </TouchableOpacity>
+          {/* <View style={{width: '100%'}}>
+            <Image
+              source={{uri: photoURL}}
+              resizeMode="contain"
+              style={{height: '20%', width: '20%'}}
+            />
+          </View> */}
 
           {/* select from bottom images */}
           <View style={styles.select_from_images}>
@@ -193,6 +202,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 20,
+    // backgroundColor:'red'
   },
   dp_img: {
     width: '100%',

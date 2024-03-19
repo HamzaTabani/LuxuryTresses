@@ -64,14 +64,18 @@ export const register = createAsyncThunk(
 
 export const login = createAsyncThunk(
   'signin',
-  async ({email, password, uid, provider_id, first_name, last_name}) => {
+  async ({email, password, uId, providerId, firstName, lastName}) => {
     var data = new formData();
-    data.append('email', email);
-    data.append('password', password);
-    data.append('uid', uid);
-    data.append('provider_id', provider_id);
-    data.append('first_name', first_name);
-    data.append('last_name', last_name);
+    if (uId != undefined) {
+      data.append('email', email);
+      data.append('uid', uId);
+      data.append('provider_id', providerId);
+      data.append('first_name', firstName);
+      data.append('last_name', lastName);
+    } else {
+      data.append('email', email);
+      data.append('password', password);
+    }
 
     return await fetch(`${BASE_URL}/login`, {
       method: 'POST',
@@ -88,6 +92,7 @@ export const login = createAsyncThunk(
           ShowToast('Login successfully');
         } else {
           ShowToast(data.message);
+          console.log(data.message);
         }
         return data;
       })
@@ -318,6 +323,7 @@ export const authState = createSlice({
     user: {},
     card: [],
     latLng: {},
+    latLng_loading: false,
     payment_loading: false,
   },
   extraReducers: builder => {
@@ -335,7 +341,7 @@ export const authState = createSlice({
     });
     builder.addCase(login.fulfilled, (state, action) => {
       state.signin_loading = false;
-      // console.log('why yar', action.payload)
+      // console.log('why yar', action.payload);
       state.user = action.payload.user;
       (state.token = action.payload.token),
         (state.pic_url = action.payload.profile_url);
@@ -385,8 +391,11 @@ export const authState = createSlice({
     builder.addCase(createCard.fulfilled, (state, action) => {
       state.card = action.payload;
     });
+    builder.addCase(postLatLng.pending, state => {
+      state.latLng_loading = true;
+    });
     builder.addCase(postLatLng.fulfilled, (state, action) => {
-      state.latLng = action.payload;
+      (state.latLng_loading = false),(state.latLng = action.payload);
       console.log('action.payload', action.payload);
     });
   },

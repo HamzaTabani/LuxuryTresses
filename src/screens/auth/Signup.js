@@ -26,10 +26,10 @@ import {login} from '../../redux/slices/AuthSlice';
 const Signup = ({navigation}) => {
   const [email, setEmail] = useState('');
   // const [deviceToken, setDeviceToken] = useState('');
-  const [uId, setUId] = useState('');
-  const [providerId, setProviderId] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  // const [uId, setUId] = useState('');
+  // const [providerId, setProviderId] = useState('');
+  // const [firstName, setFirstName] = useState('');
+  // const [lastName, setLastName] = useState('');
   const dispatch = useDispatch();
   const onContinuePress = () => {
     if (!email) {
@@ -39,43 +39,28 @@ const Signup = ({navigation}) => {
     }
   };
 
-  console.log('email==>', email);
-  console.log('uId==>', uId);
-  console.log('providerId==>', providerId);
-  console.log('firstName==>', firstName);
-  console.log('lastName==>', lastName);
-
-  async function googleSignIn() {
+  function googleSignIn() {
     SigninWithGoogle().then(data => {
       if (!data) {
         console.log('Error no data!');
         return ShowToast('Google Login failed!');
       } else {
-        // console.log('succesfully google signIn data==>', data);
-        // setDeviceToken(data.idToken);
-        setEmail(data.user.email);
-        setFirstName(data.user.givenName);
-        setLastName(data.user.familyName);
+        const googleEmail = data.user.email;
+        const setFirstName = data.user.givenName;
+        const setLastName = data.user.familyName;
         firebase.auth().onAuthStateChanged(user => {
           if (user) {
-            // console.log(
-            //   'user object from firebase==>',
-            //   user.providerData[0].providerId,
-            // );
-            setUId(user.uid);
-            setProviderId(user.providerData[0].providerId);
+            dispatch(
+              login({
+                email: googleEmail,
+                uId: user.uid,
+                providerId: user.providerData[0].providerId,
+                firstName: setFirstName,
+                lastName: setLastName,
+              }),
+            );
           }
         });
-
-        dispatch(
-          login({
-            email: email,
-            uid: uId,
-            provider_id:providerId,
-            first_name:firstName,
-            last_name:lastName
-          }),
-        );
       }
     });
   }
