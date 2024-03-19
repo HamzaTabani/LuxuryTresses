@@ -48,10 +48,10 @@ const ProfileDetail = ({route}) => {
     useSelector(state => state.stylistReducer);
 
   const {pic_url} = useSelector(state => state.userData);
-  console.log(
-    'profile detail from screen =========>',
-    profileDetails.average_rating,
-  );
+  // console.log(
+  //   'profile detail from screen =========>',
+  //   profileDetails.average_rating,
+  // );
   // console.log('profile loader =========>', profileDetails_loading);
 
   useEffect(() => {

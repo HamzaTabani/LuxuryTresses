@@ -38,7 +38,7 @@ export const register = createAsyncThunk(
       });
     }
 
-    console.log('dataaa', data);
+    // console.log('dataaa', data);
 
     return await fetch(`${BASE_URL}/signup`, {
       method: 'POST',
@@ -50,7 +50,7 @@ export const register = createAsyncThunk(
     })
       .then(async res => {
         let user = await res.json();
-        console.log('signuppppppp response =============>', user);
+        // console.log('signuppppppp response =============>', user);
         if (user.success) {
           ShowToast('Account created successfully');
         }
@@ -87,12 +87,12 @@ export const login = createAsyncThunk(
     })
       .then(async res => {
         let data = await res.json();
-        console.log('login response ============>', data);
+        // console.log('login response ============>', data);
         if (data.success) {
           ShowToast('Login successfully');
         } else {
           ShowToast(data.message);
-          console.log(data.message);
+          // console.log(data.message);
         }
         return data;
       })
@@ -140,7 +140,7 @@ export const editProfile = createAsyncThunk(
       })
         .then(async res => {
           let updatedData = await res.json();
-          console.log('edit response ===================>', updatedData.data);
+          // console.log('edit response ===================>', updatedData.data);
           if (updatedData.data.success) {
             return true;
           }
@@ -176,7 +176,7 @@ export const changePassword = createAsyncThunk(
     })
       .then(async res => {
         let response = await res.json();
-        console.log('change password response ================>', response);
+        // console.log('change password response ================>', response);
         if (response.success) {
           ShowToast(response.message);
           return response.success;
@@ -206,7 +206,7 @@ export const generateOTP = createAsyncThunk('verifyEmail', async email => {
       },
     })
     .then(res => {
-      console.log('forgetpassword response ===========>', res.data);
+      // console.log('forgetpassword response ===========>', res.data);
       return res.data;
     })
     .catch(error => {
@@ -227,7 +227,7 @@ export const verifyCode = createAsyncThunk('verifyCode', async ({code, id}) => {
       },
     })
     .then(res => {
-      console.log('verifyCode res =========>', res.data);
+      // console.log('verifyCode res =========>', res.data);
       return res.data;
     })
     .catch(error => {
@@ -260,7 +260,7 @@ export const updateForgetPassword = createAsyncThunk(
         },
       })
       .then(res => {
-        console.log('update password response ============>', res.data);
+        // console.log('update password response ============>', res.data);
         return res.data;
       })
       .catch(error => {
@@ -292,7 +292,7 @@ export const Payment = createAsyncThunk(
         },
       })
       .then(res => {
-        console.log('payment res ================>', res.data);
+        // console.log('payment res ================>', res.data);
         return res.data;
       })
       .catch(error => {
@@ -396,7 +396,7 @@ export const authState = createSlice({
     });
     builder.addCase(postLatLng.fulfilled, (state, action) => {
       (state.latLng_loading = false),(state.latLng = action.payload);
-      console.log('action.payload', action.payload);
+      // console.log('action.payload', action.payload);
     });
   },
 });
