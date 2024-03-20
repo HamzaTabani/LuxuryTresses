@@ -46,6 +46,11 @@ const Home = ({navigation}) => {
   // const [currentRegion, setCurrentregion] = useState(null);
 
   const dispatch = useDispatch();
+  const [stylistData, setStylistData] = useState([]);
+
+  // console.log('stylistData=-=>', stylistData);
+
+  
   // console.log('currentRegion=-=->', latLng);
 
   // console.log('topStylists====>>', topStylists);
@@ -64,11 +69,11 @@ const Home = ({navigation}) => {
   };
 
   const getTopStylistsProfile = async () => {
-    await dispatch(getTopStylists());
+    await dispatch(getTopStylists(setStylistData));
   };
 
   const onStylistDetail = item => {
-    const stylistImages = topStylists.map(item => ({
+    const stylistImages = stylistData.map(item => ({
       stylist_image: item.profile_pic,
     }));
 
@@ -189,7 +194,7 @@ const Home = ({navigation}) => {
                       horizontal
                       contentContainerStyle={{paddingHorizontal: hp('5%')}}
                       showsHorizontalScrollIndicator={false}>
-                      {topStylists
+                      {stylistData
                         .map(item => {
                           return (
                             <TouchableOpacity

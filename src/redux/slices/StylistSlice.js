@@ -5,9 +5,30 @@ import {ErrorToast} from '../../utils';
 import FormData from 'form-data';
 import {Alert} from 'react-native';
 
+// export const getTopStylists = createAsyncThunk(
+//   'topStylists',
+//   async (_, {getState}) => {
+//     const stateData = getState().userData;
+//     const token = stateData.token;
+//     try {
+//       const response = await axios.get(`${BASE_URL}/top-stylist-profile`, {
+//         headers: {
+//           Accept: 'application/json',
+//           Authorization: `Bearer ${token}`,
+//         },
+//       });
+//       console.log('topStylists =============>', response.data.data);
+//       return response.data.data;
+//     } catch (error) {
+//       console.log('top stylist error', error);
+//       throw error; // Ensure the error is propagated
+//     }
+//   },
+// );
+
 export const getTopStylists = createAsyncThunk(
   'topStylists',
-  async (_, {getState}) => {
+  async (setStylistData, {getState}) => {
     const stateData = getState().userData;
     const token = stateData.token;
     return await axios
@@ -18,10 +39,12 @@ export const getTopStylists = createAsyncThunk(
         },
       })
       .then(res => {
-        // console.log('topStylists =============>', res);
+        // console.log('topStylists =============>', res.data.data);
+        setStylistData(res.data.data);
         return res.data;
       })
       .catch(error => {
+        console.log('top stylist error', error);
         ErrorToast(error);
       });
   },
@@ -75,25 +98,27 @@ export const getPopularStylists = createAsyncThunk(
 
 export const stylistProfileById = createAsyncThunk(
   'profileDetails',
-  async (stylist_id, {getState}) => {
+  async (id, {getState}) => {
     const stateData = getState().userData;
     const token = stateData.token;
-    console.log('stylist_id===>', stylist_id);
+    //  return Alert.alert('hello world');
 
-    return await axios
-      .get(`${BASE_URL}/stylist-profile/${stylist_id}/detail`, {
+    let abc = await axios
+      .get(`${BASE_URL}/stylist-profile/${id}/detail`, {
         headers: {
           Accept: 'application/json',
           Authorization: `Bearer ${token}`,
         },
       })
       .then(res => {
-        console.log('stylist profile detail =============>', res.data);
+        // console.log('stylist profile detail =============>', res.data.data);
+        // setProfiledetail(res.data.data);
         return res.data;
       })
       .catch(error => {
         ErrorToast(error);
       });
+    return abc;
   },
 );
 
@@ -300,9 +325,9 @@ export const StylistSlice = createSlice({
       state.profileDetails_loading = true;
     });
     builders.addCase(stylistProfileById.fulfilled, (state, action) => {
-      (state.profileDetails_loading = false),
-        (state.profileDetails = action.payload.data);
-      console.log('action.payload.data=-=-=>', action.payload.data);
+      state.profileDetails_loading = false;
+      // (state.profileDetails = action.payload.data);
+      // console.log('action.payload.data=-=-=>', action.payload.data);
     });
     builders.addCase(stylistProfileById.rejected, state => {
       (state.profileDetails_error = 'Some problem occured'),

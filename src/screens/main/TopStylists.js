@@ -1,5 +1,5 @@
 import {StyleSheet, View, FlatList, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import ProfileHeader from '../../components/ProfileHeader';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Container from '../../components/Container';
@@ -7,14 +7,28 @@ import Card from '../../components/Card';
 import {useSelector} from 'react-redux';
 import images from '../../assets/images';
 import {useNavigation} from '@react-navigation/native';
+import { getTopStylists } from '../../redux/slices/StylistSlice';
 
 const TopStylists = () => {
   const navigation = useNavigation();
   const {pic_url} = useSelector(state => state.userData);
   const {topStylists} = useSelector(state => state.stylistReducer);
 
+  const [stylistData, setStylistData] = useState([]);
+
+  // console.log('stylistData=-=>', stylistData);
+
+  useEffect(() => {
+    // if (recentProducts.length < 1 || topStylists.length < 1) {
+    getTopStylistsProfile();
+    // }
+  }, []);
+  const getTopStylistsProfile = async () => {
+    await dispatch(getTopStylists(setStylistData));
+  };
+
   const onStylistDetail = item => {
-    const stylistImages = topStylists.map(item => ({
+    const stylistImages = stylistData.map(item => ({
       stylist_image: item.profile_pic,
     }));
 
@@ -56,7 +70,7 @@ const TopStylists = () => {
       <ProfileHeader username={true} icon={true} text={'Top stylists'} />
       <View style={styles.wrapper}>
         <FlatList
-          data={topStylists}
+          data={stylistData}
           keyExtractor={item => item.id}
           renderItem={renderData}
           columnWrapperStyle={{justifyContent: 'space-evenly'}}

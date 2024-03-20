@@ -33,7 +33,7 @@ const PaymentMethod = ({route}) => {
   const navigation = useNavigation();
   const sheetRef = useRef();
 
-  // console.log(state);
+  console.log('state=-=>', state);
 
   const grand_total = route?.params?.total;
   const product_note = route?.params?.note;
@@ -57,6 +57,7 @@ const PaymentMethod = ({route}) => {
         name: state.card_holder,
       },
     };
+    console.log('information=-=>', information);
 
     var card = await stripe.createToken(information);
     var token = card.id;

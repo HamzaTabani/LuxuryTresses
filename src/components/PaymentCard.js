@@ -1,4 +1,11 @@
-import {Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React from 'react';
 import images from '../assets/images';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -10,47 +17,54 @@ const PaymentCard = ({
   cardholder_name,
   card_number,
   date,
-  onCardPress
+  onCardPress,
 }) => {
+  // console.log('card_number-=->', card_number.slice(0, 1));
   return (
     <TouchableOpacity activeOpacity={0.9} onPress={onCardPress}>
-    <ImageBackground
-      source={images.card_background}
-      borderRadius={20}
-      imageStyle={[
-        {
-          width: '88%',
-          height: hp('25%'),
-          borderColor: colors.orange,
-          borderWidth: 1,
-        },
-        cardStyle,
-      ]}
-      style={{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-      }}>
-      <View style={{margin: hp('2.5%')}}>
-        <Text style={styles.userCartText}>{cardholder_name}</Text>
-        <Image
-          source={images.card_scan}
-          borderRadius={10}
-          style={styles.imageStyle}
-        />
-        <View style={{marginTop: hp('3%')}}>
-          <Text style={styles.userCartText}>{card_number}</Text>
-          <Text
-            style={{
-              fontWeight: 'light',
-              color: '#efefef',
-              fontSize: hp('1.5%'),
-            }}>
-            {date}
-          </Text>
+      <ImageBackground
+        source={images.card_background}
+        borderRadius={20}
+        imageStyle={[
+          {
+            width: '88%',
+            height: hp('25%'),
+            borderColor: colors.orange,
+            borderWidth: 1,
+          },
+          cardStyle,
+        ]}
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}>
+        <View style={{margin: hp('2.5%')}}>
+          <Text style={styles.userCartText}>{cardholder_name}</Text>
+          <Image
+            source={images.card_scan}
+            borderRadius={10}
+            style={styles.imageStyle}
+          />
+          <View style={{marginTop: hp('3%')}}>
+            <Text style={styles.userCartText}>{card_number}</Text>
+            <Text
+              style={{
+                fontWeight: 'light',
+                color: '#efefef',
+                fontSize: hp('1.5%'),
+              }}>
+              {date}
+            </Text>
+          </View>
         </View>
-      </View>
-      <Image source={images.master_card} style={[styles.image, masterStyle]} />
-    </ImageBackground>
+        <Image
+          // source={images.master_card}
+          source={
+            card_number.slice(0, 1) == 4 ? images.master_card : images.visa_card
+          }
+          style={[styles.image, masterStyle]}
+        />
+      </ImageBackground>
     </TouchableOpacity>
   );
 };

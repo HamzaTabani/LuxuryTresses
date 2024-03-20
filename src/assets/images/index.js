@@ -27,6 +27,7 @@ export default {
   cash: require('../images/cash.png'),
   card_background: require('../images/cardBackground.png'),
   master_card: require('../images/mastercard.png'),
+  visa_card: require('../images/visacard.png'),
   card_scan: require('../images/scan.png'),
   shoppingIcon: require('../images/shopping.png'),
   product1: require('../images/product1.png'),

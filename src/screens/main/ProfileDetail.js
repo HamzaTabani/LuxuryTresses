@@ -41,17 +41,14 @@ const ProfileDetail = ({route}) => {
   const moreStylist = route?.params?.stylists;
   // console.log('profile_id', id);
   // console.log('moreStylist', moreStylist);
-
+  const [profiledetail, setProfiledetail] = useState(null);
   const dispatch = useDispatch();
 
   const {profileDetails, profileDetails_loading, profileDetails_error} =
     useSelector(state => state.stylistReducer);
 
   const {pic_url} = useSelector(state => state.userData);
-  // console.log(
-  //   'profile detail from screen =========>',
-  //   profileDetails.average_rating,
-  // );
+  // console.log('profile detail from screen =========>', profileDetails);
   // console.log('profile loader =========>', profileDetails_loading);
 
   useEffect(() => {
@@ -62,31 +59,32 @@ const ProfileDetail = ({route}) => {
 
   const fetchProfileDetailss = async () => {
     // if (profileDetails?.id !== id) {
-    await dispatch(stylistProfileById(id));
+    const res = await dispatch(stylistProfileById(id));
+    setProfiledetail(res.payload.data);
     // }
   };
 
   useEffect(() => {
-    if (profileDetails != null) {
+    if (profiledetail != null) {
       if (
-        profileDetails.services.length < 1 &&
-        profileDetails.products.length >= 1 &&
+        profiledetail?.services.length < 1 &&
+        profiledetail?.products.length >= 1 &&
         !profileDetails_loading
       ) {
         setTabActive('product');
       } else if (
-        profileDetails.products.length < 1 &&
-        profileDetails.services.length >= 1 &&
+        profiledetail?.products.length < 1 &&
+        profiledetail?.services.length >= 1 &&
         !profileDetails_loading
       ) {
         setTabActive('service');
       }
     }
-  }, [profileDetails]);
+  }, [profiledetail]);
 
   return (
     <Container>
-      {profileDetails_loading ? (
+      {profiledetail == null ? (
         <>
           <View
             style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
@@ -106,7 +104,7 @@ const ProfileDetail = ({route}) => {
           <ProfileHeader
             username={true}
             icon={true}
-            text={profileDetails?.first_name + ' ' + profileDetails?.last_name}
+            text={profiledetail?.first_name + ' ' + profiledetail?.last_name}
           />
           <ScrollView
             contentContainerStyle={styles.screen}
@@ -114,9 +112,9 @@ const ProfileDetail = ({route}) => {
             <View style={styles.wrapper}>
               <Image
                 source={
-                  profileDetails?.profile_pic == null
+                  profiledetail?.profile_pic == null
                     ? images.stylist1
-                    : {uri: pic_url + profileDetails?.profile_pic}
+                    : {uri: pic_url + profiledetail?.profile_pic}
                 }
                 style={styles.imageStyle}
                 resizeMode="cover"
@@ -124,12 +122,12 @@ const ProfileDetail = ({route}) => {
               />
               <View style={styles.textWrapper}>
                 <Text style={styles.name}>
-                  {profileDetails?.first_name + ' ' + profileDetails?.last_name}
+                  {profiledetail?.first_name + ' ' + profiledetail?.last_name}
                 </Text>
                 <Text style={styles.location}>
-                  {profileDetails?.email === 'undefined'
+                  {profiledetail?.email === 'undefined'
                     ? 'test123@gmail.com'
-                    : profileDetails?.email}
+                    : profiledetail?.email}
                   {/* <Text style={{color: colors.white, fontWeight: 'bold'}}>
                 (2km)
               </Text> */}
@@ -159,22 +157,22 @@ const ProfileDetail = ({route}) => {
               <ReviewCard
                 onPress={() =>
                   navigation.navigate('Reviews', {
-                    name: profileDetails.first_name + profileDetails.last_name,
+                    name: profiledetail?.first_name + profiledetail?.last_name,
                     email:
-                      profileDetails.address != 'null' &&
-                      profileDetails.address != null &&
-                      profileDetails.address != 'undefined'
-                        ? profileDetails.address
+                      profiledetail?.address != 'null' &&
+                      profiledetail?.address != null &&
+                      profiledetail?.address != 'undefined'
+                        ? profiledetail?.address
                         : 'address',
                     img:
-                      profileDetails.profile_pic != null
-                        ? {uri: pic_url + profileDetails.profile_pic}
+                      profiledetail?.profile_pic != null
+                        ? {uri: pic_url + profiledetail?.profile_pic}
                         : images.cart1,
-                    id: profileDetails.id,
-                    ratings: profileDetails.average_rating,
+                    id: profiledetail?.id,
+                    ratings: profiledetail?.average_rating,
                   })
                 }
-                averageRating={profileDetails.average_rating}
+                averageRating={profiledetail?.average_rating}
               />
             </View>
             {tabActive === 'product' ? (
@@ -189,8 +187,8 @@ const ProfileDetail = ({route}) => {
                   <Text style={styles.btns_active_textA}>Services</Text>
                 </View>
               </View>
-            ) : profileDetails?.services?.length < 1 &&
-              profileDetails?.products?.length < 1 ? null : (
+            ) : profiledetail?.services?.length < 1 &&
+              profiledetail?.products?.length < 1 ? null : (
               <View style={{paddingTop: hp('4%')}}>
                 <View style={styles.btn_wrapper}>
                   <TouchableOpacity
@@ -278,13 +276,11 @@ const ProfileDetail = ({route}) => {
                 <View style={styles.textContainer}>
                   <Text style={styles.heading}>
                     About{' '}
-                    {profileDetails?.first_name +
-                      ' ' +
-                      profileDetails?.last_name}
+                    {profiledetail?.first_name + ' ' + profiledetail?.last_name}
                   </Text>
                   <Text style={styles.message}>
-                    {profileDetails?.about != null
-                      ? profileDetails?.about
+                    {profiledetail?.about != null
+                      ? profiledetail?.about
                       : 'about'}
                   </Text>
                 </View>
@@ -292,7 +288,7 @@ const ProfileDetail = ({route}) => {
                   {moreStylist?.slice(20, 24).map((item, i) => {
                     // console.log(item.profile_pic)
                     return (
-                      <>
+                      <View key={i}>
                         <Image
                           key={item.id}
                           source={{uri: pic_url + item.stylist_image}}
@@ -305,7 +301,7 @@ const ProfileDetail = ({route}) => {
                             {i == 3 && 'More'}
                           </Text>
                         </View>
-                      </>
+                      </View>
                     );
                   })}
                 </View>
@@ -318,7 +314,7 @@ const ProfileDetail = ({route}) => {
                       textStyle={{color: colors.white}}
                       onPress={() =>
                         navigation.navigate('Booking', {
-                          bookingData: profileDetails,
+                          bookingData: profiledetail,
                         })
                       }
                     />
@@ -331,8 +327,8 @@ const ProfileDetail = ({route}) => {
             ) : tabActive === 'product' ? (
               <View style={{paddingTop: hp('4%')}}>
                 <FlatList
-                  data={profileDetails.products}
-                  keyExtractor={item => item.id}
+                  data={profiledetail?.products}
+                  keyExtractor={(item, ind) => ind}
                   renderItem={({item}) => {
                     // console.log('profileDetails.products items==>', item.id);
                     return (

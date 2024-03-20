@@ -30,6 +30,8 @@ const AddNewCard = () => {
 
   const {card} = useSelector(state => state.userData);
 
+  console.log('cardcard-=-==>>>', (card[0].card_number).slice(0,1));
+
   console.log('card details ==========>', state.card_id);
 
   const onOpenSheet = () => {
