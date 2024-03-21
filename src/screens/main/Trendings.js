@@ -65,7 +65,7 @@ const Trendings = () => {
 
   const {pic_url} = useSelector(state => state.userData);
 
-  // console.log('trending stylists ==========>', trending_stylists);
+  console.log('trending stylists ==========>', trending_stylists);
 
   const dispatch = useDispatch();
 
@@ -143,19 +143,16 @@ const Trendings = () => {
                 }}
                 data={trending_stylists}
                 renderItem={({item}) => {
-                  console.log('itemitem=-=->>>', item);
+                  console.log('itemitem=-=->>>', item.product);
                   return (
                     <TouchableOpacity
+                      disabled={true}
                       onPress={() => console.log('item.id: ', item)}>
                       <VenderCardBox
                         key={item.id}
                         itemId={item.id}
                         name={item.first_name + ' ' + item.last_name}
-                        img={
-                          item?.profile_pic == null
-                            ? images.cart2
-                            : {uri: pic_url + item.profile_pic}
-                        }
+                        img={item.profile_pic}
                         email={
                           item.address != 'null' &&
                           item.address != null &&
@@ -166,6 +163,8 @@ const Trendings = () => {
                         ratings={
                           item.average_rating != null ? item.average_rating : 3
                         }
+                        serviceIcon={item.service}
+                        productIcon={item.product}
                       />
                     </TouchableOpacity>
                   );

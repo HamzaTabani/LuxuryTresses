@@ -1,13 +1,13 @@
 import {StyleSheet, View, FlatList, TouchableOpacity} from 'react-native';
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import ProfileHeader from '../../components/ProfileHeader';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Container from '../../components/Container';
 import Card from '../../components/Card';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import images from '../../assets/images';
 import {useNavigation} from '@react-navigation/native';
-import { getTopStylists } from '../../redux/slices/StylistSlice';
+import {getTopStylists} from '../../redux/slices/StylistSlice';
 
 const TopStylists = () => {
   const navigation = useNavigation();
@@ -15,8 +15,9 @@ const TopStylists = () => {
   const {topStylists} = useSelector(state => state.stylistReducer);
 
   const [stylistData, setStylistData] = useState([]);
+  const dispatch = useDispatch();
 
-  // console.log('stylistData=-=>', stylistData);
+  // console.log('stylistData35435=-=>', stylistData);
 
   useEffect(() => {
     // if (recentProducts.length < 1 || topStylists.length < 1) {
@@ -41,7 +42,7 @@ const TopStylists = () => {
   const renderData = ({item}) => {
     return (
       <TouchableOpacity
-        style={{marginBottom: 20}}
+        style={{marginBottom: 30}}
         activeOpacity={0.9}
         key={item?.id}
         onPress={() => onStylistDetail(item)}>
@@ -56,11 +57,9 @@ const TopStylists = () => {
               ? item.address
               : 'address'
           }
-          image={
-            item.profile_pic == null
-              ? images.cart1
-              : {uri: pic_url + item.profile_pic}
-          }
+          image={item.profile_pic}
+          serviceIcon={item.service}
+          productIcon={item.product}
         />
       </TouchableOpacity>
     );

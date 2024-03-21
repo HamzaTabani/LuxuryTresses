@@ -15,7 +15,7 @@ import * as Progress from 'react-native-progress';
 import {imageUrl, stylistImages} from '../dummyData';
 import OutlineButton from './OutlineButton';
 import {SvgCardPopularIcon, SvgGoldBagIcon, SvgGoldSeatIcon} from './SvgImages';
-
+import {useNavigation} from '@react-navigation/native';
 const StylistInfo = ({
   image,
   isActive,
@@ -26,11 +26,18 @@ const StylistInfo = ({
   address,
   distance,
   description,
+  rating,
+  serviceIcon,
+  productIcon,
+  profileId,
 }) => {
   const milesToKilometers = miles => {
     const kilometers = miles * 1.60934;
     return kilometers.toFixed(2);
   };
+  const navigation = useNavigation();
+  // console.log('rating-=-=-=>', rating);
+  // console.log('serviceIcon->', serviceIcon, 'productIcon->', productIcon);
   return (
     <View
       style={[
@@ -50,14 +57,21 @@ const StylistInfo = ({
       </TouchableOpacity>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <View style={{flexDirection: 'row'}}>
-          <Image
-            resizeMode="contain"
-            source={
-              imageUrl && image ? {uri: imageUrl + image} : images.stylist1
-            }
-            style={styles.image}
-            borderRadius={10}
-          />
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('ProfileDetail', {
+                profile_id: profileId,
+              })
+            }>
+            <Image
+              resizeMode="contain"
+              source={
+                imageUrl && image ? {uri: imageUrl + image} : images.stylist1
+              }
+              style={styles.image}
+              borderRadius={10}
+            />
+          </TouchableOpacity>
           <View style={styles.textWrapper}>
             <Text style={styles.name}>{name}</Text>
             <Text style={styles.location}>
@@ -67,21 +81,23 @@ const StylistInfo = ({
               </Text>
             </Text>
             <View style={{flexDirection: 'row', gap: 8}}>
-              <View style={styles.iconView}>
-                {/* <Image source={images.tab1} /> */}
-                <SvgGoldSeatIcon />
-              </View>
-              <View style={styles.iconView}>
-                {/* <Image source={images.tab2} /> */}
-                <SvgGoldBagIcon />
-              </View>
+              {serviceIcon ? (
+                <View style={styles.iconView}>
+                  <SvgGoldSeatIcon />
+                </View>
+              ) : null}
+              {productIcon ? (
+                <View style={styles.iconView}>
+                  <SvgGoldBagIcon />
+                </View>
+              ) : null}
             </View>
           </View>
         </View>
         <View style={styles.ratingView}>
           <View style={styles.ratingStyle}>
             <Progress.Circle
-              progress={0.7}
+              progress={rating != null ? rating / 5 : 3.5 / 5}
               color={colors.lightgreen}
               size={40}
               style={{marginTop: hp('0.5%')}}
@@ -92,7 +108,7 @@ const StylistInfo = ({
             </View>
           </View>
           <Text style={{color: colors.white, marginTop: hp('0.4%')}}>
-            4.5 rating
+            {rating != null ? rating : 3.5} rating
           </Text>
         </View>
       </View>
@@ -106,7 +122,7 @@ const StylistInfo = ({
               {description != null ? description : 'about'}
             </Text>
           </ScrollView>
-          <ScrollView
+          {/* <ScrollView
             horizontal={true}
             onTouchStart={() => {
               flatListRef.current.setNativeProps({scrollEnabled: false});
@@ -124,7 +140,7 @@ const StylistInfo = ({
                 borderRadius={15}
               />
             ))}
-          </ScrollView>
+          </ScrollView> */}
           <OutlineButton
             buttonStyle={{
               borderColor: colors.white,
@@ -207,11 +223,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     // height: hp('25%'),
     borderRadius: 15,
-    marginTop: hp('2%'),
+    marginTop: hp('1%'),
     borderColor: colors.white,
     padding: hp('1%'),
     paddingBottom: hp('3%'),
-    // marginBottom:hp('10%'),
+    // marginBottom:hp('20%'),
     // backgroundColor:'red'
   },
   heading: {
@@ -224,11 +240,11 @@ const styles = StyleSheet.create({
     marginLeft: hp('1.2%'),
     width: hp('9%'),
     marginTop: hp('2%'),
-    marginBottom:hp('5%')
+    marginBottom: hp('5%'),
   },
   scrollWrapper: {
     width: 305,
-    height:hp('17%'),
+    height: hp('17%'),
     // zIndex: 200,
     // backgroundColor:'green',
     // marginTop:hp('5%')

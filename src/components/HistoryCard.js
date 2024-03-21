@@ -24,7 +24,7 @@ const HistoryCard = ({
 }) => {
   const {pic_baseUrl} = useSelector(state => state.ecommerceReducer);
   console.log('pic_baseUrl', pic_baseUrl + '/' + productImg);
-console.log(productRating)
+  console.log(productRating);
   const [imageError, setImageError] = useState(false);
 
   const handleImageError = () => {
@@ -46,7 +46,13 @@ console.log(productRating)
         ) : ( */}
         <Image
           source={
-            imageError ? images.product3 : {uri: pic_baseUrl + '/' + productImg}
+            imageError
+              ? images.imageNotFound
+              : productImg == 'null' &&
+                productImg == null &&
+                productImg == 'undefined'
+              ? images.imageNotFound
+              : {uri: pic_baseUrl + '/' + productImg}
           }
           style={styles.image}
           borderRadius={15}
@@ -71,24 +77,24 @@ console.log(productRating)
         </View>
         <View>
           {/* {productRating != 'null' ? ( */}
-            <View style={styles.ratingView}>
-              <View style={styles.ratingCard}>
-                <Progress.Circle
-                  progress={productRating !=null ? productRating/5 : 3.5/5}
-                  color={colors.lightgreen}
-                  size={26}
-                  borderColor="transparent"
-                />
-                <View style={styles.imageWrapper}>
-                  <SvgCardPopularHistoryIcon />
-                </View>
+          <View style={styles.ratingView}>
+            <View style={styles.ratingCard}>
+              <Progress.Circle
+                progress={productRating != null ? productRating / 5 : 3.5 / 5}
+                color={colors.lightgreen}
+                size={26}
+                borderColor="transparent"
+              />
+              <View style={styles.imageWrapper}>
+                <SvgCardPopularHistoryIcon />
               </View>
-              <Text style={styles.ratingText}>
-                {productRating !=null
-                  ? productRating + ' Rating'
-                  : 3.5 + ' Rating'}
-              </Text>
             </View>
+            <Text style={styles.ratingText}>
+              {productRating != null
+                ? productRating + ' Rating'
+                : 3.5 + ' Rating'}
+            </Text>
+          </View>
           {/* ) : null} */}
           <View
             style={{marginTop: hp('1%'), alignItems: 'flex-end', right: 25}}>

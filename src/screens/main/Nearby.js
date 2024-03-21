@@ -42,10 +42,16 @@ const Nearby = () => {
     state => state.stylistReducer,
   );
   console.log('nearbyStylists===>', nearbyStylists);
-  console.log('nearbyStylists_loader===>', nearbyStylists_loader);
+  // console.log('nearbyStylists_loader===>', nearbyStylists_loader);
 
   const regionLat = useSelector(state => state.userData.latLng);
-  console.log('defLatcd: ', regionLat);
+
+  const [nearByImageError, setNearByImageError] = useState(false);
+
+  const handleNearByImageError = () => {
+    setNearByImageError(true);
+  };
+  // console.log('defLatcd: ', regionLat);
 
   // useEffect(() => {
   //   setCurrentregion(regionLat);
@@ -102,26 +108,42 @@ const Nearby = () => {
 
   const renderMarkers = () => {
     if (!imageUrls || imageUrls.length === 0) return null;
-    return nearbyStylists.map((item, index) => (
-      // console.log(item)
-      <Marker
-        key={item.id}
-        coordinate={{
-          latitude: parseFloat(item.lat),
-          longitude: parseFloat(item.lng),
-        }}>
-        <Image
-          source={imageUrls[index] ? {uri: imageUrls[index]} : images.stylist1}
-          style={{
-            height: 30,
-            width: 30,
-            borderRadius: 20,
-            borderWidth: 2,
-            borderColor: 'white',
-          }}
-        />
-      </Marker>
-    ));
+    return nearbyStylists.map((item, index) => {
+      console.log('render markers item=->', item);
+      console.log('imageUrls[index]=-=>', imageUrls[index]);
+      return (
+        <Marker
+          key={item.id}
+          coordinate={{
+            latitude: parseFloat(item.lat),
+            longitude: parseFloat(item.lng),
+          }}>
+          <Image
+            source={imageUrls[index] ? {uri: imageUrls[index]} : images.profile}
+            // source={
+              // nearByImageError
+              //   ? images.profile
+              //   : item.profile_pic == 'null' &&
+              //     item.profile_pic == null &&
+              //     item.profile_pic == 'undefined'
+              //   ? // &&
+              //     // item.profile_pic
+              //     images.profile
+              //   : 
+            //     {uri: imageUrl + item.profile_pic}
+            // }
+            style={{
+              height: 30,
+              width: 30,
+              borderRadius: 20,
+              borderWidth: 2,
+              borderColor: 'white',
+            }}
+            onError={handleNearByImageError}
+          />
+        </Marker>
+      );
+    });
   };
 
   const getCurrentLocation = () => {
@@ -213,7 +235,7 @@ const Nearby = () => {
                       nestedScrollEnabled
                       // pagingEnabled={true}
                       renderItem={({item, index}) => {
-                        console.log('itemitem534=-=-=->', item);
+                        console.log('itemitem534=-=-=->', item.id);
                         return (
                           <StylistInfo
                             image={item.profile_pic}
@@ -224,7 +246,10 @@ const Nearby = () => {
                             address={item.address}
                             distance={item.distance}
                             description={item.about}
-                            
+                            rating={item.average_rating}
+                            serviceIcon={item.service}
+                            productIcon={item.product}
+                            profileId={item.id}
                           />
                         );
                       }}

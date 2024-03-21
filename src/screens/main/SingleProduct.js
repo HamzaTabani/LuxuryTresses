@@ -123,6 +123,12 @@ const SingleProduct = ({route}) => {
     // console.log('cart details =======>', confirmedDetails);
   };
 
+  const [imageError, setImageError] = useState(false);
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
   if (detail_loading || detail_error) {
     return (
       <View
@@ -158,12 +164,20 @@ const SingleProduct = ({route}) => {
               {/* {historyImages.map((item, ind) => ( */}
               <Image
                 // key={ind}
-                source={{
-                  uri:
-                    pic_baseUrl +
-                    '/' +
-                    productDetails[product_id]?.product_image,
-                }}
+                source={
+                  imageError
+                    ? images.imageNotFound
+                    : productDetails[product_id]?.product_image == 'null' &&
+                      productDetails[product_id]?.product_image == null &&
+                      productDetails[product_id]?.product_image == 'undefined'
+                    ? images.imageNotFound
+                    : {
+                        uri:
+                          pic_baseUrl +
+                          '/' +
+                          productDetails[product_id]?.product_image,
+                      }
+                }
                 borderRadius={20}
                 // resizeMode="contain"
                 style={{
@@ -171,10 +185,7 @@ const SingleProduct = ({route}) => {
                   height: hp('35%'),
                   alignSelf: 'center',
                 }}
-                onError={({currentTarget}) => {
-                  currentTarget.onerror = null;
-                  currentTarget.src = images.cart2;
-                }}
+                onError={handleImageError}
               />
               {/* ))} */}
             </Swiper>

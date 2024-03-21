@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {Text, StyleSheet, View, Image, Pressable} from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -11,10 +11,22 @@ import {useNavigation} from '@react-navigation/native';
 import {SvgGoldBagIcon, SvgGoldSeatIcon} from './SvgImages';
 import {useDispatch, useSelector} from 'react-redux';
 import {getRecentStylists} from '../redux/slices/StylistSlice';
+import images from '../assets/images';
 
-const VenderCardBox = ({name, img, email, itemData, itemId,ratings}) => {
+const VenderCardBox = ({
+  name,
+  img,
+  email,
+  itemData,
+  itemId,
+  ratings,
+  productIcon,
+  serviceIcon,
+}) => {
   const navigation = useNavigation();
-  // console.log('itemData vendor card box-->', itemId);
+  // console.log('serviceIcon-==', serviceIcon);
+  // console.log('productIcon-==', productIcon);
+  // console.log('itemData vendor card box-->', itemData);
   // const {recentStylists} = useSelector(state => state.stylistReducer);
   // const {user, pic_url} = useSelector(state => state.userData);
 
@@ -40,6 +52,12 @@ const VenderCardBox = ({name, img, email, itemData, itemId,ratings}) => {
   //     stylists: stylistImages,
   //   });
   // };
+  const {pic_url} = useSelector(state => state.userData);
+  const [imageError, setImageError] = useState(false);
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
 
   return (
     <View style={styles.cardBox}>
@@ -47,10 +65,17 @@ const VenderCardBox = ({name, img, email, itemData, itemId,ratings}) => {
         {/* vender image */}
         <View style={styles.cardImage}>
           <Image
-            source={img}
+            source={
+              imageError
+                ? images.profile
+                : img == 'null' && img == null && img == 'undefined'
+                ? images.profile
+                : {uri: pic_url + img}
+            }
             style={{width: '100%', height: '100%'}}
             borderRadius={10}
             resizeMode="contain"
+            onError={handleImageError}
           />
         </View>
         {/* vender details */}
@@ -62,14 +87,16 @@ const VenderCardBox = ({name, img, email, itemData, itemId,ratings}) => {
           </Text>
 
           <View style={{flexDirection: 'row', gap: 5}}>
-            <View style={styles.filter_tab_active}>
-              {/* <Image source={require('../assets/images/goldseat.png')} /> */}
-              <SvgGoldSeatIcon />
-            </View>
-            <View style={styles.filter_tab_active}>
-              {/* <Image source={require('../assets/images/goldbag.png')} /> */}
-              <SvgGoldBagIcon />
-            </View>
+            {serviceIcon ? (
+              <View style={styles.filter_tab_active}>
+                <SvgGoldSeatIcon />
+              </View>
+            ) : null}
+            {productIcon ? (
+              <View style={styles.filter_tab_active}>
+                <SvgGoldBagIcon />
+              </View>
+            ) : null}
           </View>
         </View>
       </View>
@@ -80,14 +107,20 @@ const VenderCardBox = ({name, img, email, itemData, itemId,ratings}) => {
           // activeOpacity={0.9}
           // key={itemData?.id}
           onPress={() =>
-            navigation.navigate('Reviews', {name, email, img, id: itemId,ratings})
+            navigation.navigate('Reviews', {
+              name,
+              email,
+              img,
+              id: itemId,
+              ratings,
+            })
           }
           // onPress={() => console.log('itemData.id-->', itemData.id)}
           style={styles.ratingButton}>
           <View>
             <RatingIcon rating={ratings} w={30} h={30} r={10} />
           </View>
-          <Text style={{color: '#fff', fontSize: hp('1.2%')}}>4.5 Rating</Text>
+          <Text style={{color: '#fff', fontSize: hp('1.2%')}}>{ratings} Rating</Text>
         </Pressable>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Pressable>

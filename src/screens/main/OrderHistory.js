@@ -39,6 +39,12 @@ const OrderHistory = ({route}) => {
   const [postComment, setPostComment] = useState('');
   const dispatch = useDispatch();
   const [productImages, setProductImages] = useState([]);
+
+  const [imageError, setImageError] = useState(false);
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
   // console.log('productImages: ', productImages);
   // console.log('productData data==>', productData);
   // console.log('orderData data==>', orderData);
@@ -89,15 +95,21 @@ const OrderHistory = ({route}) => {
           // autoplay
           activeDotColor={'#D49621'}
           dotStyle={{borderWidth: 1, borderColor: colors.orange}}>
-            
-          {/* {productImages.map(item => ( */}
+          {productImages.map(item => (
             <Image
-              source={{uri: pic_baseUrl + '/' + productImages}}
+              source={
+                imageError
+                  ? images.imageNotFound
+                  : item == 'null' && item == null && item == 'undefined'
+                  ? images.imageNotFound
+                  : {uri: pic_baseUrl + '/' + item}
+              }
               borderRadius={15}
               style={styles.image}
               resizeMode="cover"
+              onError={handleImageError}
             />
-          {/* ))} */}
+          ))}
         </Swiper>
         {/* vendor detail card */}
         {/* <View style={{paddingTop: hp('3%')}}>

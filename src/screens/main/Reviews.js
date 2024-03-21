@@ -67,10 +67,10 @@ const Reviews = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const route = useRoute();
-  const {name, email, img, id,ratings} = route?.params;
+  const {name, email, img, id, ratings} = route?.params;
   const [rating, setRating] = useState('');
   const [postComment, setPostComment] = useState('');
-  console.log('user data===> ',name)
+  console.log('user data===> ', name);
   // console.log('ididddd-->', id);
   const {stylistReview, stylistReview_loading, stylistReview_error} =
     useSelector(state => state.stylistReducer);
@@ -214,7 +214,12 @@ const Reviews = () => {
                 borderBottomWidth: 0.5,
                 borderColor: '#D49621',
               }}>
-              <UserDetailCard username={name} email={email} image={img} rating={ratings} />
+              <UserDetailCard
+                username={name}
+                email={email}
+                image={img}
+                rating={ratings}
+              />
             </View>
 
             {/*/////////////  filter items container ////////////// */}

@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useRef, useEffect} from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import {Text, View, Image, Animated, Easing, StyleSheet} from 'react-native';
 import Svg, {Circle} from 'react-native-svg';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -11,8 +11,17 @@ import {
 import * as Progress from 'react-native-progress';
 import images from '../assets/images';
 import colors from '../assets/colors';
+import {useSelector} from 'react-redux';
 
-const Card = ({rating, stylist_name, stylist_email, image, allTopStylist}) => {
+const Card = ({
+  rating,
+  stylist_name,
+  stylist_email,
+  image,
+  allTopStylist,
+  serviceIcon,
+  productIcon,
+}) => {
   const progress = useRef(new Animated.Value(0)).current;
   const navigation = useNavigation();
 
@@ -26,6 +35,8 @@ const Card = ({rating, stylist_name, stylist_email, image, allTopStylist}) => {
     }).start();
   }, [rating]);
 
+  const {user, pic_url, latLng} = useSelector(state => state.userData);
+
   const radius = 16;
   const circumference = 2 * Math.PI * radius;
   const animatedStrokeDashoffset = progress.interpolate({
@@ -33,27 +44,48 @@ const Card = ({rating, stylist_name, stylist_email, image, allTopStylist}) => {
     outputRange: [circumference, 0],
   });
 
+  const [stylistProfileImageError, setStylistProfileImageError] =
+    useState(false);
+
+  const handleStylistProfileImageError = () => {
+    setStylistProfileImageError(true);
+  };
+
   return (
     <View style={styles.card_box}>
       {/* card box img */}
       <View style={styles.card_box_img}>
         <Image
-          source={image}
+          // source={image}
+          source={
+            stylistProfileImageError
+              ? images.profile
+              : image == 'null' && image == null && image == 'undefined'
+              ? images.profile
+              : {uri: pic_url + image}
+          }
           resizeMode="cover"
           borderRadius={10}
           style={{width: hp('20%'), height: hp('22%')}}
+          onError={handleStylistProfileImageError}
         />
         {/* small icons */}
-        <View style={styles.card_box_img_icon1}>
-          <SvgSeatWhiteIcon />
-        </View>
-        <View style={styles.card_box_img_icon2}>
-          <SvgBagWhiteIcon />
+        <View style={styles.card_box_img_container}>
+          {serviceIcon ? (
+            <View style={styles.card_box_img_icon1}>
+              <SvgSeatWhiteIcon />
+            </View>
+          ) : null}
+          {productIcon ? (
+            <View style={styles.card_box_img_icon1}>
+              <SvgBagWhiteIcon />
+            </View>
+          ) : null}
         </View>
         {/* rating icon */}
         <View style={styles.progressView}>
           <Progress.Circle
-            progress={rating/5}
+            progress={rating / 5}
             color={colors.lightgreen}
             size={40.5}
             style={{marginTop: hp('0.5%')}}
@@ -118,6 +150,14 @@ const styles = StyleSheet.create({
     position: 'relative',
     // backgroundColor:'red'
   },
+  card_box_img_container: {
+    flexDirection: 'row',
+    gap: 5,
+    position: 'absolute',
+    top: 5,
+    left: 5,
+    // backgroundColor:'red'
+  },
   card_box_img_icon1: {
     height: 30,
     width: 30,
@@ -125,9 +165,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 50,
-    position: 'absolute',
-    top: 5,
-    left: 0,
+    // position: 'absolute',
+    // top: 5,
+    // left: 0,
     borderWidth: 0.5,
     borderColor: '#D49621',
   },
@@ -138,9 +178,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 50,
-    position: 'absolute',
-    top: 5,
-    left: 35,
+    // position: 'absolute',
+    // top: 5,
+    // left: 35,
     borderWidth: 0.5,
     borderColor: '#D49621',
   },

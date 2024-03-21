@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {Text, StyleSheet, View, Image} from 'react-native';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import StarRating from 'react-native-star-rating-widget';
 import colors from '../assets/colors';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import moment from 'moment';
+import images from '../assets/images';
 
 const ReviewDetailCard = ({
   profilePic,
@@ -14,6 +15,12 @@ const ReviewDetailCard = ({
   commentRating,
 }) => {
   const {pic_url} = useSelector(state => state.userData);
+
+  const [imageError, setImageError] = useState(false);
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
   // console.log('comment time-->',(moment(commentTime).format('DD MMM YYYY')));
   return (
     <View style={styles.cardBox}>
@@ -27,13 +34,22 @@ const ReviewDetailCard = ({
         <View style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
           <Image
             // source={require('../assets/images/marker3.png')}
-            source={{uri: pic_url + profilePic}}
+            source={
+              imageError
+                ? images.profile
+                : profilePic == 'null' &&
+                  profilePic == null &&
+                  profilePic == 'undefined'
+                ? images.profile
+                : {uri: pic_url + profilePic}
+            }
             style={styles.userImg}
+            onError={handleImageError}
           />
           <Text style={styles.userNameText}>{name}</Text>
         </View>
         <Text style={{color: 'gray', fontSize: hp('1.5%')}}>
-        {(moment(commentTime).format('DD MMM YYYY'))}
+          {moment(commentTime).format('DD MMM YYYY')}
         </Text>
       </View>
       <View>

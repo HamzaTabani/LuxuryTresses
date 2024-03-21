@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import {
   Text,
   View,
@@ -57,9 +57,18 @@ const ProductCard = ({
     inputRange: [0, 1],
     outputRange: [circumference, 0],
   });
+  const [imageError, setImageError] = useState(false);
+  const [imageErrorProduct, setImageErrorProduct] = useState(false);
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
+  const handleImageErrorProduct = () => {
+    setImageErrorProduct(true);
+  };
   // console.log('avatar==> ', avatar);
   // console.log('productImage===>', pic_baseUrl);
-  // console.log('productImage===>', productImage);
+  console.log('productImage===>', productImage);
   // console.log('avatar-->',avatar)
   // console.log('username-->',username)
 
@@ -68,13 +77,22 @@ const ProductCard = ({
       {/* card box img,  */}
       <View style={styles.card_box_img}>
         <Image
-          source={{uri: pic_baseUrl + '/' + productImage}}
+          source={
+            imageErrorProduct
+              ? images.imageNotFound
+              : productImage == 'null' &&
+                productImage == null &&
+                productImage == 'undefined'
+              ? images.imageNotFound
+              : {uri: pic_baseUrl + '/' + productImage}
+          }
           resizeMode="contain"
           style={styles.productImage}
-          onError={({currentTarget}) => {
-            currentTarget.onerror = null; 
-            currentTarget.src = images.cart2;
-          }}
+          // onError={({currentTarget}) => {
+          //   currentTarget.onerror = null;
+          //   currentTarget.src = images.cart2;
+          // }}
+          onError={handleImageErrorProduct}
         />
         {/* small icons */}
         {productFromdetail === true ? (
@@ -93,13 +111,18 @@ const ProductCard = ({
               }}>
               <Image
                 source={
-                  avatar != 'null' && avatar != null && avatar != 'undefined'
-                    ? {uri: pic_url + avatar}
-                    : {uri: pic_url + images.marker1}
+                  imageError
+                    ? images.profile
+                    : avatar == 'null' &&
+                      avatar == null &&
+                      avatar == 'undefined'
+                    ? images.profile
+                    : {uri: pic_url + avatar}
                 }
                 resizeMode="contain"
                 borderRadius={100}
                 style={{width: 20, height: 20}}
+                onError={handleImageError}
               />
             </View>
             <Text

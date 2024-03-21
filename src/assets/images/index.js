@@ -42,4 +42,5 @@ export default {
   locationMarker: require('../images/markerImage.png'),
   profile: require('../images/userProfile.jpeg'),
   initialProfileCam: require('../images/initialProfileCam.png'),
+  imageNotFound: require('../images/imageNotFound.png'),
 };

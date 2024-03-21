@@ -50,7 +50,6 @@ const Home = ({navigation}) => {
 
   // console.log('stylistData=-=>', stylistData);
 
-  
   // console.log('currentRegion=-=->', latLng);
 
   // console.log('topStylists====>>', topStylists);
@@ -196,6 +195,15 @@ const Home = ({navigation}) => {
                       showsHorizontalScrollIndicator={false}>
                       {stylistData
                         .map(item => {
+                          // console.log('stylist data item=-=->', item.product);
+                          // const [
+                          //   stylistProfileImageError,
+                          //   setStylistProfileImageError,
+                          // ] = useState(false);
+
+                          // const handleStylistProfileImageError = () => {
+                          //   setStylistProfileImageError(true);
+                          // };
                           return (
                             <TouchableOpacity
                               activeOpacity={0.9}
@@ -217,10 +225,23 @@ const Home = ({navigation}) => {
                                     : 'address'
                                 }
                                 image={
-                                  item.profile_pic == null
-                                    ? images.cart1
-                                    : {uri: pic_url + item.profile_pic}
+                                  // stylistProfileImageError
+                                  //   ? images.profile
+                                  //   : item.profile_pic == 'null' &&
+                                  //     item.profile_pic == null &&
+                                  //     item.profile_pic == 'undefined'
+                                  //   ? images.profile
+                                  //   : {uri: pic_url + item.profile_pic}
+                                  // item.profile_pic == null
+                                  //   ? images.profile
+                                  //   :
+                                  item.profile_pic
                                 }
+                                serviceIcon={item.service}
+                                productIcon={item.product}
+                                // handleStylistProfileImageError={
+                                //   handleStylistProfileImageError
+                                // }
                               />
                             </TouchableOpacity>
                           );

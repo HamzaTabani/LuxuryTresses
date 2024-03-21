@@ -35,10 +35,14 @@ import {
 
 const ProfileDetail = ({route}) => {
   const [tabActive, setTabActive] = useState('');
+  const [serviceIcon, setServiceIcon] = useState(false);
+  const [productIcon, setProductIcon] = useState(false);
   const navigation = useNavigation();
 
+  // console.log('seviceIcon->', serviceIcon, 'productIcon->', productIcon);
+
   const id = route?.params?.profile_id;
-  const moreStylist = route?.params?.stylists;
+  // const moreStylist = route?.params?.stylists;
   // console.log('profile_id', id);
   // console.log('moreStylist', moreStylist);
   const [profiledetail, setProfiledetail] = useState(null);
@@ -48,8 +52,15 @@ const ProfileDetail = ({route}) => {
     useSelector(state => state.stylistReducer);
 
   const {pic_url} = useSelector(state => state.userData);
-  // console.log('profile detail from screen =========>', profileDetails);
+  // console.log('profile detail from screen =========>', profiledetail);
   // console.log('profile loader =========>', profileDetails_loading);
+
+  const [stylistProfileImageError, setStylistProfileImageError] =
+    useState(false);
+
+  const handleStylistProfileImageError = () => {
+    setStylistProfileImageError(true);
+  };
 
   useEffect(() => {
     // if (!profileDetails) {
@@ -72,12 +83,14 @@ const ProfileDetail = ({route}) => {
         !profileDetails_loading
       ) {
         setTabActive('product');
+        setProductIcon(true);
       } else if (
         profiledetail?.products.length < 1 &&
         profiledetail?.services.length >= 1 &&
         !profileDetails_loading
       ) {
         setTabActive('service');
+        setServiceIcon(true);
       }
     }
   }, [profiledetail]);
@@ -112,13 +125,21 @@ const ProfileDetail = ({route}) => {
             <View style={styles.wrapper}>
               <Image
                 source={
-                  profiledetail?.profile_pic == null
-                    ? images.stylist1
+                  stylistProfileImageError
+                    ? images.profile
+                    : profiledetail?.profile_pic == 'null' &&
+                      profiledetail?.profile_pic == null &&
+                      profiledetail?.profile_pic == 'undefined'
+                    ? images.profile
                     : {uri: pic_url + profiledetail?.profile_pic}
+                  // profiledetail?.profile_pic == null
+                  //   ? images.stylist1
+                  //   : {uri: pic_url + profiledetail?.profile_pic}
                 }
                 style={styles.imageStyle}
                 resizeMode="cover"
                 borderRadius={20}
+                onError={handleStylistProfileImageError}
               />
               <View style={styles.textWrapper}>
                 <Text style={styles.name}>
@@ -132,13 +153,17 @@ const ProfileDetail = ({route}) => {
                 (2km)
               </Text> */}
                 </Text>
-                <View style={{flexDirection: 'row'}}>
-                  <View style={styles.iconView}>
-                    <SvgGoldSeatIcon />
-                  </View>
-                  <View style={[styles.iconView, {marginLeft: hp('1%')}]}>
-                    <SvgGoldBagIcon />
-                  </View>
+                <View style={{flexDirection: 'row', gap: 10}}>
+                  {serviceIcon ? (
+                    <View style={styles.iconView}>
+                      <SvgGoldSeatIcon />
+                    </View>
+                  ) : null}
+                  {productIcon ? (
+                    <View style={[styles.iconView]}>
+                      <SvgGoldBagIcon />
+                    </View>
+                  ) : null}
                 </View>
               </View>
               <TouchableOpacity
@@ -284,7 +309,7 @@ const ProfileDetail = ({route}) => {
                       : 'about'}
                   </Text>
                 </View>
-                <View style={styles.imageWrapper}>
+                {/* <View style={styles.imageWrapper}>
                   {moreStylist?.slice(20, 24).map((item, i) => {
                     // console.log(item.profile_pic)
                     return (
@@ -304,7 +329,7 @@ const ProfileDetail = ({route}) => {
                       </View>
                     );
                   })}
-                </View>
+                </View> */}
                 <View style={{paddingTop: hp('4%'), marginTop: hp('4%')}}>
                   <TimingCard />
                   <View style={{paddingTop: hp('5%'), flexDirection: 'row'}}>

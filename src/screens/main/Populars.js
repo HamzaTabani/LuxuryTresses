@@ -153,11 +153,7 @@ const Popular = () => {
                 key={item.id}
                 itemId={item.id}
                 name={item.first_name + ' ' + item.last_name}
-                img={
-                  item.profile_pic != null
-                    ? {uri: pic_url + item.profile_pic}
-                    : images.cart1
-                }
+                img={item.profile_pic}
                 email={
                   item.address != 'null' &&
                   item.address != null &&
@@ -166,6 +162,8 @@ const Popular = () => {
                     : 'address'
                 }
                 ratings={item.average_rating != null ? item.average_rating : 3}
+                serviceIcon={item.service}
+                productIcon={item.product}
               />
             ))}
             <View
