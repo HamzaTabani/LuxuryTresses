@@ -126,7 +126,7 @@ const Cart = () => {
               keyExtractor={item => item.id}
               data={completedOrders}
               renderItem={({item}) => {
-                // console.log('completedOrders items==>', item);
+                console.log('completedOrders items==>', item?.product);
                 return (
                   <HistoryCard
                     key={item.id}
@@ -144,6 +144,7 @@ const Cart = () => {
                     productStatus={item?.order?.status}
                     productRating={item?.product?.average_rating}
                     productDate={item?.product?.created_at}
+                    completeOrder={true}
                   />
                 );
               }}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {Text, StyleSheet, View, Image, Pressable} from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -61,7 +61,14 @@ const VenderCardBox = ({
 
   return (
     <View style={styles.cardBox}>
-      <View style={{flexDirection: 'row', alignItems: 'center', gap: 6}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          // alignItems: 'center',
+          gap: 6,
+          // backgroundColor: 'yellow',
+          width: '70%',
+        }}>
         {/* vender image */}
         <View style={styles.cardImage}>
           <Image
@@ -79,7 +86,13 @@ const VenderCardBox = ({
           />
         </View>
         {/* vender details */}
-        <View style={{height: '100%', justifyContent: 'space-evenly'}}>
+        <View
+          style={{
+            height: '100%',
+            justifyContent: 'space-evenly',
+            // backgroundColor: 'green',
+            width: '60%',
+          }}>
           <Text style={styles.venderNameText}>{name}</Text>
           <Text style={styles.venderDistanceText}>
             {email}
@@ -120,7 +133,9 @@ const VenderCardBox = ({
           <View>
             <RatingIcon rating={ratings} w={30} h={30} r={10} />
           </View>
-          <Text style={{color: '#fff', fontSize: hp('1.2%')}}>{ratings} Rating</Text>
+          <Text style={{color: '#fff', fontSize: hp('1.2%')}}>
+            {ratings} Rating
+          </Text>
         </Pressable>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Pressable>
@@ -186,6 +201,7 @@ const styles = StyleSheet.create({
   venderNameText: {
     color: '#000',
     fontSize: hp('2%'),
+    // backgroundColor: 'red',
   },
   venderDistanceText: {
     color: 'gray',

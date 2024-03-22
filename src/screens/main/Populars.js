@@ -6,6 +6,7 @@ import {
   Text,
   Image,
   Pressable,
+  FlatList,
 } from 'react-native';
 import PageWrapper from '../../components/PageWrapper';
 import ProfileHeader from '../../components/ProfileHeader';
@@ -17,7 +18,11 @@ import VenderCardBox from '../../components/VenderCardBox';
 import ProductCardBox from '../../components/ProductCardBox';
 import {getPopularStylists} from '../../redux/slices/StylistSlice';
 import {useDispatch, useSelector} from 'react-redux';
-import {SvgGoldBagIcon, SvgGoldSeatIcon} from '../../components/SvgImages';
+import {
+  SvgBottomLineSecondIcon,
+  SvgGoldBagIcon,
+  SvgGoldSeatIcon,
+} from '../../components/SvgImages';
 import images from '../../assets/images';
 
 const cartData = [
@@ -92,6 +97,8 @@ const Popular = () => {
   const {popularStylists} = useSelector(state => state.stylistReducer);
   const {user, pic_url} = useSelector(state => state.userData);
 
+  // console.log('popularStylists=-=-=>', popularStylists);
+
   const getPopularStylistsProfile = async () => {
     await dispatch(getPopularStylists());
   };
@@ -145,64 +152,100 @@ const Popular = () => {
         {/*/////////////  filter items container ////////////// */}
         {/* venders listing */}
         {filterTab === 'tab1' ? (
-          <ScrollView
+          // <ScrollView
+          //   showsVerticalScrollIndicator={false}
+          //   contentContainerStyle={{paddingBottom: 100}}>
+          //   {popularStylists?.map(item => (
+          //     <VenderCardBox
+          //       key={item.id}
+          //       itemId={item.id}
+          //       name={item.first_name + ' ' + item.last_name}
+          //       img={item.profile_pic}
+          //       email={
+          //         item.address != 'null' &&
+          //         item.address != null &&
+          //         item.address != 'undefined'
+          //           ? item.address
+          //           : 'address'
+          //       }
+          //       ratings={item.average_rating != null ? item.average_rating : 3}
+          //       serviceIcon={item.service}
+          //       productIcon={item.product}
+          //     />
+          //   ))}
+          //   <View
+          //     style={{
+          //       paddingHorizontal: wp('8%'),
+          //       marginTop: 50,
+          //       alignItems: 'center',
+          //     }}>
+          //     <Image
+          //       source={require('../../assets/images/bottom_linesA.png')}
+          //       resizeMode="contain"
+          //       style={{
+          //         width: 40,
+          //       }}
+          //     />
+          //   </View>
+          // </ScrollView>
+          <FlatList
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{paddingBottom: 100}}>
-            {popularStylists?.map(item => (
-              <VenderCardBox
-                key={item.id}
-                itemId={item.id}
-                name={item.first_name + ' ' + item.last_name}
-                img={item.profile_pic}
-                email={
-                  item.address != 'null' &&
-                  item.address != null &&
-                  item.address != 'undefined'
-                    ? item.address
-                    : 'address'
-                }
-                ratings={item.average_rating != null ? item.average_rating : 3}
-                serviceIcon={item.service}
-                productIcon={item.product}
-              />
-            ))}
-            <View
-              style={{
-                paddingHorizontal: wp('8%'),
-                marginTop: 50,
-                alignItems: 'center',
-              }}>
-              <Image
-                source={require('../../assets/images/bottom_linesA.png')}
-                resizeMode="contain"
+            contentContainerStyle={{paddingBottom: 100}}
+            data={popularStylists}
+            renderItem={({item}) => {
+              return (
+                <VenderCardBox
+                  key={item.id}
+                  itemId={item.id}
+                  name={item.first_name + ' ' + item.last_name}
+                  img={item.profile_pic}
+                  email={
+                    item.address != 'null' &&
+                    item.address != null &&
+                    item.address != 'undefined'
+                      ? item.address
+                      : 'address'
+                  }
+                  ratings={
+                    item.average_rating != null ? item.average_rating : 3
+                  }
+                  serviceIcon={item.service}
+                  productIcon={item.product}
+                />
+              );
+            }}
+            ListFooterComponent={
+              <View
                 style={{
-                  width: 40,
-                }}
-              />
-            </View>
-          </ScrollView>
+                  paddingHorizontal: wp('8%'),
+                  marginTop: 50,
+                  alignItems: 'center',
+                }}>
+                <SvgBottomLineSecondIcon />
+              </View>
+            }
+          />
         ) : (
-          <ScrollView
+          <FlatList
+            data={cartData2}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{paddingBottom: 100}}>
-            {cartData2?.map(item => (
-              <ProductCardBox key={item.id} name={item.name} img={item.img} />
-            ))}
-            <View
-              style={{
-                paddingHorizontal: wp('8%'),
-                marginTop: 50,
-                alignItems: 'center',
-              }}>
-              <Image
-                source={require('../../assets/images/bottom_linesA.png')}
-                resizeMode="contain"
+            contentContainerStyle={{paddingBottom: 100}}
+            renderItem={({item}) => {
+              // console.log('activeOrders items==>', item);
+              return (
+                <ProductCardBox key={item.id} name={item.name} img={item.img} />
+              );
+            }}
+            ListFooterComponent={
+              <View
                 style={{
-                  width: 40,
-                }}
-              />
-            </View>
-          </ScrollView>
+                  marginTop: 50,
+                  alignItems: 'center',
+                }}>
+                <SvgBottomLineSecondIcon />
+              </View>
+            }
+          />
         )}
       </View>
     </PageWrapper>

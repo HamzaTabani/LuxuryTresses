@@ -6,12 +6,12 @@ import * as Progress from 'react-native-progress';
 import images from '../assets/images';
 import {SvgCardPopularIcon, SvgCardRevPopSecIcon} from './SvgImages';
 
-const ReviewCard = ({onPress,averageRating}) => {
+const ReviewCard = ({onPress, averageRating, totalCustomerRating}) => {
   return (
     <TouchableOpacity style={styles.card} activeOpacity={0.9} onPress={onPress}>
       <View>
         <Text style={styles.reviewText}>Customer reviews</Text>
-        <Text style={styles.text}>152 customer rating</Text>
+        <Text style={styles.text}>{totalCustomerRating} customer rating</Text>
       </View>
       <View style={{flexDirection: 'row'}}>
         <View style={{marginRight: hp('2%')}}>
@@ -20,7 +20,7 @@ const ReviewCard = ({onPress,averageRating}) => {
         </View>
         <View style={styles.progressView}>
           <Progress.Circle
-            progress={averageRating/5}
+            progress={averageRating / 5}
             color={colors.lightgreen}
             size={40.5}
             style={{marginTop: hp('0.5%')}}

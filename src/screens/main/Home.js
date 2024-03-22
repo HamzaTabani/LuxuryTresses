@@ -137,25 +137,25 @@ const Home = ({navigation}) => {
               <Pressable onPress={() => navigation.navigate('trendings')}>
                 <ShortcutBox
                   title={'Trends'}
-                  img={require('../../assets/images/trend.png')}
+                  // img={require('../../assets/images/trend.png')}
                 />
               </Pressable>
               <Pressable onPress={() => navigation.navigate('Nearby')}>
                 <ShortcutBox
                   title={'Nearby'}
-                  img={require('../../assets/images/near.png')}
+                  // img={require('../../assets/images/near.png')}
                 />
               </Pressable>
               <Pressable onPress={() => navigation.navigate('recents')}>
                 <ShortcutBox
                   title={'Recents'}
-                  img={require('../../assets/images/recent.png')}
+                  // img={require('../../assets/images/recent.png')}
                 />
               </Pressable>
               <Pressable onPress={() => navigation.navigate('populars')}>
                 <ShortcutBox
                   title={'Popular'}
-                  img={require('../../assets/images/popular.png')}
+                  // img={require('../../assets/images/popular.png')}
                 />
               </Pressable>
             </View>

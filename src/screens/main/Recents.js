@@ -6,6 +6,7 @@ import {
   Text,
   Image,
   Pressable,
+  FlatList,
 } from 'react-native';
 import PageWrapper from '../../components/PageWrapper';
 import ProfileHeader from '../../components/ProfileHeader';
@@ -16,6 +17,7 @@ import {
 import VenderCardBox from '../../components/VenderCardBox';
 import ProductCardBox from '../../components/ProductCardBox';
 import {
+  SvgBottomLineSecondIcon,
   SvgFilterIcon,
   SvgGoldBagIcon,
   SvgGoldSeatIcon,
@@ -108,7 +110,7 @@ const Recents = () => {
     }
   }, []);
 
-  // console.log('recentStylists recent screen-->',recentStylists)
+  // console.log('recentStylists recent screen-->', recentStylists);
 
   return (
     <PageWrapper>
@@ -153,12 +155,14 @@ const Recents = () => {
 
         {/*/////////////  filter items container ////////////// */}
         {/* venders listing */}
+
         {filterTab === 'tab1' ? (
-          <ScrollView
+          <FlatList
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{paddingBottom: 100}}>
-            {recentStylists?.map(item => {
-              // console.log('recentStylists item-->', item);
+            contentContainerStyle={{paddingBottom: 100}}
+            data={recentStylists}
+            renderItem={({item}) => {
+              // console.log('activeOrders items==>', item);
               return (
                 <VenderCardBox
                   itemData={recentStylists}
@@ -180,49 +184,38 @@ const Recents = () => {
                   productIcon={item.product}
                 />
               );
-            })}
-            <View
-              style={{
-                paddingHorizontal: wp('8%'),
-                marginTop: 50,
-                // marginBottom: 150,
-                alignItems: 'center',
-              }}>
-              <Image
-                source={require('../../assets/images/bottom_linesA.png')}
-                resizeMode="contain"
+            }}
+            ListFooterComponent={
+              <View
                 style={{
-                  width: 40,
-                }}
-              />
-            </View>
-          </ScrollView>
+                  marginTop: 50,
+                  alignItems: 'center',
+                }}>
+                <SvgBottomLineSecondIcon />
+              </View>
+            }
+          />
         ) : (
-          <ScrollView
+          <FlatList
+            data={cartData2}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{paddingBottom: 100}}>
-            {cartData2?.map(item => {
-              // console.log(it)
+            contentContainerStyle={{paddingBottom: 100}}
+            renderItem={({item}) => {
+              // console.log('activeOrders items==>', item);
               return (
                 <ProductCardBox key={item.id} name={item.name} img={item.img} />
               );
-            })}
-            <View
-              style={{
-                paddingHorizontal: wp('8%'),
-                marginTop: 50,
-                // marginBottom: 150,
-                alignItems: 'center',
-              }}>
-              <Image
-                source={require('../../assets/images/bottom_linesA.png')}
-                resizeMode="contain"
+            }}
+            ListFooterComponent={
+              <View
                 style={{
-                  width: 40,
-                }}
-              />
-            </View>
-          </ScrollView>
+                  marginTop: 50,
+                  alignItems: 'center',
+                }}>
+                <SvgBottomLineSecondIcon />
+              </View>
+            }
+          />
         )}
       </View>
     </PageWrapper>

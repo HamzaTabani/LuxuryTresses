@@ -43,7 +43,7 @@ const ProfileDetail = ({route}) => {
 
   const id = route?.params?.profile_id;
   // const moreStylist = route?.params?.stylists;
-  // console.log('profile_id', id);
+  console.log('profile_id', id);
   // console.log('moreStylist', moreStylist);
   const [profiledetail, setProfiledetail] = useState(null);
   const dispatch = useDispatch();
@@ -52,7 +52,7 @@ const ProfileDetail = ({route}) => {
     useSelector(state => state.stylistReducer);
 
   const {pic_url} = useSelector(state => state.userData);
-  // console.log('profile detail from screen =========>', profiledetail);
+  console.log('profile detail from screen =========>', profiledetail);
   // console.log('profile loader =========>', profileDetails_loading);
 
   const [stylistProfileImageError, setStylistProfileImageError] =
@@ -198,7 +198,17 @@ const ProfileDetail = ({route}) => {
                   })
                 }
                 averageRating={profiledetail?.average_rating}
+                totalCustomerRating={profiledetail?.customer_rating}
               />
+            </View>
+            <View style={styles.textContainer}>
+              <Text style={styles.heading}>
+                About{' '}
+                {profiledetail?.first_name + ' ' + profiledetail?.last_name}
+              </Text>
+              <Text style={styles.message}>
+                {profiledetail?.about != null ? profiledetail?.about : 'about'}
+              </Text>
             </View>
             {tabActive === 'product' ? (
               <View style={[styles.btn_wrapperA, {marginTop: hp('4%')}]}>
@@ -298,17 +308,6 @@ const ProfileDetail = ({route}) => {
 
             {tabActive === 'service' ? (
               <View style={{paddingTop: hp('4%')}}>
-                <View style={styles.textContainer}>
-                  <Text style={styles.heading}>
-                    About{' '}
-                    {profiledetail?.first_name + ' ' + profiledetail?.last_name}
-                  </Text>
-                  <Text style={styles.message}>
-                    {profiledetail?.about != null
-                      ? profiledetail?.about
-                      : 'about'}
-                  </Text>
-                </View>
                 {/* <View style={styles.imageWrapper}>
                   {moreStylist?.slice(20, 24).map((item, i) => {
                     // console.log(item.profile_pic)
@@ -355,12 +354,16 @@ const ProfileDetail = ({route}) => {
                   data={profiledetail?.products}
                   keyExtractor={(item, ind) => ind}
                   renderItem={({item}) => {
-                    // console.log('profileDetails.products items==>', item.id);
+                    console.log('profileDetails.products items==>', item.id);
                     return (
                       <TouchableOpacity
                         style={{marginBottom: hp('3.5%')}}
                         activeOpacity={0.9}
-                        onPress={() => alert('working in progress')}>
+                        onPress={() =>
+                          navigation.navigate('SingleProduct', {
+                            productID: item.id,
+                          })
+                        }>
                         <ProductCard
                           avatar={images.profile2}
                           username={'username'}

@@ -26,6 +26,7 @@ import {
   // heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {useNavigation} from '@react-navigation/native';
+import OutlineButton from '../../components/OutlineButton';
 
 const OrderHistory = ({route}) => {
   const navigation = useNavigation();
@@ -77,7 +78,7 @@ const OrderHistory = ({route}) => {
     }
   };
 
-  // console.log('orderData data==>', orderData);
+  console.log('orderData data==>', productData);
   // console.log('pic_baseUrl==>', pic_baseUrl);
   return (
     <Container>
@@ -112,25 +113,26 @@ const OrderHistory = ({route}) => {
           ))}
         </Swiper>
         {/* vendor detail card */}
-        {/* <View style={{paddingTop: hp('3%')}}>
+        <View style={{paddingTop: hp('3%')}}>
           <UserDetailCard
             username={
-              productData.user.first_name + ' ' + productData.user.last_name
+              productData?.user?.first_name + ' ' + productData?.user?.last_name
             }
             email={
-              productData.user.address != 'null' &&
-              productData.user.address != null &&
-              productData.user.address != 'undefined'
-                ? productData.user.address
+              productData?.user?.address != 'null' &&
+              productData?.user?.address != null &&
+              productData?.user?.address != 'undefined'
+                ? productData?.user?.address
                 : 'address'
             }
             image={
-              productData.user.profile_pic != null
-                ? {uri: pic_url + productData.user.profile_pic}
+              productData?.user?.profile_pic != null
+                ? {uri: pic_url + productData?.user?.profile_pic}
                 : images.stylist1
             }
+            rating={productData.average_rating}
           />
-        </View> */}
+        </View>
         <View
           style={{
             paddingTop: hp('4%'),
@@ -235,6 +237,22 @@ const OrderHistory = ({route}) => {
             </TouchableOpacity>
           </View>
         </View>
+        <OutlineButton
+          onPress={() =>
+            navigation.navigate('SecondaryStack', {screen: 'Checkout'})
+          }
+          title={'Select this Item to Reorder'}
+          textStyle={{color: colors.white, textTransform: 'capitalize'}}
+          buttonStyle={{
+            marginTop: hp(2),
+            backgroundColor: '#D49621',
+            borderRadius: 10,
+            // height: hp(4),
+            // padding: 5,
+            width: hp(45),
+            alignSelf: 'center',
+          }}
+        />
       </ScrollView>
     </Container>
   );

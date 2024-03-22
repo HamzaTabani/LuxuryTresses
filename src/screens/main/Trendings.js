@@ -22,6 +22,7 @@ import images from '../../assets/images';
 import Loader from '../../components/Loader';
 import {trendingStylists} from '../../redux/slices/StylistSlice';
 import colors from '../../assets/colors';
+import {SvgBottomLineSecondIcon} from '../../components/SvgImages';
 
 const cartData2 = [
   {
@@ -65,7 +66,7 @@ const Trendings = () => {
 
   const {pic_url} = useSelector(state => state.userData);
 
-  console.log('trending stylists ==========>', trending_stylists);
+  // console.log('trending stylists ==========>', trending_stylists);
 
   const dispatch = useDispatch();
 
@@ -131,65 +132,61 @@ const Trendings = () => {
               </View>
             </>
           ) : trending_stylists.length > 0 ? (
-            <ScrollView
+            // <ScrollView
+            //   showsVerticalScrollIndicator={false}
+            //   style={{marginBottom: 50}}>
+            <FlatList
               showsVerticalScrollIndicator={false}
-              style={{marginBottom: 50}}>
-              <FlatList
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{
-                  // paddingBottom: 100,
-                  marginBottom: 60,
-                  // backgroundColor: 'green',
-                }}
-                data={trending_stylists}
-                renderItem={({item}) => {
-                  console.log('itemitem=-=->>>', item.product);
-                  return (
-                    <TouchableOpacity
-                      disabled={true}
-                      onPress={() => console.log('item.id: ', item)}>
-                      <VenderCardBox
-                        key={item.id}
-                        itemId={item.id}
-                        name={item.first_name + ' ' + item.last_name}
-                        img={item.profile_pic}
-                        email={
-                          item.address != 'null' &&
-                          item.address != null &&
-                          item.address != 'undefined'
-                            ? item.address
-                            : 'address'
-                        }
-                        ratings={
-                          item.average_rating != null ? item.average_rating : 3
-                        }
-                        serviceIcon={item.service}
-                        productIcon={item.product}
-                      />
-                    </TouchableOpacity>
-                  );
-                }}
-              />
-              <View
-                style={{
-                  paddingHorizontal: wp('8%'),
-                  // marginTop: 30,
-                  marginBottom: 50,
-                  alignItems: 'center',
-                  // position: 'absolute',
-                  // bottom: 80,
-                  // backgroundColor: 'red',
-                }}>
-                <Image
-                  source={require('../../assets/images/bottom_linesA.png')}
-                  resizeMode="contain"
+              contentContainerStyle={{
+                // paddingBottom: 100,
+                marginBottom: 60,
+                // backgroundColor: 'green',
+              }}
+              data={trending_stylists}
+              renderItem={({item}) => {
+                // console.log('itemitem=-=->>>', item.product);
+                return (
+                  <TouchableOpacity
+                    disabled={true}
+                    onPress={() => console.log('item.id: ', item)}>
+                    <VenderCardBox
+                      key={item.id}
+                      itemId={item.id}
+                      name={item.first_name + ' ' + item.last_name}
+                      img={item.profile_pic}
+                      email={
+                        item.address != 'null' &&
+                        item.address != null &&
+                        item.address != 'undefined'
+                          ? item.address
+                          : 'address'
+                      }
+                      ratings={
+                        item.average_rating != null ? item.average_rating : 3
+                      }
+                      serviceIcon={item.service}
+                      productIcon={item.product}
+                    />
+                  </TouchableOpacity>
+                );
+              }}
+              ListFooterComponent={
+                <View
                   style={{
-                    width: 40,
-                  }}
-                />
-              </View>
-            </ScrollView>
+                    // paddingHorizontal: wp('8%'),
+                    // marginTop: 30,
+                    marginBottom: 50,
+                    alignItems: 'center',
+                    // position: 'absolute',
+                    // bottom: 80,
+                    // backgroundColor: 'red',
+                  }}>
+                  <SvgBottomLineSecondIcon />
+                </View>
+              }
+            />
           ) : (
+            // </ScrollView>
             trending_error !== '' && (
               <>
                 <View
@@ -204,31 +201,26 @@ const Trendings = () => {
             )
           )
         ) : (
-          <ScrollView
+          <FlatList
+            data={cartData2}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{paddingBottom: 100}}>
-            {cartData2?.map(item => (
-              <ProductCardBox key={item.id} name={item.name} img={item.img} />
-            ))}
-            <View
-              style={{
-                paddingHorizontal: wp('8%'),
-                marginTop: 30,
-                // marginBottom: 100,
-                alignItems: 'center',
-                // position: 'absolute',
-                // bottom: 80,
-                // backgroundColor: 'red',
-              }}>
-              <Image
-                source={require('../../assets/images/bottom_linesA.png')}
-                resizeMode="contain"
+            contentContainerStyle={{paddingBottom: 100}}
+            renderItem={({item}) => {
+              // console.log('activeOrders items==>', item);
+              return (
+                <ProductCardBox key={item.id} name={item.name} img={item.img} />
+              );
+            }}
+            ListFooterComponent={
+              <View
                 style={{
-                  width: 40,
-                }}
-              />
-            </View>
-          </ScrollView>
+                  marginTop: 50,
+                  alignItems: 'center',
+                }}>
+                <SvgBottomLineSecondIcon />
+              </View>
+            }
+          />
         )}
       </View>
     </PageWrapper>
