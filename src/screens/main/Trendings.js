@@ -138,48 +138,50 @@ const Trendings = () => {
             <FlatList
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{
-                // paddingBottom: 100,
-                marginBottom: 60,
+                paddingBottom: 100,
+                // marginBottom: 100,
                 // backgroundColor: 'green',
               }}
               data={trending_stylists}
               renderItem={({item}) => {
                 // console.log('itemitem=-=->>>', item.product);
                 return (
-                  <TouchableOpacity
-                    disabled={true}
-                    onPress={() => console.log('item.id: ', item)}>
-                    <VenderCardBox
-                      key={item.id}
-                      itemId={item.id}
-                      name={item.first_name + ' ' + item.last_name}
-                      img={item.profile_pic}
-                      email={
-                        item.address != 'null' &&
-                        item.address != null &&
-                        item.address != 'undefined'
-                          ? item.address
-                          : 'address'
-                      }
-                      ratings={
-                        item.average_rating != null ? item.average_rating : 3
-                      }
-                      serviceIcon={item.service}
-                      productIcon={item.product}
-                    />
-                  </TouchableOpacity>
+                  <View>
+                    {item.service ? (
+                      <TouchableOpacity
+                        disabled={true}
+                        onPress={() => console.log('item.id: ', item)}>
+                        <VenderCardBox
+                          key={item.id}
+                          itemId={item.id}
+                          name={item.first_name + ' ' + item.last_name}
+                          img={item.profile_pic}
+                          email={
+                            item.address != 'null' &&
+                            item.address != null &&
+                            item.address != 'undefined'
+                              ? item.address
+                              : 'address'
+                          }
+                          ratings={
+                            item.average_rating != null
+                              ? item.average_rating
+                              : 3
+                          }
+                          serviceIcon={item.service}
+                          productIcon={item.product}
+                        />
+                      </TouchableOpacity>
+                    ) : null}
+                  </View>
                 );
               }}
               ListFooterComponent={
                 <View
                   style={{
-                    // paddingHorizontal: wp('8%'),
-                    // marginTop: 30,
-                    marginBottom: 50,
+                    marginTop: 50,
                     alignItems: 'center',
-                    // position: 'absolute',
-                    // bottom: 80,
-                    // backgroundColor: 'red',
+                    // backgroundColor:'red'
                   }}>
                   <SvgBottomLineSecondIcon />
                 </View>
@@ -202,13 +204,38 @@ const Trendings = () => {
           )
         ) : (
           <FlatList
-            data={cartData2}
+            data={trending_stylists}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{paddingBottom: 100}}
             renderItem={({item}) => {
-              // console.log('activeOrders items==>', item);
+              // console.log('itemitem=-=->>>', item.product);
               return (
-                <ProductCardBox key={item.id} name={item.name} img={item.img} />
+                <View>
+                  {item.product ? (
+                    <TouchableOpacity
+                      disabled={true}
+                      onPress={() => console.log('item.id: ', item)}>
+                      <VenderCardBox
+                        key={item.id}
+                        itemId={item.id}
+                        name={item.first_name + ' ' + item.last_name}
+                        img={item.profile_pic}
+                        email={
+                          item.address != 'null' &&
+                          item.address != null &&
+                          item.address != 'undefined'
+                            ? item.address
+                            : 'address'
+                        }
+                        ratings={
+                          item.average_rating != null ? item.average_rating : 3
+                        }
+                        serviceIcon={item.service}
+                        productIcon={item.product}
+                      />
+                    </TouchableOpacity>
+                  ) : null}
+                </View>
               );
             }}
             ListFooterComponent={
@@ -216,6 +243,7 @@ const Trendings = () => {
                 style={{
                   marginTop: 50,
                   alignItems: 'center',
+                  // backgroundColor:'red'
                 }}>
                 <SvgBottomLineSecondIcon />
               </View>

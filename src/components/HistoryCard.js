@@ -24,10 +24,13 @@ const HistoryCard = ({
   productStatus,
   productRating,
   completeOrder,
+  onPressReorder,
+  productId
 }) => {
   const {pic_baseUrl} = useSelector(state => state.ecommerceReducer);
-  console.log('pic_baseUrl', pic_baseUrl + '/' + productImg);
-  console.log(productRating);
+  console.log('productId=--=>',productId)
+  // console.log('pic_baseUrl', pic_baseUrl + '/' + productImg);
+  // console.log(productRating);
   const [imageError, setImageError] = useState(false);
   const navigation = useNavigation();
 
@@ -116,9 +119,10 @@ const HistoryCard = ({
         //   <Text>vfv</Text>
         // </View>
         <OutlineButton
-          onPress={() =>
-            navigation.navigate('SecondaryStack', {screen: 'Checkout'})
-          }
+          // onPress={() =>
+          //   navigation.navigate('SecondaryStack', {screen: 'Checkout'})
+          // }
+          onPress={onPressReorder}
           title={'Select this Item to Reorder'}
           textStyle={{color: colors.white, textTransform: 'capitalize'}}
           buttonStyle={{

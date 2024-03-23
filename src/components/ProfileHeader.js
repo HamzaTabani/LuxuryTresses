@@ -7,17 +7,18 @@ import ProfileImgRound from './ProfileImgRound';
 import Back from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 
-const ProfileHeader = ({username, icon, text}) => {
+const ProfileHeader = ({username, icon, text, onBackPress}) => {
   const [searchActive, setSearchActive] = useState(false);
   const navigation = useNavigation();
 
   // console.log(text?.length);
+ 
 
   return (
     <View style={styles.profile_header}>
       <View style={{flexDirection: 'row', alignItems: 'center', gap: 15}}>
         {icon ? (
-          <Pressable onPress={() => navigation.goBack()}>
+          <Pressable onPress={onBackPress}>
             <View style={styles.iconView}>
               <Back name={'arrow-back'} color={colors.orange} size={25} />
             </View>

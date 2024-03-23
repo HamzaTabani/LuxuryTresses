@@ -43,7 +43,7 @@ const StylistInfo = ({
       style={[
         styles.card,
         isActive
-          ? {height: hp('66%'), width: hp('43%')}
+          ? {height: hp('60%'), width: hp('43%')}
           : {marginRight: hp('1%'), height: hp('19.5%'), alignSelf: 'flex-end'},
         cardStyle,
       ]}>
@@ -115,12 +115,31 @@ const StylistInfo = ({
       {isActive && (
         <>
           <ScrollView
-            contentContainerStyle={styles.textView}
+            onTouchStart={() => {
+              flatListRef.current.setNativeProps({scrollEnabled: false});
+            }}
+            onTouchEnd={() => {
+              flatListRef.current.setNativeProps({scrollEnabled: true});
+            }}
+            contentContainerStyle={{paddingBottom: 10}}
             showsVerticalScrollIndicator={false}>
-            <Text style={styles.heading}>About {name}</Text>
-            <Text style={{color: colors.white, marginTop: hp('2%')}}>
-              {description != null ? description : 'about'}
-            </Text>
+            <View style={styles.textView}>
+              <Text style={styles.heading}>About {name}</Text>
+              <Text style={{color: colors.white, marginTop: hp('2%')}}>
+                {description != null ? description : 'about'}
+              </Text>
+            </View>
+            <OutlineButton
+              buttonStyle={{
+                borderColor: colors.white,
+                marginTop: hp('3%'),
+                // marginBottom: hp('1%'),
+                alignSelf: 'center',
+                width: '95%',
+              }}
+              textStyle={{color: colors.white}}
+              title={'SEE TIMES'}
+            />
           </ScrollView>
           {/* <ScrollView
             horizontal={true}
@@ -141,7 +160,7 @@ const StylistInfo = ({
               />
             ))}
           </ScrollView> */}
-          <OutlineButton
+          {/* <OutlineButton
             buttonStyle={{
               borderColor: colors.white,
               marginTop: hp('3%'),
@@ -151,7 +170,7 @@ const StylistInfo = ({
             }}
             textStyle={{color: colors.white}}
             title={'SEE TIMES'}
-          />
+          /> */}
         </>
       )}
     </View>
@@ -223,7 +242,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     // height: hp('25%'),
     borderRadius: 15,
-    marginTop: hp('1%'),
+    marginTop: hp('3%'),
     borderColor: colors.white,
     padding: hp('1%'),
     paddingBottom: hp('3%'),

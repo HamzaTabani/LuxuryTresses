@@ -48,7 +48,7 @@ const Home = ({navigation}) => {
   const dispatch = useDispatch();
   const [stylistData, setStylistData] = useState([]);
 
-  // console.log('stylistData=-=>', stylistData);
+  console.log('stylistData=-=>', stylistData);
 
   // console.log('currentRegion=-=->', latLng);
 
@@ -76,7 +76,7 @@ const Home = ({navigation}) => {
       stylist_image: item.profile_pic,
     }));
 
-    // console.log('stylistImages==-=-=-=->',stylistImages)
+    console.log('stylistImages==-=-=-=->',stylistImages)
 
     navigation.navigate('ProfileDetail', {
       profile_id: item.id,

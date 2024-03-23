@@ -25,10 +25,16 @@ import {
 import Loader from '../../components/Loader';
 import images from '../../assets/images';
 import {ShowToast} from '../../utils';
+import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 
 const SingleProduct = ({route}) => {
   const navigation = useNavigation();
   const [quantity, setQuantity] = useState(1);
+
+  console.log(
+    'routess',
+    navigation.getState().routeNames[13] === 'OrderHistory',
+  );
 
   const dispatch = useDispatch();
 
@@ -43,6 +49,7 @@ const SingleProduct = ({route}) => {
   const {pic_url} = useSelector(state => state.userData);
   const {pic_baseUrl} = useSelector(state => state.ecommerceReducer);
   const product_id = route?.params?.productID;
+  const {product, order, completedOrders, reorder} = route?.params;
   console.log('pic_url==>', images.stylist1);
   console.log('product_id==>', product_id);
   console.log('product detailssss from screens =========>', productDetails);
@@ -146,12 +153,26 @@ const SingleProduct = ({route}) => {
     );
   }
 
+  const onIconPress = () => {
+    if (navigation.getState().routeNames[12] === 'OrderHistory') {
+      navigation.navigate('OrderHistory', {
+        product: product,
+        order: order,
+        completedOrders: completedOrders,
+        reorder: reorder,
+      });
+    } else {
+      navigation.goBack();
+    }
+  };
+
   return (
     <Container>
       <>
         <ProfileHeader
           icon={true}
           username={true}
+          onBackPress={() => onIconPress()}
           text={productDetails[product_id]?.product_name}
         />
         <ScrollView style={styles.container}>
@@ -193,23 +214,31 @@ const SingleProduct = ({route}) => {
           {/* product detail */}
           <View style={{marginTop: 30}}>
             {/* product owner.. */}
-            <UserDetailCard
-              username={
-                productDetails[product_id]?.user?.first_name +
-                ' ' +
-                productDetails[product_id]?.user?.last_name
-              }
-              email={productDetails[product_id]?.user?.email}
-              image={
-                productDetails[product_id]?.user?.profile_pic == null
-                  ? images.stylist1
-                  : {
-                      uri:
-                        pic_url + productDetails[product_id]?.user?.profile_pic,
-                    }
-              }
-              rating={3}
-            />
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('ProfileDetail', {
+                  profile_id: productDetails[product_id]?.user?.id,
+                })
+              }>
+              <UserDetailCard
+                username={
+                  productDetails[product_id]?.user?.first_name +
+                  ' ' +
+                  productDetails[product_id]?.user?.last_name
+                }
+                email={productDetails[product_id]?.user?.email}
+                image={
+                  productDetails[product_id]?.user?.profile_pic == null
+                    ? images.stylist1
+                    : {
+                        uri:
+                          pic_url +
+                          productDetails[product_id]?.user?.profile_pic,
+                      }
+                }
+                rating={3}
+              />
+            </TouchableOpacity>
             {/* product description */}
             <View>
               <Text

@@ -32,8 +32,10 @@ const OrderHistory = ({route}) => {
   const navigation = useNavigation();
   const [rating, setRating] = useState('');
   const productData = route?.params?.product;
+
   const orderData = route?.params?.order;
   const completedOrdersData = route?.params?.completedOrders;
+  const reorder = route?.params?.reorder;
   const {pic_baseUrl} = useSelector(state => state.ecommerceReducer);
   const {pic_url} = useSelector(state => state.userData);
   // const [rating, setRating] = useState('');
@@ -46,8 +48,10 @@ const OrderHistory = ({route}) => {
   const handleImageError = () => {
     setImageError(true);
   };
-  // console.log('productImages: ', productImages);
-  // console.log('productData data==>', productData);
+  console.log('reorder: ', reorder);
+  console.log('productData data==>', productData);
+
+  // console.log('routess',navigation.getState().routeNames)
   // console.log('orderData data==>', orderData);
   // console.log('completedOrdersData data==>', completedOrdersData);
   useEffect(() => {
@@ -78,7 +82,7 @@ const OrderHistory = ({route}) => {
     }
   };
 
-  console.log('orderData data==>', productData);
+  // console.log('orderData data==>', productData);
   // console.log('pic_baseUrl==>', pic_baseUrl);
   return (
     <Container>
@@ -113,7 +117,14 @@ const OrderHistory = ({route}) => {
           ))}
         </Swiper>
         {/* vendor detail card */}
-        <View style={{paddingTop: hp('3%')}}>
+        <TouchableOpacity
+          // disabled={true}
+          onPress={() =>
+            navigation.navigate('ProfileDetail', {
+              profile_id: productData.user.id,
+            })
+          }
+          style={{paddingTop: hp('3%')}}>
           <UserDetailCard
             username={
               productData?.user?.first_name + ' ' + productData?.user?.last_name
@@ -132,7 +143,7 @@ const OrderHistory = ({route}) => {
             }
             rating={productData.average_rating}
           />
-        </View>
+        </TouchableOpacity>
         <View
           style={{
             paddingTop: hp('4%'),
@@ -239,10 +250,16 @@ const OrderHistory = ({route}) => {
         </View>
         <OutlineButton
           onPress={() =>
-            navigation.navigate('SecondaryStack', {screen: 'Checkout'})
+            navigation.navigate('SingleProduct', {
+              productID: productData.id,
+              product: productData,
+              order: orderData,
+              completedOrders: completedOrdersData,
+              reorder: reorder,
+            })
           }
           title={'Select this Item to Reorder'}
-          textStyle={{color: colors.white, textTransform: 'capitalize'}}
+          textStyle={{color: colors.white}}
           buttonStyle={{
             marginTop: hp(2),
             backgroundColor: '#D49621',
@@ -253,6 +270,28 @@ const OrderHistory = ({route}) => {
             alignSelf: 'center',
           }}
         />
+        {reorder ? (
+          <OutlineButton
+            title={'Add to cart'}
+            onPress={() =>
+              navigation.navigate('SingleProduct', {
+                productID: productData.id,
+                product: productData,
+                order: orderData,
+                completedOrders: completedOrdersData,
+                reorder: reorder,
+              })
+            }
+            textStyle={{color: '#fff'}}
+            buttonStyle={{
+              width: hp(45),
+              marginTop: hp(2),
+              borderRadius: 10,
+              width: hp(45),
+              alignSelf: 'center',
+            }}
+          />
+        ) : null}
       </ScrollView>
     </Container>
   );

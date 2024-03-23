@@ -11,6 +11,7 @@ const ProfileImgRound = ({imgSrc}) => {
 
   return (
     <TouchableOpacity
+      disabled={true}
       onPress={() => navigation.navigate('profile')}
       style={{
         borderWidth: 2,
@@ -21,6 +22,7 @@ const ProfileImgRound = ({imgSrc}) => {
         position: 'relative',
         top: 'center',
         left: 'center',
+        backgroundColor: 'red',
       }}>
       <FastImage
         source={

@@ -164,25 +164,29 @@ const Recents = () => {
             renderItem={({item}) => {
               // console.log('activeOrders items==>', item);
               return (
-                <VenderCardBox
-                  itemData={recentStylists}
-                  key={item.id}
-                  itemId={item.id}
-                  name={item.first_name + ' ' + item.last_name}
-                  img={item.profile_pic}
-                  email={
-                    item.address != 'null' &&
-                    item.address != null &&
-                    item.address != 'undefined'
-                      ? item.address
-                      : 'address'
-                  }
-                  ratings={
-                    item.average_rating != null ? item.average_rating : 3
-                  }
-                  serviceIcon={item.service}
-                  productIcon={item.product}
-                />
+                <View>
+                  {item.service ? (
+                    <VenderCardBox
+                      itemData={recentStylists}
+                      key={item.id}
+                      itemId={item.id}
+                      name={item.first_name + ' ' + item.last_name}
+                      img={item.profile_pic}
+                      email={
+                        item.address != 'null' &&
+                        item.address != null &&
+                        item.address != 'undefined'
+                          ? item.address
+                          : 'address'
+                      }
+                      ratings={
+                        item.average_rating != null ? item.average_rating : 3
+                      }
+                      serviceIcon={item.service}
+                      productIcon={item.product}
+                    />
+                  ) : null}
+                </View>
               );
             }}
             ListFooterComponent={
@@ -197,13 +201,41 @@ const Recents = () => {
           />
         ) : (
           <FlatList
-            data={cartData2}
+            data={recentStylists}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{paddingBottom: 100}}
+            // renderItem={({item}) => {
+            //   // console.log('activeOrders items==>', item);
+            //   return (
+            //     <ProductCardBox key={item.id} name={item.name} img={item.img} />
+            //   );
+            // }}
             renderItem={({item}) => {
               // console.log('activeOrders items==>', item);
               return (
-                <ProductCardBox key={item.id} name={item.name} img={item.img} />
+                <View>
+                  {item.product ? (
+                    <VenderCardBox
+                      itemData={recentStylists}
+                      key={item.id}
+                      itemId={item.id}
+                      name={item.first_name + ' ' + item.last_name}
+                      img={item.profile_pic}
+                      email={
+                        item.address != 'null' &&
+                        item.address != null &&
+                        item.address != 'undefined'
+                          ? item.address
+                          : 'address'
+                      }
+                      ratings={
+                        item.average_rating != null ? item.average_rating : 3
+                      }
+                      serviceIcon={item.service}
+                      productIcon={item.product}
+                    />
+                  ) : null}
+                </View>
               );
             }}
             ListFooterComponent={

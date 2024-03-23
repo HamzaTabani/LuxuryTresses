@@ -194,30 +194,34 @@ const Popular = () => {
             data={popularStylists}
             renderItem={({item}) => {
               return (
-                <VenderCardBox
-                  key={item.id}
-                  itemId={item.id}
-                  name={item.first_name + ' ' + item.last_name}
-                  img={item.profile_pic}
-                  email={
-                    item.address != 'null' &&
-                    item.address != null &&
-                    item.address != 'undefined'
-                      ? item.address
-                      : 'address'
-                  }
-                  ratings={
-                    item.average_rating != null ? item.average_rating : 3
-                  }
-                  serviceIcon={item.service}
-                  productIcon={item.product}
-                />
+                <View>
+                  {item.service ? (
+                    <VenderCardBox
+                      key={item.id}
+                      itemId={item.id}
+                      name={item.first_name + ' ' + item.last_name}
+                      img={item.profile_pic}
+                      email={
+                        item.address != 'null' &&
+                        item.address != null &&
+                        item.address != 'undefined'
+                          ? item.address
+                          : 'address'
+                      }
+                      ratings={
+                        item.average_rating != null ? item.average_rating : 3
+                      }
+                      serviceIcon={item.service}
+                      productIcon={item.product}
+                    />
+                  ) : null}
+                </View>
               );
             }}
             ListFooterComponent={
               <View
                 style={{
-                  paddingHorizontal: wp('8%'),
+                  // paddingHorizontal: wp('8%'),
                   marginTop: 50,
                   alignItems: 'center',
                 }}>
@@ -227,13 +231,39 @@ const Popular = () => {
           />
         ) : (
           <FlatList
-            data={cartData2}
+            data={popularStylists}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{paddingBottom: 100}}
+            // renderItem={({item}) => {
+            //   // console.log('activeOrders items==>', item);
+            //   return (
+            //     <ProductCardBox key={item.id} name={item.name} img={item.img} />
+            //   );
+            // }}
             renderItem={({item}) => {
-              // console.log('activeOrders items==>', item);
               return (
-                <ProductCardBox key={item.id} name={item.name} img={item.img} />
+                <View>
+                  {item.product ? (
+                    <VenderCardBox
+                      key={item.id}
+                      itemId={item.id}
+                      name={item.first_name + ' ' + item.last_name}
+                      img={item.profile_pic}
+                      email={
+                        item.address != 'null' &&
+                        item.address != null &&
+                        item.address != 'undefined'
+                          ? item.address
+                          : 'address'
+                      }
+                      ratings={
+                        item.average_rating != null ? item.average_rating : 3
+                      }
+                      serviceIcon={item.service}
+                      productIcon={item.product}
+                    />
+                  ) : null}
+                </View>
               );
             }}
             ListFooterComponent={

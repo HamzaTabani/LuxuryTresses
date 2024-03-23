@@ -126,7 +126,7 @@ const Cart = () => {
               keyExtractor={item => item.id}
               data={completedOrders}
               renderItem={({item}) => {
-                console.log('completedOrders items==>', item?.product);
+                // console.log('completedOrders items==>', item?.product);
                 return (
                   <HistoryCard
                     key={item.id}
@@ -136,6 +136,7 @@ const Cart = () => {
                         product: item?.product,
                         order: item?.order,
                         completedOrders: item,
+                        reorder: false,
                       })
                     }
                     productImg={item?.product?.product_image}
@@ -145,6 +146,15 @@ const Cart = () => {
                     productRating={item?.product?.average_rating}
                     productDate={item?.product?.created_at}
                     completeOrder={true}
+                    onPressReorder={() =>
+                      navigation.navigate('OrderHistory', {
+                        product: item?.product,
+                        order: item?.order,
+                        completedOrders: item,
+                        reorder: true,
+                      })
+                    }
+                    productId={item?.id}
                   />
                 );
               }}

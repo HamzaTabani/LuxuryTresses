@@ -46,6 +46,7 @@ const HomeStacks = () => {
       <Tab.Screen name="SingleProduct" component={SingleProduct} />
       <Tab.Screen name="Reviews" component={Reviews} />
       <Tab.Screen name="Booking" component={Booking} />
+      <Tab.Screen name="OrderHistory" component={OrderHistory} />
     </Stack.Navigator>
   );
 };

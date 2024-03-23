@@ -235,7 +235,7 @@ const Nearby = () => {
                       nestedScrollEnabled
                       // pagingEnabled={true}
                       renderItem={({item, index}) => {
-                        console.log('itemitem534=-=-=->', item.id);
+                        // console.log('itemitem534=-=-=->', item);
                         return (
                           <StylistInfo
                             image={item.profile_pic}
