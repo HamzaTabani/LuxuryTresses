@@ -6,13 +6,25 @@ import SearchTopButton from './SearchTopButton';
 import ProfileImgRound from './ProfileImgRound';
 import Back from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const ProfileHeader = ({username, icon, text, onBackPress}) => {
+const ProfileHeader = ({
+  username,
+  icon,
+  text,
+  onBackPress,
+  filter,
+  filterActive,
+  setFilterActive,
+}) => {
   const [searchActive, setSearchActive] = useState(false);
   const navigation = useNavigation();
 
+  const handleFilter = () => {
+    setFilterActive(!filterActive);
+  };
+
   // console.log(text?.length);
- 
 
   return (
     <View style={styles.profile_header}>
@@ -34,18 +46,30 @@ const ProfileHeader = ({username, icon, text, onBackPress}) => {
               // width: text?.length === 28 && hp('32%'),
               fontSize: hp('2.5%'),
               fontFamily: 'Lora-Medium',
-              width:hp('30%')
+              width: hp('30%'),
             }}>
             {text}
           </Text>
         ) : null}
       </View>
-      <View>
-        <SearchTopButton
-          searchActive={searchActive}
-          setSearchActive={setSearchActive}
-        />
-      </View>
+      {filter ? (
+        <View style={styles.filter}>
+          <Ionicons
+            name="options-outline"
+            type="Ionicons"
+            color="#fff"
+            size={30}
+            onPress={() => handleFilter()}
+          />
+        </View>
+      ) : (
+        <View>
+          <SearchTopButton
+            searchActive={searchActive}
+            setSearchActive={setSearchActive}
+          />
+        </View>
+      )}
     </View>
   );
 };
@@ -75,5 +99,13 @@ const styles = StyleSheet.create({
     borderColor: colors.orange,
     height: hp('6%'),
     width: hp('6%'),
+  },
+  filter: {
+    backgroundColor: '#E3C164',
+    borderRadius: 50,
+    height: hp(5),
+    width: hp(5),
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

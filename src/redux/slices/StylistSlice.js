@@ -122,6 +122,60 @@ export const stylistProfileById = createAsyncThunk(
   },
 );
 
+export const getServiceById = createAsyncThunk(
+  'serviceById',
+  async (serviceId, {getState}) => {
+    const stateData = getState().userData;
+    const token = stateData.token;
+    //  return Alert.alert('hello world');
+    console.log('serviceId=-->',serviceId)
+
+    let abc = await axios
+      .get(`${BASE_URL}/search-by-service/${serviceId}`, {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(res => {
+        console.log('getServiceById response =============>', res.data.data);
+        // setProfiledetail(res.data.data);
+        return res.data;
+      })
+      .catch(error => {
+        ErrorToast(error);
+      });
+    return abc;
+  },
+);
+
+export const getAllServices = createAsyncThunk(
+  'allServices',
+  async (setStylistServices, {getState}) => {
+    const stateData = getState().userData;
+    const token = stateData.token;
+    //  return Alert.alert('hello world');
+
+    // let abc = await axios
+    return await axios
+      .get(`${BASE_URL}/get-all-services`, {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(res => {
+        // console.log('getAllServices response =============>', res.data.data);
+        setStylistServices(res.data.data);
+        return res.data;
+      })
+      .catch(error => {
+        ErrorToast(error);
+      });
+    // return abc;
+  },
+);
+
 export const stylistReviewById = createAsyncThunk(
   'stylistReview',
   async (stylist_id, {getState}) => {
@@ -283,6 +337,9 @@ export const StylistSlice = createSlice({
     nearbyStylists: {},
     nearbyStylists_loader: true,
     appointment_loader: false,
+
+    allServices:{},
+    serviceById:{}
   },
   extraReducers: builders => {
     builders.addCase(getTopStylists.pending, state => {

@@ -48,7 +48,7 @@ const Home = ({navigation}) => {
   const dispatch = useDispatch();
   const [stylistData, setStylistData] = useState([]);
 
-  console.log('stylistData=-=>', stylistData);
+  // console.log('stylistData=-=>', stylistData);
 
   // console.log('currentRegion=-=->', latLng);
 

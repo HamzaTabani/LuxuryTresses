@@ -22,7 +22,7 @@ const ProfileImgRound = ({imgSrc}) => {
         position: 'relative',
         top: 'center',
         left: 'center',
-        backgroundColor: 'red',
+        // backgroundColor: 'red',
       }}>
       <FastImage
         source={

@@ -1,21 +1,24 @@
-import { StyleSheet, View, TextInput } from 'react-native';
+import {StyleSheet, View, TextInput} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import FontAwesome5 from 'react-native-vector-icons/Ionicons';
 
-const SearchTopButton = ({ searchActive, setSearchActive }) => {
-
+const SearchTopButton = ({searchActive, setSearchActive}) => {
   const onSearchBarPress = () => {
-    setSearchActive(!searchActive)
-  }
+    setSearchActive(!searchActive);
+  };
 
   return (
     <View style={searchActive ? styles.search_box_active : styles.search_box}>
       {searchActive ? (
         <>
-          <TextInput placeholder="Search Here " placeholderTextColor="#fff" style={{width: '80%'}} />
+          <TextInput
+            placeholder="Search Here "
+            placeholderTextColor="#fff"
+            style={{width: '80%'}}
+          />
           <FontAwesome5
             name="close-sharp"
             type="Ionicons"

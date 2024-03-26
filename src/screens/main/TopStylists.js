@@ -7,25 +7,59 @@ import Card from '../../components/Card';
 import {useDispatch, useSelector} from 'react-redux';
 import images from '../../assets/images';
 import {useNavigation} from '@react-navigation/native';
-import {getTopStylists} from '../../redux/slices/StylistSlice';
+import {
+  getAllServices,
+  getServiceById,
+  getTopStylists,
+} from '../../redux/slices/StylistSlice';
+import ServiceDropdown from '../../components/ServiceDropdown';
 
 const TopStylists = () => {
   const navigation = useNavigation();
   const {pic_url} = useSelector(state => state.userData);
   const {topStylists} = useSelector(state => state.stylistReducer);
+  const [filterActive, setFilterActive] = useState(false);
 
   const [stylistData, setStylistData] = useState([]);
+  const [stylistServices, setStylistServices] = useState([]);
   const dispatch = useDispatch();
+  const [serviceId, setServiceId] = useState('');
+  const [serviceByIdData, setServiceByIdData] = useState('');
 
-  // console.log('stylistData35435=-=>', stylistData);
+  console.log('serviceId=-=-->', serviceId);
+
+  console.log('serviceByIdData', serviceByIdData);
+
+  const handleServiceId = data => {
+    setServiceId(data);
+  };
+
+  // console.log('filterActive=->', filterActive);
+
+  // console.log('stylistData35435=-=>', stylistServices);
+  useEffect(() => {
+    getAllServicesById();
+  }, [serviceId])
+  
 
   useEffect(() => {
     // if (recentProducts.length < 1 || topStylists.length < 1) {
     getTopStylistsProfile();
+    getAllStylistProfileServices();
+    
     // }
   }, []);
   const getTopStylistsProfile = async () => {
     await dispatch(getTopStylists(setStylistData));
+  };
+
+  const getAllStylistProfileServices = async () => {
+    await dispatch(getAllServices(setStylistServices));
+  };
+
+  const getAllServicesById = async () => {
+    const res = await dispatch(getServiceById(serviceId));
+    setServiceByIdData(res.payload.data);
   };
 
   const onStylistDetail = item => {
@@ -64,9 +98,25 @@ const TopStylists = () => {
       </TouchableOpacity>
     );
   };
+
   return (
     <Container>
-      <ProfileHeader username={true} icon={true} text={'Top stylists'} />
+      <ProfileHeader
+        username={true}
+        icon={true}
+        text={'Top stylists'}
+        filter={true}
+        filterActive={filterActive}
+        setFilterActive={setFilterActive}
+      />
+      {filterActive ? (
+        <View>
+          <ServiceDropdown
+            services={stylistServices}
+            serviceValue={handleServiceId}
+          />
+        </View>
+      ) : null}
       <View style={styles.wrapper}>
         <FlatList
           data={stylistData}
