@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   FlatList,
+  Alert,
 } from 'react-native';
 import React, {useEffect} from 'react';
 import ProfileHeader from '../../components/ProfileHeader';
@@ -35,15 +36,16 @@ import {
 
 const ProfileDetail = ({route}) => {
   const [tabActive, setTabActive] = useState('');
+  const [tabBothActive, setTabBothActive] = useState(false);
   const [serviceIcon, setServiceIcon] = useState(false);
   const [productIcon, setProductIcon] = useState(false);
   const navigation = useNavigation();
-
+console.log('tabActive=-=>',tabActive)
   // console.log('seviceIcon->', serviceIcon, 'productIcon->', productIcon);
 
   const id = route?.params?.profile_id;
   // const moreStylist = route?.params?.stylists;
-  console.log('profile_id', id);
+  // console.log('profile_id', id);
   // console.log('moreStylist', moreStylist);
   const [profiledetail, setProfiledetail] = useState(null);
   const dispatch = useDispatch();
@@ -52,7 +54,7 @@ const ProfileDetail = ({route}) => {
     useSelector(state => state.stylistReducer);
 
   const {pic_url} = useSelector(state => state.userData);
-  console.log('profile detail from screen =========>', profiledetail);
+  // console.log('profile detail from screen =========>', profiledetail);
   // console.log('profile loader =========>', profileDetails_loading);
 
   const [stylistProfileImageError, setStylistProfileImageError] =
@@ -92,6 +94,19 @@ const ProfileDetail = ({route}) => {
         setTabActive('service');
         setServiceIcon(true);
       }
+      //  else
+      // // (
+      // //   profiledetail?.services?.length < 1 &&
+      // //   profiledetail?.products?.length < 1
+      // // )
+      // {
+      //   // console.log('object');
+      //   setTabBothActive(true);
+      //   setTabActive('product');
+      //   setProductIcon(true);
+      //   // setTabActive('service');
+      //   setServiceIcon(true);
+      // }
     }
   }, [profiledetail]);
 
@@ -210,13 +225,16 @@ const ProfileDetail = ({route}) => {
                 {profiledetail?.about != null ? profiledetail?.about : 'about'}
               </Text>
             </View>
-            {tabActive === 'product' ? (
+
+            {profiledetail?.services.length < 1 &&
+            profiledetail?.products.length >= 1 ? (
               <View style={[styles.btn_wrapperA, {marginTop: hp('4%')}]}>
                 <View style={styles.btns_activeA}>
                   <Text style={styles.btns_active_textA}>Products</Text>
                 </View>
               </View>
-            ) : tabActive === 'service' ? (
+            ) : profiledetail?.products.length < 1 &&
+              profiledetail?.services.length >= 1 ? (
               <View style={[styles.btn_wrapperA, {marginTop: hp('4%')}]}>
                 <View style={styles.btns_activeA}>
                   <Text style={styles.btns_active_textA}>Services</Text>
@@ -354,7 +372,7 @@ const ProfileDetail = ({route}) => {
                   data={profiledetail?.products}
                   keyExtractor={(item, ind) => ind}
                   renderItem={({item}) => {
-                    console.log('profileDetails.products items==>', item.id);
+                    // console.log('profileDetails.products items==>', item);
                     return (
                       <TouchableOpacity
                         style={{marginBottom: hp('3.5%')}}

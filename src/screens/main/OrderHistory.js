@@ -248,28 +248,7 @@ const OrderHistory = ({route}) => {
             </TouchableOpacity>
           </View>
         </View>
-        <OutlineButton
-          onPress={() =>
-            navigation.navigate('SingleProduct', {
-              productID: productData.id,
-              product: productData,
-              order: orderData,
-              completedOrders: completedOrdersData,
-              reorder: reorder,
-            })
-          }
-          title={'Select this Item to Reorder'}
-          textStyle={{color: colors.white}}
-          buttonStyle={{
-            marginTop: hp(2),
-            backgroundColor: '#D49621',
-            borderRadius: 10,
-            // height: hp(4),
-            // padding: 5,
-            width: hp(45),
-            alignSelf: 'center',
-          }}
-        />
+
         {reorder ? (
           <OutlineButton
             title={'Add to cart'}
@@ -291,7 +270,30 @@ const OrderHistory = ({route}) => {
               alignSelf: 'center',
             }}
           />
-        ) : null}
+        ) : (
+          <OutlineButton
+            onPress={() =>
+              navigation.navigate('SingleProduct', {
+                productID: productData.id,
+                product: productData,
+                order: orderData,
+                completedOrders: completedOrdersData,
+                reorder: reorder,
+              })
+            }
+            title={'Select this Item to Reorder'}
+            textStyle={{color: colors.white}}
+            buttonStyle={{
+              marginTop: hp(2),
+              backgroundColor: '#D49621',
+              borderRadius: 10,
+              // height: hp(4),
+              // padding: 5,
+              width: hp(45),
+              alignSelf: 'center',
+            }}
+          />
+        )}
       </ScrollView>
     </Container>
   );

@@ -24,14 +24,34 @@ const TopStylists = () => {
   const [stylistServices, setStylistServices] = useState([]);
   const dispatch = useDispatch();
   const [serviceId, setServiceId] = useState('');
-  const [serviceByIdData, setServiceByIdData] = useState('');
+  const [serviceLabel, setServiceLabel] = useState('');
+  const [serviceByIdData, setServiceByIdData] = useState([]);
 
-  console.log('serviceId=-=-->', serviceId);
+  // console.log('serviceLabel=-=>', serviceLabel);
 
-  console.log('serviceByIdData', serviceByIdData);
+  // console.log('serviceId=-=-->', serviceId);
+
+  // console.log('serviceByIdData', serviceByIdData);
+
+  // console.log('stylistData=-=->', stylistData);
 
   const handleServiceId = data => {
-    setServiceId(data);
+    // console.log('data=--==>', data);
+    // if (data != null && data != undefined) {
+    //   console.log('data53483=--==>', data);
+    // setServiceId(data != null ? data[0].value : '0');
+    setServiceId(data.value);
+    // const label = data.label.replace(/^\s+/, '');
+    // setServiceLabel(data != null ? data[0].label : 'Stylist');
+    setServiceLabel(
+      data.label != undefined && data.label != null
+        ? data.label.replace(/^\s+/, '')
+        : null,
+    );
+    // } else {
+    //   setServiceId('');
+    //   setServiceLabel('');
+    // }
   };
 
   // console.log('filterActive=->', filterActive);
@@ -39,16 +59,20 @@ const TopStylists = () => {
   // console.log('stylistData35435=-=>', stylistServices);
   useEffect(() => {
     getAllServicesById();
-  }, [serviceId])
-  
+  }, [serviceId]);
+
+  // useEffect(() => {
+  //   getTopStylistsProfile();
+  // }, [serviceByIdData]);
 
   useEffect(() => {
     // if (recentProducts.length < 1 || topStylists.length < 1) {
     getTopStylistsProfile();
     getAllStylistProfileServices();
-    
+
     // }
   }, []);
+
   const getTopStylistsProfile = async () => {
     await dispatch(getTopStylists(setStylistData));
   };
@@ -104,7 +128,7 @@ const TopStylists = () => {
       <ProfileHeader
         username={true}
         icon={true}
-        text={'Top stylists'}
+        text={serviceLabel ? 'Top ' + serviceLabel : 'Top stylists'}
         filter={true}
         filterActive={filterActive}
         setFilterActive={setFilterActive}
@@ -117,9 +141,10 @@ const TopStylists = () => {
           />
         </View>
       ) : null}
+
       <View style={styles.wrapper}>
         <FlatList
-          data={stylistData}
+          data={serviceByIdData.length > 0 ? serviceByIdData : stylistData}
           keyExtractor={item => item.id}
           renderItem={renderData}
           columnWrapperStyle={{justifyContent: 'space-evenly'}}

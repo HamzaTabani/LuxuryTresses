@@ -76,7 +76,7 @@ const Home = ({navigation}) => {
       stylist_image: item.profile_pic,
     }));
 
-    console.log('stylistImages==-=-=-=->',stylistImages)
+    // console.log('stylistImages==-=-=-=->',stylistImages)
 
     navigation.navigate('ProfileDetail', {
       profile_id: item.id,

@@ -68,7 +68,7 @@ const ProductCard = ({
   };
   // console.log('avatar==> ', avatar);
   // console.log('productImage===>', pic_baseUrl);
-  console.log('productImage===>', productImage);
+  // console.log('productImage===>', productImage);
   // console.log('avatar-->',avatar)
   // console.log('username-->',username)
 

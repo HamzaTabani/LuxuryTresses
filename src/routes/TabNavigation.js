@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome5 from 'react-native-vector-icons/Octicons';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { View } from 'react-native';
 import Profile from '../screens/main/Profile';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -247,20 +248,20 @@ const BottomStack = () => {
                   justifyContent: 'center',
                   alignItems: "center"
                 }}>
-                <AntDesign
-                  name="setting"
-                  type="AntDesign"
+                <MaterialIcons
+                  name="person-outline"
+                  type="MaterialIcons"
                   color="#D49621"
-                  size={22}
+                  size={25}
                 />
               </View>
             ) : (
               <View>
-                <AntDesign
-                  name="setting"
-                  type="AntDesign"
+                <MaterialIcons
+                  name="person-outline"
+                  type="MaterialIcons"
                   color="#D49621"
-                  size={22}
+                  size={25}
                 />
               </View>
             ),

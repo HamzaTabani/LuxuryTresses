@@ -6,6 +6,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 const ServiceDropdown = ({services, serviceValue}) => {
   const [selectedService, setSelectedService] = useState({
@@ -14,17 +15,6 @@ const ServiceDropdown = ({services, serviceValue}) => {
   });
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
-  //   const [itemId,]
-
-  //   const handleServiceChange = (serviceId, serviceTitle) => {
-  //     console.log('vfvfd', serviceId, serviceTitle);
-  //     setSelectedService({id: serviceId, title: serviceTitle});
-  //   };
-
-  useEffect(() => {
-    console.log('value', value);
-    serviceValue(value);
-  }, [value]);
 
   const items = Object.keys(services).flatMap(category => {
     const categoryLabel = {
@@ -39,38 +29,60 @@ const ServiceDropdown = ({services, serviceValue}) => {
     return [categoryLabel, ...categoryServices];
   });
 
+  const selectValue = currentValue => {
+    let chosenValue;
+    if (typeof currentValue === 'function') {
+      chosenValue = currentValue('');
+    } else {
+      chosenValue = currentValue;
+    }
+
+    if (chosenValue === value) {
+      setValue('');
+      serviceValue('');
+    } else {
+      setValue(currentValue);
+    }
+  };
+
   return (
-    <View style={{marginBottom: 30}}>
+    <View style={{marginBottom: 30, marginRight: hp(1.3)}}>
       <DropDownPicker
-        // itemSeparatorStyle={{borderWidth: 2, borderColor: colors.black,backgroundColor:'red'}}
-        // textStyle={{fontWeight:'bold'}}
-        labelStyle={{fontWeight: 'bold'}}
+        onSelectItem={item => {
+          // console.log('selcted item=-=-=>', item);
+          serviceValue(item);
+        }}
+        labelStyle={{fontWeight: 'bold', color: colors.white}}
         itemSeparator={true}
-        // itemSeparatorStyle={{borderColor:colors.orange}}
-        // dropDownContainerStyle={{borderColor: colors.orange}}
         value={value}
-        setValue={setValue}
+        setValue={selectValue}
         schema={{
           label: 'label',
           value: 'value',
         }}
         items={items}
         defaultValue={selectedService.id}
-        containerStyle={{height: hp(5), width: hp(46), alignSelf: 'center'}}
+        containerStyle={{
+          height: hp(5),
+          width: hp(46),
+          alignSelf: 'center',
+        }}
+        style={{backgroundColor: '#D49621', zIndex: 3000}}
+        listItemContainerStyle={{
+          backgroundColor: '#D49621',
+        }}
+        listItemLabelStyle={{color: colors.white}}
         placeholder="Select a Service"
-        // onChangeValue={item => {
-        //   console.log('9878', item);
-        // //   handleServiceChange(item.value, item.label.trim());
-        // //   setOpen(false); // Close the dropdown after selection
-        // }}
+        placeholderStyle={{color: colors.white}}
+        arrowIconStyle={{
+          tintColor: colors.white,
+        }}
+        tickIconStyle={{
+          tintColor: colors.white,
+        }}
         setOpen={setOpen}
         open={open}
       />
-      {/* {selectedService.id !== null && (
-        <Text style={{color: colors.white, backgroundColor: 'red'}}>
-          Selected Service: {selectedService.title}, ID: {selectedService.id}
-        </Text>
-      )} */}
     </View>
   );
 };
