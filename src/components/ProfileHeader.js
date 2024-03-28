@@ -36,11 +36,11 @@ const ProfileHeader = ({
     <View style={styles.profile_header}>
       <View style={{flexDirection: 'row', alignItems: 'center', gap: 15}}>
         {icon ? (
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Pressable onPress={() => navigation.goBack()}>
             <View style={styles.iconView}>
               <Back name={'arrow-back'} color={colors.orange} size={25} />
             </View>
-          </TouchableOpacity>
+          </Pressable>
         ) : (
           <ProfileImgRound />
         )}
