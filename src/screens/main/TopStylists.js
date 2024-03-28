@@ -13,6 +13,7 @@ import {
   getTopStylists,
 } from '../../redux/slices/StylistSlice';
 import ServiceDropdown from '../../components/ServiceDropdown';
+import Loader from '../../components/Loader';
 
 const TopStylists = () => {
   const navigation = useNavigation();
@@ -26,6 +27,7 @@ const TopStylists = () => {
   const [serviceId, setServiceId] = useState('');
   const [serviceLabel, setServiceLabel] = useState('');
   const [serviceByIdData, setServiceByIdData] = useState([]);
+  const [load, setLoad] = useState(true);
 
   // console.log('serviceLabel=-=>', serviceLabel);
 
@@ -34,6 +36,7 @@ const TopStylists = () => {
   // console.log('serviceByIdData', serviceByIdData);
 
   // console.log('stylistData=-=->', stylistData);
+  console.log('load=--=>', load);
 
   const handleServiceId = data => {
     // console.log('data=--==>', data);
@@ -79,6 +82,7 @@ const TopStylists = () => {
 
   const getAllStylistProfileServices = async () => {
     await dispatch(getAllServices(setStylistServices));
+    setLoad(false);
   };
 
   const getAllServicesById = async () => {
@@ -125,32 +129,40 @@ const TopStylists = () => {
 
   return (
     <Container>
-      <ProfileHeader
-        username={true}
-        icon={true}
-        text={serviceLabel ? 'Top ' + serviceLabel : 'Top stylists'}
-        filter={true}
-        filterActive={filterActive}
-        setFilterActive={setFilterActive}
-      />
-      {filterActive ? (
-        <View>
-          <ServiceDropdown
-            services={stylistServices}
-            serviceValue={handleServiceId}
-          />
+      {load ? (
+        <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+          <Loader size={'large'} />
         </View>
-      ) : null}
+      ) : (
+        <>
+          <ProfileHeader
+            username={true}
+            icon={true}
+            text={serviceLabel ? 'Top ' + serviceLabel : 'Top stylists'}
+            filter={true}
+            filterActive={filterActive}
+            setFilterActive={setFilterActive}
+          />
+          {filterActive ? (
+            <View>
+              <ServiceDropdown
+                services={stylistServices}
+                serviceValue={handleServiceId}
+              />
+            </View>
+          ) : null}
 
-      <View style={styles.wrapper}>
-        <FlatList
-          data={serviceByIdData.length > 0 ? serviceByIdData : stylistData}
-          keyExtractor={item => item.id}
-          renderItem={renderData}
-          columnWrapperStyle={{justifyContent: 'space-evenly'}}
-          numColumns={2}
-        />
-      </View>
+          <View style={styles.wrapper}>
+            <FlatList
+              data={serviceByIdData.length > 0 ? serviceByIdData : stylistData}
+              keyExtractor={item => item.id}
+              renderItem={renderData}
+              columnWrapperStyle={{justifyContent: 'space-evenly'}}
+              numColumns={2}
+            />
+          </View>
+        </>
+      )}
     </Container>
   );
 };

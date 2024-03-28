@@ -40,7 +40,7 @@ const ProfileDetail = ({route}) => {
   const [serviceIcon, setServiceIcon] = useState(false);
   const [productIcon, setProductIcon] = useState(false);
   const navigation = useNavigation();
-console.log('tabActive=-=>',tabActive)
+  console.log('tabActive=-=>', tabActive);
   // console.log('seviceIcon->', serviceIcon, 'productIcon->', productIcon);
 
   const id = route?.params?.profile_id;
@@ -93,20 +93,18 @@ console.log('tabActive=-=>',tabActive)
       ) {
         setTabActive('service');
         setServiceIcon(true);
+      } else if (
+        profiledetail?.products.length >= 1 &&
+        profiledetail?.services.length >= 1 &&
+        !profileDetails_loading
+      ) {
+        // console.log('object');
+        setTabBothActive(true);
+        setTabActive('product');
+        setProductIcon(true);
+        // setTabActive('service');
+        setServiceIcon(true);
       }
-      //  else
-      // // (
-      // //   profiledetail?.services?.length < 1 &&
-      // //   profiledetail?.products?.length < 1
-      // // )
-      // {
-      //   // console.log('object');
-      //   setTabBothActive(true);
-      //   setTabActive('product');
-      //   setProductIcon(true);
-      //   // setTabActive('service');
-      //   setServiceIcon(true);
-      // }
     }
   }, [profiledetail]);
 
@@ -240,8 +238,7 @@ console.log('tabActive=-=>',tabActive)
                   <Text style={styles.btns_active_textA}>Services</Text>
                 </View>
               </View>
-            ) : profiledetail?.services?.length < 1 &&
-              profiledetail?.products?.length < 1 ? null : (
+            ) : tabBothActive ? (
               <View style={{paddingTop: hp('4%')}}>
                 <View style={styles.btn_wrapper}>
                   <TouchableOpacity
@@ -274,7 +271,7 @@ console.log('tabActive=-=>',tabActive)
                   </TouchableOpacity>
                 </View>
               </View>
-            )}
+            ) : null}
 
             {/* {tabActive === 'product' ? (
               <View style={[styles.btn_wrapperA, {marginTop: hp('4%')}]}>

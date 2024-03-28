@@ -1,4 +1,10 @@
-import {StyleSheet, View, Text, Pressable} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Pressable,
+  TouchableOpacity,
+} from 'react-native';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {useState} from 'react';
 import colors from '../assets/colors';
@@ -30,11 +36,11 @@ const ProfileHeader = ({
     <View style={styles.profile_header}>
       <View style={{flexDirection: 'row', alignItems: 'center', gap: 15}}>
         {icon ? (
-          <Pressable onPress={onBackPress}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <View style={styles.iconView}>
               <Back name={'arrow-back'} color={colors.orange} size={25} />
             </View>
-          </Pressable>
+          </TouchableOpacity>
         ) : (
           <ProfileImgRound />
         )}
@@ -99,6 +105,7 @@ const styles = StyleSheet.create({
     borderColor: colors.orange,
     height: hp('6%'),
     width: hp('6%'),
+    // backgroundColor:'red'
   },
   filter: {
     backgroundColor: '#E3C164',

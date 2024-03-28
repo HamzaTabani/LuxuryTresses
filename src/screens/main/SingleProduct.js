@@ -116,7 +116,7 @@ const SingleProduct = ({route}) => {
       //  console.log('updated', updatedCart)
       await dispatch(addProductinCart(updatedCart));
       navigation.navigate('SecondaryStack', {screen: 'Checkout'});
-      return ShowToast('Item has been added to your cart');
+      // return ShowToast('Item has been added to your cart');
     } else {
       const res = await dispatch(addProductinCart(confirmedDetails));
       if (res) {

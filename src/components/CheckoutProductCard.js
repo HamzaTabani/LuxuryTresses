@@ -2,10 +2,24 @@ import React, {useState} from 'react';
 import {Text, StyleSheet, View, TouchableOpacity, Image} from 'react-native';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import images from '../assets/images';
+import {useSelector} from 'react-redux';
 
-const CheckoutProductCard = ({image, name, price, quantity, increment, decrement}) => {
+const CheckoutProductCard = ({
+  image,
+  name,
+  price,
+  quantity,
+  increment,
+  decrement,
+}) => {
   // const [quantity, setQuantity] = useState(1);
-
+  const [imageErrorProduct, setImageErrorProduct] = useState(false);
+  const handleImageErrorProduct = () => {
+    setImageErrorProduct(true);
+  };
+  const {pic_baseUrl} = useSelector(state => state.ecommerceReducer);
+  console.log('pic_baseUrl=-=>', pic_baseUrl);
+  console.log('image product56546: ', image);
   // const incrementQuantity = () => {
   //   setQuantity(quantity + 1);
   // };
@@ -31,9 +45,16 @@ const CheckoutProductCard = ({image, name, price, quantity, increment, decrement
             height: 70,
           }}>
           <Image
-            source={images.cart5}
+            source={
+              imageErrorProduct
+                ? images.imageNotFound
+                : image == 'null' && image == null && image == 'undefined'
+                ? images.imageNotFound
+                : {uri: pic_baseUrl + '/' + image}
+            }
             resizeMode="cover"
             style={{width: '100%', height: '100%', borderRadius: 15}}
+            onError={handleImageErrorProduct}
           />
           {/* online status button */}
         </View>
@@ -50,13 +71,19 @@ const CheckoutProductCard = ({image, name, price, quantity, increment, decrement
         </View>
       </View>
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <TouchableOpacity onPress={decrement} style={styles.button} activeOpacity={0.9}>
+        <TouchableOpacity
+          onPress={decrement}
+          style={styles.button}
+          activeOpacity={0.9}>
           <Text style={styles.buttonText}>-</Text>
         </TouchableOpacity>
         <View style={styles.quantityButton}>
           <Text style={styles.quantityText}>{quantity}</Text>
         </View>
-        <TouchableOpacity onPress={increment} style={styles.button} activeOpacity={0.9}>
+        <TouchableOpacity
+          onPress={increment}
+          style={styles.button}
+          activeOpacity={0.9}>
           <Text style={styles.buttonText}>+</Text>
         </TouchableOpacity>
       </View>

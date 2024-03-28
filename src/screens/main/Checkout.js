@@ -17,7 +17,7 @@ const Checkout = () => {
   const navigation = useNavigation();
 
   const {cart_product} = useSelector(state => state.ecommerceReducer);
-  // console.log('whyy', cart_product);
+  console.log('whyy', cart_product);
 
   const dispatch = useDispatch();
 
@@ -59,7 +59,9 @@ const Checkout = () => {
 
   const calculateTotal = () => {
     const total = cart_product.reduce(
-      (total, item) => total + item.productDetail.price * item.quantity, 0);
+      (total, item) => total + item.productDetail.price * item.quantity,
+      0,
+    );
     setGrandTotal(total);
   };
 
@@ -74,16 +76,19 @@ const Checkout = () => {
             borderColor: '#D49621',
             borderBottomWidth: 0.6,
           }}>
-          {cart_product.map((item, index) => (
-            <CheckoutProductCard
-              // image={item.image}
-              name={item.productDetail.title}
-              quantity={item.quantity}
-              price={item.productDetail.price}
-              increment={() => onIncreaseQuantity(index)}
-              decrement={() => onDecreaseQuantity(index)}
-            />
-          ))}
+          {cart_product.map((item, index) => {
+            console.log('item checkout: ',item)
+            return (
+              <CheckoutProductCard
+                image={item.productDetail.image}
+                name={item.productDetail.title}
+                quantity={item.quantity}
+                price={item.productDetail.price}
+                increment={() => onIncreaseQuantity(index)}
+                decrement={() => onDecreaseQuantity(index)}
+              />
+            );
+          })}
         </View>
         {/* checkout summary */}
         <View style={{marginTop: 15}}>

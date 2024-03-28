@@ -6,7 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import colors from '../assets/colors';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Arrow from 'react-native-vector-icons/SimpleLineIcons';
@@ -31,6 +31,10 @@ const StylistInfo = ({
   productIcon,
   profileId,
 }) => {
+  const [imageError, setImageError] = useState(false);
+  const handleImageError = () => {
+    setImageError(true);
+  };
   const milesToKilometers = miles => {
     const kilometers = miles * 1.60934;
     return kilometers.toFixed(2);
@@ -66,10 +70,16 @@ const StylistInfo = ({
             <Image
               resizeMode="contain"
               source={
-                imageUrl && image ? {uri: imageUrl + image} : images.stylist1
+                // imageUrl && image ? {uri: imageUrl + image} : images.stylist1
+                imageError
+                  ? images.profile
+                  : image == 'null' && image == null && image == 'undefined'
+                  ? images.profile
+                  : {uri: imageUrl + image}
               }
               style={styles.image}
               borderRadius={10}
+              onError={handleImageError}
             />
           </TouchableOpacity>
           <View style={styles.textWrapper}>

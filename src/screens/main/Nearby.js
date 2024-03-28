@@ -139,7 +139,7 @@ const Nearby = () => {
               borderWidth: 2,
               borderColor: 'white',
             }}
-            onError={handleNearByImageError}
+            // onError={handleNearByImageError}
           />
         </Marker>
       );

@@ -132,37 +132,14 @@ const Home = ({navigation}) => {
               </Text>
               <Text style={styles.home_title}>Lets make a new style!</Text>
             </View>
-            {/* home shorcuts boxes */}
-            <View style={styles.shortcutsBoxContainer}>
-              <Pressable onPress={() => navigation.navigate('trendings')}>
-                <ShortcutBox
-                  title={'Trends'}
-                  // img={require('../../assets/images/trend.png')}
-                />
-              </Pressable>
-              <Pressable onPress={() => navigation.navigate('Nearby')}>
-                <ShortcutBox
-                  title={'Nearby'}
-                  // img={require('../../assets/images/near.png')}
-                />
-              </Pressable>
-              <Pressable onPress={() => navigation.navigate('recents')}>
-                <ShortcutBox
-                  title={'Recents'}
-                  // img={require('../../assets/images/recent.png')}
-                />
-              </Pressable>
-              <Pressable onPress={() => navigation.navigate('populars')}>
-                <ShortcutBox
-                  title={'Popular'}
-                  // img={require('../../assets/images/popular.png')}
-                />
-              </Pressable>
-            </View>
+
             {/* Top Style */}
             {loading ? (
               <>
-                <View style={{paddingTop: hp('2%')}}>
+                <View
+                  style={{
+                    paddingTop: hp('30%'),
+                  }}>
                   <Loader size={'large'} />
                 </View>
               </>
@@ -176,6 +153,33 @@ const Home = ({navigation}) => {
               </>
             ) : (
               <>
+                {/* home shorcuts boxes */}
+                <View style={styles.shortcutsBoxContainer}>
+                  <Pressable onPress={() => navigation.navigate('trendings')}>
+                    <ShortcutBox
+                      title={'Trends'}
+                      // img={require('../../assets/images/trend.png')}
+                    />
+                  </Pressable>
+                  <Pressable onPress={() => navigation.navigate('Nearby')}>
+                    <ShortcutBox
+                      title={'Nearby'}
+                      // img={require('../../assets/images/near.png')}
+                    />
+                  </Pressable>
+                  <Pressable onPress={() => navigation.navigate('recents')}>
+                    <ShortcutBox
+                      title={'Recents'}
+                      // img={require('../../assets/images/recent.png')}
+                    />
+                  </Pressable>
+                  <Pressable onPress={() => navigation.navigate('populars')}>
+                    <ShortcutBox
+                      title={'Popular'}
+                      // img={require('../../assets/images/popular.png')}
+                    />
+                  </Pressable>
+                </View>
                 <View style={styles.topStylesContainer}>
                   <View>
                     <View
@@ -304,189 +308,110 @@ const Home = ({navigation}) => {
                     )
                   )}
                 </View>
+                {/* banner 1 */}
+                <ImageBackground
+                  resizeMode="contain"
+                  style={{
+                    height: hp('30%'),
+                    width: wp('90%'),
+                    alignSelf: 'center',
+                  }}
+                  source={require('../../assets/images/homeB.png')}>
+                  <View
+                    style={{
+                      width: wp('40%'),
+                      flex: 1,
+                      justifyContent: 'flex-end',
+                      alignSelf: 'flex-end',
+                      paddingBottom: hp(7),
+                      marginRight: wp(5),
+                    }}>
+                    <View
+                      style={{
+                        justifyContent: 'flex-end',
+                        alignSelf: 'flex-end',
+                      }}>
+                      <SvgArrowUPRightIcon />
+                    </View>
+                    <Text
+                      style={{
+                        fontWeight: '400',
+                        color: '#fff',
+                        fontSize: hp('2.5%'),
+                        fontFamily: 'Lora-Medium',
+                        textAlign: 'right',
+                        marginTop: hp('8%'),
+                      }}>
+                      Let your hair, Speak for itself
+                    </Text>
+                  </View>
+                </ImageBackground>
+                {/* banner 2 */}
+                <ImageBackground
+                  resizeMode="contain"
+                  style={{
+                    height: hp('30%'),
+                    width: wp('90%'),
+                    alignSelf: 'center',
+                  }}
+                  source={require('../../assets/images/homeA.png')}>
+                  <View style={{marginLeft: wp('3%')}}>
+                    <Text
+                      style={{
+                        width: wp('40%'),
+                        fontWeight: '400',
+                        color: '#000',
+                        fontSize: hp('3%'),
+                        fontFamily: 'Lora-Medium',
+                        marginTop: hp('4%'),
+                      }}>
+                      Start your hair journey
+                    </Text>
+                    <Text
+                      style={{
+                        width: wp('40%'),
+                        fontWeight: '400',
+                        color: '#715B1D',
+                        fontSize: hp('1.8%'),
+                        fontFamily: 'Lora-Medium',
+                        marginTop: hp('2%'),
+                      }}>
+                      Explore stylists
+                    </Text>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-evenly',
+                        backgroundColor: '#111649',
+                        width: wp('35%'),
+                        height: hp('5%'),
+                        alignItems: 'center',
+                        borderRadius: 10,
+                        marginTop: hp('3%'),
+                      }}>
+                      <SvgArrowUPRighSmalltIcon />
+                      <Text
+                        style={{
+                          color: '#EDBA1B',
+                          fontSize: hp('1.8%'),
+                          fontFamily: 'Lora-Medium',
+                        }}>
+                        START NOW
+                      </Text>
+                    </View>
+                  </View>
+                </ImageBackground>
+                {/* bottom lines */}
+                <View
+                  style={{
+                    // paddingHorizontal: wp('8%'),
+                    marginBottom: 150,
+                    alignItems: 'center',
+                  }}>
+                  <SvgBottomLineIcon />
+                </View>
               </>
             )}
-            {/* banner 1 */}
-            {/* <View style={{paddingHorizontal: wp('8%'), marginBottom: 8}}>
-              <View style={styles.bannerOneContainer}>
-                <Image
-                  source={require('../../assets/images/homebanner1.png')}
-                  resizeMode="contain"
-                  style={{
-                    width: '100%',
-                  }}
-                />
-                <View style={styles.bannerImageView}>
-                  <Image
-                    source={require('../../assets/images/topleftarrow.png')}
-                    resizeMode="contain"
-                    style={{
-                      width: '100%',
-                    }}
-                  />
-                </View>
-                <View style={styles.bannerTitleView}>
-                  <Text style={styles.bannerOneText}>Let your hair</Text>
-                  <Text style={styles.bannerOneText}>Speak for itself</Text>
-                </View>
-              </View>
-            </View> */}
-            <ImageBackground
-              resizeMode="contain"
-              style={{
-                height: hp('30%'),
-                width: wp('90%'),
-                alignSelf: 'center',
-              }}
-              source={require('../../assets/images/homeB.png')}>
-              <View
-                style={{
-                  width: wp('40%'),
-                  flex: 1,
-                  justifyContent: 'flex-end',
-                  alignSelf: 'flex-end',
-                  paddingBottom: hp(7),
-                  marginRight: wp(5),
-                }}>
-                <View
-                  style={{
-                    justifyContent: 'flex-end',
-                    alignSelf: 'flex-end',
-                  }}>
-                  <SvgArrowUPRightIcon />
-                </View>
-                <Text
-                  style={{
-                    fontWeight: '400',
-                    color: '#fff',
-                    fontSize: hp('2.5%'),
-                    fontFamily: 'Lora-Medium',
-                    textAlign: 'right',
-                    marginTop: hp('8%'),
-                  }}>
-                  Let your hair, Speak for itself
-                </Text>
-              </View>
-            </ImageBackground>
-            {/* banner 2 */}
-            {/* <View style={{paddingHorizontal: wp('8%'), marginBottom: 80}}>
-              <View style={styles.bannerOneContainer}>
-                <Image
-                  source={require('../../assets/images/homebanner2.png')}
-                  resizeMode="contain"
-                  style={{
-                    width: '100%',
-                  }}
-                />
-                <View style={styles.bannerTwoImageView}>
-                  <Image
-                    source={require('../../assets/images/banner2support.png')}
-                    resizeMode="contain"
-                    style={{
-                      width: '100%',
-                    }}
-                  />
-                </View>
-                <View
-                  style={{
-                    position: 'absolute',
-                    top: 30,
-                    left: 12,
-                  }}>
-                  <Text style={styles.bannerTwoText}>Start your</Text>
-                  <Text style={styles.bannerTwoText}>hair journey</Text>
-                  <Text
-                    style={{
-                      color: 'grey',
-                      marginTop: 10,
-                    }}>
-                    Explore stylists
-                  </Text>
-                  <Pressable>
-                    <View style={styles.bannerButton}>
-                      <Image
-                        source={require('../../assets/images/topleftarrow.png')}
-                        resizeMode="contain"
-                        style={{
-                          width: 20,
-                        }}
-                      />
-                      <Text style={styles.bannerButtonText}>START NOW</Text>
-                    </View>
-                  </Pressable>
-                </View>
-              </View>
-            </View> */}
-            <ImageBackground
-              resizeMode="contain"
-              style={{
-                height: hp('30%'),
-                width: wp('90%'),
-                alignSelf: 'center',
-              }}
-              source={require('../../assets/images/homeA.png')}>
-              <View style={{marginLeft: wp('3%')}}>
-                <Text
-                  style={{
-                    width: wp('40%'),
-                    fontWeight: '400',
-                    color: '#000',
-                    fontSize: hp('3%'),
-                    fontFamily: 'Lora-Medium',
-                    marginTop: hp('4%'),
-                  }}>
-                  Start your hair journey
-                </Text>
-                <Text
-                  style={{
-                    width: wp('40%'),
-                    fontWeight: '400',
-                    color: '#715B1D',
-                    fontSize: hp('1.8%'),
-                    fontFamily: 'Lora-Medium',
-                    marginTop: hp('2%'),
-                  }}>
-                  Explore stylists
-                </Text>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-evenly',
-                    backgroundColor: '#111649',
-                    width: wp('35%'),
-                    height: hp('5%'),
-                    alignItems: 'center',
-                    borderRadius: 10,
-                    marginTop: hp('3%'),
-                  }}>
-                  <SvgArrowUPRighSmalltIcon />
-                  <Text
-                    style={{
-                      color: '#EDBA1B',
-                      fontSize: hp('1.8%'),
-                      fontFamily: 'Lora-Medium',
-                    }}>
-                    START NOW
-                  </Text>
-                </View>
-              </View>
-            </ImageBackground>
-            {/* bottom lines */}
-            <View
-              style={{
-                paddingHorizontal: wp('8%'),
-                marginBottom: 150,
-                alignItems: 'center',
-              }}>
-              {/* <Image
-                source={require('../../assets/images/bottom_lines.png')}
-                resizeMode="contain"
-                style={{
-                  width: 40,
-                }}
-              /> */}
-              <SvgBottomLineIcon />
-            </View>
           </ScrollView>
         </ImageBackground>
       </ScrollView>

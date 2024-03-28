@@ -128,7 +128,7 @@ export const getServiceById = createAsyncThunk(
     const stateData = getState().userData;
     const token = stateData.token;
     //  return Alert.alert('hello world');
-    console.log('serviceId=-->',serviceId)
+    console.log('serviceId=-->', serviceId);
 
     let abc = await axios
       .get(`${BASE_URL}/search-by-service/${serviceId}`, {
@@ -143,7 +143,8 @@ export const getServiceById = createAsyncThunk(
         return res.data;
       })
       .catch(error => {
-        ErrorToast(error);
+        console.log('getServiceById error-=->',error)
+        // ErrorToast(error);
       });
     return abc;
   },
@@ -170,6 +171,7 @@ export const getAllServices = createAsyncThunk(
         return res.data;
       })
       .catch(error => {
+        console.log('getAllServices error-=-=>', error);
         ErrorToast(error);
       });
     // return abc;
@@ -338,8 +340,8 @@ export const StylistSlice = createSlice({
     nearbyStylists_loader: true,
     appointment_loader: false,
 
-    allServices:{},
-    serviceById:{}
+    allServices: {},
+    serviceById: {},
   },
   extraReducers: builders => {
     builders.addCase(getTopStylists.pending, state => {
