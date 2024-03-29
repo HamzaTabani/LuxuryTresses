@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ImageBackground,
   StyleSheet,
@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
   Image,
+  Alert,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -23,6 +24,9 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import {Picker} from '@react-native-picker/picker';
 import colors from '../../assets/colors';
 import images from '../../assets/images';
+import auth from '@react-native-firebase/auth';
+import messaging from '@react-native-firebase/messaging';
+import firestore from '@react-native-firebase/firestore';
 
 const cities = [
   {
@@ -73,8 +77,13 @@ const InitialProfile = ({route}) => {
   const [address, setAddress] = useState(user ? user?.address : '');
   const [selectedCity, setSelectedCity] = useState('Los Angeles');
   const [selectedState, setSelectedState] = useState('Texas');
+  const [token, setToken] = useState('');
+  const [userUId, setUserUId] = useState('');
 
   console.log('user email =========>', selectedCity);
+
+  console.log(auth().currentUser.uid);
+  console.log('token:', token);
 
   // console.log('photo uri', photoURL)
 
@@ -83,6 +92,24 @@ const InitialProfile = ({route}) => {
 
   const navigation = useNavigation();
   // console.log('asdasdasd', navigation.getState().routeNames[1])
+
+  useEffect(() => {
+    requestUserPermission();
+  }, []);
+
+  async function requestUserPermission() {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+    if (enabled) {
+      const token = await messaging().getToken();
+      console.log('dEVICE TOKEN', token);
+      const userId = auth().currentUser.uid;
+      setUserUId(userId);
+      setToken(token);
+    }
+  }
 
   const clearState = () => {
     setFirstName('');
@@ -123,19 +150,63 @@ const InitialProfile = ({route}) => {
       } else if (password.length < 8) {
         return ShowToast('Password is too short');
       } else {
-        await dispatch(
-          register({
+        console.log(
+          'all console',
+          userUId, // token,c7vRt601S4hFxb6gxpqCfUgc04A3
+          email,
+          firstname,
+          lastname,
+          phonenumber,
+          // photoURL,
+        );
+        // const userId = auth().currentUser.uid;
+        // console.log('userUId', userUId);
+        await firestore()
+          .collection('users')
+          .doc(userUId)
+          .set({
+            userUId: userUId,
+            device_token: token,
+            email: email,
             first_name: firstname,
             last_name: lastname,
             phone_number: phonenumber,
-            email: email,
-            password: password,
-            profile_pic: photoURL,
-          }),
-        );
-        clearState();
+            profile_picture: photoURL,
+          })
+          .then(res => {
+            console.log('firebase cloud res=-=>', res);
+            // ContinueRegister();
+          })
+          .catch(error => {
+            console.log('firebase cloud error=-=>', error);
+          });
+        // await dispatch(
+        //   register({
+        //     first_name: firstname,
+        //     last_name: lastname,
+        //     phone_number: phonenumber,
+        //     email: email,
+        //     password: password,
+        //     profile_pic: photoURL,
+        //   }),
+        // );
+        // clearState();
       }
     }
+  };
+
+  const ContinueRegister = async () => {
+    await dispatch(
+      register({
+        first_name: firstname,
+        last_name: lastname,
+        phone_number: phonenumber,
+        email: email,
+        password: password,
+        profile_pic: photoURL,
+      }),
+    );
+    clearState();
   };
 
   const onUploadPhoto = async () => {
@@ -181,8 +252,8 @@ const InitialProfile = ({route}) => {
           </View>
         </TouchableOpacity>
         <ScrollView
-          // contentContainerStyle={{paddingBottom: user ? hp('55%') : hp('50%')}}
-          >
+        // contentContainerStyle={{paddingBottom: user ? hp('55%') : hp('50%')}}
+        >
           <View
             style={{
               flex: 0.2,
@@ -313,7 +384,7 @@ const InitialProfile = ({route}) => {
                       <InputText
                         placeholder={'Address'}
                         // value={address}
-                        value={address != 'null' && address }
+                        value={address != 'null' && address}
                         onChangeText={text => setAddress(text)}
                         label={'Enter your address'}
                         // icon={'person-outline'}

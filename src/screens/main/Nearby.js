@@ -36,13 +36,15 @@ const Nearby = () => {
   const [imageUrls, setImageUrls] = useState([]);
   const [cardStates, setCardStates] = useState(Array().fill(false));
   const flatListRef = useRef(null);
+  const [load, setLoad] = useState(true);
   // console.log('selectKilometers: ', selectKilometers);
   const dispatch = useDispatch();
   const {nearbyStylists, nearbyStylists_loader} = useSelector(
     state => state.stylistReducer,
   );
-  console.log('nearbyStylists===>', nearbyStylists);
-  // console.log('nearbyStylists_loader===>', nearbyStylists_loader);
+  const [nearbyStylistsProfile, setNearbyStylistsProfile] = useState([]);
+  console.log('nearbyStylistsProfile===>', nearbyStylistsProfile);
+  console.log('load===>', load);
 
   const regionLat = useSelector(state => state.userData.latLng);
 
@@ -51,7 +53,7 @@ const Nearby = () => {
   const handleNearByImageError = () => {
     setNearByImageError(true);
   };
-  // console.log('defLatcd: ', regionLat);
+  console.log('currentRegion: ', currentRegion);
 
   // useEffect(() => {
   //   setCurrentregion(regionLat);
@@ -66,6 +68,10 @@ const Nearby = () => {
     getCurrentLocation();
   }, []);
 
+  // useEffect(() => {
+  //   fetchNearbyStylists
+  // }, [nearbyStylistsProfile])
+
   // const fetchNearbyStylists = async () => {
   //   await dispatch(
   //     getNearbyStylists({
@@ -73,6 +79,7 @@ const Nearby = () => {
   //       // lat: 24.8800505,
   //       long: currentRegion.longitude,
   //       // long: 67.0796143,
+  //       setNearbyStylistsProfile
   //     }),
   //   );
   // };
@@ -93,7 +100,7 @@ const Nearby = () => {
 
   const PreLoadImages = async () => {
     const urls = [];
-    for (const item of nearbyStylists) {
+    for (const item of nearbyStylistsProfile) {
       if (item.profile_pic) {
         const uri = imageUrl + item.profile_pic;
         await Image.prefetch(uri);
@@ -104,13 +111,13 @@ const Nearby = () => {
   };
   useEffect(() => {
     PreLoadImages();
-  }, [nearbyStylists]);
+  }, [nearbyStylistsProfile]);
 
   const renderMarkers = () => {
     if (!imageUrls || imageUrls.length === 0) return null;
-    return nearbyStylists.map((item, index) => {
-      console.log('render markers item=->', item);
-      console.log('imageUrls[index]=-=>', imageUrls[index]);
+    return nearbyStylistsProfile.map((item, index) => {
+      // console.log('render markers item=->', item);
+      // console.log('imageUrls[index]=-=>', imageUrls[index]);
       return (
         <Marker
           key={item.id}
@@ -121,15 +128,15 @@ const Nearby = () => {
           <Image
             source={imageUrls[index] ? {uri: imageUrls[index]} : images.profile}
             // source={
-              // nearByImageError
-              //   ? images.profile
-              //   : item.profile_pic == 'null' &&
-              //     item.profile_pic == null &&
-              //     item.profile_pic == 'undefined'
-              //   ? // &&
-              //     // item.profile_pic
-              //     images.profile
-              //   : 
+            // nearByImageError
+            //   ? images.profile
+            //   : item.profile_pic == 'null' &&
+            //     item.profile_pic == null &&
+            //     item.profile_pic == 'undefined'
+            //   ? // &&
+            //     // item.profile_pic
+            //     images.profile
+            //   :
             //     {uri: imageUrl + item.profile_pic}
             // }
             style={{
@@ -165,8 +172,11 @@ const Nearby = () => {
             // lat: 24.8800505,
             long: location.longitude,
             // long: 67.0796143,
+            setNearbyStylistsProfile,
+            setLoad,
           }),
         );
+
         // reigions(currentRegion);
         // moveToLocation(location.latitude, location.longitude);
         // console.log('location: ', location);
@@ -180,7 +190,7 @@ const Nearby = () => {
   return (
     <PageWrapper>
       <ProfileHeader username={true} />
-      {nearbyStylists_loader ? (
+      {load ? (
         <>
           <View
             style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
@@ -229,7 +239,7 @@ const Nearby = () => {
                   <View style={styles.bottomComponent}>
                     <FlatList
                       ref={flatListRef}
-                      data={nearbyStylists}
+                      data={nearbyStylistsProfile}
                       horizontal={true}
                       showsHorizontalScrollIndicator={false}
                       nestedScrollEnabled
@@ -304,7 +314,7 @@ const Nearby = () => {
               <View style={styles.bottomComponent}>
                 <FlatList
                   ref={flatListRef}
-                  data={nearbyStylists}
+                  data={nearbyStylistsProfile}
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}
                   nestedScrollEnabled

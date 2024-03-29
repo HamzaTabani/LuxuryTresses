@@ -91,6 +91,7 @@ const Cart = () => {
                         product: item?.product,
                         order: item?.order,
                         completedOrders: item,
+                        reorderButton:true
                       })
                     }
                     productImg={item?.product?.product_image}

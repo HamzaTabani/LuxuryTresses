@@ -36,6 +36,7 @@ const OrderHistory = ({route}) => {
   const orderData = route?.params?.order;
   const completedOrdersData = route?.params?.completedOrders;
   const reorder = route?.params?.reorder;
+  const reorderButton = route?.params?.reorderButton;
   const {pic_baseUrl} = useSelector(state => state.ecommerceReducer);
   const {pic_url} = useSelector(state => state.userData);
   // const [rating, setRating] = useState('');
@@ -48,8 +49,9 @@ const OrderHistory = ({route}) => {
   const handleImageError = () => {
     setImageError(true);
   };
-  console.log('reorder: ', reorder);
-  console.log('productData data==>', productData);
+  console.log('reorderButton=-=>', reorderButton);
+  // console.log('reorder: ', reorder);
+  // console.log('productData data==>', productData);
 
   // console.log('routess',navigation.getState().routeNames)
   // console.log('orderData data==>', orderData);
@@ -248,8 +250,7 @@ const OrderHistory = ({route}) => {
             </TouchableOpacity>
           </View>
         </View>
-
-        {reorder ? (
+        {reorderButton ? null : reorder ? (
           <OutlineButton
             title={'Add to cart'}
             onPress={() =>

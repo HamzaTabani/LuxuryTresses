@@ -143,7 +143,7 @@ export const getServiceById = createAsyncThunk(
         return res.data;
       })
       .catch(error => {
-        console.log('getServiceById error-=->',error)
+        console.log('getServiceById error-=->', error);
         // ErrorToast(error);
       });
     return abc;
@@ -226,7 +226,7 @@ export const trendingStylists = createAsyncThunk(
 
 export const getNearbyStylists = createAsyncThunk(
   'nearbyStylists',
-  async ({lat, long}, {getState}) => {
+  async ({lat, long, setNearbyStylistsProfile, setLoad}, {getState}) => {
     const stateData = getState().userData;
     const token = stateData.token;
 
@@ -241,6 +241,8 @@ export const getNearbyStylists = createAsyncThunk(
       })
       .then(res => {
         console.log('nearbyStylists res ============>', res.data);
+        setNearbyStylistsProfile(res.data.data);
+        setLoad(false);
         return res.data;
       })
       .catch(error => {
