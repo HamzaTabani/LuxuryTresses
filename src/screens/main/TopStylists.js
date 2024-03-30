@@ -102,6 +102,7 @@ const TopStylists = () => {
   };
 
   const renderData = ({item}) => {
+    console.log('itemitemitem',item)
     return (
       <TouchableOpacity
         style={{marginBottom: 30}}
@@ -110,7 +111,7 @@ const TopStylists = () => {
         onPress={() => onStylistDetail(item)}>
         <Card
           allTopStylist={true}
-          rating={3}
+          rating={item.average_rating}
           stylist_name={item.first_name + item.last_name}
           stylist_email={
             item.address != 'null' &&

@@ -6,7 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import colors from '../assets/colors';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Arrow from 'react-native-vector-icons/SimpleLineIcons';
@@ -104,23 +104,25 @@ const StylistInfo = ({
             </View>
           </View>
         </View>
-        <View style={styles.ratingView}>
-          <View style={styles.ratingStyle}>
-            <Progress.Circle
-              progress={rating != null ? rating / 5 : 3.5 / 5}
-              color={colors.lightgreen}
-              size={40}
-              style={{marginTop: hp('0.5%')}}
-              borderColor="transparent"
-            />
-            <View style={styles.imageWrapper}>
-              <SvgCardPopularIcon />
+        {rating != null ? (
+          <View style={styles.ratingView}>
+            <View style={styles.ratingStyle}>
+              <Progress.Circle
+                progress={rating / 5}
+                color={colors.lightgreen}
+                size={40}
+                style={{marginTop: hp('0.5%')}}
+                borderColor="transparent"
+              />
+              <View style={styles.imageWrapper}>
+                <SvgCardPopularIcon />
+              </View>
             </View>
+            <Text style={{color: colors.white, marginTop: hp('0.4%')}}>
+              {rating} rating
+            </Text>
           </View>
-          <Text style={{color: colors.white, marginTop: hp('0.4%')}}>
-            {rating != null ? rating : 3.5} rating
-          </Text>
-        </View>
+        ) : null}
       </View>
       {isActive && (
         <>
@@ -229,6 +231,7 @@ const styles = StyleSheet.create({
     borderColor: colors.white,
     padding: hp('1%'),
     alignItems: 'center',
+    // backgroundColor:'red'
   },
   ratingStyle: {
     backgroundColor: colors.white,

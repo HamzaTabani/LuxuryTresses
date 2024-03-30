@@ -179,9 +179,7 @@ const Recents = () => {
                           ? item.address
                           : 'address'
                       }
-                      ratings={
-                        item.average_rating != null ? item.average_rating : 3
-                      }
+                      ratings={item.average_rating}
                       serviceIcon={item.service}
                       productIcon={item.product}
                     />
@@ -228,9 +226,7 @@ const Recents = () => {
                           ? item.address
                           : 'address'
                       }
-                      ratings={
-                        item.average_rating != null ? item.average_rating : 3
-                      }
+                      ratings={item.average_rating}
                       serviceIcon={item.service}
                       productIcon={item.product}
                     />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {Text, StyleSheet, View, Image, TouchableOpacity} from 'react-native';
 import * as Progress from 'react-native-progress';
 import images from '../assets/images';
@@ -7,7 +7,7 @@ import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {useNavigation} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import {SvgCardPopularIcon} from './SvgImages';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 
 const UserDetailCard = ({username, email, image, rating}) => {
   const navigation = useNavigation();
@@ -36,12 +36,10 @@ const UserDetailCard = ({username, email, image, rating}) => {
           <FastImage
             source={
               imageError
-              ? images.profile
-              : image == 'null' &&
-                image == null &&
-                image == 'undefined'
-              ? images.profile
-              : {uri: pic_url + image}  
+                ? images.profile
+                : image == 'null' && image == null && image == 'undefined'
+                ? images.profile
+                : {uri: pic_url + image}
               // {uri: pic_url +image}
             }
             resizeMode={FastImage.resizeMode.cover}
@@ -63,41 +61,43 @@ const UserDetailCard = ({username, email, image, rating}) => {
           </Text>
         </View>
       </View>
-      <View
-        style={{
-          backgroundColor: '#C78914',
-          margin: 3,
-          paddingHorizontal: 10,
-          padding: 3,
-          borderRadius: 10,
-          borderWidth: 1,
-          borderColor: '#fff',
-          alignItems:'center'
-        }}>
+      {rating != null ? (
         <View
-          style={styles.ratingCard}
-          // activeOpacity={0.9}
-          // onPress={() => navigation.navigate('Reviews')}
-        >
-          <Progress.Circle
-            progress={rating / 5}
-            color={colors.lightgreen}
-            size={38}
-            borderColor="transparent"
-            style={{marginLeft: 1, marginTop: 1}}
-          />
-          <View style={styles.imageWrapper}>
-            {/* <Image
+          style={{
+            backgroundColor: '#C78914',
+            margin: 3,
+            paddingHorizontal: 10,
+            padding: 3,
+            borderRadius: 10,
+            borderWidth: 1,
+            borderColor: '#fff',
+            alignItems: 'center',
+          }}>
+          <View
+            style={styles.ratingCard}
+            // activeOpacity={0.9}
+            // onPress={() => navigation.navigate('Reviews')}
+          >
+            <Progress.Circle
+              progress={rating / 5}
+              color={colors.lightgreen}
+              size={38}
+              borderColor="transparent"
+              style={{marginLeft: 1, marginTop: 1}}
+            />
+            <View style={styles.imageWrapper}>
+              {/* <Image
               source={images.star}
               style={{height: hp('2%'), width: hp('2%')}}
             /> */}
-            <SvgCardPopularIcon />
+              <SvgCardPopularIcon />
+            </View>
           </View>
+          <Text style={{fontSize: hp('1.2%'), color: '#fff'}}>
+            {rating} Rating
+          </Text>
         </View>
-        <Text style={{fontSize: hp('1.2%'), color: '#fff'}}>
-          {rating} Rating
-        </Text>
-      </View>
+      ) : null}
     </View>
   );
 };
