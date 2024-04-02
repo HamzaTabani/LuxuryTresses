@@ -5,6 +5,7 @@ import {
   View,
   FlatList,
   Text,
+  Alert,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import PageWrapper from '../../components/PageWrapper';
@@ -24,12 +25,19 @@ import {Picker} from '@react-native-picker/picker';
 import images from '../../assets/images';
 import StylistInfo from '../../components/StylistInfo';
 import {useDispatch, useSelector} from 'react-redux';
-import {getNearbyStylists} from '../../redux/slices/StylistSlice';
+import {
+  getAllServices,
+  getNearbyStylists,
+} from '../../redux/slices/StylistSlice';
 import GetLocation from 'react-native-get-location';
 import {requestLocationPermission} from '../../utils';
 import Loader from '../../components/Loader';
+import ServiceDropdown from '../../components/ServiceDropdown';
+import {useIsFocused} from '@react-navigation/native';
 
 const Nearby = () => {
+  const focused = useIsFocused();
+  const mapRef = useRef(null);
   const [changeTab, setChangeTab] = useState(1);
   const [selectKilometers, setSelectKilometers] = useState('');
   const [currentRegion, setCurrentregion] = useState(null);
@@ -37,16 +45,44 @@ const Nearby = () => {
   const [cardStates, setCardStates] = useState(Array().fill(false));
   const flatListRef = useRef(null);
   const [load, setLoad] = useState(true);
+  const [filterActive, setFilterActive] = useState(false);
   // console.log('selectKilometers: ', selectKilometers);
   const dispatch = useDispatch();
   const {nearbyStylists, nearbyStylists_loader} = useSelector(
     state => state.stylistReducer,
   );
   const [nearbyStylistsProfile, setNearbyStylistsProfile] = useState([]);
+  const [stylistServices, setStylistServices] = useState([]);
+  const [serviceId, setServiceId] = useState(null);
+  const [serviceLabel, setServiceLabel] = useState('');
   console.log('nearbyStylistsProfile===>', nearbyStylistsProfile);
-  console.log('load===>', load);
+  // console.log('load===>', load);
+  // console.log('stylistServices0-0-0-0-', stylistServices);
+  // console.log('serviceId0-0-0-', serviceId);
+  // console.log('serviceLabel0-0-0-', serviceLabel);
+
+  const handleServiceId = data => {
+    // console.log('data=--==>', data);
+    // if (data != null && data != undefined) {
+    //   console.log('data53483=--==>', data);
+    // setServiceId(data != null ? data[0].value : '0');
+    setServiceId(data.value);
+    // const label = data.label.replace(/^\s+/, '');
+    // setServiceLabel(data != null ? data[0].label : 'Stylist');
+    setServiceLabel(
+      data.label != undefined && data.label != null
+        ? data.label.replace(/^\s+/, '')
+        : null,
+    );
+    // } else {
+    //   setServiceId('');
+    //   setServiceLabel('');
+    // }
+  };
 
   const regionLat = useSelector(state => state.userData.latLng);
+
+  console.log('regionLat=-=>', regionLat);
 
   const [nearByImageError, setNearByImageError] = useState(false);
 
@@ -65,8 +101,48 @@ const Nearby = () => {
   let circleRadius = 1500;
 
   useEffect(() => {
-    getCurrentLocation();
-  }, []);
+    getAllStylistProfileServices();
+  }, [serviceId]);
+
+  useEffect(() => {
+    if (regionLat != null) {
+      // Alert.alert('abcds')
+      getLatLngState();
+      setLoad(true);
+      setTimeout(() => {
+        setLoad(false);
+      }, 1000);
+    } else {
+      getCurrentLocation();
+    }
+  }, [regionLat]);
+
+  const getLatLngState = async () => {
+    const data = {
+      latitude: regionLat.latitude,
+      longitude: regionLat.longitude,
+      latitudeDelta: 0.06,
+      longitudeDelta: 0.008 * (15 / 20),
+    };
+    // Alert.alert('dffdhbg');
+    setCurrentregion(data);
+    await dispatch(
+      getNearbyStylists({
+        lat: regionLat.latitude,
+        // lat: 24.8800505,
+        long: regionLat.longitude,
+        // long: 67.0796143,
+        serviceId: serviceId,
+        setNearbyStylistsProfile,
+        setLoad,
+      }),
+    );
+  };
+
+  const getAllStylistProfileServices = async () => {
+    await dispatch(getAllServices(setStylistServices));
+    setLoad(false);
+  };
 
   // useEffect(() => {
   //   fetchNearbyStylists
@@ -83,6 +159,18 @@ const Nearby = () => {
   //     }),
   //   );
   // };
+
+  function moveToLocation(latitude, longitude) {
+    mapRef.current?.animateToRegion(
+      {
+        latitude,
+        longitude,
+        latitudeDelta: 0.06,
+        longitudeDelta: 0.008 * (15 / 20),
+      },
+      2000,
+    );
+  }
 
   const onIconPress = index => {
     flatListRef.current.setNativeProps({scrollEnabled: true});
@@ -165,6 +253,7 @@ const Nearby = () => {
           latitudeDelta: 0.06,
           longitudeDelta: 0.008 * (15 / 20),
         };
+        moveToLocation(location.latitude, location.longitude);
         setCurrentregion(data);
         await dispatch(
           getNearbyStylists({
@@ -172,10 +261,22 @@ const Nearby = () => {
             // lat: 24.8800505,
             long: location.longitude,
             // long: 67.0796143,
+            serviceId: serviceId,
             setNearbyStylistsProfile,
             setLoad,
           }),
         );
+        // await dispatch(
+        //   getNearbyStylists({
+        //     lat: location.latitude,
+        //     // lat: 24.8800505,
+        //     long: location.longitude,
+        //     // long: 67.0796143,
+        //     serviceId: serviceId,
+        //     setNearbyStylistsProfile,
+        //     setLoad,
+        //   }),
+        // );
 
         // reigions(currentRegion);
         // moveToLocation(location.latitude, location.longitude);
@@ -189,7 +290,13 @@ const Nearby = () => {
 
   return (
     <PageWrapper>
-      <ProfileHeader username={true} />
+      <ProfileHeader
+        username={true}
+        filter={true}
+        filterActive={filterActive}
+        setFilterActive={setFilterActive}
+        // text={serviceLabel ? 'Nearby ' + serviceLabel : 'Nearby stylists'}
+      />
       {load ? (
         <>
           <View
@@ -198,101 +305,109 @@ const Nearby = () => {
           </View>
         </>
       ) : (
-        <View style={styles.screen}>
-          <View style={styles.mapContainer}>
-            {
-              currentRegion != null ? (
-                <>
-                  <MapView
-                    initialRegion={currentRegion}
-                    mapType="terrain"
-                    style={styles.mapStyle}>
-                    {renderMarkers()}
-                    <Circle
-                      center={currentRegion}
-                      radius={circleRadius}
-                      strokeWidth={0.5}
-                      fillColor="rgba(239, 229, 204, 0.3)"
-                      strokeColor={colors.orange}
-                    />
-                  </MapView>
-                  <View style={styles.topComponent}>
-                    <View style={styles.pickerStyle}>
-                      <Picker
-                        selectedValue={selectKilometers}
-                        dropdownIconColor={colors.orange}
-                        dropdownIconRippleColor={colors.orange}
-                        onValueChange={itemValue =>
-                          setSelectKilometers(itemValue)
-                        }>
-                        {kilometers.map(item => (
-                          <Picker.Item
-                            key={item.id}
-                            label={item.text}
-                            value={item.text}
-                            style={{color: colors.black}}
-                          />
-                        ))}
-                      </Picker>
+        <View style={{flex: 1}}>
+          {filterActive ? (
+            <View style={styles.topComponent}>
+              {/* <View style={styles.pickerStyle}>
+                  <Picker
+                    selectedValue={selectKilometers}
+                    dropdownIconColor={colors.orange}
+                    dropdownIconRippleColor={colors.orange}
+                    onValueChange={itemValue =>
+                      setSelectKilometers(itemValue)
+                    }>
+                    {kilometers.map(item => (
+                      <Picker.Item
+                        key={item.id}
+                        label={item.text}
+                        value={item.text}
+                        style={{color: colors.black}}
+                      />
+                    ))}
+                  </Picker>
+                </View> */}
+              <ServiceDropdown
+                services={stylistServices}
+                serviceValue={handleServiceId}
+              />
+            </View>
+          ) : null}
+          <View style={styles.screen}>
+            <View style={styles.mapContainer}>
+              {
+                currentRegion != null ? (
+                  <>
+                    <MapView
+                      ref={mapRef}
+                      initialRegion={currentRegion}
+                      mapType="terrain"
+                      style={styles.mapStyle}>
+                      {renderMarkers()}
+                      <Circle
+                        center={currentRegion}
+                        radius={circleRadius}
+                        strokeWidth={0.5}
+                        fillColor="rgba(239, 229, 204, 0.3)"
+                        strokeColor={colors.orange}
+                      />
+                    </MapView>
+                    <View style={styles.bottomComponent}>
+                      <FlatList
+                        ref={flatListRef}
+                        data={nearbyStylistsProfile}
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}
+                        nestedScrollEnabled
+                        // pagingEnabled={true}
+                        renderItem={({item, index}) => {
+                          // console.log('itemitem534=-=-=->', item);
+                          return (
+                            <StylistInfo
+                              image={item.profile_pic}
+                              isActive={cardStates[index]}
+                              onArrowPress={() => onIconPress(index)}
+                              flatListRef={flatListRef}
+                              name={item.first_name + item.last_name}
+                              address={item.address}
+                              distance={item.distance}
+                              description={item.about}
+                              rating={item.average_rating}
+                              serviceIcon={item.service}
+                              productIcon={item.product}
+                              profileId={item.id}
+                            />
+                          );
+                        }}
+                      />
                     </View>
-                  </View>
-                  <View style={styles.bottomComponent}>
-                    <FlatList
-                      ref={flatListRef}
-                      data={nearbyStylistsProfile}
-                      horizontal={true}
-                      showsHorizontalScrollIndicator={false}
-                      nestedScrollEnabled
-                      // pagingEnabled={true}
-                      renderItem={({item, index}) => {
-                        // console.log('itemitem534=-=-=->', item);
-                        return (
-                          <StylistInfo
-                            image={item.profile_pic}
-                            isActive={cardStates[index]}
-                            onArrowPress={() => onIconPress(index)}
-                            flatListRef={flatListRef}
-                            name={item.first_name + item.last_name}
-                            address={item.address}
-                            distance={item.distance}
-                            description={item.about}
-                            rating={item.average_rating}
-                            serviceIcon={item.service}
-                            productIcon={item.product}
-                            profileId={item.id}
-                          />
-                        );
-                      }}
-                    />
-                  </View>
-                </>
-              ) : null
-              // <Text
-              //   style={{
-              //     color: 'white',
-              //     backgroundColor: 'red',
-              //     alignSelf: 'center',
-              //   }}>
-              //   abc
-              // </Text>
-              // <Text>abc</Text>
-              // <TouchableOpacity onPress={() => requestLocationPermission()}>
-              //   <Text
-              //     style={{
-              //       color: 'white',
-              //       // backgroundColor: 'red',
-              //       alignSelf: 'center',
-              //     }}>
-              //     Allow Location
-              //   </Text>
-              // </TouchableOpacity>
-              // <MapView
-              //   initialRegion={currentRegion}
-              //   mapType="terrain"
-              //   style={styles.mapStyle}
-              // />
-            }
-            {/* <View style={styles.topComponent}>
+                  </>
+                ) : null
+                // <Text
+                //   style={{
+                //     color: 'white',
+                //     backgroundColor: 'red',
+                //     alignSelf: 'center',
+                //   }}>
+                //   abc
+                // </Text>
+                // <Text>abc</Text>
+                // <TouchableOpacity onPress={() => requestLocationPermission()}>
+                //   <Text
+                //     style={{
+                //       color: 'white',
+                //       // backgroundColor: 'red',
+                //       alignSelf: 'center',
+                //     }}>
+                //     Allow Location
+                //   </Text>
+                // </TouchableOpacity>
+                // <MapView
+                //   initialRegion={currentRegion}
+                //   mapType="terrain"
+                //   style={styles.mapStyle}
+                // />
+              }
+              {/* <View style={styles.topComponent}>
               <View style={styles.pickerStyle}>
                 <Picker
                   selectedValue={selectKilometers}
@@ -310,7 +425,7 @@ const Nearby = () => {
                 </Picker>
               </View>
             </View> */}
-            {/* {currentRegion != null ? (
+              {/* {currentRegion != null ? (
               <View style={styles.bottomComponent}>
                 <FlatList
                   ref={flatListRef}
@@ -337,6 +452,7 @@ const Nearby = () => {
                 />
               </View>
             ) : null} */}
+            </View>
           </View>
         </View>
         // <Text style={{color:'white',backgroundColor:'red',alignSelf:'center'}}>abc</Text>
@@ -353,23 +469,29 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     overflow: 'hidden',
+    // backgroundColor:'red'
   },
   mapContainer: {
     flex: 1,
   },
   mapStyle: {
     flex: 1,
+    // borderTopLeftRadius: 20,
+    // borderTopRightRadius: 20,
   },
   topComponent: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 10,
-    paddingTop: 10,
+    // position: 'absolute',
+    // top: 0,
+    left: 5,
+    // right: 0,
+    // zIndex: 1,
+    // alignSelf: 'center',
+    // flexDirection: 'row',
+    // justifyContent: 'space-between',
+    // marginHorizontal: 20,
+    // paddingTop: 10,
+    // backgroundColor: 'transparent',
+    // paddingBottom:50
   },
   bottomComponent: {
     position: 'absolute',

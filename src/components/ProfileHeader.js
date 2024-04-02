@@ -64,7 +64,7 @@ const ProfileHeader = ({
             name="options-outline"
             type="Ionicons"
             color="#fff"
-            size={30}
+            size={25}
             onPress={() => handleFilter()}
           />
         </View>

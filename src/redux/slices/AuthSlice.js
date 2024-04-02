@@ -398,7 +398,7 @@ export const authState = createSlice({
     });
     builder.addCase(postLatLng.fulfilled, (state, action) => {
       (state.latLng_loading = false),(state.latLng = action.payload);
-      // console.log('action.payload', action.payload);
+      console.log('action.payload', action.payload);
     });
   },
 });
