@@ -56,9 +56,9 @@ const Nearby = () => {
   const [serviceId, setServiceId] = useState(null);
   const [serviceLabel, setServiceLabel] = useState('');
   const [delayedEmpty, setDelayedEmpty] = useState(true);
-  console.log('nearbyStylistsProfile===>', nearbyStylistsProfile);
+  // console.log('nearbyStylistsProfile===>', nearbyStylistsProfile);
 
-  console.log('delayedEmpty-=-=->', delayedEmpty);
+  // console.log('delayedEmpty-=-=->', delayedEmpty);
 
   // useEffect(() => {
   // //   // Delay rendering of empty component
@@ -77,14 +77,14 @@ const Nearby = () => {
   // //   // }
   // }, [nearbyStylistsProfile]);
 
-  console.log('load===>', load);
+  // console.log('load===>', load);
   // console.log('stylistServices0-0-0-0-', stylistServices);
-  console.log('serviceId0-0-0-', serviceId);
+  // console.log('serviceId0-0-0-', serviceId);
 
   // console.log('serviceLabel0-0-0-', serviceLabel);
 
   const handleServiceId = data => {
-    console.log('data=--==>', data);
+    // console.log('data=--==>', data);
     // if (data != null && data != undefined) {
     //   console.log('data53483=--==>', data);
     // setServiceId(data != null ? data[0].value : '0');
@@ -108,12 +108,12 @@ const Nearby = () => {
 
   const regionLat = useSelector(state => state.userData.latLng);
 
-  console.log(
-    'nearbyStylistsProfile.length-0-0-OUTSIDE----',
-    nearbyStylistsProfile.length,
-  );
+  // console.log(
+  //   'nearbyStylistsProfile.length-0-0-OUTSIDE----',
+  //   nearbyStylistsProfile.length,
+  // );
 
-  console.log('regionLat=-=>', regionLat);
+  // console.log('regionLat=-=>', regionLat);
 
   // const [nearByImageError, setNearByImageError] = useState(false);
 
@@ -321,17 +321,24 @@ const Nearby = () => {
 
   const emptyData = () => {
     // const delayTimeout =
-    setTimeout(() => {
-      // return ShowToast('No stylist found!');
-      if (nearbyStylistsProfile.length < 1) {
-        console.log(
-          'nearbyStylistsProfile.length-0-0-',
-          nearbyStylistsProfile.length,
-        );
-        return ShowToast('No stylist found!');
-      }
-    }, 4000);
+    // setTimeout(() => {
+    //   // return ShowToast('No stylist found!');
+    //   if (nearbyStylistsProfile.length < 1) {
+    //     console.log(
+    //       'nearbyStylistsProfile.length-0-0-',
+    //       nearbyStylistsProfile.length,
+    //     );
+    //     return ShowToast('No stylist found!');
+    //   }
+    // }, 4000);
     // clearTimeout(delayTimeout);
+    return (
+      <View style={{width: hp(51)}}>
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyText}>No Stylist Found!</Text>
+        </View>
+      </View>
+    );
   };
 
   return (
@@ -575,6 +582,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     width: '100%',
     backgroundColor: 'transparent',
+    // backgroundColor: 'red',
     // paddingHorizontal:50
   },
   tabView: {
@@ -611,5 +619,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 30,
     // marginTop:10
+  },
+  emptyContainer: {
+    backgroundColor: '#D49621',
+    width: hp(45),
+    height: hp(5),
+    borderRadius: 10,
+    // marginHorizontal:hp(3),
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf:'center'
+    // marginLeft:hp(3)
+  },
+  emptyText: {
+    color: colors.white,
+    fontSize: hp(2),
+    fontWeight: 'bold',
   },
 });

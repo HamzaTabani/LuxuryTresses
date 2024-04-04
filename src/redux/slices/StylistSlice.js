@@ -240,7 +240,7 @@ export const getNearbyStylists = createAsyncThunk(
       abc = `near-by-stylists?latitude=${lat}&longitude=${long}`
     }
 
-    console.log('abc-=-',abc)
+    // console.log('abc-=-',abc)
     return await axios
       .get(
         `${BASE_URL}/${abc}`,
@@ -440,7 +440,7 @@ export const StylistSlice = createSlice({
     builders.addCase(getNearbyStylists.fulfilled, (state, action) => {
       state.nearbyStylists_loader = false;
       state.nearbyStylists = action.payload.data;
-      console.log('redux state', action.payload.data);
+      // console.log('redux state', action.payload.data);
     });
     builders.addCase(Appointment.pending, state => {
       state.appointment_loader = true;

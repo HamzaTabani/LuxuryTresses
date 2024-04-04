@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     fontSize: hp('2%'),
     fontWeight: 'bold',
     // backgroundColor:'red',
-    width: hp('13'),
+    width: hp('12'),
   },
   textWrapper: {
     marginLeft: hp('2%'),
@@ -206,6 +206,8 @@ const styles = StyleSheet.create({
     height: hp('3.5%'),
     borderRadius: 50,
     width: hp('3.5%'),
+    justifyContent:'center',
+    alignItems:'center'
   },
   imageWrapper: {
     position: 'absolute',

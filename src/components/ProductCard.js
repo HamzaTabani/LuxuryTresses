@@ -32,6 +32,7 @@ const ProductCard = ({
   title,
   productImage,
   productFromdetail,
+  // rating,
 }) => {
   const navigation = useNavigation();
   const progress = useRef(new Animated.Value(0)).current;
@@ -139,7 +140,7 @@ const ProductCard = ({
         ) : null}
 
         {/* rating icon */}
-        {!product && (
+        {!product && rating != null ? (
           // <View
           //   style={{
           //     height: 40,
@@ -179,9 +180,10 @@ const ProductCard = ({
           //     />
           //   </Svg>
           // </View>
+
           <View style={styles.progressView}>
             <Progress.Circle
-              progress={0.7}
+              progress={rating / 5}
               color={colors.lightgreen}
               size={40.5}
               style={{marginTop: hp('0.5%')}}
@@ -191,7 +193,7 @@ const ProductCard = ({
               <SvgCardPopularIcon />
             </View>
           </View>
-        )}
+        ) : null}
       </View>
       <View
         style={{
@@ -307,10 +309,11 @@ const styles = StyleSheet.create({
     color: '#fff',
     // marginBottom: hp('0.5%'),
     fontWeight: 'bold',
-    // backgroundColor: 'red',
+    width: hp(12),
   },
   text: {
     color: '#f6f6f6',
+    width: hp(12),
   },
   productImage: {
     height: hp('22%'),

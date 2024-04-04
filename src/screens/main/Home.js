@@ -283,7 +283,7 @@ const Home = ({navigation}) => {
                                 productName={item.product_name}
                                 price={item.regular_price}
                                 avatar={item?.user.profile_pic}
-                                rating={3}
+                                rating={item?.average_rating}
                                 productImage={item.product_image}
                                 productFromdetail={true}
                               />

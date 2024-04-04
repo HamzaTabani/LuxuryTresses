@@ -24,7 +24,7 @@ const RecentProducts = ({route}) => {
           data={recentProducts}
           keyExtractor={item => item.id}
           renderItem={({item}) => {
-            // console.log('recent product123: ', item.id);
+            // console.log('recent product123: ', item.average_rating);
             return (
               <TouchableOpacity
                 activeOpacity={0.9}
@@ -35,7 +35,7 @@ const RecentProducts = ({route}) => {
                 }
                 style={{marginBottom: hp('2%')}}>
                 <ProductCard
-                  rating={3}
+                  rating={item.average_rating}
                   username={item?.user.first_name + item?.user.last_name}
                   productName={item?.product_name}
                   price={item.regular_price}

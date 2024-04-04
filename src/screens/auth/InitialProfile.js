@@ -83,7 +83,7 @@ const InitialProfile = ({route}) => {
 
   console.log('user email =========>', selectedCity);
 
-  console.log(auth().currentUser.uid);
+  // console.log(auth().currentUser.uid);
   console.log('token:', token);
 
   // console.log('photo uri', photoURL)

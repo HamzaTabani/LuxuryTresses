@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
     position: 'relative',
+    // backgroundColor:'red'
   },
   search_box: {
     padding: hp('1.55%'),
