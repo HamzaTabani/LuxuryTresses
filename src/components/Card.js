@@ -25,15 +25,15 @@ const Card = ({
   const progress = useRef(new Animated.Value(0)).current;
   const navigation = useNavigation();
 
-  useEffect(() => {
-    const ratingToProgress = rating / 5;
-    Animated.timing(progress, {
-      toValue: ratingToProgress,
-      duration: 1000,
-      easing: Easing.linear,
-      useNativeDriver: true,
-    }).start();
-  }, [rating]);
+  // useEffect(() => {
+  //   const ratingToProgress = rating / 5;
+  //   Animated.timing(progress, {
+  //     toValue: ratingToProgress,
+  //     duration: 1000,
+  //     easing: Easing.linear,
+  //     useNativeDriver: true,
+  //   }).start();
+  // }, [rating]);
 
   const {user, pic_url, latLng} = useSelector(state => state.userData);
 
@@ -43,7 +43,7 @@ const Card = ({
     inputRange: [0, 1],
     outputRange: [circumference, 0],
   });
-
+  // console.log('rating-=->', rating);
   const [stylistProfileImageError, setStylistProfileImageError] =
     useState(false);
 
@@ -57,6 +57,7 @@ const Card = ({
       <View style={styles.card_box_img}>
         <Image
           // source={image}
+          
           source={
             stylistProfileImageError
               ? images.profile
@@ -64,7 +65,7 @@ const Card = ({
               ? images.profile
               : {uri: pic_url + image}
           }
-          resizeMode="cover"
+          resizeMode="contain"
           borderRadius={10}
           style={{width: hp('20%'), height: hp('22%')}}
           onError={handleStylistProfileImageError}
@@ -83,18 +84,20 @@ const Card = ({
           ) : null}
         </View>
         {/* rating icon */}
-        <View style={styles.progressView}>
-          <Progress.Circle
-            progress={rating / 5}
-            color={colors.lightgreen}
-            size={40.5}
-            style={{marginTop: hp('0.5%')}}
-            borderColor="transparent"
-          />
-          <View style={styles.imageWrapper}>
-            <SvgCardPopularIcon />
+        {rating != null ? (
+          <View style={styles.progressView}>
+            <Progress.Circle
+              progress={rating / 5}
+              color={colors.lightgreen}
+              size={40.5}
+              style={{marginTop: hp('0.5%')}}
+              borderColor="transparent"
+            />
+            <View style={styles.imageWrapper}>
+              <SvgCardPopularIcon />
+            </View>
           </View>
-        </View>
+        ) : null}
       </View>
       {allTopStylist ? (
         <View
@@ -103,7 +106,7 @@ const Card = ({
             left: hp('2%'),
             top: hp('19%'),
             position: 'absolute',
-            width: hp('13%'),
+            width: hp('11%'),
           }}>
           <Text style={{color: '#fff', fontWeight: 'bold'}}>
             {stylist_name}
@@ -116,6 +119,7 @@ const Card = ({
         <View
           style={{
             paddingTop: hp('4%'),
+            // width: hp('13%'),
           }}>
           <Text style={{color: '#fff', fontWeight: 'bold'}}>
             {stylist_name}
@@ -134,7 +138,7 @@ export default Card;
 const styles = StyleSheet.create({
   card_box: {
     width: 170,
-    height: 240,
+    height: 250,
     backgroundColor: '#D49621',
     borderRadius: 15,
     alignItems: 'center',

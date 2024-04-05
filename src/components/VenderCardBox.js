@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {Text, StyleSheet, View, Image, Pressable} from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  View,
+  Image,
+  Pressable,
+  TouchableOpacity,
+} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -70,7 +77,13 @@ const VenderCardBox = ({
           width: '70%',
         }}>
         {/* vender image */}
-        <View style={styles.cardImage}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('ProfileDetail', {
+              profile_id: itemId,
+            })
+          }
+          style={styles.cardImage}>
           <Image
             source={
               imageError
@@ -84,7 +97,7 @@ const VenderCardBox = ({
             resizeMode="contain"
             onError={handleImageError}
           />
-        </View>
+        </TouchableOpacity>
         {/* vender details */}
         <View
           style={{
@@ -116,28 +129,44 @@ const VenderCardBox = ({
 
       {/* vender contact and ratings*/}
       <View style={{justifyContent: 'space-between'}}>
-        <Pressable
-          // activeOpacity={0.9}
-          // key={itemData?.id}
-          onPress={() =>
-            navigation.navigate('Reviews', {
-              name,
-              email,
-              img,
-              id: itemId,
-              ratings,
-            })
-          }
-          // onPress={() => console.log('itemData.id-->', itemData.id)}
-          style={styles.ratingButton}>
-          <View>
-            <RatingIcon rating={ratings} w={30} h={30} r={10} />
-          </View>
-          <Text style={{color: '#fff', fontSize: hp('1.2%')}}>
-            {ratings} Rating
-          </Text>
-        </Pressable>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        {ratings != null ? (
+          <Pressable
+            // activeOpacity={0.9}
+            // key={itemData?.id}
+            onPress={() =>
+              navigation.navigate('Reviews', {
+                name,
+                email,
+                img,
+                id: itemId,
+                ratings,
+              })
+            }
+            // onPress={() => console.log('itemData.id-->', itemData.id)}
+            style={styles.ratingButton}>
+            <View>
+              <RatingIcon rating={ratings} w={30} h={30} r={10} />
+            </View>
+            <Text style={{color: '#fff', fontSize: hp('1.2%')}}>
+              {ratings} Rating
+            </Text>
+          </Pressable>
+        ) : null}
+        {/* <View
+          style={
+            ratings == null
+              ? {
+                  marginTop: hp(6),
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  // backgroundColor:'red',
+                  width: hp(12),
+                }
+              : {
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                }
+          }>
           <Pressable>
             <View
               style={{
@@ -174,7 +203,7 @@ const VenderCardBox = ({
               />
             </View>
           </Pressable>
-        </View>
+        </View> */}
       </View>
     </View>
   );

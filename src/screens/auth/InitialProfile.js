@@ -27,6 +27,8 @@ import images from '../../assets/images';
 import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
 import firestore from '@react-native-firebase/firestore';
+import uuid from 'react-native-uuid';
+import Back from 'react-native-vector-icons/Ionicons';
 
 const cities = [
   {
@@ -82,7 +84,7 @@ const InitialProfile = ({route}) => {
 
   console.log('user email =========>', selectedCity);
 
-  console.log(auth().currentUser.uid);
+  // console.log(auth().currentUser.uid);
   console.log('token:', token);
 
   // console.log('photo uri', photoURL)
@@ -105,7 +107,7 @@ const InitialProfile = ({route}) => {
     if (enabled) {
       const token = await messaging().getToken();
       console.log('dEVICE TOKEN', token);
-      const userId = auth().currentUser.uid;
+      const userId = uuid.v4();
       setUserUId(userId);
       setToken(token);
     }
@@ -152,7 +154,8 @@ const InitialProfile = ({route}) => {
       } else {
         console.log(
           'all console',
-          userUId, // token,c7vRt601S4hFxb6gxpqCfUgc04A3
+          token,
+          userUId,
           email,
           firstname,
           lastname,
@@ -174,8 +177,8 @@ const InitialProfile = ({route}) => {
             profile_picture: photoURL,
           })
           .then(res => {
-            console.log('firebase cloud res=-=>', res);
-            // ContinueRegister();
+            console.log('firbase database created succuessfully!', res);
+            ContinueRegister();
           })
           .catch(error => {
             console.log('firebase cloud error=-=>', error);
@@ -204,6 +207,7 @@ const InitialProfile = ({route}) => {
         email: email,
         password: password,
         profile_pic: photoURL,
+        firebase_id: userUId,
       }),
     );
     clearState();
@@ -239,9 +243,9 @@ const InitialProfile = ({route}) => {
         style={styles.bg_signup}>
         <TouchableOpacity
           style={styles.back_header}
-          onPress={() => onButtonPress()}
+          onPress={() => navigation.goBack()}
           activeOpacity={0.9}>
-          <View style={styles.back_button}>
+          {/* <View style={styles.back_button}>
             <Text
               style={{
                 fontWeight: 'bold',
@@ -249,6 +253,9 @@ const InitialProfile = ({route}) => {
               }}>
               SKIP
             </Text>
+          </View> */}
+          <View style={styles.iconView}>
+            <Back name={'arrow-back'} color={colors.orange} size={25} />
           </View>
         </TouchableOpacity>
         <ScrollView
@@ -501,7 +508,8 @@ const styles = StyleSheet.create({
   },
   back_header: {
     height: hp('10%'),
-    paddingTop: hp('3%'),
+    paddingTop: hp('6%'),
+    paddingLeft: hp('4%'),
     paddingBottom: hp('12%'),
   },
   back_button: {
@@ -561,5 +569,15 @@ const styles = StyleSheet.create({
     color: '#bbb9bd',
     marginBottom: 15,
     marginTop: 10,
+  },
+  iconView: {
+    borderRadius: 100,
+    borderWidth: 0.5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: colors.orange,
+    height: hp('6%'),
+    width: hp('6%'),
+    // backgroundColor:'red'
   },
 });

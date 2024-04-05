@@ -140,13 +140,15 @@ const Profile = () => {
               <View
                 style={{
                   marginBottom: 20,
+                  gap:10
                 }}>
                 <TouchableOpacity
                   style={{
-                    marginBottom: hp('0.2%'),
+                    // marginBottom: hp('0.2%'),
                     flexDirection: 'row',
                     alignItems: 'center',
                     gap: 5,
+                    // backgroundColor:'red'
                   }}
                   onPress={() => onLogoutPress()}>
                   <Logout name={'logout'} color={colors.orange} size={20} />
@@ -154,7 +156,7 @@ const Profile = () => {
                     LOGOUT
                   </Text>
                 </TouchableOpacity>
-                <View
+                {/* <View
                   style={{
                     flexDirection: 'row',
                     alignItems: 'center',
@@ -167,7 +169,7 @@ const Profile = () => {
                     size={17}
                   />
                   <Text style={styles.statusText}>Active</Text>
-                </View>
+                </View> */}
                 <Text style={styles.nameText}>
                   {user.first_name + ' ' + user.last_name}
                 </Text>

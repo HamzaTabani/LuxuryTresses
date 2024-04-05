@@ -1,5 +1,6 @@
 import {
   ImageBackground,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -47,39 +48,41 @@ const Login = () => {
       <View style={styles.labelWrapper}>
         <Text style={styles.heading}>Login</Text>
       </View>
-      <View style={styles.screen}>
-        <View style={styles.inputWrapper}>
-          <InputText
-            label={'Enter your email'}
-            value={email}
-            onChangeText={text => setEmail(text)}
-            placeholder={'Email'}
-            keyboardType={'email-address'}
-            icon={'mail-outline'}
-          />
-          <InputText
-            label={'Enter your password'}
-            value={password}
-            onChangeText={text => setPassword(text)}
-            placeholder={'Password'}
-            secureTextEntry={true}
-            icon={'lock-closed-outline'}
-          />
-          <View style={{paddingTop: hp('3%'), alignItems: 'center'}}>
-            <PrimaryButton
-              title="Login"
-              indicator={signin_loading}
-              onPress={() => onLoginPress()}
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.screen}>
+          <View style={styles.inputWrapper}>
+            <InputText
+              label={'Enter your email'}
+              value={email}
+              onChangeText={text => setEmail(text)}
+              placeholder={'Email'}
+              keyboardType={'email-address'}
+              icon={'mail-outline'}
             />
+            <InputText
+              label={'Enter your password'}
+              value={password}
+              onChangeText={text => setPassword(text)}
+              placeholder={'Password'}
+              secureTextEntry={true}
+              icon={'lock-closed-outline'}
+            />
+            <View style={{paddingTop: hp('3%'), alignItems: 'center'}}>
+              <PrimaryButton
+                title="Login"
+                indicator={signin_loading}
+                onPress={() => onLoginPress()}
+              />
+            </View>
+            <TouchableOpacity
+              style={styles.forgotWrapper}
+              activeOpacity={0.9}
+              onPress={() => navigation.navigate('ForgetPassword')}>
+              <Text style={styles.forgotText}>Forgot Password ?</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            style={styles.forgotWrapper}
-            activeOpacity={0.9}
-            onPress={() => navigation.navigate('ForgetPassword')}>
-            <Text style={styles.forgotText}>Forgot Password ?</Text>
-          </TouchableOpacity>
         </View>
-      </View>
+      </ScrollView>
     </ImageBackground>
   );
 };
@@ -100,8 +103,9 @@ const styles = StyleSheet.create({
     paddingTop: hp('3%'),
   },
   forgotWrapper: {
-    paddingTop: hp('3%'),
+    paddingVertical: hp('3%'),
     alignItems: 'center',
+    // backgroundColor:'red'
   },
   forgotText: {
     color: colors.orange,

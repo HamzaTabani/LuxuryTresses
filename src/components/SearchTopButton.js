@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#E3C164',
     borderRadius: 50,
     position: 'relative',
+    right:hp(1)
   },
   search_box_active: {
     flexDirection: 'row',

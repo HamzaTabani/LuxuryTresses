@@ -8,6 +8,7 @@ import {
   TextInput,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -22,9 +23,11 @@ import {SigninWithGoogle} from '../../config/firebase/GoogleSignIn';
 import {firebase} from '@react-native-firebase/auth';
 import {useDispatch} from 'react-redux';
 import {login} from '../../redux/slices/AuthSlice';
+import colors from '../../assets/colors';
 
 const Signup = ({navigation}) => {
   const [email, setEmail] = useState('');
+  const [indicator, setindicator] = useState(false);
   // const [deviceToken, setDeviceToken] = useState('');
   // const [uId, setUId] = useState('');
   // const [providerId, setProviderId] = useState('');
@@ -40,6 +43,7 @@ const Signup = ({navigation}) => {
   };
 
   function googleSignIn() {
+    setindicator(true);
     SigninWithGoogle().then(data => {
       if (!data) {
         console.log('Error no data!');
@@ -125,19 +129,29 @@ const Signup = ({navigation}) => {
                 source={require('../../assets/images/google_icon.png')}
                 style={styles.btn_icon}
               /> */}
-              <View style={styles.btn_icon}>
-                <SvgGoogleIcon />
-              </View>
-              <View style={{width: '75%'}}>
-                <Text
-                  style={{
-                    fontSize: hp('2%'),
-                    color: '#bbb9bd',
-                    textAlign: 'center',
-                  }}>
-                  CONTINUE WITH GOOGLE
-                </Text>
-              </View>
+              {indicator ? (
+                <ActivityIndicator
+                  color={'#D1911E'}
+                  size={'small'}
+                  style={{alignSelf: 'center',flex:1}}
+                />
+              ) : (
+                <>
+                  <View style={styles.btn_icon}>
+                    <SvgGoogleIcon />
+                  </View>
+                  <View style={{width: '75%'}}>
+                    <Text
+                      style={{
+                        fontSize: hp('2%'),
+                        color: '#bbb9bd',
+                        textAlign: 'center',
+                      }}>
+                      CONTINUE WITH GOOGLE
+                    </Text>
+                  </View>
+                </>
+              )}
             </TouchableOpacity>
             <View style={styles.button_container}>
               {/* <Image

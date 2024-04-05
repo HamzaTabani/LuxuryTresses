@@ -233,19 +233,25 @@ const OrderHistory = ({route}) => {
             }}>
             <TextInput
               placeholder="Add comment"
-              style={{marginLeft: 10, color: colors.white, width: wp(68)}}
+              style={{
+                marginLeft: 10,
+                color: colors.white,
+                width: wp(65),
+              }}
               placeholderTextColor={colors.white}
               value={postComment}
               onChangeText={text => setPostComment(text)}
               multiline
             />
-            <TouchableOpacity onPress={() => onHandleSubmit()}>
+            <TouchableOpacity
+              style={{marginRight: hp(2)}}
+              onPress={() => onHandleSubmit()}>
               <Ionicons
                 name="send"
                 type="AntDesign"
                 color="#D49621"
                 size={22}
-                style={{marginRight: 10}}
+                // style={{marginRight: hp(5)}}
               />
             </TouchableOpacity>
           </View>
@@ -264,10 +270,11 @@ const OrderHistory = ({route}) => {
             }
             textStyle={{color: '#fff'}}
             buttonStyle={{
-              width: hp(45),
+              // width: hp(45),
+              // padding: hp('1.5%'),
               marginTop: hp(2),
               borderRadius: 10,
-              width: hp(45),
+              // width: hp(45),
               alignSelf: 'center',
             }}
           />
@@ -285,12 +292,13 @@ const OrderHistory = ({route}) => {
             title={'Select this Item to Reorder'}
             textStyle={{color: colors.white}}
             buttonStyle={{
+              // padding: hp('1.5%'),
               marginTop: hp(2),
               backgroundColor: '#D49621',
               borderRadius: 10,
               // height: hp(4),
               // padding: 5,
-              width: hp(45),
+              // width: hp(45),
               alignSelf: 'center',
             }}
           />

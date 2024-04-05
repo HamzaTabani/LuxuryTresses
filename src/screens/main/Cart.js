@@ -26,6 +26,7 @@ import {
   getCompletedOrders,
 } from '../../redux/slices/ECommerceSlice';
 import {useDispatch, useSelector} from 'react-redux';
+import Loader from '../../components/Loader';
 
 const Cart = () => {
   const [tabActive, setTabActive] = useState('');
@@ -36,6 +37,7 @@ const Cart = () => {
     completedOrders,
     completedOrders_error,
     completedOrders_loading,
+    activeOrders_loading,
     activeOrders,
   } = useSelector(state => state.ecommerceReducer);
 
@@ -74,52 +76,76 @@ const Cart = () => {
           </TouchableOpacity>
         </View>
         {tabActive === 'order' ? (
-          <View style={{marginBottom: hp('15%'), marginTop: hp('2%')}}>
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              // contentContainerStyle={{backgroundColor:'red'}}
-              keyExtractor={item => item.id}
-              data={activeOrders}
-              renderItem={({item}) => {
-                // console.log('activeOrders items==>', item);
-                return (
-                  <HistoryCard
-                    key={item.id}
-                    image={item.image}
-                    onPress={() =>
-                      navigation.navigate('OrderHistory', {
-                        product: item?.product,
-                        order: item?.order,
-                        completedOrders: item,
-                        reorderButton:true
-                      })
-                    }
-                    productImg={item?.product?.product_image}
-                    productName={item?.product?.product_name}
-                    productPrice={item?.product?.regular_price}
-                    productStatus={item?.order?.status}
-                    productRating={item?.product?.average_rating}
-                    productDate={item?.product?.created_at}
-                  />
-                );
-              }}
-              ListFooterComponent={
-                <View
-                  style={{
-                    paddingHorizontal: wp('8%'),
-                    marginBottom: hp('5%'),
-                    alignItems: 'center',
-                  }}>
-                  <SvgBottomLineSecondIcon />
-                </View>
-              }
-            />
-          </View>
+          activeOrders_loading ? (
+            <>
+              <View
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flex: 1,
+                }}>
+                <Loader size={'large'} />
+              </View>
+            </>
+          ) : (
+            <View style={{marginBottom: hp('15%'), marginTop: hp('2%')}}>
+              <FlatList
+                showsVerticalScrollIndicator={false}
+                // contentContainerStyle={{backgroundColor:'red'}}
+                keyExtractor={item => item.id}
+                data={activeOrders}
+                renderItem={({item}) => {
+                  // console.log('activeOrders items==>', item);
+                  return (
+                    <HistoryCard
+                      key={item.id}
+                      image={item.image}
+                      onPress={() =>
+                        navigation.navigate('OrderHistory', {
+                          product: item?.product,
+                          order: item?.order,
+                          completedOrders: item,
+                          reorderButton: true,
+                        })
+                      }
+                      productImg={item?.product?.product_image}
+                      productName={item?.product?.product_name}
+                      productPrice={item?.product?.regular_price}
+                      productStatus={item?.order?.status}
+                      productRating={item?.product?.average_rating}
+                      productDate={item?.product?.created_at}
+                    />
+                  );
+                }}
+                ListFooterComponent={
+                  <View
+                    style={{
+                      paddingHorizontal: wp('8%'),
+                      marginBottom: hp('5%'),
+                      alignItems: 'center',
+                    }}>
+                    <SvgBottomLineSecondIcon />
+                  </View>
+                }
+              />
+            </View>
+          )
+        ) : // <View style={{flex: 0.8, justifyContent: 'center'}}>
+        //   <Image source={images.orders1} style={styles.orderImage} />
+        //   <Text style={styles.text}>{'You have no favourites :('}</Text>
+        // </View>
+        completedOrders_loading ? (
+          <>
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                flex: 1,
+              }}>
+              <Loader size={'large'} />
+            </View>
+          </>
         ) : (
-          // <View style={{flex: 0.8, justifyContent: 'center'}}>
-          //   <Image source={images.orders1} style={styles.orderImage} />
-          //   <Text style={styles.text}>{'You have no favourites :('}</Text>
-          // </View>
           <View style={{marginBottom: hp('15%'), marginTop: hp('2%')}}>
             <FlatList
               showsVerticalScrollIndicator={false}
@@ -171,35 +197,36 @@ const Cart = () => {
               }
             />
           </View>
+        )
 
-          // <ScrollView
-          //   showsVerticalScrollIndicator={false}
-          //   contentContainerStyle={styles.historyWrapper}>
-          //   {histories.map(item => (
-          //     <HistoryCard
-          //       key={item.id}
-          //       image={item.image}
-          //       onPress={() => navigation.navigate('OrderHistory')}
-          //     />
-          //   ))}
-          //   <View
-          //     style={{
-          //       paddingHorizontal: wp('8%'),
-          //       marginTop: 50,
-          //       // marginBottom: 150,
-          //       alignItems: 'center',
-          //     }}>
-          //     {/* <Image
-          //       source={require('../../assets/images/bottom_linesA.png')}
-          //       resizeMode="contain"
-          //       style={{
-          //         width: 40,
-          //       }}
-          //     /> */}
-          //     <SvgBottomLineSecondIcon/>
-          //   </View>
-          // </ScrollView>
-        )}
+        // <ScrollView
+        //   showsVerticalScrollIndicator={false}
+        //   contentContainerStyle={styles.historyWrapper}>
+        //   {histories.map(item => (
+        //     <HistoryCard
+        //       key={item.id}
+        //       image={item.image}
+        //       onPress={() => navigation.navigate('OrderHistory')}
+        //     />
+        //   ))}
+        //   <View
+        //     style={{
+        //       paddingHorizontal: wp('8%'),
+        //       marginTop: 50,
+        //       // marginBottom: 150,
+        //       alignItems: 'center',
+        //     }}>
+        //     {/* <Image
+        //       source={require('../../assets/images/bottom_linesA.png')}
+        //       resizeMode="contain"
+        //       style={{
+        //         width: 40,
+        //       }}
+        //     /> */}
+        //     <SvgBottomLineSecondIcon/>
+        //   </View>
+        // </ScrollView>
+        }
       </View>
     </Container>
   );

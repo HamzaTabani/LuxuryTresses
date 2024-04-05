@@ -1,4 +1,4 @@
-import {StyleSheet, View, FlatList, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, FlatList, TouchableOpacity, Text} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import ProfileHeader from '../../components/ProfileHeader';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -14,6 +14,7 @@ import {
 } from '../../redux/slices/StylistSlice';
 import ServiceDropdown from '../../components/ServiceDropdown';
 import Loader from '../../components/Loader';
+import colors from '../../assets/colors';
 
 const TopStylists = () => {
   const navigation = useNavigation();
@@ -31,12 +32,16 @@ const TopStylists = () => {
 
   // console.log('serviceLabel=-=>', serviceLabel);
 
-  // console.log('serviceId=-=-->', serviceId);
+  console.log('serviceId=-=-->', serviceId);
 
   // console.log('serviceByIdData', serviceByIdData);
+  console.log(
+    'chutyapai ki logic:::',
+    serviceId != '' && serviceId != undefined,
+  );
 
   // console.log('stylistData=-=->', stylistData);
-  console.log('load=--=>', load);
+  // console.log('load=--=>', load);
 
   const handleServiceId = data => {
     // console.log('data=--==>', data);
@@ -102,6 +107,7 @@ const TopStylists = () => {
   };
 
   const renderData = ({item}) => {
+    // console.log('itemitemitem', item);
     return (
       <TouchableOpacity
         style={{marginBottom: 30}}
@@ -110,7 +116,7 @@ const TopStylists = () => {
         onPress={() => onStylistDetail(item)}>
         <Card
           allTopStylist={true}
-          rating={3}
+          rating={item.average_rating}
           stylist_name={item.first_name + item.last_name}
           stylist_email={
             item.address != 'null' &&
@@ -124,6 +130,23 @@ const TopStylists = () => {
           productIcon={item.product}
         />
       </TouchableOpacity>
+    );
+  };
+
+  const emptyData = () => {
+    return (
+      <View
+        style={{
+          // flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: hp(75)
+          // backgroundColor: 'green',
+        }}>
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyText}>No Stylist Found!</Text>
+        </View>
+      </View>
     );
   };
 
@@ -152,15 +175,26 @@ const TopStylists = () => {
             </View>
           ) : null}
 
-          <View style={styles.wrapper}>
-            <FlatList
-              data={serviceByIdData.length > 0 ? serviceByIdData : stylistData}
-              keyExtractor={item => item.id}
-              renderItem={renderData}
-              columnWrapperStyle={{justifyContent: 'space-evenly'}}
-              numColumns={2}
-            />
-          </View>
+          {/* <View style={styles.wrapper}> */}
+          <FlatList
+            data={
+              serviceId != '' && serviceId != undefined
+                ? serviceByIdData
+                : stylistData
+            }
+            // style={[
+            //   serviceId != '' && serviceId != undefined
+            //     ? {height: hp(100)}
+            //     : {height:hp(50)},
+            // ]}
+            contentContainerStyle={styles.wrapper}
+            keyExtractor={item => item.id}
+            renderItem={renderData}
+            columnWrapperStyle={{justifyContent: 'space-evenly'}}
+            numColumns={2}
+            ListEmptyComponent={emptyData}
+          />
+          {/* </View> */}
         </>
       )}
     </Container>
@@ -176,7 +210,27 @@ const styles = StyleSheet.create({
     paddingTop: hp('4%'),
   },
   wrapper: {
-    flex: 1,
+    // flex: 1,
     paddingBottom: 70,
+    // backgroundColor: 'red',
+  },
+  emptyContainer: {
+    // flex: 1,
+    backgroundColor: '#D49621',
+    // width: hp(45),
+    height: hp(5),
+    borderRadius: 10,
+    // marginHorizontal:hp(3),
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: hp(15),
+    marginRight: hp(1.3),
+    // marginRight:hp(2)
+    // marginLeft:hp(3)
+  },
+  emptyText: {
+    color: colors.white,
+    fontSize: hp(2),
+    fontWeight: 'bold',
   },
 });

@@ -25,10 +25,10 @@ const HistoryCard = ({
   productRating,
   completeOrder,
   onPressReorder,
-  productId
+  productId,
 }) => {
   const {pic_baseUrl} = useSelector(state => state.ecommerceReducer);
-  console.log('productId=--=>',productId)
+  console.log('productId=--=>', productId);
   // console.log('pic_baseUrl', pic_baseUrl + '/' + productImg);
   // console.log(productRating);
   const [imageError, setImageError] = useState(false);
@@ -84,28 +84,30 @@ const HistoryCard = ({
             <SvgGoldBagIcon />
           </View>
           <View>
-            {/* {productRating != 'null' ? ( */}
-            <View style={styles.ratingView}>
-              <View style={styles.ratingCard}>
-                <Progress.Circle
-                  progress={productRating != null ? productRating / 5 : 3.5 / 5}
-                  color={colors.lightgreen}
-                  size={26}
-                  borderColor="transparent"
-                />
-                <View style={styles.imageWrapper}>
-                  <SvgCardPopularHistoryIcon />
+            {productRating != null ? (
+              <View style={styles.ratingView}>
+                <View style={styles.ratingCard}>
+                  <Progress.Circle
+                    progress={productRating / 5}
+                    color={colors.lightgreen}
+                    size={26}
+                    borderColor="transparent"
+                  />
+                  <View style={styles.imageWrapper}>
+                    <SvgCardPopularHistoryIcon />
+                  </View>
                 </View>
+                <Text style={styles.ratingText}>
+                  {productRating + ' Rating'}
+                </Text>
               </View>
-              <Text style={styles.ratingText}>
-                {productRating != null
-                  ? productRating + ' Rating'
-                  : 3.5 + ' Rating'}
-              </Text>
-            </View>
-            {/* ) : null} */}
+            ) : null}
             <View
-              style={{marginTop: hp('1%'), alignItems: 'flex-end', right: 25}}>
+              style={
+                productRating != null
+                  ? {marginTop: hp('1%'), alignItems: 'flex-end', right: 25}
+                  : {marginTop: hp('5%'), alignItems: 'flex-end', right: 0}
+              }>
               <Text style={styles.location}>Date</Text>
               <Text style={styles.location}>
                 {moment(productDate).format('DD MMM YYYY')}
@@ -165,7 +167,7 @@ const styles = StyleSheet.create({
     fontSize: hp('2%'),
     fontWeight: 'bold',
     // backgroundColor:'red',
-    width: hp('13'),
+    width: hp('11'),
   },
   textWrapper: {
     marginLeft: hp('2%'),
@@ -204,6 +206,8 @@ const styles = StyleSheet.create({
     height: hp('3.5%'),
     borderRadius: 50,
     width: hp('3.5%'),
+    justifyContent:'center',
+    alignItems:'center'
   },
   imageWrapper: {
     position: 'absolute',

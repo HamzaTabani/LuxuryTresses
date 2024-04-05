@@ -25,6 +25,8 @@ import {
 import {getRecentStylists} from '../../redux/slices/StylistSlice';
 import {useSelector, useDispatch} from 'react-redux';
 import images from '../../assets/images';
+import Loader from '../../components/Loader';
+import colors from '../../assets/colors';
 
 const cartData = [
   {
@@ -95,7 +97,9 @@ const cartData2 = [
 const Recents = () => {
   const [filterTab, setFilterTab] = useState('tab1');
 
-  const {recentStylists} = useSelector(state => state.stylistReducer);
+  const {recentStylists, loading, recentStylist_error} = useSelector(
+    state => state.stylistReducer,
+  );
   const {user, pic_url} = useSelector(state => state.userData);
 
   const getRecentStylistsProfile = async () => {
@@ -157,48 +161,73 @@ const Recents = () => {
         {/* venders listing */}
 
         {filterTab === 'tab1' ? (
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{paddingBottom: 100}}
-            data={recentStylists}
-            renderItem={({item}) => {
-              // console.log('activeOrders items==>', item);
-              return (
-                <View>
-                  {item.service ? (
-                    <VenderCardBox
-                      itemData={recentStylists}
-                      key={item.id}
-                      itemId={item.id}
-                      name={item.first_name + ' ' + item.last_name}
-                      img={item.profile_pic}
-                      email={
-                        item.address != 'null' &&
-                        item.address != null &&
-                        item.address != 'undefined'
-                          ? item.address
-                          : 'address'
-                      }
-                      ratings={
-                        item.average_rating != null ? item.average_rating : 3
-                      }
-                      serviceIcon={item.service}
-                      productIcon={item.product}
-                    />
-                  ) : null}
-                </View>
-              );
-            }}
-            ListFooterComponent={
+          loading ? (
+            <>
               <View
                 style={{
-                  marginTop: 50,
                   alignItems: 'center',
+                  justifyContent: 'center',
+                  flex: 1,
                 }}>
-                <SvgBottomLineSecondIcon />
+                <Loader size={'large'} />
               </View>
-            }
-          />
+            </>
+          ) : recentStylists.length > 0 ? (
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{paddingBottom: 100}}
+              data={recentStylists}
+              renderItem={({item}) => {
+                // console.log('activeOrders items==>', item);
+                return (
+                  <View>
+                    {item.service ? (
+                      <VenderCardBox
+                        itemData={recentStylists}
+                        key={item.id}
+                        itemId={item.id}
+                        name={item.first_name + ' ' + item.last_name}
+                        img={item.profile_pic}
+                        email={
+                          item.address != 'null' &&
+                          item.address != null &&
+                          item.address != 'undefined'
+                            ? item.address
+                            : 'address'
+                        }
+                        ratings={item.average_rating}
+                        serviceIcon={item.service}
+                        productIcon={item.product}
+                      />
+                    ) : null}
+                  </View>
+                );
+              }}
+              ListFooterComponent={
+                <View
+                  style={{
+                    marginTop: 50,
+                    alignItems: 'center',
+                  }}>
+                  <SvgBottomLineSecondIcon />
+                </View>
+              }
+            />
+          ) : (
+            // </ScrollView>
+            recentStylist_error !== '' && (
+              <>
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flex: 1,
+                  }}>
+                  <Text style={styles.errorMessage}>{recentStylist_error}</Text>
+                </View>
+              </>
+            )
+          )
         ) : (
           <FlatList
             data={recentStylists}
@@ -228,9 +257,7 @@ const Recents = () => {
                           ? item.address
                           : 'address'
                       }
-                      ratings={
-                        item.average_rating != null ? item.average_rating : 3
-                      }
+                      ratings={item.average_rating}
                       serviceIcon={item.service}
                       productIcon={item.product}
                     />
@@ -304,6 +331,10 @@ const styles = StyleSheet.create({
   filter_tab: {
     paddingVertical: 10,
     paddingHorizontal: 20,
+  },
+  errorMessage: {
+    color: colors.orange,
+    fontSize: hp('2%'),
   },
 });
 

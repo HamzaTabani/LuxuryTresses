@@ -18,6 +18,8 @@ const LocationCard = ({moveToLocation, getCurrentLocation}) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
+  console.log('currentRegion878768768', currentRegion);
+
   // useEffect(() => {
   //   reigions(currentRegion);
   // }, [currentRegion]);
@@ -86,7 +88,7 @@ const LocationCard = ({moveToLocation, getCurrentLocation}) => {
           fetchDetails={true}
           placeholder="Address"
           onPress={(data, details = null) => {
-            // console.log(details.geometry.location.lng);
+            console.log('detals latlng=-=->', details.geometry.location);
             moveToLocation(
               details?.geometry?.location.lat,
               details?.geometry?.location.lng,
