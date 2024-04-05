@@ -233,14 +233,18 @@ const OrderHistory = ({route}) => {
             }}>
             <TextInput
               placeholder="Add comment"
-              style={{marginLeft: 10, color: colors.white, width: wp(68)}}
+              style={{
+                marginLeft: 10,
+                color: colors.white,
+                width: wp(65),
+              }}
               placeholderTextColor={colors.white}
               value={postComment}
               onChangeText={text => setPostComment(text)}
               multiline
             />
             <TouchableOpacity
-              style={{marginRight: hp(1)}}
+              style={{marginRight: hp(2)}}
               onPress={() => onHandleSubmit()}>
               <Ionicons
                 name="send"

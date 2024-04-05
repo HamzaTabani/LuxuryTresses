@@ -28,6 +28,7 @@ import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
 import firestore from '@react-native-firebase/firestore';
 import uuid from 'react-native-uuid';
+import Back from 'react-native-vector-icons/Ionicons';
 
 const cities = [
   {
@@ -154,7 +155,7 @@ const InitialProfile = ({route}) => {
         console.log(
           'all console',
           token,
-          userUId, 
+          userUId,
           email,
           firstname,
           lastname,
@@ -206,7 +207,7 @@ const InitialProfile = ({route}) => {
         email: email,
         password: password,
         profile_pic: photoURL,
-        firebase_id: userUId
+        firebase_id: userUId,
       }),
     );
     clearState();
@@ -242,9 +243,9 @@ const InitialProfile = ({route}) => {
         style={styles.bg_signup}>
         <TouchableOpacity
           style={styles.back_header}
-          onPress={() => onButtonPress()}
+          onPress={() => navigation.goBack()}
           activeOpacity={0.9}>
-          <View style={styles.back_button}>
+          {/* <View style={styles.back_button}>
             <Text
               style={{
                 fontWeight: 'bold',
@@ -252,6 +253,9 @@ const InitialProfile = ({route}) => {
               }}>
               SKIP
             </Text>
+          </View> */}
+          <View style={styles.iconView}>
+            <Back name={'arrow-back'} color={colors.orange} size={25} />
           </View>
         </TouchableOpacity>
         <ScrollView
@@ -504,7 +508,8 @@ const styles = StyleSheet.create({
   },
   back_header: {
     height: hp('10%'),
-    paddingTop: hp('3%'),
+    paddingTop: hp('6%'),
+    paddingLeft: hp('4%'),
     paddingBottom: hp('12%'),
   },
   back_button: {
@@ -564,5 +569,15 @@ const styles = StyleSheet.create({
     color: '#bbb9bd',
     marginBottom: 15,
     marginTop: 10,
+  },
+  iconView: {
+    borderRadius: 100,
+    borderWidth: 0.5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: colors.orange,
+    height: hp('6%'),
+    width: hp('6%'),
+    // backgroundColor:'red'
   },
 });

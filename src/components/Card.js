@@ -57,6 +57,7 @@ const Card = ({
       <View style={styles.card_box_img}>
         <Image
           // source={image}
+          
           source={
             stylistProfileImageError
               ? images.profile
@@ -64,7 +65,7 @@ const Card = ({
               ? images.profile
               : {uri: pic_url + image}
           }
-          resizeMode="cover"
+          resizeMode="contain"
           borderRadius={10}
           style={{width: hp('20%'), height: hp('22%')}}
           onError={handleStylistProfileImageError}

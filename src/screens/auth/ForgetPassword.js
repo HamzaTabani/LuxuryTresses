@@ -1,4 +1,10 @@
-import {StyleSheet, Text, View, ImageBackground} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ImageBackground,
+  ScrollView,
+} from 'react-native';
 import React, {useState} from 'react';
 import BackHeader from '../../components/BackHeader';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -6,7 +12,7 @@ import InputText from '../../components/InputText';
 import PrimaryButton from '../../components/PrimaryButton';
 import {useDispatch, useSelector} from 'react-redux';
 import {ShowToast} from '../../utils';
-import { generateOTP} from '../../redux/slices/AuthSlice';
+import {generateOTP} from '../../redux/slices/AuthSlice';
 import {useNavigation} from '@react-navigation/native';
 
 const ForgetPassword = () => {
@@ -45,23 +51,25 @@ const ForgetPassword = () => {
       <View style={styles.labelWrapper}>
         <Text style={styles.heading}>Forget Password</Text>
       </View>
-      <View style={styles.screenWrapper}>
-        <InputText
-          label={'Enter your email'}
-          value={email}
-          onChangeText={text => setEmail(text)}
-          placeholder={'Email'}
-          keyboardType={'email-address'}
-          icon={'mail-outline'}
-        />
-        <View style={styles.buttonWrapper}>
-          <PrimaryButton
-            title="Next"
-            indicator={forget_password_loading}
-            onPress={() => onSendEmail()}
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.screenWrapper}>
+          <InputText
+            label={'Enter your email'}
+            value={email}
+            onChangeText={text => setEmail(text)}
+            placeholder={'Email'}
+            keyboardType={'email-address'}
+            icon={'mail-outline'}
           />
+          <View style={styles.buttonWrapper}>
+            <PrimaryButton
+              title="Next"
+              indicator={forget_password_loading}
+              onPress={() => onSendEmail()}
+            />
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </ImageBackground>
   );
 };
@@ -85,7 +93,7 @@ const styles = StyleSheet.create({
     paddingTop: hp('3%'),
   },
   buttonWrapper: {
-    paddingTop: hp('3%'),
+    paddingVertical: hp('3%'),
     alignItems: 'center',
   },
 });

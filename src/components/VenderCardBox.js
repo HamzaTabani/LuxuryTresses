@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {Text, StyleSheet, View, Image, Pressable} from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  View,
+  Image,
+  Pressable,
+  TouchableOpacity,
+} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -70,7 +77,13 @@ const VenderCardBox = ({
           width: '70%',
         }}>
         {/* vender image */}
-        <View style={styles.cardImage}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('ProfileDetail', {
+              profile_id: itemId,
+            })
+          }
+          style={styles.cardImage}>
           <Image
             source={
               imageError
@@ -84,7 +97,7 @@ const VenderCardBox = ({
             resizeMode="contain"
             onError={handleImageError}
           />
-        </View>
+        </TouchableOpacity>
         {/* vender details */}
         <View
           style={{
@@ -139,7 +152,7 @@ const VenderCardBox = ({
             </Text>
           </Pressable>
         ) : null}
-        <View
+        {/* <View
           style={
             ratings == null
               ? {
@@ -147,7 +160,7 @@ const VenderCardBox = ({
                   flexDirection: 'row',
                   justifyContent: 'space-between',
                   // backgroundColor:'red',
-                  width:hp(12)
+                  width: hp(12),
                 }
               : {
                   flexDirection: 'row',
@@ -190,7 +203,7 @@ const VenderCardBox = ({
               />
             </View>
           </Pressable>
-        </View>
+        </View> */}
       </View>
     </View>
   );

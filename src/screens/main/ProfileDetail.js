@@ -45,7 +45,7 @@ const ProfileDetail = ({route}) => {
 
   const id = route?.params?.profile_id;
   // const moreStylist = route?.params?.stylists;
-  // console.log('profile_id', id);
+  console.log('profile_id', id);
   // console.log('moreStylist', moreStylist);
   const [profiledetail, setProfiledetail] = useState(null);
   const dispatch = useDispatch();
@@ -54,7 +54,7 @@ const ProfileDetail = ({route}) => {
     useSelector(state => state.stylistReducer);
 
   const {pic_url} = useSelector(state => state.userData);
-  // console.log('profile detail from screen =========>', profiledetail);
+  console.log('profile detail from screen =========>', profiledetail);
   // console.log('profile loader =========>', profileDetails_loading);
 
   const [stylistProfileImageError, setStylistProfileImageError] =
