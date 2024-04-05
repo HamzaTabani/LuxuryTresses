@@ -49,7 +49,7 @@ const ServiceDropdown = ({services, serviceValue}) => {
     <View style={{marginBottom: 30, marginRight: hp(1.3)}}>
       <DropDownPicker
         onSelectItem={item => {
-          // console.log('selcted item=-=-=>', item);
+          console.log('selcted item=-=-=>', item);
           serviceValue(item);
         }}
         labelStyle={{fontWeight: 'bold', color: colors.white}}

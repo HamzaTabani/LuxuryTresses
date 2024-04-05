@@ -24,6 +24,7 @@ import {
   SvgGoldSeatIcon,
 } from '../../components/SvgImages';
 import images from '../../assets/images';
+import Loader from '../../components/Loader';
 
 const cartData = [
   {
@@ -94,7 +95,9 @@ const cartData2 = [
 const Popular = () => {
   const [filterTab, setFilterTab] = useState('tab1');
 
-  const {popularStylists} = useSelector(state => state.stylistReducer);
+  const {popularStylists, loading, popularStylist_error} = useSelector(
+    state => state.stylistReducer,
+  );
   const {user, pic_url} = useSelector(state => state.userData);
 
   // console.log('popularStylists=-=-=>', popularStylists);
@@ -188,47 +191,73 @@ const Popular = () => {
           //     />
           //   </View>
           // </ScrollView>
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{paddingBottom: 100}}
-            data={popularStylists}
-            renderItem={({item}) => {
-              return (
-                <View>
-                  {item.service ? (
-                    <VenderCardBox
-                      key={item.id}
-                      itemId={item.id}
-                      name={item.first_name + ' ' + item.last_name}
-                      img={item.profile_pic}
-                      email={
-                        item.address != 'null' &&
-                        item.address != null &&
-                        item.address != 'undefined'
-                          ? item.address
-                          : 'address'
-                      }
-                      ratings={
-                        item.average_rating != null ? item.average_rating : 3
-                      }
-                      serviceIcon={item.service}
-                      productIcon={item.product}
-                    />
-                  ) : null}
-                </View>
-              );
-            }}
-            ListFooterComponent={
+          loading ? (
+            <>
               <View
                 style={{
-                  // paddingHorizontal: wp('8%'),
-                  marginTop: 50,
                   alignItems: 'center',
+                  justifyContent: 'center',
+                  flex: 1,
                 }}>
-                <SvgBottomLineSecondIcon />
+                <Loader size={'large'} />
               </View>
-            }
-          />
+            </>
+          ) : popularStylists.length > 0 ? (
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{paddingBottom: 100}}
+              data={popularStylists}
+              renderItem={({item}) => {
+                return (
+                  <View>
+                    {item.service ? (
+                      <VenderCardBox
+                        key={item.id}
+                        itemId={item.id}
+                        name={item.first_name + ' ' + item.last_name}
+                        img={item.profile_pic}
+                        email={
+                          item.address != 'null' &&
+                          item.address != null &&
+                          item.address != 'undefined'
+                            ? item.address
+                            : 'address'
+                        }
+                        ratings={item.average_rating}
+                        serviceIcon={item.service}
+                        productIcon={item.product}
+                      />
+                    ) : null}
+                  </View>
+                );
+              }}
+              ListFooterComponent={
+                <View
+                  style={{
+                    // paddingHorizontal: wp('8%'),
+                    marginTop: 50,
+                    alignItems: 'center',
+                  }}>
+                  <SvgBottomLineSecondIcon />
+                </View>
+              }
+            />
+          ) : (
+            popularStylist_error !== '' && (
+              <>
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flex: 1,
+                  }}>
+                  <Text style={styles.errorMessage}>
+                    {popularStylist_error}
+                  </Text>
+                </View>
+              </>
+            )
+          )
         ) : (
           <FlatList
             data={popularStylists}
@@ -256,9 +285,7 @@ const Popular = () => {
                           ? item.address
                           : 'address'
                       }
-                      ratings={
-                        item.average_rating != null ? item.average_rating : 3
-                      }
+                      ratings={item.average_rating}
                       serviceIcon={item.service}
                       productIcon={item.product}
                     />

@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {Alert, StyleSheet} from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
 import MapView, {Marker, Circle} from 'react-native-maps';
 import MapHeader from '../../components/MapHeader';
@@ -10,8 +10,11 @@ import images from '../../assets/images';
 import {useDispatch, useSelector} from 'react-redux';
 import GetLocation from 'react-native-get-location';
 import {postLatLng} from '../../redux/slices/AuthSlice';
+import {ShowToast} from '../../utils';
+import {useNavigation} from '@react-navigation/native';
 
 const SelectLocation = () => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const [currentRegion, setCurrentregion] = useState(null);
   const mapRef = useRef(null);
@@ -30,6 +33,7 @@ const SelectLocation = () => {
       timeout: 60000,
     })
       .then(location => {
+        // Alert.alert('hello');
         dispatch(
           postLatLng({
             latitude: location.latitude,
@@ -40,7 +44,9 @@ const SelectLocation = () => {
         );
         // reigions(currentRegion);
         moveToLocation(location.latitude, location.longitude);
-        // console.log('location: ', location);
+        navigation.goBack();
+        console.log('location: ', location);
+        return ShowToast('Location has been saved.');
       })
       .catch(error => {
         const {code, message} = error;

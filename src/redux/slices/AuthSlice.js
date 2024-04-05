@@ -20,6 +20,7 @@ export const register = createAsyncThunk(
     profile_pic,
     state,
     city,
+    firebase_id
   }) => {
     let data = new formData();
     data.append('first_name', first_name);
@@ -27,6 +28,7 @@ export const register = createAsyncThunk(
     data.append('phone_number', phone_number);
     data.append('email', email);
     data.append('password', password);
+    data.append('firebase_id', firebase_id);
     if (profile_pic) {
       data.append('profile_pic', {
         name: 'image.jpg',

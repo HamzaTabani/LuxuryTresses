@@ -50,13 +50,17 @@ const SingleProduct = ({route}) => {
   const {pic_baseUrl} = useSelector(state => state.ecommerceReducer);
   const product_id = route?.params?.productID;
   const {product, order, completedOrders, reorder} = route?.params;
-  console.log('pic_url==>', images.stylist1);
-  console.log('product_id==>', product_id);
-  console.log('product detailssss from screens =========>', productDetails);
-  console.log(
-    'pic_baseUrl===>',
-    pic_baseUrl + '/' + productDetails[product_id]?.product_image,
-  );
+  // console.log('pic_url==>', images.stylist1);
+  // console.log('product_id==>', product_id);
+  // console.log('product detailssss from screens =========>', productDetails);
+  // console.log(
+  //   'pic_baseUrl===>',
+  //   pic_baseUrl + '/' + productDetails[product_id]?.product_image,
+  // );
+  // console.log(
+  //   'productDetails[product_id]?.average_rating---',
+  //   productDetails[product_id].average_rating,
+  // );
   useEffect(() => {
     if (!productDetails[product_id]) {
       dispatch(getProductDetails(product_id));
@@ -236,7 +240,7 @@ const SingleProduct = ({route}) => {
                           productDetails[product_id]?.user?.profile_pic,
                       }
                 }
-                rating={3}
+                rating={productDetails[product_id]?.average_rating}
               />
             </TouchableOpacity>
             {/* product description */}

@@ -132,7 +132,6 @@ const Home = ({navigation}) => {
               </Text>
               <Text style={styles.home_title}>Lets make a new style!</Text>
             </View>
-
             {/* Top Style */}
             {loading ? (
               <>
@@ -215,11 +214,7 @@ const Home = ({navigation}) => {
                               onPress={() => onStylistDetail(item)}>
                               <Card
                                 allTopStylist={true}
-                                rating={
-                                  item.average_rating != null
-                                    ? item.average_rating
-                                    : 3
-                                }
+                                rating={item.average_rating}
                                 stylist_name={item.first_name + item.last_name}
                                 stylist_email={
                                   item.address != 'null' &&
@@ -271,10 +266,7 @@ const Home = ({navigation}) => {
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}
                         renderItem={({item, index}) => {
-                          // console.log(
-                          //   'recentProducts items=-=-->',
-                          //   item?.user.first_name + item?.user.last_name,
-                          // );
+                          // console.log('recentProducts items=-=-->', item);
                           return (
                             <TouchableOpacity
                               activeOpacity={0.9}
@@ -290,7 +282,7 @@ const Home = ({navigation}) => {
                                 productName={item.product_name}
                                 price={item.regular_price}
                                 avatar={item?.user.profile_pic}
-                                rating={3}
+                                rating={item?.average_rating}
                                 productImage={item.product_image}
                                 productFromdetail={true}
                               />

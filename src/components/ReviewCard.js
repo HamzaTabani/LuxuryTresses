@@ -13,24 +13,28 @@ const ReviewCard = ({onPress, averageRating, totalCustomerRating}) => {
         <Text style={styles.reviewText}>Customer reviews</Text>
         <Text style={styles.text}>{totalCustomerRating} customer rating</Text>
       </View>
-      <View style={{flexDirection: 'row'}}>
-        <View style={{marginRight: hp('2%')}}>
-          <Text style={styles.reviewText}>{averageRating} rating</Text>
-          <Text style={[styles.text, {alignSelf: 'center'}]}>out of 5</Text>
-        </View>
-        <View style={styles.progressView}>
-          <Progress.Circle
-            progress={averageRating / 5}
-            color={colors.lightgreen}
-            size={40.5}
-            style={{marginTop: hp('0.5%')}}
-            borderColor="transparent"
-          />
-          <View style={styles.imageWrapper}>
-            <SvgCardRevPopSecIcon />
+      {averageRating != null ? (
+        <View style={{flexDirection: 'row'}}>
+          <View style={{marginRight: hp('2%')}}>
+            <Text style={styles.reviewText}>{averageRating} rating</Text>
+            <Text style={[styles.text, {alignSelf: 'center'}]}>out of 5</Text>
+          </View>
+          <View style={styles.progressView}>
+            <Progress.Circle
+              progress={averageRating / 5}
+              color={colors.lightgreen}
+              size={40.5}
+              style={{marginTop: hp('0.5%')}}
+              borderColor="transparent"
+            />
+            <View style={styles.imageWrapper}>
+              <SvgCardRevPopSecIcon />
+            </View>
           </View>
         </View>
-      </View>
+      ) : (
+        <Text style={styles.text}>0 Rating</Text>
+      )}
     </TouchableOpacity>
   );
 };

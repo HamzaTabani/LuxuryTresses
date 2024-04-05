@@ -39,6 +39,7 @@ export const getCompletedOrders = createAsyncThunk(
       })
       .then(res => {
         // console.log('completed orders =========>', res.data);
+        // setCompleteLoader(false);
         return res.data;
       })
       .catch(error => {
@@ -60,7 +61,8 @@ export const getActiveOrders = createAsyncThunk(
         },
       })
       .then(res => {
-        console.log('active orders =========>', res.data);
+        // console.log('active orders =========>', res.data);
+        // setActiveLoader(false);
         return res.data;
       })
       .catch(error => {

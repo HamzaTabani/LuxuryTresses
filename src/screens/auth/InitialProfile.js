@@ -27,6 +27,7 @@ import images from '../../assets/images';
 import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
 import firestore from '@react-native-firebase/firestore';
+import uuid from 'react-native-uuid';
 
 const cities = [
   {
@@ -82,7 +83,7 @@ const InitialProfile = ({route}) => {
 
   console.log('user email =========>', selectedCity);
 
-  console.log(auth().currentUser.uid);
+  // console.log(auth().currentUser.uid);
   console.log('token:', token);
 
   // console.log('photo uri', photoURL)
@@ -105,7 +106,7 @@ const InitialProfile = ({route}) => {
     if (enabled) {
       const token = await messaging().getToken();
       console.log('dEVICE TOKEN', token);
-      const userId = auth().currentUser.uid;
+      const userId = uuid.v4();
       setUserUId(userId);
       setToken(token);
     }
@@ -152,7 +153,8 @@ const InitialProfile = ({route}) => {
       } else {
         console.log(
           'all console',
-          userUId, // token,c7vRt601S4hFxb6gxpqCfUgc04A3
+          token,
+          userUId, 
           email,
           firstname,
           lastname,
@@ -174,8 +176,8 @@ const InitialProfile = ({route}) => {
             profile_picture: photoURL,
           })
           .then(res => {
-            console.log('firebase cloud res=-=>', res);
-            // ContinueRegister();
+            console.log('firbase database created succuessfully!', res);
+            ContinueRegister();
           })
           .catch(error => {
             console.log('firebase cloud error=-=>', error);
@@ -204,6 +206,7 @@ const InitialProfile = ({route}) => {
         email: email,
         password: password,
         profile_pic: photoURL,
+        firebase_id: userUId
       }),
     );
     clearState();
@@ -239,7 +242,7 @@ const InitialProfile = ({route}) => {
         style={styles.bg_signup}>
         <TouchableOpacity
           style={styles.back_header}
-          onPress={() => onButtonPress()}
+          onPress={() => navigation.goBack()}
           activeOpacity={0.9}>
           <View style={styles.back_button}>
             <Text

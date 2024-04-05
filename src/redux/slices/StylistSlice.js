@@ -226,21 +226,33 @@ export const trendingStylists = createAsyncThunk(
 
 export const getNearbyStylists = createAsyncThunk(
   'nearbyStylists',
-  async ({lat, long, setNearbyStylistsProfile, setLoad}, {getState}) => {
+  async (
+    {lat, long, serviceId, setNearbyStylistsProfile, setLoad},
+    {getState},
+  ) => {
     const stateData = getState().userData;
     const token = stateData.token;
+    let abc
 
-    console.log('latttt', lat, long);
+    if (serviceId != null) {
+       abc = `near-by-stylists?latitude=${lat}&longitude=${long}&service_id=${serviceId}`
+    } else {
+      abc = `near-by-stylists?latitude=${lat}&longitude=${long}`
+    }
 
+    // console.log('abc-=-',abc)
     return await axios
-      .get(`${BASE_URL}/near-by-stylists?latitude=${lat}&longitude=${long}`, {
-        headers: {
-          Accept: 'application/json',
-          Authorization: `Bearer ${token}`,
+      .get(
+        `${BASE_URL}/${abc}`,
+        {
+          headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
         },
-      })
+      )
       .then(res => {
-        console.log('nearbyStylists res ============>', res.data);
+        // console.log('nearbyStylists res ============>', res.data);
         setNearbyStylistsProfile(res.data.data);
         setLoad(false);
         return res.data;
@@ -428,7 +440,7 @@ export const StylistSlice = createSlice({
     builders.addCase(getNearbyStylists.fulfilled, (state, action) => {
       state.nearbyStylists_loader = false;
       state.nearbyStylists = action.payload.data;
-      console.log('redux state', action.payload.data);
+      // console.log('redux state', action.payload.data);
     });
     builders.addCase(Appointment.pending, state => {
       state.appointment_loader = true;
