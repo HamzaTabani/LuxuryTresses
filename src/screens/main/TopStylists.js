@@ -110,7 +110,7 @@ const TopStylists = () => {
     // console.log('itemitemitem', item);
     return (
       <TouchableOpacity
-        style={{marginBottom: 30}}
+        style={{marginBottom: 10}}
         activeOpacity={0.9}
         key={item?.id}
         onPress={() => onStylistDetail(item)}>
@@ -213,6 +213,8 @@ const styles = StyleSheet.create({
     // flex: 1,
     paddingBottom: 70,
     // backgroundColor: 'red',
+    width:'95%',
+    alignSelf:'center'
   },
   emptyContainer: {
     // flex: 1,

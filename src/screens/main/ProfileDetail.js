@@ -519,9 +519,10 @@ const styles = StyleSheet.create({
   },
   btns_activeA: {
     backgroundColor: colors.secondary,
-    paddingVertical: 10,
+    padding: 10,
     borderRadius: 50,
-    width: hp('45%'),
+    width:'100%',
+    // flex:1,
     alignItems: 'center',
     alignSelf: 'center',
   },

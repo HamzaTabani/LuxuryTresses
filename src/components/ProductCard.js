@@ -32,6 +32,7 @@ const ProductCard = ({
   title,
   productImage,
   productFromdetail,
+  home,
   // rating,
 }) => {
   const navigation = useNavigation();
@@ -74,7 +75,11 @@ const ProductCard = ({
   // console.log('username-->',username)
 
   return (
-    <View style={[styles.card_box, {height: product ? hp(30) : hp(35)}]}>
+    <View
+      style={[
+        styles.card_box,
+        {height: product ? hp(30) : hp(35), marginRight: home ? 10 : null},
+      ]}>
       {/* card box img,  */}
       <View style={styles.card_box_img}>
         <Image
@@ -265,7 +270,6 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     alignItems: 'center',
     flexDirection: 'column',
-    marginRight: 10,
   },
   card_box_img: {
     marginTop: 2,

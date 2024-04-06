@@ -259,7 +259,10 @@ const InitialProfile = ({route}) => {
           </View>
         </TouchableOpacity>
         <ScrollView
-        // contentContainerStyle={{paddingBottom: user ? hp('55%') : hp('50%')}}
+          // style={{backgroundColor:'red'}}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{paddingBottom:hp(2)}}
+          // contentContainerStyle={{paddingBottom: user ? hp('55%') : hp('50%')}}
         >
           <View
             style={{

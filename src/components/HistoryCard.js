@@ -211,8 +211,8 @@ const styles = StyleSheet.create({
   },
   imageWrapper: {
     position: 'absolute',
-    left: 8,
-    top: 8,
+    left: 9,
+    top: 9,
   },
   ratingText: {
     color: colors.white,

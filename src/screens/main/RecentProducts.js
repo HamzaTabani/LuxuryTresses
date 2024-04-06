@@ -33,7 +33,7 @@ const RecentProducts = ({route}) => {
                     productID: item.id,
                   })
                 }
-                style={{marginBottom: hp('2%')}}>
+                style={{marginBottom: hp('1%')}}>
                 <ProductCard
                   rating={item.average_rating}
                   username={item?.user.first_name + item?.user.last_name}
@@ -60,5 +60,8 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     paddingBottom: hp('10%'),
+    width: '95%',
+    alignSelf: 'center',
+    // backgroundColor: 'red',
   },
 });
