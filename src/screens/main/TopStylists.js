@@ -135,11 +135,18 @@ const TopStylists = () => {
 
   const emptyData = () => {
     return (
-      // <View style={{width: hp(51)}}>
-      <View style={styles.emptyContainer}>
-        <Text style={styles.emptyText}>No Stylist Found!</Text>
+      <View
+        style={{
+          // flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: hp(75)
+          // backgroundColor: 'green',
+        }}>
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyText}>No Stylist Found!</Text>
+        </View>
       </View>
-      // </View>
     );
   };
 
@@ -168,20 +175,26 @@ const TopStylists = () => {
             </View>
           ) : null}
 
-          <View style={styles.wrapper}>
-            <FlatList
-              data={
-                serviceId != '' && serviceId != undefined
-                  ? serviceByIdData
-                  : stylistData
-              }
-              keyExtractor={item => item.id}
-              renderItem={renderData}
-              columnWrapperStyle={{justifyContent: 'space-evenly'}}
-              numColumns={2}
-              ListEmptyComponent={emptyData}
-            />
-          </View>
+          {/* <View style={styles.wrapper}> */}
+          <FlatList
+            data={
+              serviceId != '' && serviceId != undefined
+                ? serviceByIdData
+                : stylistData
+            }
+            // style={[
+            //   serviceId != '' && serviceId != undefined
+            //     ? {height: hp(100)}
+            //     : {height:hp(50)},
+            // ]}
+            contentContainerStyle={styles.wrapper}
+            keyExtractor={item => item.id}
+            renderItem={renderData}
+            columnWrapperStyle={{justifyContent: 'space-evenly'}}
+            numColumns={2}
+            ListEmptyComponent={emptyData}
+          />
+          {/* </View> */}
         </>
       )}
     </Container>
@@ -197,26 +210,7 @@ const styles = StyleSheet.create({
     paddingTop: hp('4%'),
   },
   wrapper: {
-    flex: 1,
+    // flex: 1,
     paddingBottom: 70,
-  },
-  emptyContainer: {
-    backgroundColor: '#D49621',
-    // width: hp(45),
-    height: hp(5),
-    borderRadius: 10,
-    // marginHorizontal:hp(3),
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
-    paddingHorizontal: hp(15),
-    marginRight: hp(1.3)
-    // marginRight:hp(2)
-    // marginLeft:hp(3)
-  },
-  emptyText: {
-    color: colors.white,
-    fontSize: hp(2),
-    fontWeight: 'bold',
   },
 });

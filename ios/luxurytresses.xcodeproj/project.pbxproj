@@ -23,6 +23,7 @@
 		B3C4C3987AC5409FA4D141C3 /* Lora-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8FCE06D7DF2B4A2C96FEE3C1 /* Lora-SemiBold.ttf */; };
 		B3FA041878A041B183F4CA96 /* Lora-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6A4C68A88DE8433EACC649AE /* Lora-Bold.ttf */; };
 		FA9039A22BB76BD3004BEE71 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA9039A12BB76BD2004BEE71 /* GoogleService-Info.plist */; };
+		FAC8A4B52BC0982F00AB197B /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = FAC8A4B42BC0982F00AB197B /* Fonts */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,7 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EEA685D1CC06E876A7A0912D /* Pods_luxurytresses_luxurytressesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_luxurytresses_luxurytressesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA9039A12BB76BD2004BEE71 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		FAC8A4B42BC0982F00AB197B /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Fonts; path = "../node_modules/react-native-vector-icons/Fonts"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +121,7 @@
 		13B07FAE1A68108700A75B9A /* luxurytresses */ = {
 			isa = PBXGroup;
 			children = (
+				FAC8A4B42BC0982F00AB197B /* Fonts */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -281,6 +284,7 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				B3FA041878A041B183F4CA96 /* Lora-Bold.ttf in Resources */,
+				FAC8A4B52BC0982F00AB197B /* Fonts in Resources */,
 				45E1A7D514D44769B6B5B873 /* Lora-BoldItalic.ttf in Resources */,
 				9F70BB345F4D497591E4DD3C /* Lora-Italic.ttf in Resources */,
 				961F71E12D6344E8A369A674 /* Lora-Medium.ttf in Resources */,
@@ -670,7 +674,10 @@
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 			};
@@ -748,7 +755,10 @@
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;

@@ -74,7 +74,7 @@ const ProductCard = ({
   // console.log('username-->',username)
 
   return (
-    <View style={[styles.card_box, {height: product ? 230 : 270}]}>
+    <View style={[styles.card_box, {height: product ? hp(30) : hp(35)}]}>
       {/* card box img,  */}
       <View style={styles.card_box_img}>
         <Image
@@ -260,7 +260,7 @@ export default ProductCard;
 
 const styles = StyleSheet.create({
   card_box: {
-    width: 170,
+    width: hp(22),
     backgroundColor: '#D49621',
     borderRadius: 15,
     alignItems: 'center',

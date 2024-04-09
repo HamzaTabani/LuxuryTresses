@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput } from 'react-native'
+import { StyleSheet, Text, View, TextInput, Platform } from 'react-native'
 import React from 'react'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     inputStyle: {
         flexDirection: 'row',
         alignItems: 'center',
-        padding: 2,
+        padding: Platform.OS === 'android' ? 2 : hp('1.5%'),
         borderWidth: 1,
         borderRadius: 40,
         borderColor: '#D49621',

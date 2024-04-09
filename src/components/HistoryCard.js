@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     fontSize: hp('2%'),
     fontWeight: 'bold',
     // backgroundColor:'red',
-    width: hp('12'),
+    width: hp('11'),
   },
   textWrapper: {
     marginLeft: hp('2%'),

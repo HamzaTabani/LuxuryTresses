@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">luxurytresses</string>
+
+
+    <string name="facebook_app_id">737604355152148</string>
+    <string name="fb_login_protocol_scheme">fb1234</string>
+    <string name="facebook_client_token">a1d87fcb82509d92dc4dddd1848ec738</string>
+
+
+
 </resources>

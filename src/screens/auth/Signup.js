@@ -6,8 +6,9 @@ import {
   ScrollView,
   Text,
   TextInput,
-  Image,
   TouchableOpacity,
+  ActivityIndicator,
+  Platform,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -18,13 +19,20 @@ import FontAwesome5 from 'react-native-vector-icons/Ionicons';
 import PrimaryButton from '../../components/PrimaryButton';
 import {ShowToast} from '../../utils';
 import {SvgFacebookIcon, SvgGoogleIcon} from '../../components/SvgImages';
-import {SigninWithGoogle} from '../../config/firebase/GoogleSignIn';
+import {
+  responseInfoCallback,
+  SigninWithFacebook,
+  SigninWithGoogle,
+} from '../../config/firebase/AuthProviders';
 import {firebase} from '@react-native-firebase/auth';
 import {useDispatch} from 'react-redux';
 import {login} from '../../redux/slices/AuthSlice';
+import {LoginManager, AccessToken, GraphRequest} from 'react-native-fbsdk-next';
 
 const Signup = ({navigation}) => {
   const [email, setEmail] = useState('');
+  const [indicator, setindicator] = useState(false);
+  const [facebookLoader, setFacebookLoader] = useState(false);
   // const [deviceToken, setDeviceToken] = useState('');
   // const [uId, setUId] = useState('');
   // const [providerId, setProviderId] = useState('');
@@ -40,6 +48,7 @@ const Signup = ({navigation}) => {
   };
 
   function googleSignIn() {
+    setindicator(true);
     SigninWithGoogle().then(data => {
       if (!data) {
         console.log('Error no data!');
@@ -64,6 +73,38 @@ const Signup = ({navigation}) => {
       }
     });
   }
+
+  const onFacebookPress = async () => {
+    try {
+      setFacebookLoader(true);
+      await SigninWithFacebook(resCallBack);
+    } catch (error) {
+      setFacebookLoader(false);
+      console.log('facebook login error', error);
+    }
+  };
+
+  const resCallBack = async (error, result) => {
+    if (error) {
+      setFacebookLoader(false);
+      return ShowToast('Facebook login failed');
+    } else {
+      firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+          dispatch(
+            login({
+              email: result.email,
+              uId: user.uid,
+              providerId: user.providerData[0].providerId,
+              firstName: result.first_name,
+              lastName: result.last_name,
+            }),
+          );
+          setFacebookLoader(false);
+        }
+      });
+    }
+  };
 
   return (
     <ImageBackground
@@ -120,44 +161,68 @@ const Signup = ({navigation}) => {
 
             <TouchableOpacity
               onPress={() => googleSignIn()}
+              activeOpacity={0.9}
               style={[styles.button_container]}>
               {/* <Image
                 source={require('../../assets/images/google_icon.png')}
                 style={styles.btn_icon}
               /> */}
-              <View style={styles.btn_icon}>
-                <SvgGoogleIcon />
-              </View>
-              <View style={{width: '75%'}}>
-                <Text
-                  style={{
-                    fontSize: hp('2%'),
-                    color: '#bbb9bd',
-                    textAlign: 'center',
-                  }}>
-                  CONTINUE WITH GOOGLE
-                </Text>
-              </View>
+              {indicator ? (
+                <ActivityIndicator
+                  color={'#D1911E'}
+                  size={'small'}
+                  style={{alignSelf: 'center', flex: 1}}
+                />
+              ) : (
+                <>
+                  <View style={styles.btn_icon}>
+                    <SvgGoogleIcon />
+                  </View>
+                  <View style={{width: '75%'}}>
+                    <Text
+                      style={{
+                        fontSize: hp('2%'),
+                        color: '#bbb9bd',
+                        textAlign: 'center',
+                      }}>
+                      CONTINUE WITH GOOGLE
+                    </Text>
+                  </View>
+                </>
+              )}
             </TouchableOpacity>
-            <View style={styles.button_container}>
+            <TouchableOpacity
+              style={styles.button_container}
+              activeOpacity={0.9}
+              onPress={() => onFacebookPress()}>
               {/* <Image
                 source={require('../../assets/images/facebook_icon.png')}
                 style={styles.btn_icon}
               /> */}
-              <View style={styles.btn_icon}>
-                <SvgFacebookIcon />
-              </View>
-              <View style={{width: '75%'}}>
-                <Text
-                  style={{
-                    fontSize: hp('2%'),
-                    color: '#bbb9bd',
-                    textAlign: 'center',
-                  }}>
-                  CONTINUE WITH FACEBOOK
-                </Text>
-              </View>
-            </View>
+              {facebookLoader ? (
+                <ActivityIndicator
+                  color={'#D1911E'}
+                  size={'small'}
+                  style={{alignSelf: 'center', flex: 1}}
+                />
+              ) : (
+                <>
+                  <View style={styles.btn_icon}>
+                    <SvgFacebookIcon />
+                  </View>
+                  <View style={{width: '75%'}}>
+                    <Text
+                      style={{
+                        fontSize: hp('2%'),
+                        color: '#bbb9bd',
+                        textAlign: 'center',
+                      }}>
+                      CONTINUE WITH FACEBOOK
+                    </Text>
+                  </View>
+                </>
+              )}
+            </TouchableOpacity>
             <View style={{alignItems: 'center', marginTop: 40}}>
               <PrimaryButton
                 title="continue"
@@ -173,6 +238,22 @@ const Signup = ({navigation}) => {
           </View>
         </View>
       </ScrollView>
+      <View>
+        {/* <LoginButton
+          onLoginFinished={(error, result) => {
+            if (error) {
+              console.log('login has error: ' + result.error);
+            } else if (result.isCancelled) {
+              console.log('login is cancelled.');
+            } else {
+              AccessToken.getCurrentAccessToken().then(data => {
+                console.log(data.accessToken.toString());
+              });
+            }
+          }}
+          onLogoutFinished={() => console.log('logout.')}
+        /> */}
+      </View>
     </ImageBackground>
   );
 };
@@ -195,7 +276,7 @@ const styles = StyleSheet.create({
   inputs_container: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 2,
+    padding: Platform.OS === 'android' ? 2 : hp(1),
     borderWidth: 1,
     borderRadius: 40,
     borderColor: '#D49621',

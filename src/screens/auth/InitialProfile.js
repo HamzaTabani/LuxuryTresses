@@ -28,6 +28,7 @@ import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
 import firestore from '@react-native-firebase/firestore';
 import uuid from 'react-native-uuid';
+import Back from 'react-native-vector-icons/Ionicons';
 
 const cities = [
   {
@@ -154,7 +155,7 @@ const InitialProfile = ({route}) => {
         console.log(
           'all console',
           token,
-          userUId, 
+          userUId,
           email,
           firstname,
           lastname,
@@ -206,7 +207,7 @@ const InitialProfile = ({route}) => {
         email: email,
         password: password,
         profile_pic: photoURL,
-        firebase_id: userUId
+        firebase_id: userUId,
       }),
     );
     clearState();
@@ -232,10 +233,10 @@ const InitialProfile = ({route}) => {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-      }}>
+    // <View
+    //   style={{
+    //     // flex: 1,
+    //   }}>
       <ImageBackground
         source={require('../../assets/images/otpbg.png')}
         resizeMode="cover"
@@ -244,7 +245,7 @@ const InitialProfile = ({route}) => {
           style={styles.back_header}
           onPress={() => navigation.goBack()}
           activeOpacity={0.9}>
-          <View style={styles.back_button}>
+          {/* <View style={styles.back_button}>
             <Text
               style={{
                 fontWeight: 'bold',
@@ -252,11 +253,14 @@ const InitialProfile = ({route}) => {
               }}>
               SKIP
             </Text>
+          </View> */}
+          <View style={styles.iconView}>
+            <Back name={'arrow-back'} color={colors.orange} size={25} />
           </View>
         </TouchableOpacity>
-        <ScrollView
+      {/* <ScrollView
         // contentContainerStyle={{paddingBottom: user ? hp('55%') : hp('50%')}}
-        >
+        > */}
           <View
             style={{
               flex: 0.2,
@@ -269,10 +273,11 @@ const InitialProfile = ({route}) => {
             style={{
               flex: 1,
             }}>
-            <View
-              style={{
+            <ScrollView
+              contentContainerStyle={{
                 backgroundColor: '#0C0A22',
-                height: hp('130%'),
+                // height: hp('130%'),
+                paddingBottom: hp(20),
                 // flex: 1,
                 // width: '100%',
                 alignItems: 'center',
@@ -302,7 +307,7 @@ const InitialProfile = ({route}) => {
                           ? {uri: photoURL}
                           : images.initialProfileCam
                       }
-                      resizeMode="contain"
+                      resizeMode="cover"
                       borderRadius={100}
                       style={{
                         position: 'absolute',
@@ -401,17 +406,17 @@ const InitialProfile = ({route}) => {
                           <Text style={styles.label}>City</Text>
                           <View
                             style={{
-                              height: 50,
+                              // height: 50,
                               borderWidth: 0.5,
                               borderColor: '#D49621',
-                              borderRadius: 40,
-                              borderRadius: 50,
+                              borderRadius: 30,
                               width: 140,
                             }}>
                             <Picker
                               selectedValue={selectedCity}
                               dropdownIconColor={colors.orange}
                               dropdownIconRippleColor={colors.orange}
+                              itemStyle={{color: colors.gray, fontSize: hp('2%')}}
                               onValueChange={(itemValue, itemIndex) =>
                                 setSelectedCity(itemValue)
                               }>
@@ -430,17 +435,17 @@ const InitialProfile = ({route}) => {
                           <Text style={styles.label}>State</Text>
                           <View
                             style={{
-                              height: 50,
+                              // height: 50,
                               borderWidth: 0.5,
                               borderColor: '#D49621',
-                              borderRadius: 40,
-                              borderRadius: 50,
+                              borderRadius: 30,
                               width: 140,
                             }}>
                             <Picker
                               selectedValue={selectedState}
                               dropdownIconColor={colors.orange}
                               dropdownIconRippleColor={colors.orange}
+                              itemStyle={{color: colors.gray, fontSize: hp('2%')}}
                               onValueChange={(itemValue, itemIndex) =>
                                 setSelectedState(itemValue)
                               }>
@@ -487,11 +492,11 @@ const InitialProfile = ({route}) => {
                   />
                 </View>
               </View>
-            </View>
+            </ScrollView>
           </View>
-        </ScrollView>
+        {/* </ScrollView> */}
       </ImageBackground>
-    </View>
+    // </View>
   );
 };
 
@@ -504,7 +509,8 @@ const styles = StyleSheet.create({
   },
   back_header: {
     height: hp('10%'),
-    paddingTop: hp('3%'),
+    paddingTop: hp('6%'),
+    paddingLeft: hp('4%'),
     paddingBottom: hp('12%'),
   },
   back_button: {
@@ -564,5 +570,15 @@ const styles = StyleSheet.create({
     color: '#bbb9bd',
     marginBottom: 15,
     marginTop: 10,
+  },
+  iconView: {
+    borderRadius: 100,
+    borderWidth: 0.5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: colors.orange,
+    height: hp('6%'),
+    width: hp('6%'),
+    // backgroundColor:'red'
   },
 });
