@@ -1,4 +1,4 @@
-import {Alert, StyleSheet, Platform} from 'react-native';
+import {Alert, StyleSheet, Platform, View} from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
 import MapView, {Marker, Circle} from 'react-native-maps';
 import MapHeader from '../../components/MapHeader';
@@ -16,6 +16,7 @@ import {
   isLocationEnabled,
   promptForEnableLocationIfNeeded,
 } from 'react-native-android-location-enabler';
+import Loader from '../../components/Loader';
 
 const SelectLocation = () => {
   const navigation = useNavigation();
@@ -24,28 +25,27 @@ const SelectLocation = () => {
   const mapRef = useRef(null);
   const {latLng} = useSelector(state => state.userData);
   const [renderScreen, setRenderScreen] = useState(false);
+  const [load, setLoad] = useState(true);
   console.log('Latcd=--=-> ', latLng);
+  console.log('latLng.length >0', Object.keys(latLng).length > 0);
   console.log('renderScreen-=-=>', renderScreen);
-
-  // useEffect(() => {
-  //   // setCurrentregion(regionLat);
-  //   // console.log('fgffgff: ', regionLat);
-  //   getCurrentLocation();
-  // }, []);
 
   useEffect(() => {
     handleCheckPressed();
-  }, []);
+  }, [renderScreen]);
 
   async function handleCheckPressed() {
     if (Platform.OS === 'android') {
       const checkEnabled = await isLocationEnabled();
       console.log('checkEnabled=-=->', checkEnabled);
+
       if (!checkEnabled) {
         handleEnabledPressed();
-        setRenderScreen(false);
+        // setRenderScreen(false);
+        setLoad(true);
       } else {
         setRenderScreen(true);
+        setLoad(false);
       }
     }
   }
@@ -55,7 +55,7 @@ const SelectLocation = () => {
       try {
         const enableResult = await promptForEnableLocationIfNeeded();
         console.log('enableResult', enableResult);
-        setRenderScreen(true);
+        getCurrentLocation(false);
         // The user has accepted to enable the location services
         // data can be :
         //  - "already-enabled" if the location services has been already enabled
@@ -75,7 +75,7 @@ const SelectLocation = () => {
     }
   }
 
-  const getCurrentLocation = () => {
+  const getCurrentLocation = abc => {
     GetLocation.getCurrentPosition({
       enableHighAccuracy: true,
       timeout: 60000,
@@ -91,10 +91,17 @@ const SelectLocation = () => {
           }),
         );
         // reigions(currentRegion);
-        moveToLocation(location.latitude, location.longitude);
-        navigation.goBack();
         console.log('location: ', location);
-        return ShowToast('Location has been saved.');
+        setLoad(false);
+        setRenderScreen(true);
+
+        if (abc) {
+          moveToLocation(location.latitude, location.longitude);
+          setTimeout(() => {
+            navigation.goBack();
+            return ShowToast('Location has been saved.');
+          }, 3000);
+        }
       })
       .catch(error => {
         const {code, message} = error;
@@ -131,50 +138,65 @@ const SelectLocation = () => {
 
   return (
     <>
-      {renderScreen && (
+      {load ? (
         <>
-          {
-            latLng != null && (
-              <MapView
-                ref={mapRef}
-                initialRegion={{
-                  latitude: latLng?.latitude,
-                  longitude: latLng?.longitude,
-                  latitudeDelta: 0.06,
-                  longitudeDelta: 0.008 * (15 / 20),
-                }}
-                mapType="terrain"
-                style={styles.mapStyle}>
-                <Marker
-                  coordinate={{
-                    latitude: latLng?.latitude,
-                    longitude: latLng?.longitude,
-                  }}
-                  image={images.locationMarker}
-                />
-                <Circle
-                  center={latLng}
-                  strokeWidth={0.5}
-                  radius={circleRadius}
-                  fillColor="rgba(239, 229, 204, 0.3)"
-                  strokeColor={colors.orange}
-                />
-              </MapView>
-            )
-            //  : (
-            //   <MapView
-            //     ref={mapRef}
-            //     initialRegion={currentRegion}
-            //     mapType="terrain"
-            //     style={styles.mapStyle}></MapView>
-            // )
-          }
-          <MapHeader />
-          <LocationCard
-            mapRef={mapRef}
-            moveToLocation={(lat, long) => moveToLocation(lat, long)}
-            getCurrentLocation={getCurrentLocation}
-          />
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              flex: 1,
+            }}>
+            <Loader size={'large'} />
+          </View>
+        </>
+      ) : (
+        <>
+          {renderScreen && (
+            <>
+              {
+                Object.keys(latLng).length > 0 && (
+                  <MapView
+                    ref={mapRef}
+                    initialRegion={{
+                      latitude: latLng?.latitude,
+                      longitude: latLng?.longitude,
+                      latitudeDelta: 0.06,
+                      longitudeDelta: 0.008 * (15 / 20),
+                    }}
+                    mapType="terrain"
+                    style={styles.mapStyle}>
+                    <Marker
+                      coordinate={{
+                        latitude: latLng?.latitude,
+                        longitude: latLng?.longitude,
+                      }}
+                      image={images.locationMarker}
+                    />
+                    <Circle
+                      center={latLng}
+                      strokeWidth={0.5}
+                      radius={circleRadius}
+                      fillColor="rgba(239, 229, 204, 0.3)"
+                      strokeColor={colors.orange}
+                    />
+                  </MapView>
+                )
+                //  : (
+                //   <MapView
+                //     ref={mapRef}
+                //     initialRegion={currentRegion}
+                //     mapType="terrain"
+                //     style={styles.mapStyle}></MapView>
+                // )
+              }
+              <MapHeader />
+              <LocationCard
+                mapRef={mapRef}
+                moveToLocation={(lat, long) => moveToLocation(lat, long)}
+                getCurrentLocation={getCurrentLocation}
+              />
+            </>
+          )}
         </>
       )}
     </>
