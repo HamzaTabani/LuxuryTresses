@@ -258,9 +258,18 @@ const InitialProfile = ({route}) => {
             <Back name={'arrow-back'} color={colors.orange} size={25} />
           </View>
         </TouchableOpacity>
+<<<<<<< HEAD
       {/* <ScrollView
         // contentContainerStyle={{paddingBottom: user ? hp('55%') : hp('50%')}}
         > */}
+=======
+        <ScrollView
+          // style={{backgroundColor:'red'}}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{paddingBottom:hp(2)}}
+          // contentContainerStyle={{paddingBottom: user ? hp('55%') : hp('50%')}}
+        >
+>>>>>>> e34fea2cee0f2afcd8574e86379a14846b39a4fc
           <View
             style={{
               flex: 0.2,

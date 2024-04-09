@@ -46,7 +46,7 @@ const ServiceDropdown = ({services, serviceValue}) => {
   };
 
   return (
-    <View style={{marginBottom: 30, marginRight: hp(1.3)}}>
+    <View style={{marginBottom: 30}}>
       <DropDownPicker
         onSelectItem={item => {
           console.log('selcted item=-=-=>', item);
@@ -64,8 +64,9 @@ const ServiceDropdown = ({services, serviceValue}) => {
         defaultValue={selectedService.id}
         containerStyle={{
           height: hp(5),
-          width: hp(46),
+          width: '90%',
           alignSelf: 'center',
+          // backgroundColor:'red'
         }}
         style={{backgroundColor: '#D49621', zIndex: 3000}}
         listItemContainerStyle={{

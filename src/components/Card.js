@@ -137,13 +137,13 @@ export default Card;
 
 const styles = StyleSheet.create({
   card_box: {
-    width: 170,
-    height: 250,
+    width: hp(22),
+    height: hp(32),
     backgroundColor: '#D49621',
     borderRadius: 15,
     alignItems: 'center',
-    flexDirection: 'column',
-    marginRight: 10,
+    // flexDirection: 'column',
+    // marginRight: 10,
   },
   card_box_img: {
     marginTop: hp('0.6%'),

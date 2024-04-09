@@ -22,9 +22,12 @@ const ProfileHeader = ({
   filter,
   filterActive,
   setFilterActive,
+  home,
 }) => {
   const [searchActive, setSearchActive] = useState(false);
   const navigation = useNavigation();
+
+  // console.log('!home=-=-', !home);
 
   const handleFilter = () => {
     setFilterActive(!filterActive);
@@ -68,14 +71,14 @@ const ProfileHeader = ({
             onPress={() => handleFilter()}
           />
         </View>
-      ) : (
+      ) : !home ? (
         <View>
           <SearchTopButton
             searchActive={searchActive}
             setSearchActive={setSearchActive}
           />
         </View>
-      )}
+      ) : null}
     </View>
   );
 };

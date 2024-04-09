@@ -110,7 +110,7 @@ const TopStylists = () => {
     // console.log('itemitemitem', item);
     return (
       <TouchableOpacity
-        style={{marginBottom: 30}}
+        style={{marginBottom: 10}}
         activeOpacity={0.9}
         key={item?.id}
         onPress={() => onStylistDetail(item)}>
@@ -212,5 +212,30 @@ const styles = StyleSheet.create({
   wrapper: {
     // flex: 1,
     paddingBottom: 70,
+<<<<<<< HEAD
+=======
+    // backgroundColor: 'red',
+    width:'95%',
+    alignSelf:'center'
+  },
+  emptyContainer: {
+    // flex: 1,
+    backgroundColor: '#D49621',
+    // width: hp(45),
+    height: hp(5),
+    borderRadius: 10,
+    // marginHorizontal:hp(3),
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: hp(15),
+    marginRight: hp(1.3),
+    // marginRight:hp(2)
+    // marginLeft:hp(3)
+  },
+  emptyText: {
+    color: colors.white,
+    fontSize: hp(2),
+    fontWeight: 'bold',
+>>>>>>> e34fea2cee0f2afcd8574e86379a14846b39a4fc
   },
 });

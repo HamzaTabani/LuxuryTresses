@@ -108,7 +108,7 @@ const Home = ({navigation}) => {
       })
       .catch(error => {
         const {code, message} = error;
-        console.warn(code, message);
+        console.log(code, message);
       });
   };
 
@@ -124,7 +124,7 @@ const Home = ({navigation}) => {
           style={styles.bg_home}>
           {/* home header */}
           <ScrollView style={{flex: 1}}>
-            <ProfileHeader />
+            <ProfileHeader home={true} />
             {/* home title */}
             <View style={{paddingHorizontal: wp('8%')}}>
               <Text style={styles.home_heading}>
@@ -209,6 +209,7 @@ const Home = ({navigation}) => {
                           // };
                           return (
                             <TouchableOpacity
+                            style={{marginRight:10}}
                               activeOpacity={0.9}
                               key={item?.id}
                               onPress={() => onStylistDetail(item)}>
@@ -285,6 +286,7 @@ const Home = ({navigation}) => {
                                 rating={item?.average_rating}
                                 productImage={item.product_image}
                                 productFromdetail={true}
+                                home={true}
                               />
                             </TouchableOpacity>
                           );

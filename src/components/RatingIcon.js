@@ -37,11 +37,12 @@ const RatingIcon = ({rating, w, h, r}) => {
         justifyContent: 'center',
         borderRadius: 50,
         borderWidth: 0.3,
+        alignSelf:'center'
       }}>
       <Progress.Circle
         progress={rating/5}
         color={colors.lightgreen}
-        size={30}
+        size={27}
         borderColor="transparent"
       />
       <View

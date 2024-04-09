@@ -106,7 +106,7 @@ const LocationCard = ({moveToLocation, getCurrentLocation}) => {
           }}
         />
         <TouchableOpacity
-          onPress={() => getCurrentLocation()}
+          onPress={() => getCurrentLocation(true)}
           style={styles.locationStyle}>
           <Image source={images.locationIcon} />
         </TouchableOpacity>
