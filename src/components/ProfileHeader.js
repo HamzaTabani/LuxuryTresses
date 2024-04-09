@@ -27,7 +27,7 @@ const ProfileHeader = ({
   const [searchActive, setSearchActive] = useState(false);
   const navigation = useNavigation();
 
-  console.log('!home=-=-', !home);
+  // console.log('!home=-=-', !home);
 
   const handleFilter = () => {
     setFilterActive(!filterActive);
