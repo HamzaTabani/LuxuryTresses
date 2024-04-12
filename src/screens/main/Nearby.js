@@ -389,7 +389,7 @@ const Nearby = () => {
 
   const emptyData = () => {
     return (
-      <View style={{width: hp(51)}}>
+      <View style={{width: hp(30), marginHorizontal: hp(10)}}>
         <View style={styles.emptyContainer}>
           <Text style={styles.emptyText}>No Stylist Found!</Text>
         </View>
@@ -567,7 +567,7 @@ const styles = StyleSheet.create({
   },
   emptyContainer: {
     backgroundColor: '#D49621',
-    width: hp(45),
+    width: hp(28),
     height: hp(5),
     borderRadius: 10,
     // marginHorizontal:hp(3),

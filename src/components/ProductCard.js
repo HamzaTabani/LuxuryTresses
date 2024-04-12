@@ -78,7 +78,11 @@ const ProductCard = ({
     <View
       style={[
         styles.card_box,
-        {height: product ? hp(30) : hp(35), marginRight: home ? 10 : null},
+        {
+          height: product ? hp(30) : hp(35),
+          marginRight: home ? 10 : null,
+          width: home ? hp(22) : hp(20),
+        },
       ]}>
       {/* card box img,  */}
       <View style={styles.card_box_img}>
@@ -221,11 +225,12 @@ const ProductCard = ({
               // backgroundColor: 'red',
               width: hp('19%'),
               height: hp('4.5%'),
+              // alignSelf:'center',
               // marginTop: hp('1%'),
               flexDirection: 'row',
               justifyContent: 'space-between',
             }}>
-            <View style={{width: hp('17%')}}>
+            <View style={{width: hp('12%')}}>
               <Text style={styles.productName}>{title}</Text>
               <Text style={styles.text}>{price}</Text>
             </View>
@@ -265,7 +270,8 @@ export default ProductCard;
 
 const styles = StyleSheet.create({
   card_box: {
-    width: hp(22),
+    // width: hp(20),
+    // width:
     backgroundColor: '#D49621',
     borderRadius: 15,
     alignItems: 'center',
@@ -304,6 +310,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     justifyContent: 'center',
+    marginRight: hp(1),
   },
   image: {
     height: hp('1.5%'),
