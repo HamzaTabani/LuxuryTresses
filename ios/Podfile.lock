@@ -1370,6 +1370,8 @@ PODS:
     - FBSDKGamingServicesKit (~> 16.3.1)
     - FBSDKShareKit (~> 16.3.1)
     - React-Core
+  - react-native-geolocation-service (5.3.1):
+    - React
   - react-native-image-picker (7.1.2):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
@@ -1521,6 +1523,8 @@ PODS:
   - RNGoogleSignin (11.0.1):
     - GoogleSignIn (~> 7.0.0)
     - React-Core
+  - RNPermissions (4.1.5):
+    - React-Core
   - RNScreens (3.30.1):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
@@ -1564,6 +1568,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-fbsdk-next (from `../node_modules/react-native-fbsdk-next`)
+  - react-native-geolocation-service (from `../node_modules/react-native-geolocation-service`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -1594,6 +1599,7 @@ DEPENDENCIES:
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
+  - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
@@ -1687,6 +1693,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   react-native-fbsdk-next:
     :path: "../node_modules/react-native-fbsdk-next"
+  react-native-geolocation-service:
+    :path: "../node_modules/react-native-geolocation-service"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
   react-native-maps:
@@ -1747,6 +1755,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNGoogleSignin:
     :path: "../node_modules/@react-native-google-signin/google-signin"
+  RNPermissions:
+    :path: "../node_modules/react-native-permissions"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   RNSVG:
@@ -1813,6 +1823,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 194e32c6aab382d88713ad3dd0025c5f5c4ee072
   React-logger: cebf22b6cf43434e471dc561e5911b40ac01d289
   react-native-fbsdk-next: a929da980a4ec199391da637d3d2ce22b6e7779e
+  react-native-geolocation-service: 608e1da71a1ac31b4de64d9ef2815f697978c55b
   react-native-image-picker: eac5eafa73e1f314c2f4288ae573ee4fc57cad10
   react-native-maps: a164b01f3840b35d738ba7af95855299fce830ca
   react-native-safe-area-context: b97eb6f9e3b7f437806c2ce5983f479f8eb5de4b
@@ -1844,6 +1855,7 @@ SPEC CHECKSUMS:
   RNFBMessaging: e1d20e5d9d3331c7120e3719ac3266ffd50d6df1
   RNGestureHandler: 3ca879eb9e4fbddcf90539dac20992ddfe6d63a3
   RNGoogleSignin: 24d3b3261f78b0fae0aa013f8ab6f8d25e369b0c
+  RNPermissions: 294531ede5a64d1528463e88fffef05675842042
   RNScreens: f3591fdf4b0da62d23be5bbe76791f39c54a1893
   RNSVG: d00c8f91c3cbf6d476451313a18f04d220d4f396
   RNVectorIcons: 6731bd488db95f4197433b30d81d03dc228b367e

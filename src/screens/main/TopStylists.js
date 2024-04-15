@@ -212,8 +212,6 @@ const styles = StyleSheet.create({
   wrapper: {
     // flex: 1,
     paddingBottom: 70,
-<<<<<<< HEAD
-=======
     // backgroundColor: 'red',
     width:'95%',
     alignSelf:'center'
@@ -236,6 +234,5 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: hp(2),
     fontWeight: 'bold',
->>>>>>> e34fea2cee0f2afcd8574e86379a14846b39a4fc
   },
 });

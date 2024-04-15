@@ -6,7 +6,6 @@ import {
   GraphRequest,
   GraphRequestManager,
 } from 'react-native-fbsdk-next';
-import {ShowToast} from '../../utils';
 
 export const SigninWithGoogle = async () => {
   try {
@@ -14,23 +13,54 @@ export const SigninWithGoogle = async () => {
       offlineAccess: false,
       webClientId:
         '756702538267-c071cm0qib2lr7ns1qp1f37opfnm9s8g.apps.googleusercontent.com',
+      iosClientId:
+        '756702538267-p7qbmov0e2id9omrtouu355f6n3go9se.apps.googleusercontent.com',
       scopes: ['profile', 'email'],
     });
     await GoogleSignin.hasPlayServices();
     await GoogleSignin.signOut();
-    const userInfo = await GoogleSignin.signIn();
+    // const userInfo = await GoogleSignin.signIn();
 
-    const {idToken} = await GoogleSignin.signIn();
+    const {idToken, user} = await GoogleSignin.signIn();
     const googleCredentials = auth.GoogleAuthProvider.credential(idToken);
-    auth().signInWithCredential(googleCredentials);
-    return userInfo;
+    // console.log('googluuuuuu credentials', googleCredentials);
+    const currentUser = auth().currentUser;
+    if (currentUser.email) {
+      const signInMethods = await auth().fetchSignInMethodsForEmail(
+        currentUser.email,
+      );
+      // return console.log('signin methodsss', signInMethods)
+
+      if (signInMethods.includes('facebook.com')) {
+        // If the user is already signed in with Google, link the Facebook credential
+        await currentUser.linkWithCredential(googleCredentials);
+        console.log('Google account linked successfully.');
+      } else {
+        await firebase.auth().signInWithCredential(googleCredentials);
+      }
+    } else {
+      await firebase.auth().signInWithCredential(googleCredentials);
+    }
+    // const currentUser = auth().currentUser;
+    // if (
+    //   currentUser &&
+    //   !currentUser.providerData.some(
+    //     provider => provider.providerId === 'facebook.com',
+    //   )
+    // ) {
+    //   // If the user is not already linked with Facebook, prompt them to link their account
+    //   // Implement linking with Facebook similar to the process below
+    //   // Example: await LinkWithFacebook(currentUser);
+    //   await auth().currentUser.linkWithCredential(currentUser);
+    // }
+    return user;
   } catch (err) {
     console.log('google signin error==>', err);
     return null;
   }
 };
 
-export const SigninWithFacebook = async resCallback => {
+export const SigninWithFacebook = async (resCallback, setLoader) => {
   try {
     await LoginManager.logOut();
     const result = await LoginManager.logInWithPermissions([
@@ -45,6 +75,7 @@ export const SigninWithFacebook = async resCallback => {
     }
     const data = await AccessToken.getCurrentAccessToken();
     if (!data) {
+      setLoader(false);
       console.log('Something went wrong obtaining access token');
     } else {
       console.log('facebook token', data.accessToken);
@@ -55,14 +86,31 @@ export const SigninWithFacebook = async resCallback => {
     let infoRequest = new GraphRequest(
       '/me?fields=email,first_name,last_name,picture',
       null,
-      resCallback
+      resCallback,
     );
     new GraphRequestManager().addRequest(infoRequest).start();
-    await firebase.auth().signInWithCredential(facebookCredential);
+
+    // console.log('current user info', currentUser.providerData)
+
+    const currentUser = auth().currentUser;
+    if (currentUser.email) {
+      const signInMethods = await auth().fetchSignInMethodsForEmail(
+        currentUser.email,
+      );
+      // return console.log('signin methodsss', signInMethods)
+
+      if (signInMethods.includes('google.com')) {
+        // If the user is already signed in with Google, link the Facebook credential
+        await currentUser.linkWithCredential(facebookCredential);
+        console.log('Facebook account linked successfully.');
+      } else {
+        await firebase.auth().signInWithCredential(facebookCredential);
+      }
+    } else {
+      await firebase.auth().signInWithCredential(facebookCredential);
+    }
     console.log('user logged in facebook');
   } catch (error) {
     console.error('Facebook login error:', error);
   }
 };
-
-

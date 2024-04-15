@@ -20,14 +20,12 @@ import PrimaryButton from '../../components/PrimaryButton';
 import {ShowToast} from '../../utils';
 import {SvgFacebookIcon, SvgGoogleIcon} from '../../components/SvgImages';
 import {
-  responseInfoCallback,
   SigninWithFacebook,
   SigninWithGoogle,
 } from '../../config/firebase/AuthProviders';
 import {firebase} from '@react-native-firebase/auth';
 import {useDispatch} from 'react-redux';
 import {login} from '../../redux/slices/AuthSlice';
-import {LoginManager, AccessToken, GraphRequest} from 'react-native-fbsdk-next';
 
 const Signup = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -49,35 +47,44 @@ const Signup = ({navigation}) => {
 
   function googleSignIn() {
     setindicator(true);
-    SigninWithGoogle().then(data => {
-      if (!data) {
-        console.log('Error no data!');
-        return ShowToast('Google Login failed!');
-      } else {
-        const googleEmail = data.user.email;
-        const setFirstName = data.user.givenName;
-        const setLastName = data.user.familyName;
-        firebase.auth().onAuthStateChanged(user => {
-          if (user) {
-            dispatch(
-              login({
-                email: googleEmail,
-                uId: user.uid,
-                providerId: user.providerData[0].providerId,
-                firstName: setFirstName,
-                lastName: setLastName,
-              }),
-            );
-          }
-        });
-      }
-    });
+    SigninWithGoogle()
+      .then(async data => {
+        console.log('google datwaaa', data);
+        if (!data) {
+          console.log('Error no data!');
+          setindicator(false);
+          return ShowToast('Google Login failed!');
+        } else {
+          const googleEmail = data.email;
+          const setFirstName = data.givenName;
+          const setLastName = data.familyName;
+          firebase.auth().onAuthStateChanged(user => {
+            console.log('firebase user', user.providerData);
+            if (user) {
+              dispatch(
+                login({
+                  email: googleEmail,
+                  uId: user.uid,
+                  providerId: user.providerData[0].providerId,
+                  firstName: setFirstName,
+                  lastName: setLastName,
+                }),
+              );
+            }
+          });
+          setindicator(false);
+        }
+      })
+      .catch(error => {
+        console.log('error from custom function of google', error);
+        setindicator(false);
+      });
   }
 
   const onFacebookPress = async () => {
     try {
       setFacebookLoader(true);
-      await SigninWithFacebook(resCallBack);
+      await SigninWithFacebook(resCallBack, setFacebookLoader);
     } catch (error) {
       setFacebookLoader(false);
       console.log('facebook login error', error);
