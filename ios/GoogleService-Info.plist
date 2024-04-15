@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>756702538267-p7qbmov0e2id9omrtouu355f6n3go9se.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.756702538267-p7qbmov0e2id9omrtouu355f6n3go9se</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>756702538267-e9fj4rh7pej65grqdg67og4ejsq2769t.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAAL4myPSCxYYSMW6Sg9BHPM3vIxkne31s</string>
+	<key>GCM_SENDER_ID</key>
+	<string>756702538267</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.luxurytresses</string>
+	<key>PROJECT_ID</key>
+	<string>luxury-tresses</string>
+	<key>STORAGE_BUCKET</key>
+	<string>luxury-tresses.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:756702538267:ios:85d1c21543735599ae26be</string>
+</dict>
+</plist>

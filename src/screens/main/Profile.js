@@ -40,7 +40,7 @@ const Profile = () => {
   const [userId, setUserId] = useState(false);
 
   const {user, pic_url} = useSelector(state => state.userData);
-  console.log('waittt', user.profile_pic);
+  // console.log('waittt', user.profile_pic);
 
   console.log('user details=-=-->', user);
 

@@ -6,6 +6,8 @@ import {
   View,
   StatusBar,
   Image,
+  ScrollView,
+  Platform,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -20,20 +22,18 @@ const Welcome = ({navigation}) => {
   console.log(state, 'my redux state test.');
 
   return (
-    <View style={styles.container}>
-      <ImageBackground
-        source={require('../../assets/images/splashbg.png')}
-        resizeMode="cover"
-        style={styles.bg_splash}>
-        {/* logo header */}
+    <ImageBackground
+      source={require('../../assets/images/splashbg.png')}
+      resizeMode="cover"
+      style={styles.bg_splash}>
+      {/* logo header */}
+      <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.splash_header}>
           <Image
             source={require('../../assets/images/logo.png')}
             style={styles.logo}
           />
-          
         </View>
-
         {/* splash bottom */}
         <View style={styles.splash_bottom}>
           <View>
@@ -52,8 +52,8 @@ const Welcome = ({navigation}) => {
             />
           </View>
         </View>
-      </ImageBackground>
-    </View>
+      </ScrollView>
+    </ImageBackground>
   );
 };
 
@@ -62,6 +62,7 @@ export default Welcome;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingBottom: hp('20%'),
   },
   bg_splash: {
     flex: 1,
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   splash_header: {
-    flex: 0.2,
+    flex: 1,
     alignItems: 'flex-start',
     paddingTop: hp('3%'),
   },

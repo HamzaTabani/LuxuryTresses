@@ -233,10 +233,10 @@ const InitialProfile = ({route}) => {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-      }}>
+    // <View
+    //   style={{
+    //     // flex: 1,
+    //   }}>
       <ImageBackground
         source={require('../../assets/images/otpbg.png')}
         resizeMode="cover"
@@ -276,10 +276,11 @@ const InitialProfile = ({route}) => {
             style={{
               flex: 1,
             }}>
-            <View
-              style={{
+            <ScrollView
+              contentContainerStyle={{
                 backgroundColor: '#0C0A22',
-                height: hp('130%'),
+                // height: hp('130%'),
+                paddingBottom: hp(20),
                 // flex: 1,
                 // width: '100%',
                 alignItems: 'center',
@@ -309,7 +310,7 @@ const InitialProfile = ({route}) => {
                           ? {uri: photoURL}
                           : images.initialProfileCam
                       }
-                      resizeMode="contain"
+                      resizeMode="cover"
                       borderRadius={100}
                       style={{
                         position: 'absolute',
@@ -408,17 +409,17 @@ const InitialProfile = ({route}) => {
                           <Text style={styles.label}>City</Text>
                           <View
                             style={{
-                              height: 50,
+                              // height: 50,
                               borderWidth: 0.5,
                               borderColor: '#D49621',
-                              borderRadius: 40,
-                              borderRadius: 50,
+                              borderRadius: 30,
                               width: 140,
                             }}>
                             <Picker
                               selectedValue={selectedCity}
                               dropdownIconColor={colors.orange}
                               dropdownIconRippleColor={colors.orange}
+                              itemStyle={{color: colors.gray, fontSize: hp('2%')}}
                               onValueChange={(itemValue, itemIndex) =>
                                 setSelectedCity(itemValue)
                               }>
@@ -437,17 +438,17 @@ const InitialProfile = ({route}) => {
                           <Text style={styles.label}>State</Text>
                           <View
                             style={{
-                              height: 50,
+                              // height: 50,
                               borderWidth: 0.5,
                               borderColor: '#D49621',
-                              borderRadius: 40,
-                              borderRadius: 50,
+                              borderRadius: 30,
                               width: 140,
                             }}>
                             <Picker
                               selectedValue={selectedState}
                               dropdownIconColor={colors.orange}
                               dropdownIconRippleColor={colors.orange}
+                              itemStyle={{color: colors.gray, fontSize: hp('2%')}}
                               onValueChange={(itemValue, itemIndex) =>
                                 setSelectedState(itemValue)
                               }>
@@ -494,11 +495,11 @@ const InitialProfile = ({route}) => {
                   />
                 </View>
               </View>
-            </View>
+            </ScrollView>
           </View>
         </ScrollView>
       </ImageBackground>
-    </View>
+    // </View>
   );
 };
 

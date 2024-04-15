@@ -132,7 +132,6 @@ const Home = ({navigation}) => {
               </Text>
               <Text style={styles.home_title}>Lets make a new style!</Text>
             </View>
-
             {/* Top Style */}
             {loading ? (
               <>
