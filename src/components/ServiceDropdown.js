@@ -8,7 +8,7 @@ import {
 } from 'react-native-responsive-screen';
 import Entypo from 'react-native-vector-icons/Entypo';
 
-const ServiceDropdown = ({services, serviceValue}) => {
+const ServiceDropdown = ({services, serviceValue, trending}) => {
   const [selectedService, setSelectedService] = useState({
     id: null,
     title: null,
@@ -64,7 +64,7 @@ const ServiceDropdown = ({services, serviceValue}) => {
         defaultValue={selectedService.id}
         containerStyle={{
           height: hp(5),
-          width: '90%',
+          width: trending ? '100%' : '90%',
           alignSelf: 'center',
           // backgroundColor:'red'
         }}

@@ -20,9 +20,19 @@ import ProductCardBox from '../../components/ProductCardBox';
 import {useSelector, useDispatch} from 'react-redux';
 import images from '../../assets/images';
 import Loader from '../../components/Loader';
-import {trendingStylists} from '../../redux/slices/StylistSlice';
+import {
+  getAllServices,
+  getServiceById,
+  trendingStylists,
+} from '../../redux/slices/StylistSlice';
 import colors from '../../assets/colors';
-import {SvgBottomLineSecondIcon} from '../../components/SvgImages';
+import {
+  SvgBagGoldTopBar,
+  SvgBottomLineSecondIcon,
+  SvgSeatGoldTopbar,
+  SvgfilterIcon,
+} from '../../components/SvgImages';
+import ServiceDropdown from '../../components/ServiceDropdown';
 
 const cartData2 = [
   {
@@ -60,29 +70,75 @@ const cartData2 = [
 const Trendings = () => {
   const [filterTab, setFilterTab] = useState('tab1');
 
+  const [filterActive, setFilterActive] = useState(false);
+  const [serviceId, setServiceId] = useState('');
+  const [stylistServices, setStylistServices] = useState([]);
+  const [serviceByIdData, setServiceByIdData] = useState([]);
+
   const {trending_stylists, trending_error, trending_loader} = useSelector(
     state => state.stylistReducer,
   );
 
   const {pic_url} = useSelector(state => state.userData);
 
+  console.log('serviceByIdData-=>', trending_stylists.length > 0 && serviceByIdData.length > 0);
+
   // console.log('trending stylists ==========>', trending_stylists);
 
   const dispatch = useDispatch();
 
+  const getAllStylistProfileServices = async () => {
+    await dispatch(getAllServices(setStylistServices));
+    // setLoad(false);
+  };
+
+  const getAllServicesById = async () => {
+    const res = await dispatch(getServiceById(serviceId));
+    setServiceByIdData(res.payload.data);
+  };
+
+  const handleServiceId = data => {
+    // console.log('data=--==>', data);
+    // if (data != null && data != undefined) {
+    //   console.log('data53483=--==>', data);
+    // setServiceId(data != null ? data[0].value : '0');
+    setServiceId(data.value);
+    // const label = data.label.replace(/^\s+/, '');
+    // setServiceLabel(data != null ? data[0].label : 'Stylist');
+    // setServiceLabel(
+    //   data.label != undefined && data.label != null
+    //     ? data.label.replace(/^\s+/, '')
+    //     : null,
+    // );
+    // } else {
+    //   setServiceId('');
+    //   setServiceLabel('');
+    // }
+  };
+
   useEffect(() => {
-    if (trending_stylists.length < 1) {
-      fetchTrendingStylists();
-    }
-  }, []);
+    // if (trending_stylists.length < 1) {
+    fetchTrendingStylists();
+    // }
+    getAllStylistProfileServices();
+  }, [serviceByIdData]);
+
+  useEffect(() => {
+    getAllServicesById();
+  }, [serviceId]);
 
   const fetchTrendingStylists = async () => {
     await dispatch(trendingStylists());
   };
 
+  const handleFilter = () => {
+    setFilterActive(!filterActive);
+  };
+
   return (
     <PageWrapper>
       <ProfileHeader username={true} />
+
       <View style={styles.trendingContainer}>
         {/* ///////// title and filter buttons container ///////*/}
         <View style={styles.filterContainer}>
@@ -97,7 +153,7 @@ const Trendings = () => {
                       ? styles.filter_tab_active
                       : styles.filter_tab
                   }>
-                  <Image source={require('../../assets/images/goldseat.png')} />
+                  <SvgSeatGoldTopbar />
                 </View>
               </Pressable>
               <Pressable onPress={() => setFilterTab('tab2')}>
@@ -107,16 +163,27 @@ const Trendings = () => {
                       ? styles.filter_tab_active
                       : styles.filter_tab
                   }>
-                  <Image source={require('../../assets/images/goldbag.png')} />
+                  <SvgBagGoldTopBar />
                 </View>
               </Pressable>
             </View>
             {/* filter icon */}
-            <View style={styles.filterButton}>
-              <Image source={require('../../assets/images/filtericon.png')} />
-            </View>
+            <TouchableOpacity
+              onPress={() => handleFilter()}
+              style={styles.filterButton}>
+              <SvgfilterIcon />
+            </TouchableOpacity>
           </View>
         </View>
+
+        {filterActive ? (
+          <ServiceDropdown
+            services={stylistServices}
+            serviceValue={handleServiceId}
+            trending={true}
+          />
+        ) : null}
+
         {/*/////////////  filter items container ////////////// */}
         {/* venders listing */}
         {filterTab === 'tab1' ? (
@@ -131,7 +198,7 @@ const Trendings = () => {
                 <Loader size={'large'} />
               </View>
             </>
-          ) : trending_stylists.length > 0 ? (
+          ) : trending_stylists.length > 0 || serviceByIdData.length > 0 ? (
             // <ScrollView
             //   showsVerticalScrollIndicator={false}
             //   style={{marginBottom: 50}}>
@@ -142,9 +209,13 @@ const Trendings = () => {
                 // marginBottom: 100,
                 // backgroundColor: 'green',
               }}
-              data={trending_stylists}
+              data={
+                serviceId != '' && serviceId != undefined
+                  ? serviceByIdData
+                  : trending_stylists
+              }
               renderItem={({item}) => {
-                // console.log('itemitem=-=->>>', item.product);
+                console.log('itemitemvvvv=-=->>>', item);
                 return (
                   <View>
                     {item.service ? (

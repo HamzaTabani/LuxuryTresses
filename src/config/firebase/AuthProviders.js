@@ -6,6 +6,7 @@ import {
   GraphRequest,
   GraphRequestManager,
 } from 'react-native-fbsdk-next';
+import {Alert} from 'react-native';
 
 export const SigninWithGoogle = async () => {
   try {
@@ -25,7 +26,7 @@ export const SigninWithGoogle = async () => {
     const googleCredentials = auth.GoogleAuthProvider.credential(idToken);
     // console.log('googluuuuuu credentials', googleCredentials);
     const currentUser = auth().currentUser;
-    if (currentUser.email) {
+    if (currentUser) {
       const signInMethods = await auth().fetchSignInMethodsForEmail(
         currentUser.email,
       );
@@ -36,6 +37,7 @@ export const SigninWithGoogle = async () => {
         await currentUser.linkWithCredential(googleCredentials);
         console.log('Google account linked successfully.');
       } else {
+        console.log('object');
         await firebase.auth().signInWithCredential(googleCredentials);
       }
     } else {
@@ -83,6 +85,7 @@ export const SigninWithFacebook = async (resCallback, setLoader) => {
     const facebookCredential = firebase.auth.FacebookAuthProvider.credential(
       data.accessToken,
     );
+
     let infoRequest = new GraphRequest(
       '/me?fields=email,first_name,last_name,picture',
       null,
@@ -90,27 +93,77 @@ export const SigninWithFacebook = async (resCallback, setLoader) => {
     );
     new GraphRequestManager().addRequest(infoRequest).start();
 
-    // console.log('current user info', currentUser.providerData)
-
     const currentUser = auth().currentUser;
-    if (currentUser.email) {
-      const signInMethods = await auth().fetchSignInMethodsForEmail(
-        currentUser.email,
-      );
-      // return console.log('signin methodsss', signInMethods)
+    console.log('currentUser-=->', currentUser.providerData);
+    if (currentUser) {
+      try {
+        const signInMethods = await auth().fetchSignInMethodsForEmail(
+          currentUser.email,
+        );
+        console.log('Sign-in methods:', signInMethods);
 
-      if (signInMethods.includes('google.com')) {
-        // If the user is already signed in with Google, link the Facebook credential
-        await currentUser.linkWithCredential(facebookCredential);
-        console.log('Facebook account linked successfully.');
-      } else {
-        await firebase.auth().signInWithCredential(facebookCredential);
+        if (signInMethods.includes('google.com')) {
+          // If the user is already signed in with Google, link the Facebook credential
+          await currentUser.linkWithCredential(facebookCredential);
+          console.log('Facebook account linked successfully.');
+        } else {
+          // If the user is not signed in with Google, sign them in with Facebook
+          const userCredential = await firebase
+            .auth()
+            .signInWithCredential(facebookCredential);
+          console.log('Signed A in with Facebook:', userCredential.user);
+        }
+      } catch (error) {
+        // console.error('Error during Facebook account linking:', error);
+        // Alert.alert('Error occurred while linking Facebook account.');
+        // Inside the catch block for Error during Facebook account linking
+        console.error('Error during Facebook account linking:', error);
+
+        // Inside the catch block for Error during Facebook account linking
+        if (error.code === 'auth/account-exists-with-different-credential') {
+          // An account with the same email already exists, but with a different credential
+          // Prompt the user to sign in with the provider associated with their existing account
+          const providerId = 'google.com'; // Assuming the existing account was created using Google sign-in
+          const provider = new firebase.auth.OAuthProvider(providerId);
+          console.log('provider=-=>', provider);
+          try {
+            // Sign in with the provider associated with the existing account
+            const result = await firebase.auth().signInWithPopup(provider);
+
+            // Link the Facebook credential to the existing account
+            await result.user.linkWithCredential(facebookCredential);
+            console.log('Facebook account linked successfully.');
+          } catch (linkingError) {
+            console.error('Error linking Facebook account:', linkingError);
+            Alert.alert('Error occurred while linking Facebook account.');
+          }
+        }
       }
     } else {
-      await firebase.auth().signInWithCredential(facebookCredential);
+      try {
+        // There is no current user, sign in with Facebook directly
+        const userCredential = await firebase
+          .auth()
+          .signInWithCredential(facebookCredential);
+        console.log('Signed B in with Facebook:', userCredential.user);
+
+        // Check if the Facebook account's email is already associated with another provider
+        const email = userCredential.user.email;
+        const existingUser = await auth().fetchSignInMethodsForEmail(email);
+
+        if (existingUser && existingUser.length > 0) {
+          // If the email is associated with another provider, link the Facebook credential
+          await userCredential.user.linkWithCredential(facebookCredential);
+          console.log('Facebook account linked successfully.');
+        }
+      } catch (error) {
+        console.error('Error occurred during Facebook login:', error);
+        Alert.alert('Error occurred while signing in with Facebook.');
+      }
     }
-    console.log('user logged in facebook');
+    console.log('User logged in with Facebook');
   } catch (error) {
     console.error('Facebook login error:', error);
+    setLoader(false);
   }
 };
