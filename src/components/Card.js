@@ -35,6 +35,8 @@ const Card = ({
   //   }).start();
   // }, [rating]);
 
+  // console.log('home stylist image', image);
+
   const {user, pic_url, latLng} = useSelector(state => state.userData);
 
   const radius = 16;
@@ -57,13 +59,14 @@ const Card = ({
       <View style={styles.card_box_img}>
         <Image
           // source={image}
-          
+
           source={
             stylistProfileImageError
               ? images.profile
-              : image == 'null' && image == null && image == 'undefined'
+              : image == 'null' || image == null || image == 'undefined'
               ? images.profile
-              : {uri: pic_url + image}
+              : // : {uri: pic_url + image}
+                {uri: image}
           }
           resizeMode="contain"
           borderRadius={10}

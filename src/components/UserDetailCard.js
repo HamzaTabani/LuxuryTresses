@@ -39,7 +39,7 @@ const UserDetailCard = ({username, email, image, rating}) => {
                 ? images.profile
                 : image == 'null' && image == null && image == 'undefined'
                 ? images.profile
-                : {uri: pic_url + image}
+                : {uri: image}
               // {uri: pic_url +image}
             }
             resizeMode={FastImage.resizeMode.cover}

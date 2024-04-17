@@ -7,6 +7,7 @@ import {
   Image,
   Pressable,
   FlatList,
+  TouchableOpacity,
 } from 'react-native';
 import PageWrapper from '../../components/PageWrapper';
 import ProfileHeader from '../../components/ProfileHeader';
@@ -16,15 +17,21 @@ import {
 } from 'react-native-responsive-screen';
 import VenderCardBox from '../../components/VenderCardBox';
 import ProductCardBox from '../../components/ProductCardBox';
-import {getPopularStylists} from '../../redux/slices/StylistSlice';
+import {
+  getAllServices,
+  getPopularStylists,
+  getServiceById,
+} from '../../redux/slices/StylistSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   SvgBottomLineSecondIcon,
+  SvgFilterIcon,
   SvgGoldBagIcon,
   SvgGoldSeatIcon,
 } from '../../components/SvgImages';
 import images from '../../assets/images';
 import Loader from '../../components/Loader';
+import ServiceDropdown from '../../components/ServiceDropdown';
 
 const cartData = [
   {
@@ -95,6 +102,11 @@ const cartData2 = [
 const Popular = () => {
   const [filterTab, setFilterTab] = useState('tab1');
 
+  const [filterActive, setFilterActive] = useState(false);
+  const [serviceId, setServiceId] = useState('');
+  const [stylistServices, setStylistServices] = useState([]);
+  const [serviceByIdData, setServiceByIdData] = useState([]);
+
   const {popularStylists, loading, popularStylist_error} = useSelector(
     state => state.stylistReducer,
   );
@@ -109,14 +121,52 @@ const Popular = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (popularStylists.length < 1) {
-      getPopularStylistsProfile();
-    }
-  }, []);
+    // if (popularStylists.length < 1) {
+    getPopularStylistsProfile();
+    // }
+    getAllStylistProfileServices();
+  }, [serviceByIdData]);
+
+  useEffect(() => {
+    getAllServicesById();
+  }, [serviceId]);
+
+  const getAllStylistProfileServices = async () => {
+    await dispatch(getAllServices(setStylistServices));
+    // setLoad(false);
+  };
+
+  const getAllServicesById = async () => {
+    const res = await dispatch(getServiceById(serviceId));
+    setServiceByIdData(res.payload.data);
+  };
+
+  const handleServiceId = data => {
+    // console.log('data=--==>', data);
+    // if (data != null && data != undefined) {
+    //   console.log('data53483=--==>', data);
+    // setServiceId(data != null ? data[0].value : '0');
+    setServiceId(data.value);
+    // const label = data.label.replace(/^\s+/, '');
+    // setServiceLabel(data != null ? data[0].label : 'Stylist');
+    // setServiceLabel(
+    //   data.label != undefined && data.label != null
+    //     ? data.label.replace(/^\s+/, '')
+    //     : null,
+    // );
+    // } else {
+    //   setServiceId('');
+    //   setServiceLabel('');
+    // }
+  };
+
+  const handleFilter = () => {
+    setFilterActive(!filterActive);
+  };
 
   return (
     <PageWrapper>
-      <ProfileHeader username={true} />
+      <ProfileHeader home={true} />
       <View style={styles.trendingContainer}>
         {/* ///////// title and filter buttons container ///////*/}
         <View style={styles.filterContainer}>
@@ -146,11 +196,21 @@ const Popular = () => {
               </Pressable>
             </View>
             {/* filter icon */}
-            <View style={styles.filterButton}>
-              <Image source={require('../../assets/images/filtericon.png')} />
-            </View>
+            <TouchableOpacity
+              onPress={() => handleFilter()}
+              style={styles.filterButton}>
+              <SvgFilterIcon />
+            </TouchableOpacity>
           </View>
         </View>
+
+        {filterActive ? (
+          <ServiceDropdown
+            services={stylistServices}
+            serviceValue={handleServiceId}
+            trending={true}
+          />
+        ) : null}
 
         {/*/////////////  filter items container ////////////// */}
         {/* venders listing */}
@@ -206,7 +266,11 @@ const Popular = () => {
             <FlatList
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{paddingBottom: 100}}
-              data={popularStylists}
+              data={
+                serviceId != '' && serviceId != undefined
+                  ? serviceByIdData
+                  : popularStylists
+              }
               renderItem={({item}) => {
                 return (
                   <View>
@@ -260,7 +324,11 @@ const Popular = () => {
           )
         ) : (
           <FlatList
-            data={popularStylists}
+            data={
+              serviceId != '' && serviceId != undefined
+                ? serviceByIdData
+                : popularStylists
+            }
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{paddingBottom: 100}}
             // renderItem={({item}) => {

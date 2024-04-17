@@ -81,7 +81,10 @@ const Trendings = () => {
 
   const {pic_url} = useSelector(state => state.userData);
 
-  console.log('serviceByIdData-=>', trending_stylists.length > 0 && serviceByIdData.length > 0);
+  console.log(
+    'serviceByIdData-=>',
+    trending_stylists.length > 0 && serviceByIdData.length > 0,
+  );
 
   // console.log('trending stylists ==========>', trending_stylists);
 
@@ -137,7 +140,7 @@ const Trendings = () => {
 
   return (
     <PageWrapper>
-      <ProfileHeader username={true} />
+      <ProfileHeader home={true} />
 
       <View style={styles.trendingContainer}>
         {/* ///////// title and filter buttons container ///////*/}
@@ -271,7 +274,11 @@ const Trendings = () => {
           )
         ) : (
           <FlatList
-            data={trending_stylists}
+            data={
+              serviceId != '' && serviceId != undefined
+                ? serviceByIdData
+                : trending_stylists
+            }
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{paddingBottom: 100}}
             renderItem={({item}) => {

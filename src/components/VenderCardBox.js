@@ -32,7 +32,7 @@ const VenderCardBox = ({
 }) => {
   const navigation = useNavigation();
   // console.log('serviceIcon-==', serviceIcon);
-  // console.log('productIcon-==', productIcon);
+  console.log('img-==', img);
   // console.log('itemData vendor card box-->', itemData);
   // const {recentStylists} = useSelector(state => state.stylistReducer);
   // const {user, pic_url} = useSelector(state => state.userData);
@@ -88,9 +88,10 @@ const VenderCardBox = ({
             source={
               imageError
                 ? images.profile
-                : img == 'null' && img == null && img == 'undefined'
+                : img == 'null' || img == null || img == 'undefined'
                 ? images.profile
-                : {uri: pic_url + img}
+                : // : {uri: pic_url + img}
+                  {uri: img}
             }
             style={{width: '100%', height: '100%'}}
             borderRadius={10}

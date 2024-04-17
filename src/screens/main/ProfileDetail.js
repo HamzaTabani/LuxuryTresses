@@ -54,7 +54,7 @@ const ProfileDetail = ({route}) => {
     useSelector(state => state.stylistReducer);
 
   const {pic_url} = useSelector(state => state.userData);
-  console.log('profile detail from screen =========>', profiledetail);
+  console.log('profile detail from screen =========>', profiledetail?.profile_pic);
   // console.log('profile loader =========>', profileDetails_loading);
 
   const [stylistProfileImageError, setStylistProfileImageError] =
@@ -140,11 +140,12 @@ const ProfileDetail = ({route}) => {
                 source={
                   stylistProfileImageError
                     ? images.profile
-                    : profiledetail?.profile_pic == 'null' &&
-                      profiledetail?.profile_pic == null &&
+                    : profiledetail?.profile_pic == 'null' ||
+                      profiledetail?.profile_pic == null ||
                       profiledetail?.profile_pic == 'undefined'
                     ? images.profile
-                    : {uri: pic_url + profiledetail?.profile_pic}
+                    // : {uri: pic_url + profiledetail?.profile_pic}
+                    : {uri: profiledetail?.profile_pic}
                   // profiledetail?.profile_pic == null
                   //   ? images.stylist1
                   //   : {uri: pic_url + profiledetail?.profile_pic}
@@ -204,7 +205,8 @@ const ProfileDetail = ({route}) => {
                         : 'address',
                     img:
                       profiledetail?.profile_pic != null
-                        ? {uri: pic_url + profiledetail?.profile_pic}
+                        ? // ? {uri: pic_url + profiledetail?.profile_pic}
+                          {uri: profiledetail?.profile_pic}
                         : images.cart1,
                     id: profiledetail?.id,
                     ratings: profiledetail?.average_rating,
@@ -521,7 +523,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.secondary,
     padding: 10,
     borderRadius: 50,
-    width:'100%',
+    width: '100%',
     // flex:1,
     alignItems: 'center',
     alignSelf: 'center',

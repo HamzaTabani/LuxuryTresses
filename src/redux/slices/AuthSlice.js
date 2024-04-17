@@ -20,7 +20,7 @@ export const register = createAsyncThunk(
     profile_pic,
     state,
     city,
-    firebase_id
+    firebase_id,
   }) => {
     let data = new formData();
     data.append('first_name', first_name);
@@ -66,7 +66,15 @@ export const register = createAsyncThunk(
 
 export const login = createAsyncThunk(
   'signin',
-  async ({email, password, uId, providerId, firstName, lastName}) => {
+  async ({
+    email,
+    password,
+    uId,
+    providerId,
+    firstName,
+    lastName,
+    profilePhoto,
+  }) => {
     var data = new formData();
     if (uId != undefined) {
       data.append('email', email);
@@ -74,6 +82,7 @@ export const login = createAsyncThunk(
       data.append('provider_id', providerId);
       data.append('first_name', firstName);
       data.append('last_name', lastName);
+      data.append('profile_pic', profilePhoto);
     } else {
       data.append('email', email);
       data.append('password', password);
@@ -397,7 +406,7 @@ export const authState = createSlice({
       state.latLng_loading = true;
     });
     builder.addCase(postLatLng.fulfilled, (state, action) => {
-      (state.latLng_loading = false),(state.latLng = action.payload);
+      (state.latLng_loading = false), (state.latLng = action.payload);
       console.log('action.payload', action.payload);
     });
   },

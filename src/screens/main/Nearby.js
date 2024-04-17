@@ -63,7 +63,7 @@ const Nearby = () => {
   const [delayedEmpty, setDelayedEmpty] = useState(true);
   const [renderScreen, setRenderScreen] = useState(true);
 
-  console.log('renderScreen=-=->', renderScreen);
+  console.log('imageUrls=-=->', imageUrls);
   // console.log('nearbyStylistsProfile===>', nearbyStylistsProfile);
 
   // console.log('delayedEmpty-=-=->', delayedEmpty);
@@ -85,7 +85,7 @@ const Nearby = () => {
   // //   // }
   // }, [nearbyStylistsProfile]);
 
-  console.log('load===>', load);
+  // console.log('load===>', load);
   // console.log('stylistServices0-0-0-0-', stylistServices);
   // console.log('serviceId0-0-0-', serviceId);
 
@@ -165,14 +165,14 @@ const Nearby = () => {
 
   // console.log('regionLat=-=>', regionLat);
 
-  // const [nearByImageError, setNearByImageError] = useState(false);
+  const [nearByImageError, setNearByImageError] = useState(false);
 
-  // const handleNearByImageError = () => {
-  //   setNearByImageError(true);
-  // };
+  const handleNearByImageError = () => {
+    setNearByImageError(true);
+  };
   // console.log('currentRegion: ', currentRegion);
 
-  console.log('defLat: ', regionLat, regionLat.length > 0);
+  // console.log('defLat: ', regionLat, regionLat.length > 0);
   // useEffect(() => {
   //   setCurrentregion(regionLat);
   // }, [regionLat]);
@@ -289,19 +289,24 @@ const Nearby = () => {
     const urls = [];
     for (const item of nearbyStylistsProfile) {
       if (item.profile_pic) {
-        const uri = imageUrl + item.profile_pic;
+        const uri = item.profile_pic;
         await Image.prefetch(uri);
         urls.push(uri);
-      }
+      } 
+      // else {
+      //   const uri = images.profile;
+      //   await Image.prefetch(uri);
+      //   urls.push(uri);
+      // }
     }
     setImageUrls(urls);
   };
 
   const renderMarkers = () => {
-    if (!imageUrls || imageUrls.length === 0) return null;
+    // if (!imageUrls || imageUrls.length === 0) return console.log('object');
     return nearbyStylistsProfile.map((item, index) => {
-      // console.log('render markers item=->', item);
-      // console.log('imageUrls[index]=-=>', imageUrls[index]);
+      console.log('render markers item=->', item);
+      console.log('imageUrls[index]=-=>', imageUrls[index]);
       return (
         <Marker
           key={item.id}
@@ -310,19 +315,18 @@ const Nearby = () => {
             longitude: parseFloat(item.lng),
           }}>
           <Image
-            source={imageUrls[index] ? {uri: imageUrls[index]} : images.profile}
-            // source={
-            // nearByImageError
-            //   ? images.profile
-            //   : item.profile_pic == 'null' &&
-            //     item.profile_pic == null &&
-            //     item.profile_pic == 'undefined'
-            //   ? // &&
-            //     // item.profile_pic
-            //     images.profile
-            //   :
-            //     {uri: imageUrl + item.profile_pic}
-            // }
+            // source={imageUrls[index] ? {uri: imageUrls[index]} : images.profile}
+            source={
+              nearByImageError
+                ? images.profile
+                : item.profile_pic == 'null' ||
+                  item.profile_pic == null ||
+                  item.profile_pic == 'undefined'
+                ? // &&
+                  // item.profile_pic
+                  images.profile
+                : {uri: item.profile_pic}
+            }
             style={{
               height: 30,
               width: 30,
@@ -330,7 +334,7 @@ const Nearby = () => {
               borderWidth: 2,
               borderColor: 'white',
             }}
-            // onError={handleNearByImageError}
+            onError={handleNearByImageError}
           />
         </Marker>
       );

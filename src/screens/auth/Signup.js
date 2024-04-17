@@ -58,6 +58,7 @@ const Signup = ({navigation}) => {
           const googleEmail = data.email;
           const setFirstName = data.givenName;
           const setLastName = data.familyName;
+          const profilePic = data.photo;
           firebase.auth().onAuthStateChanged(user => {
             console.log('firebase user', user.providerData);
             if (user) {
@@ -68,6 +69,7 @@ const Signup = ({navigation}) => {
                   providerId: user.providerData[0].providerId,
                   firstName: setFirstName,
                   lastName: setLastName,
+                  profilePhoto: profilePic,
                 }),
               );
             }
@@ -96,6 +98,7 @@ const Signup = ({navigation}) => {
       setFacebookLoader(false);
       return ShowToast('Facebook login failed');
     } else {
+      console.log('facebook result=-=->', result.picture.data.url);
       firebase.auth().onAuthStateChanged(user => {
         if (user) {
           dispatch(
@@ -105,6 +108,7 @@ const Signup = ({navigation}) => {
               providerId: user.providerData[0].providerId,
               firstName: result.first_name,
               lastName: result.last_name,
+              profilePhoto: result.picture.data.url,
             }),
           );
           setFacebookLoader(false);

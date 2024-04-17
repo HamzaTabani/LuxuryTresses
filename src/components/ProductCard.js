@@ -127,7 +127,8 @@ const ProductCard = ({
                       avatar == null &&
                       avatar == 'undefined'
                     ? images.profile
-                    : {uri: pic_url + avatar}
+                    : // : {uri: pic_url + avatar}
+                      {uri: avatar}
                 }
                 resizeMode="contain"
                 borderRadius={100}

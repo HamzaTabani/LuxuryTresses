@@ -7,6 +7,7 @@ import {
   Image,
   Pressable,
   FlatList,
+  TouchableOpacity,
 } from 'react-native';
 import PageWrapper from '../../components/PageWrapper';
 import ProfileHeader from '../../components/ProfileHeader';
@@ -22,11 +23,16 @@ import {
   SvgGoldBagIcon,
   SvgGoldSeatIcon,
 } from '../../components/SvgImages';
-import {getRecentStylists} from '../../redux/slices/StylistSlice';
+import {
+  getAllServices,
+  getRecentStylists,
+  getServiceById,
+} from '../../redux/slices/StylistSlice';
 import {useSelector, useDispatch} from 'react-redux';
 import images from '../../assets/images';
 import Loader from '../../components/Loader';
 import colors from '../../assets/colors';
+import ServiceDropdown from '../../components/ServiceDropdown';
 
 const cartData = [
   {
@@ -97,6 +103,11 @@ const cartData2 = [
 const Recents = () => {
   const [filterTab, setFilterTab] = useState('tab1');
 
+  const [filterActive, setFilterActive] = useState(false);
+  const [serviceId, setServiceId] = useState('');
+  const [stylistServices, setStylistServices] = useState([]);
+  const [serviceByIdData, setServiceByIdData] = useState([]);
+
   const {recentStylists, loading, recentStylist_error} = useSelector(
     state => state.stylistReducer,
   );
@@ -109,16 +120,54 @@ const Recents = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (recentStylists.length < 1) {
-      getRecentStylistsProfile();
-    }
-  }, []);
+    // if (recentStylists.length < 1) {
+    getRecentStylistsProfile();
+    // }
+    getAllStylistProfileServices();
+  }, [serviceByIdData]);
+
+  useEffect(() => {
+    getAllServicesById();
+  }, [serviceId]);
+
+  const getAllStylistProfileServices = async () => {
+    await dispatch(getAllServices(setStylistServices));
+    // setLoad(false);
+  };
+
+  const getAllServicesById = async () => {
+    const res = await dispatch(getServiceById(serviceId));
+    setServiceByIdData(res.payload.data);
+  };
+
+  const handleServiceId = data => {
+    // console.log('data=--==>', data);
+    // if (data != null && data != undefined) {
+    //   console.log('data53483=--==>', data);
+    // setServiceId(data != null ? data[0].value : '0');
+    setServiceId(data.value);
+    // const label = data.label.replace(/^\s+/, '');
+    // setServiceLabel(data != null ? data[0].label : 'Stylist');
+    // setServiceLabel(
+    //   data.label != undefined && data.label != null
+    //     ? data.label.replace(/^\s+/, '')
+    //     : null,
+    // );
+    // } else {
+    //   setServiceId('');
+    //   setServiceLabel('');
+    // }
+  };
+
+  const handleFilter = () => {
+    setFilterActive(!filterActive);
+  };
 
   // console.log('recentStylists recent screen-->', recentStylists);
 
   return (
     <PageWrapper>
-      <ProfileHeader username={true} />
+      <ProfileHeader home={true} />
       <View style={styles.trendingContainer}>
         {/* ///////// title and filter buttons container ///////*/}
         <View style={styles.filterContainer}>
@@ -150,12 +199,22 @@ const Recents = () => {
               </Pressable>
             </View>
             {/* filter icon */}
-            <View style={styles.filterButton}>
+            <TouchableOpacity
+              onPress={() => handleFilter()}
+              style={styles.filterButton}>
               {/* <Image source={require('../../assets/images/filtericon.png')} /> */}
               <SvgFilterIcon />
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
+
+        {filterActive ? (
+          <ServiceDropdown
+            services={stylistServices}
+            serviceValue={handleServiceId}
+            trending={true}
+          />
+        ) : null}
 
         {/*/////////////  filter items container ////////////// */}
         {/* venders listing */}
@@ -176,7 +235,11 @@ const Recents = () => {
             <FlatList
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{paddingBottom: 100}}
-              data={recentStylists}
+              data={
+                serviceId != '' && serviceId != undefined
+                  ? serviceByIdData
+                  : recentStylists
+              }
               renderItem={({item}) => {
                 // console.log('activeOrders items==>', item);
                 return (
@@ -230,7 +293,11 @@ const Recents = () => {
           )
         ) : (
           <FlatList
-            data={recentStylists}
+            data={
+              serviceId != '' && serviceId != undefined
+                ? serviceByIdData
+                : recentStylists
+            }
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{paddingBottom: 100}}
             // renderItem={({item}) => {

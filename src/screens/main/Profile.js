@@ -111,7 +111,8 @@ const Profile = () => {
                   source={
                     user?.profile_pic
                       ? {
-                          uri: pic_url + user?.profile_pic,
+                          // uri: pic_url + user?.profile_pic,
+                          uri: user?.profile_pic,
                           priority: FastImage.priority.normal,
                         }
                       : images.profile
@@ -140,7 +141,7 @@ const Profile = () => {
               <View
                 style={{
                   marginBottom: 20,
-                  gap:10
+                  gap: 10,
                 }}>
                 <TouchableOpacity
                   style={{
@@ -171,10 +172,10 @@ const Profile = () => {
                   <Text style={styles.statusText}>Active</Text>
                 </View> */}
                 <Text style={styles.nameText}>
-                  {user.first_name + ' ' + user.last_name}
+                  {user?.first_name + ' ' + user?.last_name}
                 </Text>
                 <Text style={styles.usernameText}>
-                  @{user.first_name + user.last_name}
+                  @{user?.first_name + user?.last_name}
                 </Text>
               </View>
             </View>
@@ -276,7 +277,7 @@ const Profile = () => {
                     />
                     <TextInput
                       style={styles.inputs}
-                      value={user.email}
+                      value={user?.email}
                       editable={false}
                       keyboardType="email-address"
                       placeholder="sarah.j@gmail.com"
@@ -295,7 +296,7 @@ const Profile = () => {
                     <TextInput
                       style={styles.inputs}
                       editable={false}
-                      value={user.phone_number}
+                      value={user?.phone_number}
                       keyboardType="numeric"
                       placeholder="(012) 3434 789"
                       placeholderTextColor="#bbb9bd"
@@ -482,12 +483,14 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: hp('3%'),
     marginTop: 10,
+    width:hp(18)
   },
   usernameText: {
     marginTop: 8,
     color: '#fff',
     fontWeight: '500',
     fontSize: hp('1.8%'),
+    width:hp(18)
   },
   formTab: {
     borderWidth: 1.2,
