@@ -151,7 +151,10 @@ export const editProfile = createAsyncThunk(
       })
         .then(async res => {
           let updatedData = await res.json();
-          // console.log('edit response ===================>', updatedData.data);
+          console.log(
+            'edit response ===================>',
+            updatedData.success,
+          );
           if (updatedData.data.success) {
             return true;
           }
@@ -159,6 +162,7 @@ export const editProfile = createAsyncThunk(
         })
         .catch(error => {
           ErrorToast(error);
+          console.log('edit response error', error);
           return false;
         });
     }
@@ -362,6 +366,7 @@ export const authState = createSlice({
     });
     builder.addCase(editProfile.fulfilled, (state, action) => {
       (state.edit_loading = false), (state.user = action.payload.data);
+      console.log('edit profile action.payload.data--', action.payload.data);
     });
     builder.addCase(changePassword.pending, state => {
       state.change_loading = true;

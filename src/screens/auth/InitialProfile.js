@@ -149,7 +149,7 @@ const InitialProfile = ({route}) => {
             profile_pic: photoURL,
           }),
         );
-        // console.log('response from action', res)
+        console.log('response from action', res)
         if (res.payload) {
           navigation.goBack();
           return ShowToast('Profile updated successfully');

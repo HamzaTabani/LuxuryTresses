@@ -8,7 +8,7 @@ const ProfileImgRound = ({imgSrc}) => {
   const navigation = useNavigation();
 
   const {user, pic_url} = useSelector(state => state.userData);
-  // console.log('user.profile_pic0-0->', user.profile_pic);
+  console.log('user.profile_pic0-0->', user.profile_pic);
 
   return (
     <TouchableOpacity

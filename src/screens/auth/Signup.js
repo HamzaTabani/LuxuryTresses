@@ -60,13 +60,13 @@ const Signup = ({navigation}) => {
           const setLastName = data.familyName;
           const profilePic = data.photo;
           firebase.auth().onAuthStateChanged(user => {
-            console.log('firebase user', user.providerData);
+            console.log('firebase user', user);
             if (user) {
               dispatch(
                 login({
                   email: googleEmail,
-                  uId: user.uid,
-                  providerId: user.providerData[0].providerId,
+                  uId: user?.uid,
+                  providerId: user?.providerData[0]?.providerId,
                   firstName: setFirstName,
                   lastName: setLastName,
                   profilePhoto: profilePic,
@@ -101,11 +101,12 @@ const Signup = ({navigation}) => {
       console.log('facebook result=-=->', result.picture.data.url);
       firebase.auth().onAuthStateChanged(user => {
         if (user) {
+          console.log('user87878878----',user)
           dispatch(
             login({
               email: result.email,
-              uId: user.uid,
-              providerId: user.providerData[0].providerId,
+              uId: user?.uid,
+              providerId: user?.providerData[0]?.providerId,
               firstName: result.first_name,
               lastName: result.last_name,
               profilePhoto: result.picture.data.url,

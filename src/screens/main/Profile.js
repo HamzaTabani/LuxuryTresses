@@ -31,6 +31,7 @@ import {
   SvgarrowUpLeftIcon,
 } from '../../components/SvgImages';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import auth, {firebase} from '@react-native-firebase/auth';
 
 const Profile = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -58,17 +59,21 @@ const Profile = () => {
     ]);
   };
 
-  console.log('userId=-vfvfrv=-->', userId);
+  // console.log('userId=-vfvfrv=-->', userId);
+
+  const userUid = auth().currentUser.uid;
+
+  console.log('userUid=-=-=->', userUid);
 
   useEffect(() => {
-    if (user.uid != null) {
+    if (userUid != null) {
       setUserId(true);
-      console.log('userId=-vfvfrv=', userId);
+      console.log('userId=-if=', userId);
     } else {
       setUserId(false);
-      console.log('userId=-', userId);
+      console.log('userId=else-', userId);
     }
-  }, [user.uid]);
+  }, [userUid]);
 
   return (
     <>
@@ -483,14 +488,14 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: hp('3%'),
     marginTop: 10,
-    width:hp(18)
+    width: hp(18),
   },
   usernameText: {
     marginTop: 8,
     color: '#fff',
     fontWeight: '500',
     fontSize: hp('1.8%'),
-    width:hp(18)
+    width: hp(18),
   },
   formTab: {
     borderWidth: 1.2,
