@@ -61,19 +61,19 @@ const Profile = () => {
 
   // console.log('userId=-vfvfrv=-->', userId);
 
-  const userUid = auth().currentUser.uid;
+  // const userUid = auth().currentUser.uid;
 
-  console.log('userUid=-=-=->', userUid);
+  // console.log('userUid=-=-=->', userUid);
 
-  useEffect(() => {
-    if (userUid != null) {
-      setUserId(true);
-      console.log('userId=-if=', userId);
-    } else {
-      setUserId(false);
-      console.log('userId=else-', userId);
-    }
-  }, [userUid]);
+  // useEffect(() => {
+  //   if (auth().currentUser.uid != null) {
+  //     setUserId(true);
+  //     console.log('userId=-if=', userId);
+  //   } else {
+  //     setUserId(false);
+  //     console.log('userId=else-', userId);
+  //   }
+  // });
 
   return (
     <>
@@ -222,9 +222,6 @@ const Profile = () => {
                       <View>
                         <Text style={{fontWeight: '500', color: '#000'}}>
                           Complete Profile
-                        </Text>
-                        <Text style={{fontSize: hp('1.3%'), color: 'grey'}}>
-                          Sed ut perspiciatis unde amnis
                         </Text>
                       </View>
                       <View>

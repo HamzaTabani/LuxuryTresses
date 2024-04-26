@@ -18,7 +18,12 @@ const RecentProducts = ({route}) => {
 
   return (
     <Container>
-      <ProfileHeader username={true} icon={true} text={'Recent products'} />
+      <ProfileHeader
+        username={true}
+        icon={true}
+        text={'Recent products'}
+        home={true}
+      />
       <View style={styles.wrapper}>
         <FlatList
           data={recentProducts}

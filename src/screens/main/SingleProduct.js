@@ -50,6 +50,11 @@ const SingleProduct = ({route}) => {
   const {pic_baseUrl} = useSelector(state => state.ecommerceReducer);
   const product_id = route?.params?.productID;
   const {product, order, completedOrders, reorder} = route?.params;
+
+  console.log(
+    'productDetails[product_id]?.user?.profile_pic--',
+    productDetails[product_id]?.user?.profile_pic,
+  );
   // console.log('pic_url==>', images.stylist1);
   // console.log('product_id==>', product_id);
   // console.log('product detailssss from screens =========>', productDetails);
@@ -235,9 +240,7 @@ const SingleProduct = ({route}) => {
                   productDetails[product_id]?.user?.profile_pic == null
                     ? images.stylist1
                     : {
-                        uri:
-                          pic_url +
-                          productDetails[product_id]?.user?.profile_pic,
+                        uri: productDetails[product_id]?.user?.profile_pic,
                       }
                 }
                 rating={productDetails[product_id]?.average_rating}

@@ -150,47 +150,7 @@ const ProductCard = ({
         ) : null}
 
         {/* rating icon */}
-        {!product && rating != null ? (
-          // <View
-          //   style={{
-          //     height: 40,
-          //     width: 40,
-          //     backgroundColor: '#fff',
-          //     alignItems: 'center',
-          //     justifyContent: 'center',
-          //     borderRadius: 50,
-          //     position: 'absolute',
-          //     // bottom: -35,
-          //     top: 150,
-          //     // bottom:0,
-          //     right: 0,
-          //     borderWidth: 0.3,
-          //   }}>
-          //   <Svg width="40" height="40">
-          //     <Circle
-          //       cx="20"
-          //       cy="20"
-          //       r={radius}
-          //       fill="transparent"
-          //       stroke="#19CC89"
-          //       strokeWidth="4"
-          //       strokeDasharray={`${circumference} ${circumference}`}
-          //       strokeDashoffset={animatedStrokeDashoffset}
-          //     />
-          //     <Image
-          //       source={require('../assets/images/popular.png')}
-          //       resizeMode="contain"
-          //       style={{
-          //         width: 20,
-          //         height: 20,
-          //         position: 'absolute',
-          //         top: 10,
-          //         left: 10,
-          //       }}
-          //     />
-          //   </Svg>
-          // </View>
-
+        {/* {!product && rating != null ? ( */}
           <View style={styles.progressView}>
             <Progress.Circle
               progress={rating / 5}
@@ -203,7 +163,7 @@ const ProductCard = ({
               <SvgCardPopularIcon />
             </View>
           </View>
-        ) : null}
+        {/* ) : null} */}
       </View>
       <View
         style={{

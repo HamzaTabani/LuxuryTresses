@@ -163,6 +163,23 @@ const Recents = () => {
     setFilterActive(!filterActive);
   };
 
+  const emptyData = () => {
+    return (
+      <View
+        style={{
+          // flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: hp(75),
+          // backgroundColor: 'green',
+        }}>
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyText}>No Stylist Found!</Text>
+        </View>
+      </View>
+    );
+  };
+
   // console.log('recentStylists recent screen-->', recentStylists);
 
   return (
@@ -275,6 +292,7 @@ const Recents = () => {
                   <SvgBottomLineSecondIcon />
                 </View>
               }
+              ListEmptyComponent={emptyData}
             />
           ) : (
             // </ScrollView>
@@ -341,6 +359,7 @@ const Recents = () => {
                 <SvgBottomLineSecondIcon />
               </View>
             }
+            ListEmptyComponent={emptyData}
           />
         )}
       </View>
@@ -402,6 +421,26 @@ const styles = StyleSheet.create({
   errorMessage: {
     color: colors.orange,
     fontSize: hp('2%'),
+  },
+  emptyContainer: {
+    // flex: 1,
+    backgroundColor: '#D49621',
+    width: hp(30),
+    height: hp(5),
+    borderRadius: 10,
+    // marginHorizontal:hp(3),
+    justifyContent: 'center',
+    alignItems: 'center',
+    // paddingHorizontal: hp(15),
+    marginRight: hp(1.3),
+    // marginRight:hp(2)
+    // marginLeft:hp(3)
+  },
+  emptyText: {
+    color: colors.white,
+    fontSize: hp(2),
+    fontWeight: 'bold',
+    // backgroundColor:'red'
   },
 });
 

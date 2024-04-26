@@ -39,7 +39,7 @@ const UserDetailCard = ({username, email, image, rating}) => {
                 ? images.profile
                 : image == 'null' && image == null && image == 'undefined'
                 ? images.profile
-                : {uri: image}
+                : image
               // {uri: pic_url +image}
             }
             resizeMode={FastImage.resizeMode.cover}
@@ -61,43 +61,43 @@ const UserDetailCard = ({username, email, image, rating}) => {
           </Text>
         </View>
       </View>
-      {rating != null ? (
+      {/* {rating != null ? ( */}
+      <View
+        style={{
+          backgroundColor: '#C78914',
+          margin: 3,
+          paddingHorizontal: 10,
+          padding: 3,
+          borderRadius: 10,
+          borderWidth: 1,
+          borderColor: '#fff',
+          alignItems: 'center',
+        }}>
         <View
-          style={{
-            backgroundColor: '#C78914',
-            margin: 3,
-            paddingHorizontal: 10,
-            padding: 3,
-            borderRadius: 10,
-            borderWidth: 1,
-            borderColor: '#fff',
-            alignItems: 'center',
-          }}>
-          <View
-            style={styles.ratingCard}
-            // activeOpacity={0.9}
-            // onPress={() => navigation.navigate('Reviews')}
-          >
-            <Progress.Circle
-              progress={rating / 5}
-              color={colors.lightgreen}
-              size={38}
-              borderColor="transparent"
-              style={{marginLeft: 1, marginTop: 1}}
-            />
-            <View style={styles.imageWrapper}>
-              {/* <Image
+          style={styles.ratingCard}
+          // activeOpacity={0.9}
+          // onPress={() => navigation.navigate('Reviews')}
+        >
+          <Progress.Circle
+            progress={rating / 5}
+            color={colors.lightgreen}
+            size={38}
+            borderColor="transparent"
+            style={{marginLeft: 1, marginTop: 1}}
+          />
+          <View style={styles.imageWrapper}>
+            {/* <Image
               source={images.star}
               style={{height: hp('2%'), width: hp('2%')}}
             /> */}
-              <SvgCardPopularIcon />
-            </View>
+            <SvgCardPopularIcon />
           </View>
-          <Text style={{fontSize: hp('1.2%'), color: '#fff'}}>
-            {rating} Rating
-          </Text>
         </View>
-      ) : null}
+        <Text style={{fontSize: hp('1.2%'), color: '#fff'}}>
+          {rating ? rating : 0} Rating
+        </Text>
+      </View>
+      {/* ) : null} */}
     </View>
   );
 };

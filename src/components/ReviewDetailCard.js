@@ -16,7 +16,7 @@ const ReviewDetailCard = ({
 }) => {
   const {pic_url} = useSelector(state => state.userData);
 
-  console.log('profilePic review detail card', profilePic);
+  console.log('profilePic review detail card', pic_url + profilePic);
 
   const [imageError, setImageError] = useState(false);
 

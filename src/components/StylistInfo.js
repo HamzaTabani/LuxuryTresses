@@ -109,25 +109,25 @@ const StylistInfo = ({
             </View>
           </View>
         </View>
-        {rating != null ? (
-          <View style={styles.ratingView}>
-            <View style={styles.ratingStyle}>
-              <Progress.Circle
-                progress={rating / 5}
-                color={colors.lightgreen}
-                size={40}
-                style={{marginTop: hp('0.5%')}}
-                borderColor="transparent"
-              />
-              <View style={styles.imageWrapper}>
-                <SvgCardPopularIcon />
-              </View>
+        {/* {rating != null ? ( */}
+        <View style={styles.ratingView}>
+          <View style={styles.ratingStyle}>
+            <Progress.Circle
+              progress={rating / 5}
+              color={colors.lightgreen}
+              size={40}
+              style={{marginTop: hp('0.5%')}}
+              borderColor="transparent"
+            />
+            <View style={styles.imageWrapper}>
+              <SvgCardPopularIcon />
             </View>
-            <Text style={{color: colors.white, marginTop: hp('0.4%')}}>
-              {rating} rating
-            </Text>
           </View>
-        ) : null}
+          <Text style={{color: colors.white, marginTop: hp('0.4%')}}>
+            {rating ? rating : 0} rating
+          </Text>
+        </View>
+        {/* ) : null} */}
       </View>
       {isActive && (
         <>

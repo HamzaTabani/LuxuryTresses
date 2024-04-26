@@ -149,7 +149,7 @@ const InitialProfile = ({route}) => {
             profile_pic: photoURL,
           }),
         );
-        console.log('response from action', res)
+        console.log('response from action', res);
         if (res.payload) {
           navigation.goBack();
           return ShowToast('Profile updated successfully');
@@ -306,12 +306,14 @@ const InitialProfile = ({route}) => {
                   style={{
                     borderWidth: 1,
                     borderColor: '#D49621',
-                    width: 100,
-                    height: 100,
+                    width: wp(24),
+                    height: hp(12),
                     borderRadius: 50,
-                    position: 'relative',
-                    top: 'center',
-                    left: 'center',
+                    // position: 'relative',
+                    // top: 'center',
+                    // left: 'center',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}
                   activeOpacity={0.9}
                   onPress={() => onUploadPhoto()}>
@@ -324,12 +326,15 @@ const InitialProfile = ({route}) => {
                     resizeMode="cover"
                     borderRadius={100}
                     style={{
-                      position: 'absolute',
+                      // position: 'absolute',
                       alignSelf: 'center',
-                      top: 'center',
-                      left: 'center',
-                      width: 100,
-                      height: 100,
+                      // justifyContent: 'center',
+                      // top: 'center',
+                      // left: 'center',
+                      width: wp(23),
+                      height: hp(11),
+                      // backgroundColor:'red',
+                      // margin:5
                     }}
                   />
                   <FontAwesome5

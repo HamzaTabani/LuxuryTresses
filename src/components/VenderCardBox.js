@@ -130,29 +130,29 @@ const VenderCardBox = ({
 
       {/* vender contact and ratings*/}
       <View style={{justifyContent: 'space-between'}}>
-        {ratings != null ? (
-          <Pressable
-            // activeOpacity={0.9}
-            // key={itemData?.id}
-            onPress={() =>
-              navigation.navigate('Reviews', {
-                name,
-                email,
-                img,
-                id: itemId,
-                ratings,
-              })
-            }
-            // onPress={() => console.log('itemData.id-->', itemData.id)}
-            style={styles.ratingButton}>
-            <View>
-              <RatingIcon rating={ratings} w={30} h={30} r={10} />
-            </View>
-            <Text style={{color: '#fff', fontSize: hp('1.2%')}}>
-              {ratings} Rating
-            </Text>
-          </Pressable>
-        ) : null}
+        {/* {ratings != null ? ( */}
+        <Pressable
+          // activeOpacity={0.9}
+          // key={itemData?.id}
+          onPress={() =>
+            navigation.navigate('Reviews', {
+              name,
+              email,
+              img,
+              id: itemId,
+              ratings,
+            })
+          }
+          // onPress={() => console.log('itemData.id-->', itemData.id)}
+          style={styles.ratingButton}>
+          <View>
+            <RatingIcon rating={ratings} w={30} h={30} r={10} />
+          </View>
+          <Text style={{color: '#fff', fontSize: hp('1.2%')}}>
+            {ratings ? (Math.round(ratings * 100) / 100).toFixed(2) : 0} Rating
+          </Text>
+        </Pressable>
+        {/* ) : null} */}
         {/* <View
           style={
             ratings == null

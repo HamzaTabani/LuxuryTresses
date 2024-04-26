@@ -22,13 +22,15 @@ const SelectLocation = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [currentRegion, setCurrentregion] = useState(null);
+  const [currentRegionA, setCurrentregionA] = useState(null);
   const mapRef = useRef(null);
   const {latLng} = useSelector(state => state.userData);
   const [renderScreen, setRenderScreen] = useState(false);
   const [load, setLoad] = useState(true);
   console.log('Latcd=--=-> ', latLng);
-  console.log('latLng.length >0', Object.keys(latLng).length > 0);
-  console.log('renderScreen-=-=>', renderScreen);
+  // console.log('latLng.length >0', Object.keys(latLng).length > 0);
+  // console.log('renderScreen-=-=>', renderScreen);
+  console.log('currentRegionA=-=-=>', currentRegionA);
 
   useEffect(() => {
     handleCheckPressed();
@@ -91,7 +93,7 @@ const SelectLocation = () => {
           }),
         );
         // reigions(currentRegion);
-        console.log('location: ', location);
+        // console.log('location: ', location);
         setLoad(false);
         setRenderScreen(true);
 
@@ -167,13 +169,19 @@ const SelectLocation = () => {
                     style={styles.mapStyle}>
                     <Marker
                       coordinate={{
-                        latitude: latLng?.latitude,
-                        longitude: latLng?.longitude,
+                        latitude:
+                          currentRegionA != null
+                            ? currentRegionA.latitude
+                            : latLng.latitude,
+                        longitude:
+                          currentRegionA != null
+                            ? currentRegionA.longitude
+                            : latLng.longitude,
                       }}
                       image={images.locationMarker}
                     />
                     <Circle
-                      center={latLng}
+                      center={currentRegionA != null ? currentRegionA : latLng}
                       strokeWidth={0.5}
                       radius={circleRadius}
                       fillColor="rgba(239, 229, 204, 0.3)"
@@ -194,6 +202,7 @@ const SelectLocation = () => {
                 mapRef={mapRef}
                 moveToLocation={(lat, long) => moveToLocation(lat, long)}
                 getCurrentLocation={getCurrentLocation}
+                currentRegionA={setCurrentregionA}
               />
             </>
           )}

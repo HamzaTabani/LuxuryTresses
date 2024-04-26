@@ -87,7 +87,7 @@ const Card = ({
           ) : null}
         </View>
         {/* rating icon */}
-        {rating != null ? (
+        {/* {rating != null ? ( */}
           <View style={styles.progressView}>
             <Progress.Circle
               progress={rating / 5}
@@ -100,7 +100,7 @@ const Card = ({
               <SvgCardPopularIcon />
             </View>
           </View>
-        ) : null}
+        {/* ) : null} */}
       </View>
       {allTopStylist ? (
         <View

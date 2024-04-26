@@ -13,28 +13,30 @@ const ReviewCard = ({onPress, averageRating, totalCustomerRating}) => {
         <Text style={styles.reviewText}>Customer reviews</Text>
         <Text style={styles.text}>{totalCustomerRating} customer rating</Text>
       </View>
-      {averageRating != null ? (
-        <View style={{flexDirection: 'row'}}>
-          <View style={{marginRight: hp('2%')}}>
-            <Text style={styles.reviewText}>{averageRating} rating</Text>
-            <Text style={[styles.text, {alignSelf: 'center'}]}>out of 5</Text>
-          </View>
-          <View style={styles.progressView}>
-            <Progress.Circle
-              progress={averageRating / 5}
-              color={colors.lightgreen}
-              size={40.5}
-              style={{marginTop: hp('0.5%')}}
-              borderColor="transparent"
-            />
-            <View style={styles.imageWrapper}>
-              <SvgCardRevPopSecIcon />
-            </View>
+      {/* {averageRating != null ? ( */}
+      <View style={{flexDirection: 'row'}}>
+        <View style={{marginRight: hp('2%')}}>
+          <Text style={styles.reviewText}>
+            {averageRating ? (Math.round(averageRating * 100) / 100).toFixed(2) : 0} rating
+          </Text>
+          <Text style={[styles.text, {alignSelf: 'center'}]}>out of 5</Text>
+        </View>
+        <View style={styles.progressView}>
+          <Progress.Circle
+            progress={averageRating / 5}
+            color={colors.lightgreen}
+            size={40.5}
+            style={{marginTop: hp('0.5%')}}
+            borderColor="transparent"
+          />
+          <View style={styles.imageWrapper}>
+            <SvgCardRevPopSecIcon />
           </View>
         </View>
-      ) : (
+      </View>
+      {/* ) : (
         <Text style={styles.text}>0 Rating</Text>
-      )}
+      )} */}
     </TouchableOpacity>
   );
 };
@@ -53,6 +55,7 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontWeight: 'bold',
     fontSize: hp('2%'),
+    // backgroundColor:'red',width:hp(5)
   },
   text: {
     color: colors.white,

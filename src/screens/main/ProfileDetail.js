@@ -54,7 +54,10 @@ const ProfileDetail = ({route}) => {
     useSelector(state => state.stylistReducer);
 
   const {pic_url} = useSelector(state => state.userData);
-  console.log('profile detail from screen =========>', profiledetail?.profile_pic);
+  console.log(
+    'profile detail from screen =========>',
+    profiledetail?.profile_pic,
+  );
   // console.log('profile loader =========>', profileDetails_loading);
 
   const [stylistProfileImageError, setStylistProfileImageError] =
@@ -100,7 +103,7 @@ const ProfileDetail = ({route}) => {
       ) {
         // console.log('object');
         setTabBothActive(true);
-        setTabActive('product');
+        setTabActive('service');
         setProductIcon(true);
         // setTabActive('service');
         setServiceIcon(true);
@@ -144,8 +147,8 @@ const ProfileDetail = ({route}) => {
                       profiledetail?.profile_pic == null ||
                       profiledetail?.profile_pic == 'undefined'
                     ? images.profile
-                    // : {uri: pic_url + profiledetail?.profile_pic}
-                    : {uri: profiledetail?.profile_pic}
+                    : // : {uri: pic_url + profiledetail?.profile_pic}
+                      {uri: profiledetail?.profile_pic}
                   // profiledetail?.profile_pic == null
                   //   ? images.stylist1
                   //   : {uri: pic_url + profiledetail?.profile_pic}
@@ -206,7 +209,7 @@ const ProfileDetail = ({route}) => {
                     img:
                       profiledetail?.profile_pic != null
                         ? // ? {uri: pic_url + profiledetail?.profile_pic}
-                          {uri: profiledetail?.profile_pic}
+                          profiledetail?.profile_pic
                         : images.cart1,
                     id: profiledetail?.id,
                     ratings: profiledetail?.average_rating,
@@ -371,7 +374,7 @@ const ProfileDetail = ({route}) => {
                   data={profiledetail?.products}
                   keyExtractor={(item, ind) => ind}
                   renderItem={({item}) => {
-                    // console.log('profileDetails.products items==>', item);
+                    console.log('profileDetails.products items==>', item);
                     return (
                       <TouchableOpacity
                         style={{marginBottom: hp('3.5%')}}

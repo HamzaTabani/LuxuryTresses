@@ -70,7 +70,8 @@ const Reviews = () => {
   const {name, email, img, id, ratings} = route?.params;
   const [rating, setRating] = useState('');
   const [postComment, setPostComment] = useState('');
-  console.log('user data===> ', name);
+  console.log('user data===> ', img);
+
   // console.log('ididddd-->', id);
   const {stylistReview, stylistReview_loading, stylistReview_error} =
     useSelector(state => state.stylistReducer);
@@ -217,7 +218,7 @@ const Reviews = () => {
               <UserDetailCard
                 username={name}
                 email={email}
-                image={img}
+                image={ img}
                 rating={ratings}
               />
             </View>
@@ -291,7 +292,7 @@ const Reviews = () => {
                 data={[...stylistReview?.reviews].reverse()}
                 keyExtractor={item => item.id}
                 renderItem={({item}) => {
-                  // console.log('stylistReview items-->', item);
+                  console.log('stylistReview items-->', item.user.profile_pic);
                   return (
                     <ReviewDetailCard
                       profilePic={item.user.profile_pic}

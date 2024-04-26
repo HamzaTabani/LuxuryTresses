@@ -32,6 +32,7 @@ import {
 import images from '../../assets/images';
 import Loader from '../../components/Loader';
 import ServiceDropdown from '../../components/ServiceDropdown';
+import colors from '../../assets/colors';
 
 const cartData = [
   {
@@ -162,6 +163,23 @@ const Popular = () => {
 
   const handleFilter = () => {
     setFilterActive(!filterActive);
+  };
+
+  const emptyData = () => {
+    return (
+      <View
+        style={{
+          // flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: hp(75),
+          // backgroundColor: 'green',
+        }}>
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyText}>No Stylist Found!</Text>
+        </View>
+      </View>
+    );
   };
 
   return (
@@ -305,6 +323,7 @@ const Popular = () => {
                   <SvgBottomLineSecondIcon />
                 </View>
               }
+              ListEmptyComponent={emptyData}
             />
           ) : (
             popularStylist_error !== '' && (
@@ -370,6 +389,7 @@ const Popular = () => {
                 <SvgBottomLineSecondIcon />
               </View>
             }
+            ListEmptyComponent={emptyData}
           />
         )}
       </View>
@@ -427,6 +447,26 @@ const styles = StyleSheet.create({
   filter_tab: {
     paddingVertical: 10,
     paddingHorizontal: 20,
+  },
+  emptyContainer: {
+    // flex: 1,
+    backgroundColor: '#D49621',
+    width: hp(30),
+    height: hp(5),
+    borderRadius: 10,
+    // marginHorizontal:hp(3),
+    justifyContent: 'center',
+    alignItems: 'center',
+    // paddingHorizontal: hp(15),
+    marginRight: hp(1.3),
+    // marginRight:hp(2)
+    // marginLeft:hp(3)
+  },
+  emptyText: {
+    color: colors.white,
+    fontSize: hp(2),
+    fontWeight: 'bold',
+    // backgroundColor:'red'
   },
 });
 
