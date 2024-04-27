@@ -240,8 +240,8 @@ const styles = StyleSheet.create({
   },
   card_box_img: {
     marginTop: 2,
-    width: 140,
-    height: 130,
+    height: hp('22%'),
+    width: hp('21%'),
     alignItems: 'center',
     borderRadius: 15,
     // backgroundColor:'red'
@@ -272,6 +272,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     marginRight: hp(1),
+    marginTop:hp(7)
   },
   image: {
     height: hp('1.5%'),
@@ -290,7 +291,7 @@ const styles = StyleSheet.create({
   productImage: {
     height: hp('22%'),
     width: hp('21%'),
-    // backgroundColor:'white',
+    // backgroundColor:'green',
     // borderRadius:10,
     // marginTop:hp('0.5')
   },
