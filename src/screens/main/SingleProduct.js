@@ -30,6 +30,7 @@ import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 const SingleProduct = ({route}) => {
   const navigation = useNavigation();
   const [quantity, setQuantity] = useState(1);
+  const [load, setLoad] = useState(true);
 
   console.log(
     'routess',
@@ -50,6 +51,14 @@ const SingleProduct = ({route}) => {
   const {pic_baseUrl} = useSelector(state => state.ecommerceReducer);
   const product_id = route?.params?.productID;
   const {product, order, completedOrders, reorder} = route?.params;
+
+  // console.log('product_id', product_id);
+  // console.log(
+  //   'productDetails[product_id]?.user?.profile_pic--',
+  //   productDetails[product_id]?.user?.profile_pic,
+  // );
+  // console.log('productDetails[product_id]-=-=-=-', productDetails[product_id]);
+  // console.log('detail_loading=-=>', load);
   // console.log('pic_url==>', images.stylist1);
   // console.log('product_id==>', product_id);
   // console.log('product detailssss from screens =========>', productDetails);
@@ -62,9 +71,10 @@ const SingleProduct = ({route}) => {
   //   productDetails[product_id].average_rating,
   // );
   useEffect(() => {
-    if (!productDetails[product_id]) {
-      dispatch(getProductDetails(product_id));
-    }
+    // if (!productDetails[product_id]) {
+    dispatch(getProductDetails({product_id, setLoad}));
+    setLoad(false);
+    // }
   }, [product_id]);
 
   const incrementQuantity = () => {
@@ -172,155 +182,164 @@ const SingleProduct = ({route}) => {
 
   return (
     <Container>
-      <>
-        <ProfileHeader
-          icon={true}
-          username={true}
-          onBackPress={() => onIconPress()}
-          text={productDetails[product_id]?.product_name}
-        />
-        <ScrollView style={styles.container}>
-          {/* product images.. */}
-          <View style={{height: hp('35%')}}>
-            <Swiper
-              style={styles.wrapper}
-              activeDotColor={colors.orange}
-              dotStyle={{borderWidth: 1, borderColor: colors.orange}}>
-              {/* {historyImages.map((item, ind) => ( */}
-              <Image
-                // key={ind}
-                source={
-                  imageError
-                    ? images.imageNotFound
-                    : productDetails[product_id]?.product_image == 'null' &&
-                      productDetails[product_id]?.product_image == null &&
-                      productDetails[product_id]?.product_image == 'undefined'
-                    ? images.imageNotFound
-                    : {
-                        uri:
-                          pic_baseUrl +
-                          '/' +
-                          productDetails[product_id]?.product_image,
-                      }
-                }
-                borderRadius={20}
-                // resizeMode="contain"
-                style={{
-                  width: hp('37%'),
-                  height: hp('35%'),
-                  alignSelf: 'center',
-                }}
-                onError={handleImageError}
-              />
-              {/* ))} */}
-            </Swiper>
-          </View>
-          {/* product detail */}
-          <View style={{marginTop: 30}}>
-            {/* product owner.. */}
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('ProfileDetail', {
-                  profile_id: productDetails[product_id]?.user?.id,
-                })
-              }>
-              <UserDetailCard
-                username={
-                  productDetails[product_id]?.user?.first_name +
-                  ' ' +
-                  productDetails[product_id]?.user?.last_name
-                }
-                email={productDetails[product_id]?.user?.email}
-                image={
-                  productDetails[product_id]?.user?.profile_pic == null
-                    ? images.stylist1
-                    : {
-                        uri:
-                          pic_url +
-                          productDetails[product_id]?.user?.profile_pic,
-                      }
-                }
-                rating={productDetails[product_id]?.average_rating}
-              />
-            </TouchableOpacity>
-            {/* product description */}
-            <View>
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                  fontSize: hp('2.2%'),
-                  color: '#fff',
-                  marginTop: 20,
-                }}>
-                Description
-              </Text>
-              <Text
-                style={{
-                  fontWeight: 'light',
-                  fontSize: hp('1.5%'),
-                  color: '#efefef',
-                  marginTop: 20,
-                }}>
-                {/* Lorem Ipsum is simply dummy text of the printing and typesetting
+      {load ? (
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            flex: 1,
+          }}>
+          <Loader size={'large'} />
+        </View>
+      ) : (
+        <>
+          <ProfileHeader
+            icon={true}
+            username={true}
+            onBackPress={() => onIconPress()}
+            text={productDetails[product_id]?.product_name}
+          />
+          <ScrollView style={styles.container}>
+            {/* product images.. */}
+            <View style={{height: hp('35%')}}>
+              <Swiper
+                style={styles.wrapper}
+                activeDotColor={colors.orange}
+                dotStyle={{borderWidth: 1, borderColor: colors.orange}}>
+                {/* {historyImages.map((item, ind) => ( */}
+                <Image
+                  // key={ind}
+                  source={
+                    imageError
+                      ? images.imageNotFound
+                      : productDetails[product_id]?.product_image == 'null' &&
+                        productDetails[product_id]?.product_image == null &&
+                        productDetails[product_id]?.product_image == 'undefined'
+                      ? images.imageNotFound
+                      : {
+                          uri:
+                            pic_baseUrl +
+                            '/' +
+                            productDetails[product_id]?.product_image,
+                        }
+                  }
+                  borderRadius={20}
+                  // resizeMode="contain"
+                  style={{
+                    width: hp('37%'),
+                    height: hp('35%'),
+                    alignSelf: 'center',
+                  }}
+                  onError={handleImageError}
+                />
+                {/* ))} */}
+              </Swiper>
+            </View>
+            {/* product detail */}
+            <View style={{marginTop: 30}}>
+              {/* product owner.. */}
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('ProfileDetail', {
+                    profile_id: productDetails[product_id]?.user?.id,
+                  })
+                }>
+                <UserDetailCard
+                  username={
+                    productDetails[product_id]?.user?.first_name +
+                    ' ' +
+                    productDetails[product_id]?.user?.last_name
+                  }
+                  email={productDetails[product_id]?.user?.email}
+                  image={
+                    productDetails[product_id]?.user?.profile_pic == null
+                      ? images.stylist1
+                      : {
+                          uri: productDetails[product_id]?.user?.profile_pic,
+                        }
+                  }
+                  rating={productDetails[product_id]?.average_rating}
+                />
+              </TouchableOpacity>
+              {/* product description */}
+              <View>
+                <Text
+                  style={{
+                    fontWeight: 'bold',
+                    fontSize: hp('2.2%'),
+                    color: '#fff',
+                    marginTop: 20,
+                  }}>
+                  Description
+                </Text>
+                <Text
+                  style={{
+                    fontWeight: 'light',
+                    fontSize: hp('1.5%'),
+                    color: '#efefef',
+                    marginTop: 20,
+                  }}>
+                  {/* Lorem Ipsum is simply dummy text of the printing and typesetting
               industry. Lorem Ipsum has been the industry's standard dummy text
               ever since the 1500s, when an unknown printer took a galley of
               type and scrambled it to make a type specimen book. It has
               survived not only five centuries */}
-                {productDetails[product_id]?.description}
-              </Text>
-            </View>
-            {/* product quantity buttons */}
-            <View style={styles.productQuantityBox}>
+                  {productDetails[product_id]?.description}
+                </Text>
+              </View>
+              {/* product quantity buttons */}
+              <View style={styles.productQuantityBox}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 5,
+                    marginLeft: 20,
+                  }}>
+                  <Text style={{color: '#D49621', fontSize: hp('2.4%')}}>
+                    ${productDetails[product_id]?.regular_price}
+                  </Text>
+                  <Text style={{color: '#efefef', fontSize: hp('1.6%')}}>
+                    (24 available)
+                  </Text>
+                </View>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <TouchableOpacity
+                    onPress={decrementQuantity}
+                    style={styles.button}>
+                    <Text style={styles.buttonText}>-</Text>
+                  </TouchableOpacity>
+                  <View style={styles.quantityButton}>
+                    <Text style={styles.quantityText}>{quantity}</Text>
+                  </View>
+                  <TouchableOpacity
+                    onPress={incrementQuantity}
+                    style={styles.button}>
+                    <Text style={styles.buttonText}>+</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              {/* add to card button */}
               <View
                 style={{
+                  marginTop: 15,
                   flexDirection: 'row',
-                  alignItems: 'center',
-                  gap: 5,
-                  marginLeft: 20,
+                  justifyContent: 'center',
+                  gap: 10,
                 }}>
-                <Text style={{color: '#D49621', fontSize: hp('2.4%')}}>
-                  ${productDetails[product_id]?.regular_price}
-                </Text>
-                <Text style={{color: '#efefef', fontSize: hp('1.6%')}}>
-                  (24 available)
-                </Text>
-              </View>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <TouchableOpacity
-                  onPress={decrementQuantity}
-                  style={styles.button}>
-                  <Text style={styles.buttonText}>-</Text>
-                </TouchableOpacity>
-                <View style={styles.quantityButton}>
-                  <Text style={styles.quantityText}>{quantity}</Text>
-                </View>
-                <TouchableOpacity
-                  onPress={incrementQuantity}
-                  style={styles.button}>
-                  <Text style={styles.buttonText}>+</Text>
-                </TouchableOpacity>
+                <OutlineButton
+                  title={'Add to cart'}
+                  onPress={() => onAddtoCartPress()}
+                  textStyle={{color: '#fff'}}
+                  buttonStyle={{width: '82%'}}
+                />
+                <MessageOption />
               </View>
             </View>
-
-            {/* add to card button */}
-            <View
-              style={{
-                marginTop: 15,
-                flexDirection: 'row',
-                justifyContent: 'center',
-                gap: 10,
-              }}>
-              <OutlineButton
-                title={'Add to cart'}
-                onPress={() => onAddtoCartPress()}
-                textStyle={{color: '#fff'}}
-                buttonStyle={{width: '82%'}}
-              />
-              <MessageOption />
-            </View>
-          </View>
-        </ScrollView>
-      </>
+          </ScrollView>
+        </>
+      )}
     </Container>
   );
 };

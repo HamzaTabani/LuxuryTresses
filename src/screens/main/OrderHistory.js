@@ -138,12 +138,8 @@ const OrderHistory = ({route}) => {
                 ? productData?.user?.address
                 : 'address'
             }
-            image={
-              productData?.user?.profile_pic != null
-                ? {uri: pic_url + productData?.user?.profile_pic}
-                : images.stylist1
-            }
-            rating={productData.average_rating}
+            image={productData?.user?.profile_pic}
+            rating={productData?.average_rating}
           />
         </TouchableOpacity>
         <View

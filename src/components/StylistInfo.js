@@ -32,14 +32,18 @@ const StylistInfo = ({
   profileId,
 }) => {
   const [imageError, setImageError] = useState(false);
+  // console.log('imageError-=->', images.profile);
   const handleImageError = () => {
     setImageError(true);
+    Alert('hit');
   };
   const milesToKilometers = miles => {
     const kilometers = miles * 1.60934;
     return kilometers.toFixed(2);
   };
   const navigation = useNavigation();
+
+  // console.log('near by image=-=>', image);
   // console.log('rating-=-=-=>', rating);
   // console.log('serviceIcon->', serviceIcon, 'productIcon->', productIcon);
   return (
@@ -73,9 +77,10 @@ const StylistInfo = ({
                 // imageUrl && image ? {uri: imageUrl + image} : images.stylist1
                 imageError
                   ? images.profile
-                  : image == 'null' && image == null && image == 'undefined'
+                  : image == 'null' || image == null || image == 'undefined'
                   ? images.profile
-                  : {uri: imageUrl + image}
+                  : // : {uri: imageUrl + image}
+                    {uri: image}
               }
               style={styles.image}
               borderRadius={10}
@@ -104,25 +109,25 @@ const StylistInfo = ({
             </View>
           </View>
         </View>
-        {rating != null ? (
-          <View style={styles.ratingView}>
-            <View style={styles.ratingStyle}>
-              <Progress.Circle
-                progress={rating / 5}
-                color={colors.lightgreen}
-                size={40}
-                style={{marginTop: hp('0.5%')}}
-                borderColor="transparent"
-              />
-              <View style={styles.imageWrapper}>
-                <SvgCardPopularIcon />
-              </View>
+        {/* {rating != null ? ( */}
+        <View style={styles.ratingView}>
+          <View style={styles.ratingStyle}>
+            <Progress.Circle
+              progress={rating / 5}
+              color={colors.lightgreen}
+              size={40}
+              style={{marginTop: hp('0.5%')}}
+              borderColor="transparent"
+            />
+            <View style={styles.imageWrapper}>
+              <SvgCardPopularIcon />
             </View>
-            <Text style={{color: colors.white, marginTop: hp('0.4%')}}>
-              {rating} rating
-            </Text>
           </View>
-        ) : null}
+          <Text style={{color: colors.white, marginTop: hp('0.4%')}}>
+            {rating ? rating : 0} rating
+          </Text>
+        </View>
+        {/* ) : null} */}
       </View>
       {isActive && (
         <>

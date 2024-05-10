@@ -74,7 +74,7 @@ const InitialProfile = ({route}) => {
   const [password, setPassword] = useState('');
   const [cpassword, setCPassword] = useState('');
   const [photoURL, setPhotoURL] = useState(
-    user?.profile_pic ? pic_url + user?.profile_pic : '',
+    user?.profile_pic ? user?.profile_pic : '',
   );
   const [address, setAddress] = useState(user ? user?.address : '');
   const [selectedCity, setSelectedCity] = useState('Los Angeles');
@@ -122,6 +122,17 @@ const InitialProfile = ({route}) => {
     setPhotoURL('');
   };
 
+  console.log(
+    'editing profile=-=>',
+    firstname,
+    lastname,
+    phonenumber,
+    address,
+    selectedState,
+    selectedCity,
+    photoURL,
+  );
+
   const onButtonPress = async () => {
     if (navigation.getState().routeNames[0] === 'Profile') {
       if (!photoURL) {
@@ -138,7 +149,7 @@ const InitialProfile = ({route}) => {
             profile_pic: photoURL,
           }),
         );
-        // console.log('response from action', res)
+        console.log('response from action', res);
         if (res.payload) {
           navigation.goBack();
           return ShowToast('Profile updated successfully');
@@ -237,15 +248,15 @@ const InitialProfile = ({route}) => {
     //   style={{
     //     // flex: 1,
     //   }}>
-      <ImageBackground
-        source={require('../../assets/images/otpbg.png')}
-        resizeMode="cover"
-        style={styles.bg_signup}>
-        <TouchableOpacity
-          style={styles.back_header}
-          onPress={() => navigation.goBack()}
-          activeOpacity={0.9}>
-          {/* <View style={styles.back_button}>
+    <ImageBackground
+      source={require('../../assets/images/otpbg.png')}
+      resizeMode="cover"
+      style={styles.bg_signup}>
+      <TouchableOpacity
+        style={styles.back_header}
+        onPress={() => navigation.goBack()}
+        activeOpacity={0.9}>
+        {/* <View style={styles.back_button}>
             <Text
               style={{
                 fontWeight: 'bold',
@@ -254,88 +265,93 @@ const InitialProfile = ({route}) => {
               SKIP
             </Text>
           </View> */}
-          <View style={styles.iconView}>
-            <Back name={'arrow-back'} color={colors.orange} size={25} />
-          </View>
-        </TouchableOpacity>
-        <ScrollView
-          // style={{backgroundColor:'red'}}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{paddingBottom:hp(2)}}
-          // contentContainerStyle={{paddingBottom: user ? hp('55%') : hp('50%')}}
-        >
-          <View
-            style={{
-              flex: 0.2,
-              marginTop: hp('1%'),
-              paddingHorizontal: wp('10%'),
+        <View style={styles.iconView}>
+          <Back name={'arrow-back'} color={colors.orange} size={25} />
+        </View>
+      </TouchableOpacity>
+      <ScrollView
+        // style={{backgroundColor:'red'}}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{paddingBottom: hp(2)}}
+        // contentContainerStyle={{paddingBottom: user ? hp('55%') : hp('50%')}}
+      >
+        <View
+          style={{
+            flex: 0.2,
+            marginTop: hp('1%'),
+            paddingHorizontal: wp('10%'),
+          }}>
+          <Text style={styles.signup_heading}>How people to know you?</Text>
+        </View>
+        <View
+          style={{
+            flex: 1,
+          }}>
+          <ScrollView
+            contentContainerStyle={{
+              backgroundColor: '#0C0A22',
+              // height: hp('130%'),
+              paddingBottom: hp(20),
+              // flex: 1,
+              // width: '100%',
+              alignItems: 'center',
+              borderTopRightRadius: 20,
+              borderTopLeftRadius: 20,
+              marginTop: hp('3%'),
             }}>
-            <Text style={styles.signup_heading}>How people to know you?</Text>
-          </View>
-          <View
-            style={{
-              flex: 1,
-            }}>
-            <ScrollView
-              contentContainerStyle={{
-                backgroundColor: '#0C0A22',
-                // height: hp('130%'),
-                paddingBottom: hp(20),
-                // flex: 1,
-                // width: '100%',
-                alignItems: 'center',
-                borderTopRightRadius: 20,
-                borderTopLeftRadius: 20,
-                marginTop: hp('3%'),
-              }}>
-              <View style={{width: wp('80%')}}>
-                <View>
-                  <Text style={styles.input_lable}>Add profile picture</Text>
-                  <TouchableOpacity
+            <View style={{width: wp('80%')}}>
+              <View>
+                <Text style={styles.input_lable}>Add profile picture</Text>
+                <TouchableOpacity
+                  style={{
+                    borderWidth: 1,
+                    borderColor: '#D49621',
+                    width: wp(24),
+                    height: hp(12),
+                    borderRadius: 50,
+                    // position: 'relative',
+                    // top: 'center',
+                    // left: 'center',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                  activeOpacity={0.9}
+                  onPress={() => onUploadPhoto()}>
+                  <Image
+                    source={
+                      photoURL != ''
+                        ? {uri: photoURL}
+                        : images.initialProfileCam
+                    }
+                    resizeMode="cover"
+                    borderRadius={100}
                     style={{
-                      borderWidth: 1,
-                      borderColor: '#D49621',
-                      width: 100,
-                      height: 100,
-                      borderRadius: 50,
-                      position: 'relative',
-                      top: 'center',
-                      left: 'center',
+                      // position: 'absolute',
+                      alignSelf: 'center',
+                      // justifyContent: 'center',
+                      // top: 'center',
+                      // left: 'center',
+                      width: wp(23),
+                      height: hp(11),
+                      // backgroundColor:'red',
+                      // margin:5
                     }}
-                    activeOpacity={0.9}
-                    onPress={() => onUploadPhoto()}>
-                    <Image
-                      source={
-                        photoURL != ''
-                          ? {uri: photoURL}
-                          : images.initialProfileCam
-                      }
-                      resizeMode="cover"
-                      borderRadius={100}
-                      style={{
-                        position: 'absolute',
-                        alignSelf: 'center',
-                        top: 'center',
-                        left: 'center',
-                        width: 100,
-                        height: 100,
-                      }}
-                    />
-                    <FontAwesome5
-                      name="add-circle"
-                      type="Ionicons"
-                      color="#D49621"
-                      size={30}
-                      style={{
-                        position: 'absolute',
-                        bottom: 0,
-                        right: 0,
-                        // left:5
-                      }}
-                    />
-                  </TouchableOpacity>
-                </View>
-                {/* <Text style={styles.input_lable}>Enter your name</Text>
+                  />
+                  <FontAwesome5
+                    name="add-circle"
+                    type="Ionicons"
+                    color="#D49621"
+                    size={30}
+                    style={{
+                      position: 'absolute',
+                      bottom: 0,
+                      right: 0,
+                      // left:5
+                    }}
+                  />
+                </TouchableOpacity>
+              </View>
+              {/* <Text style={styles.input_lable}>Enter your name</Text>
                 <View style={styles.inputs_container}>
                   <FontAwesome5
                     name="person-outline"
@@ -351,7 +367,7 @@ const InitialProfile = ({route}) => {
                   />
                 </View> */}
 
-                {/* <Text style={styles.input_lable}>Your phone number</Text>
+              {/* <Text style={styles.input_lable}>Your phone number</Text>
                 <View style={styles.inputs_container}>
                   <FontAwesome5
                     name="call-outline"
@@ -367,138 +383,138 @@ const InitialProfile = ({route}) => {
                     placeholderTextColor="#bbb9bd"
                   />
                 </View> */}
-                <View style={{paddingTop: hp('4%')}}>
-                  <InputText
-                    placeholder={'First Name'}
-                    value={firstname}
-                    label={'Enter your first name'}
-                    onChangeText={text => setFirstName(text)}
-                    icon={'person-outline'}
-                  />
-                  <InputText
-                    placeholder={'Last Name'}
-                    value={lastname}
-                    label={'Enter your last name'}
-                    onChangeText={text => setLastName(text)}
-                    icon={'person-outline'}
-                  />
-                  <InputText
-                    placeholder={'Phone number'}
-                    value={phonenumber != 'null' && phonenumber}
-                    keyboardType={'numeric'}
-                    onChangeText={text => setPhoneNumber(text)}
-                    label={'Enter your phone number'}
-                    icon={'call-outline'}
-                  />
-                  {user && (
-                    <>
-                      <InputText
-                        placeholder={'Address'}
-                        // value={address}
-                        value={address != 'null' && address}
-                        onChangeText={text => setAddress(text)}
-                        label={'Enter your address'}
-                        // icon={'person-outline'}
-                      />
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                        }}>
-                        <View>
-                          <Text style={styles.label}>City</Text>
-                          <View
-                            style={{
-                              // height: 50,
-                              borderWidth: 0.5,
-                              borderColor: '#D49621',
-                              borderRadius: 30,
-                              width: 140,
-                            }}>
-                            <Picker
-                              selectedValue={selectedCity}
-                              dropdownIconColor={colors.orange}
-                              dropdownIconRippleColor={colors.orange}
-                              itemStyle={{color: colors.gray, fontSize: hp('2%')}}
-                              onValueChange={(itemValue, itemIndex) =>
-                                setSelectedCity(itemValue)
-                              }>
-                              {cities.map(item => (
-                                <Picker.Item
-                                  key={item.id}
-                                  label={item.text}
-                                  value={item.text}
-                                  style={{color: colors.darkgray}}
-                                />
-                              ))}
-                            </Picker>
-                          </View>
-                        </View>
-                        <View>
-                          <Text style={styles.label}>State</Text>
-                          <View
-                            style={{
-                              // height: 50,
-                              borderWidth: 0.5,
-                              borderColor: '#D49621',
-                              borderRadius: 30,
-                              width: 140,
-                            }}>
-                            <Picker
-                              selectedValue={selectedState}
-                              dropdownIconColor={colors.orange}
-                              dropdownIconRippleColor={colors.orange}
-                              itemStyle={{color: colors.gray, fontSize: hp('2%')}}
-                              onValueChange={(itemValue, itemIndex) =>
-                                setSelectedState(itemValue)
-                              }>
-                              {states.map(item => (
-                                <Picker.Item
-                                  key={item.id}
-                                  label={item.text}
-                                  value={item.text}
-                                  style={{color: colors.darkgray}}
-                                />
-                              ))}
-                            </Picker>
-                          </View>
+              <View style={{paddingTop: hp('4%')}}>
+                <InputText
+                  placeholder={'First Name'}
+                  value={firstname}
+                  label={'Enter your first name'}
+                  onChangeText={text => setFirstName(text)}
+                  icon={'person-outline'}
+                />
+                <InputText
+                  placeholder={'Last Name'}
+                  value={lastname}
+                  label={'Enter your last name'}
+                  onChangeText={text => setLastName(text)}
+                  icon={'person-outline'}
+                />
+                <InputText
+                  placeholder={'Phone number'}
+                  value={phonenumber != 'null' && phonenumber}
+                  keyboardType={'numeric'}
+                  onChangeText={text => setPhoneNumber(text)}
+                  label={'Enter your phone number'}
+                  icon={'call-outline'}
+                />
+                {user && (
+                  <>
+                    <InputText
+                      placeholder={'Address'}
+                      // value={address}
+                      value={address != 'null' && address}
+                      onChangeText={text => setAddress(text)}
+                      label={'Enter your address'}
+                      // icon={'person-outline'}
+                    />
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                      }}>
+                      <View>
+                        <Text style={styles.label}>City</Text>
+                        <View
+                          style={{
+                            // height: 50,
+                            borderWidth: 0.5,
+                            borderColor: '#D49621',
+                            borderRadius: 30,
+                            width: 140,
+                          }}>
+                          <Picker
+                            selectedValue={selectedCity}
+                            dropdownIconColor={colors.orange}
+                            dropdownIconRippleColor={colors.orange}
+                            itemStyle={{color: colors.gray, fontSize: hp('2%')}}
+                            onValueChange={(itemValue, itemIndex) =>
+                              setSelectedCity(itemValue)
+                            }>
+                            {cities.map(item => (
+                              <Picker.Item
+                                key={item.id}
+                                label={item.text}
+                                value={item.text}
+                                style={{color: colors.darkgray}}
+                              />
+                            ))}
+                          </Picker>
                         </View>
                       </View>
-                    </>
-                  )}
-                  {!user && (
-                    <>
-                      <InputText
-                        placeholder={'Password'}
-                        secureTextEntry={true}
-                        onChangeText={text => setPassword(text)}
-                        value={password}
-                        label={'Enter your password'}
-                        icon={'lock-closed-outline'}
-                      />
-                      <InputText
-                        placeholder={'Confirm Password'}
-                        secureTextEntry={true}
-                        onChangeText={text => setCPassword(text)}
-                        value={cpassword}
-                        label={'Confirm password'}
-                        icon={'lock-closed-outline'}
-                      />
-                    </>
-                  )}
-                </View>
-                <View style={{alignItems: 'center', marginTop: 40}}>
-                  <OutlineButton
-                    title="done"
-                    indicator={user ? edit_loading : signup_loading}
-                    onPress={() => onButtonPress()}
-                  />
-                </View>
+                      <View>
+                        <Text style={styles.label}>State</Text>
+                        <View
+                          style={{
+                            // height: 50,
+                            borderWidth: 0.5,
+                            borderColor: '#D49621',
+                            borderRadius: 30,
+                            width: 140,
+                          }}>
+                          <Picker
+                            selectedValue={selectedState}
+                            dropdownIconColor={colors.orange}
+                            dropdownIconRippleColor={colors.orange}
+                            itemStyle={{color: colors.gray, fontSize: hp('2%')}}
+                            onValueChange={(itemValue, itemIndex) =>
+                              setSelectedState(itemValue)
+                            }>
+                            {states.map(item => (
+                              <Picker.Item
+                                key={item.id}
+                                label={item.text}
+                                value={item.text}
+                                style={{color: colors.darkgray}}
+                              />
+                            ))}
+                          </Picker>
+                        </View>
+                      </View>
+                    </View>
+                  </>
+                )}
+                {!user && (
+                  <>
+                    <InputText
+                      placeholder={'Password'}
+                      secureTextEntry={true}
+                      onChangeText={text => setPassword(text)}
+                      value={password}
+                      label={'Enter your password'}
+                      icon={'lock-closed-outline'}
+                    />
+                    <InputText
+                      placeholder={'Confirm Password'}
+                      secureTextEntry={true}
+                      onChangeText={text => setCPassword(text)}
+                      value={cpassword}
+                      label={'Confirm password'}
+                      icon={'lock-closed-outline'}
+                    />
+                  </>
+                )}
               </View>
-            </ScrollView>
-          </View>
-        </ScrollView>
-      </ImageBackground>
+              <View style={{alignItems: 'center', marginTop: 40}}>
+                <OutlineButton
+                  title="done"
+                  indicator={user ? edit_loading : signup_loading}
+                  onPress={() => onButtonPress()}
+                />
+              </View>
+            </View>
+          </ScrollView>
+        </View>
+      </ScrollView>
+    </ImageBackground>
     // </View>
   );
 };

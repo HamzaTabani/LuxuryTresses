@@ -12,7 +12,7 @@ import GetLocation from 'react-native-get-location';
 import {ShowToast} from '../utils';
 import {useNavigation} from '@react-navigation/native';
 
-const LocationCard = ({moveToLocation, getCurrentLocation}) => {
+const LocationCard = ({moveToLocation, getCurrentLocation, currentRegionA}) => {
   const [currentRegion, setCurrentregion] = useState(null);
   const [moveTo, setMoveTo] = useState('');
   const dispatch = useDispatch();
@@ -93,6 +93,10 @@ const LocationCard = ({moveToLocation, getCurrentLocation}) => {
               details?.geometry?.location.lat,
               details?.geometry?.location.lng,
             );
+            currentRegionA({
+              latitude: details?.geometry?.location.lat,
+              longitude: details?.geometry?.location.lng,
+            });
             setCurrentregion({
               latitude: details.geometry.location.lat,
               longitude: details.geometry.location.lng,

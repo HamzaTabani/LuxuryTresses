@@ -78,7 +78,11 @@ const ProductCard = ({
     <View
       style={[
         styles.card_box,
-        {height: product ? hp(30) : hp(35), marginRight: home ? 10 : null},
+        {
+          height: product ? hp(30) : hp(35),
+          marginRight: home ? 10 : null,
+          width: home ? hp(22) : hp(20),
+        },
       ]}>
       {/* card box img,  */}
       <View style={styles.card_box_img}>
@@ -123,7 +127,8 @@ const ProductCard = ({
                       avatar == null &&
                       avatar == 'undefined'
                     ? images.profile
-                    : {uri: pic_url + avatar}
+                    : // : {uri: pic_url + avatar}
+                      {uri: avatar}
                 }
                 resizeMode="contain"
                 borderRadius={100}
@@ -145,47 +150,7 @@ const ProductCard = ({
         ) : null}
 
         {/* rating icon */}
-        {!product && rating != null ? (
-          // <View
-          //   style={{
-          //     height: 40,
-          //     width: 40,
-          //     backgroundColor: '#fff',
-          //     alignItems: 'center',
-          //     justifyContent: 'center',
-          //     borderRadius: 50,
-          //     position: 'absolute',
-          //     // bottom: -35,
-          //     top: 150,
-          //     // bottom:0,
-          //     right: 0,
-          //     borderWidth: 0.3,
-          //   }}>
-          //   <Svg width="40" height="40">
-          //     <Circle
-          //       cx="20"
-          //       cy="20"
-          //       r={radius}
-          //       fill="transparent"
-          //       stroke="#19CC89"
-          //       strokeWidth="4"
-          //       strokeDasharray={`${circumference} ${circumference}`}
-          //       strokeDashoffset={animatedStrokeDashoffset}
-          //     />
-          //     <Image
-          //       source={require('../assets/images/popular.png')}
-          //       resizeMode="contain"
-          //       style={{
-          //         width: 20,
-          //         height: 20,
-          //         position: 'absolute',
-          //         top: 10,
-          //         left: 10,
-          //       }}
-          //     />
-          //   </Svg>
-          // </View>
-
+        {/* {!product && rating != null ? ( */}
           <View style={styles.progressView}>
             <Progress.Circle
               progress={rating / 5}
@@ -198,7 +163,7 @@ const ProductCard = ({
               <SvgCardPopularIcon />
             </View>
           </View>
-        ) : null}
+        {/* ) : null} */}
       </View>
       <View
         style={{
@@ -221,11 +186,12 @@ const ProductCard = ({
               // backgroundColor: 'red',
               width: hp('19%'),
               height: hp('4.5%'),
+              // alignSelf:'center',
               // marginTop: hp('1%'),
               flexDirection: 'row',
               justifyContent: 'space-between',
             }}>
-            <View style={{width: hp('17%')}}>
+            <View style={{width: hp('12%')}}>
               <Text style={styles.productName}>{title}</Text>
               <Text style={styles.text}>{price}</Text>
             </View>
@@ -265,7 +231,8 @@ export default ProductCard;
 
 const styles = StyleSheet.create({
   card_box: {
-    width: hp(22),
+    // width: hp(20),
+    // width:
     backgroundColor: '#D49621',
     borderRadius: 15,
     alignItems: 'center',
@@ -273,8 +240,8 @@ const styles = StyleSheet.create({
   },
   card_box_img: {
     marginTop: 2,
-    width: 140,
-    height: 130,
+    height: hp('22%'),
+    width: hp('21%'),
     alignItems: 'center',
     borderRadius: 15,
     // backgroundColor:'red'
@@ -304,6 +271,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     justifyContent: 'center',
+    marginRight: hp(1),
+    marginTop:hp(7)
   },
   image: {
     height: hp('1.5%'),
@@ -322,7 +291,7 @@ const styles = StyleSheet.create({
   productImage: {
     height: hp('22%'),
     width: hp('21%'),
-    // backgroundColor:'white',
+    // backgroundColor:'green',
     // borderRadius:10,
     // marginTop:hp('0.5')
   },

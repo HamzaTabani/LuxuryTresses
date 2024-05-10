@@ -8,6 +8,7 @@ const ProfileImgRound = ({imgSrc}) => {
   const navigation = useNavigation();
 
   const {user, pic_url} = useSelector(state => state.userData);
+  console.log('user.profile_pic0-0->', user.profile_pic);
 
   return (
     <TouchableOpacity
@@ -30,7 +31,7 @@ const ProfileImgRound = ({imgSrc}) => {
             ? require('../assets/images/profileimg.png')
             : user?.profile_pic
             ? {
-                uri: pic_url + user?.profile_pic,
+                uri: user?.profile_pic,
                 priority: FastImage.priority.normal,
               }
             : images.profile

@@ -29,7 +29,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import Loader from '../../components/Loader';
 
 const Cart = () => {
-  const [tabActive, setTabActive] = useState('');
+  const [tabActive, setTabActive] = useState('order');
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -75,8 +75,67 @@ const Cart = () => {
             <Text style={{color: 'white'}}>History</Text>
           </TouchableOpacity>
         </View>
-        {tabActive === 'order' ? (
-          activeOrders_loading ? (
+        {
+          tabActive === 'order' ? (
+            activeOrders_loading ? (
+              <>
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flex: 1,
+                  }}>
+                  <Loader size={'large'} />
+                </View>
+              </>
+            ) : (
+              <View style={{marginBottom: hp('15%'), marginTop: hp('2%')}}>
+                <FlatList
+                  showsVerticalScrollIndicator={false}
+                  // contentContainerStyle={{backgroundColor:'red'}}
+                  keyExtractor={item => item.id}
+                  data={activeOrders}
+                  renderItem={({item}) => {
+                    // console.log('activeOrders items==>', item);
+                    return (
+                      <HistoryCard
+                        key={item.id}
+                        image={item.image}
+                        onPress={() =>
+                          navigation.navigate('OrderHistory', {
+                            product: item?.product,
+                            order: item?.order,
+                            completedOrders: item,
+                            reorderButton: true,
+                          })
+                        }
+                        productImg={item?.product?.product_image}
+                        productName={item?.product?.product_name}
+                        productPrice={item?.product?.regular_price}
+                        productStatus={item?.order?.status}
+                        productRating={item?.product?.average_rating}
+                        productDate={item?.product?.created_at}
+                      />
+                    );
+                  }}
+                  ListFooterComponent={
+                    <View
+                      style={{
+                        paddingHorizontal: wp('8%'),
+                        marginBottom: hp('5%'),
+                        alignItems: 'center',
+                      }}>
+                      <SvgBottomLineSecondIcon />
+                    </View>
+                  }
+                />
+              </View>
+            )
+          ) : // <View style={{flex: 0.8, justifyContent: 'center'}}>
+          //   <Image source={images.orders1} style={styles.orderImage} />
+          //   <Text style={styles.text}>{'You have no favourites :('}</Text>
+          // </View>
+          completedOrders_loading ? (
             <>
               <View
                 style={{
@@ -93,9 +152,12 @@ const Cart = () => {
                 showsVerticalScrollIndicator={false}
                 // contentContainerStyle={{backgroundColor:'red'}}
                 keyExtractor={item => item.id}
-                data={activeOrders}
+                data={completedOrders}
                 renderItem={({item}) => {
-                  // console.log('activeOrders items==>', item);
+                  console.log(
+                    'completedOrders img==>',
+                    item?.product?.product_image,
+                  );
                   return (
                     <HistoryCard
                       key={item.id}
@@ -105,7 +167,7 @@ const Cart = () => {
                           product: item?.product,
                           order: item?.order,
                           completedOrders: item,
-                          reorderButton: true,
+                          reorder: false,
                         })
                       }
                       productImg={item?.product?.product_image}
@@ -114,6 +176,16 @@ const Cart = () => {
                       productStatus={item?.order?.status}
                       productRating={item?.product?.average_rating}
                       productDate={item?.product?.created_at}
+                      completeOrder={true}
+                      onPressReorder={() =>
+                        navigation.navigate('OrderHistory', {
+                          product: item?.product,
+                          order: item?.order,
+                          completedOrders: item,
+                          reorder: true,
+                        })
+                      }
+                      productId={item?.id}
                     />
                   );
                 }}
@@ -130,102 +202,34 @@ const Cart = () => {
               />
             </View>
           )
-        ) : // <View style={{flex: 0.8, justifyContent: 'center'}}>
-        //   <Image source={images.orders1} style={styles.orderImage} />
-        //   <Text style={styles.text}>{'You have no favourites :('}</Text>
-        // </View>
-        completedOrders_loading ? (
-          <>
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                flex: 1,
-              }}>
-              <Loader size={'large'} />
-            </View>
-          </>
-        ) : (
-          <View style={{marginBottom: hp('15%'), marginTop: hp('2%')}}>
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              // contentContainerStyle={{backgroundColor:'red'}}
-              keyExtractor={item => item.id}
-              data={completedOrders}
-              renderItem={({item}) => {
-                // console.log('completedOrders items==>', item?.product);
-                return (
-                  <HistoryCard
-                    key={item.id}
-                    image={item.image}
-                    onPress={() =>
-                      navigation.navigate('OrderHistory', {
-                        product: item?.product,
-                        order: item?.order,
-                        completedOrders: item,
-                        reorder: false,
-                      })
-                    }
-                    productImg={item?.product?.product_image}
-                    productName={item?.product?.product_name}
-                    productPrice={item?.product?.regular_price}
-                    productStatus={item?.order?.status}
-                    productRating={item?.product?.average_rating}
-                    productDate={item?.product?.created_at}
-                    completeOrder={true}
-                    onPressReorder={() =>
-                      navigation.navigate('OrderHistory', {
-                        product: item?.product,
-                        order: item?.order,
-                        completedOrders: item,
-                        reorder: true,
-                      })
-                    }
-                    productId={item?.id}
-                  />
-                );
-              }}
-              ListFooterComponent={
-                <View
-                  style={{
-                    paddingHorizontal: wp('8%'),
-                    marginBottom: hp('5%'),
-                    alignItems: 'center',
-                  }}>
-                  <SvgBottomLineSecondIcon />
-                </View>
-              }
-            />
-          </View>
-        )
 
-        // <ScrollView
-        //   showsVerticalScrollIndicator={false}
-        //   contentContainerStyle={styles.historyWrapper}>
-        //   {histories.map(item => (
-        //     <HistoryCard
-        //       key={item.id}
-        //       image={item.image}
-        //       onPress={() => navigation.navigate('OrderHistory')}
-        //     />
-        //   ))}
-        //   <View
-        //     style={{
-        //       paddingHorizontal: wp('8%'),
-        //       marginTop: 50,
-        //       // marginBottom: 150,
-        //       alignItems: 'center',
-        //     }}>
-        //     {/* <Image
-        //       source={require('../../assets/images/bottom_linesA.png')}
-        //       resizeMode="contain"
-        //       style={{
-        //         width: 40,
-        //       }}
-        //     /> */}
-        //     <SvgBottomLineSecondIcon/>
-        //   </View>
-        // </ScrollView>
+          // <ScrollView
+          //   showsVerticalScrollIndicator={false}
+          //   contentContainerStyle={styles.historyWrapper}>
+          //   {histories.map(item => (
+          //     <HistoryCard
+          //       key={item.id}
+          //       image={item.image}
+          //       onPress={() => navigation.navigate('OrderHistory')}
+          //     />
+          //   ))}
+          //   <View
+          //     style={{
+          //       paddingHorizontal: wp('8%'),
+          //       marginTop: 50,
+          //       // marginBottom: 150,
+          //       alignItems: 'center',
+          //     }}>
+          //     {/* <Image
+          //       source={require('../../assets/images/bottom_linesA.png')}
+          //       resizeMode="contain"
+          //       style={{
+          //         width: 40,
+          //       }}
+          //     /> */}
+          //     <SvgBottomLineSecondIcon/>
+          //   </View>
+          // </ScrollView>
         }
       </View>
     </Container>

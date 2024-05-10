@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {Text, StyleSheet, View, Image} from 'react-native';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import StarRating from 'react-native-star-rating-widget';
@@ -15,6 +15,8 @@ const ReviewDetailCard = ({
   commentRating,
 }) => {
   const {pic_url} = useSelector(state => state.userData);
+
+  console.log('profilePic review detail card', pic_url + profilePic);
 
   const [imageError, setImageError] = useState(false);
 
@@ -37,11 +39,11 @@ const ReviewDetailCard = ({
             source={
               imageError
                 ? images.profile
-                : profilePic == 'null' &&
-                  profilePic == null &&
+                : profilePic == 'null' ||
+                  profilePic == null ||
                   profilePic == 'undefined'
                 ? images.profile
-                : {uri: pic_url + profilePic}
+                : {uri: profilePic}
             }
             style={styles.userImg}
             onError={handleImageError}

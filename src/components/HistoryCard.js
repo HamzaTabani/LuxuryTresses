@@ -29,7 +29,7 @@ const HistoryCard = ({
 }) => {
   const {pic_baseUrl} = useSelector(state => state.ecommerceReducer);
   console.log('productId=--=>', productId);
-  // console.log('pic_baseUrl', pic_baseUrl + '/' + productImg);
+  console.log('pic_baseUrl', pic_baseUrl);
   // console.log(productRating);
   const [imageError, setImageError] = useState(false);
   const navigation = useNavigation();
@@ -84,24 +84,24 @@ const HistoryCard = ({
             <SvgGoldBagIcon />
           </View>
           <View>
-            {productRating != null ? (
-              <View style={styles.ratingView}>
-                <View style={styles.ratingCard}>
-                  <Progress.Circle
-                    progress={productRating / 5}
-                    color={colors.lightgreen}
-                    size={26}
-                    borderColor="transparent"
-                  />
-                  <View style={styles.imageWrapper}>
-                    <SvgCardPopularHistoryIcon />
-                  </View>
+            {/* {productRating != null ? ( */}
+            <View style={styles.ratingView}>
+              <View style={styles.ratingCard}>
+                <Progress.Circle
+                  progress={productRating / 5}
+                  color={colors.lightgreen}
+                  size={26}
+                  borderColor="transparent"
+                />
+                <View style={styles.imageWrapper}>
+                  <SvgCardPopularHistoryIcon />
                 </View>
-                <Text style={styles.ratingText}>
-                  {productRating + ' Rating'}
-                </Text>
               </View>
-            ) : null}
+              <Text style={styles.ratingText}>
+                {productRating ? productRating : 0} Rating
+              </Text>
+            </View>
+            {/* ) : null} */}
             <View
               style={
                 productRating != null
@@ -206,8 +206,8 @@ const styles = StyleSheet.create({
     height: hp('3.5%'),
     borderRadius: 50,
     width: hp('3.5%'),
-    justifyContent:'center',
-    alignItems:'center'
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   imageWrapper: {
     position: 'absolute',

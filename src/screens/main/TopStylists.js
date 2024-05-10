@@ -140,7 +140,7 @@ const TopStylists = () => {
           // flex: 1,
           alignItems: 'center',
           justifyContent: 'center',
-          height: hp(75)
+          height: hp(75),
           // backgroundColor: 'green',
         }}>
         <View style={styles.emptyContainer}>
@@ -219,13 +219,13 @@ const styles = StyleSheet.create({
   emptyContainer: {
     // flex: 1,
     backgroundColor: '#D49621',
-    // width: hp(45),
+    width: hp(30),
     height: hp(5),
     borderRadius: 10,
     // marginHorizontal:hp(3),
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: hp(15),
+    // paddingHorizontal: hp(15),
     marginRight: hp(1.3),
     // marginRight:hp(2)
     // marginLeft:hp(3)
@@ -234,5 +234,6 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: hp(2),
     fontWeight: 'bold',
+    // backgroundColor:'red'
   },
 });

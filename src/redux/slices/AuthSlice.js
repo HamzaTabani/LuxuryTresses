@@ -20,7 +20,7 @@ export const register = createAsyncThunk(
     profile_pic,
     state,
     city,
-    firebase_id
+    firebase_id,
   }) => {
     let data = new formData();
     data.append('first_name', first_name);
@@ -66,7 +66,15 @@ export const register = createAsyncThunk(
 
 export const login = createAsyncThunk(
   'signin',
-  async ({email, password, uId, providerId, firstName, lastName}) => {
+  async ({
+    email,
+    password,
+    uId,
+    providerId,
+    firstName,
+    lastName,
+    profilePhoto,
+  }) => {
     var data = new formData();
     if (uId != undefined) {
       data.append('email', email);
@@ -74,6 +82,7 @@ export const login = createAsyncThunk(
       data.append('provider_id', providerId);
       data.append('first_name', firstName);
       data.append('last_name', lastName);
+      data.append('profile_pic', profilePhoto);
     } else {
       data.append('email', email);
       data.append('password', password);
@@ -142,7 +151,10 @@ export const editProfile = createAsyncThunk(
       })
         .then(async res => {
           let updatedData = await res.json();
-          // console.log('edit response ===================>', updatedData.data);
+          console.log(
+            'edit response ===================>',
+            updatedData.success,
+          );
           if (updatedData.data.success) {
             return true;
           }
@@ -150,6 +162,7 @@ export const editProfile = createAsyncThunk(
         })
         .catch(error => {
           ErrorToast(error);
+          console.log('edit response error', error);
           return false;
         });
     }
@@ -353,6 +366,7 @@ export const authState = createSlice({
     });
     builder.addCase(editProfile.fulfilled, (state, action) => {
       (state.edit_loading = false), (state.user = action.payload.data);
+      console.log('edit profile action.payload.data--', action.payload.data);
     });
     builder.addCase(changePassword.pending, state => {
       state.change_loading = true;
@@ -397,7 +411,7 @@ export const authState = createSlice({
       state.latLng_loading = true;
     });
     builder.addCase(postLatLng.fulfilled, (state, action) => {
-      (state.latLng_loading = false),(state.latLng = action.payload);
+      (state.latLng_loading = false), (state.latLng = action.payload);
       console.log('action.payload', action.payload);
     });
   },

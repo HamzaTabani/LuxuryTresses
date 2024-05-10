@@ -73,9 +73,10 @@ export const getActiveOrders = createAsyncThunk(
 
 export const getProductDetails = createAsyncThunk(
   'productDetails',
-  async (product_id, {getState}) => {
+  async ({product_id, setLoad}, {getState}) => {
     const stateData = getState().userData;
     const token = stateData.token;
+    console.log('stateData', product_id);
     return await axios
       .get(`${BASE_URL}/product/${product_id}/detail`, {
         headers: {
@@ -84,8 +85,13 @@ export const getProductDetails = createAsyncThunk(
         },
       })
       .then(res => {
-        // console.log('product detailssss response ============>', res.data);
+        console.log('product detailssss response ============>', res.data);
+        setLoad(false);
         return res.data;
+      })
+      .catch(error => {
+        console.log('product detailssss error ============>', error);
+        ErrorToast(error);
       });
   },
 );

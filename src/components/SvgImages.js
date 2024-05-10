@@ -1300,72 +1300,143 @@ export const SvgFilterIcon = props => {
 export const SvgArrowUPRightIcon = props => {
   return (
     <Svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={25.38}
-    height={25.38}
-    viewBox="0 0 25.38 25.38"
-    {...props}
-  >
-    <G
-      id="Icon_feather-arrow-up-left"
-      data-name="Icon feather-arrow-up-left"
-      transform="translate(35.173 -9.793) rotate(90)"
-    >
-      <Path
-        id="Path_6344"
-        data-name="Path 6344"
-        d="M34.466,34.466,10.5,10.5"
-        fill="none"
-        stroke="#cd8a1a"
-        strokeLinecap="round"
-        strokeWidth={1}
-      />
-      <Path
-        id="Path_6345"
-        data-name="Path 6345"
-        d="M10.5,34.466V10.5H34.466"
-        fill="none"
-        stroke="#cd8a1a"
-        strokeLinecap="round"
-        strokeWidth={1}
-      />
-    </G>
-  </Svg>
+      xmlns="http://www.w3.org/2000/svg"
+      width={25.38}
+      height={25.38}
+      viewBox="0 0 25.38 25.38"
+      {...props}>
+      <G
+        id="Icon_feather-arrow-up-left"
+        data-name="Icon feather-arrow-up-left"
+        transform="translate(35.173 -9.793) rotate(90)">
+        <Path
+          id="Path_6344"
+          data-name="Path 6344"
+          d="M34.466,34.466,10.5,10.5"
+          fill="none"
+          stroke="#cd8a1a"
+          strokeLinecap="round"
+          strokeWidth={1}
+        />
+        <Path
+          id="Path_6345"
+          data-name="Path 6345"
+          d="M10.5,34.466V10.5H34.466"
+          fill="none"
+          stroke="#cd8a1a"
+          strokeLinecap="round"
+          strokeWidth={1}
+        />
+      </G>
+    </Svg>
   );
 };
 export const SvgArrowUPRighSmalltIcon = props => {
   return (
     <Svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={16.88}
-    height={16.88}
-    viewBox="0 0 16.88 16.88"
-    {...props}
-  >
-    <G
-      id="Icon_feather-arrow-up-left"
-      data-name="Icon feather-arrow-up-left"
-      transform="translate(26.673 -9.793) rotate(90)"
-    >
+      xmlns="http://www.w3.org/2000/svg"
+      width={16.88}
+      height={16.88}
+      viewBox="0 0 16.88 16.88"
+      {...props}>
+      <G
+        id="Icon_feather-arrow-up-left"
+        data-name="Icon feather-arrow-up-left"
+        transform="translate(26.673 -9.793) rotate(90)">
+        <Path
+          id="Path_6344"
+          data-name="Path 6344"
+          d="M25.966,25.966,10.5,10.5"
+          fill="none"
+          stroke="#cd8a1a"
+          strokeLinecap="round"
+          strokeWidth={1}
+        />
+        <Path
+          id="Path_6345"
+          data-name="Path 6345"
+          d="M10.5,25.966V10.5H25.966"
+          fill="none"
+          stroke="#cd8a1a"
+          strokeLinecap="round"
+          strokeWidth={1}
+        />
+      </G>
+    </Svg>
+  );
+};
+export const SvgSeatGoldTopbar = props => {
+  return (
+    <Svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={15.39}
+      height={16.817}
+      viewBox="0 0 15.39 16.817"
+      {...props}>
+      <G data-name="Group 7942" fill="#cc8819">
+        <Path
+          data-name="Path 6373"
+          d="M-2037.98 302.448l.213-2.1h-.392c-.92 0-1.839-.027-2.757.007a2.156 2.156 0 01-2.24-1.949c-.075-.562-.176-1.121-.269-1.68a.631.631 0 00-.582-.574 2.665 2.665 0 01-.354-.058 1.042 1.042 0 01-.7-1.221 1.078 1.078 0 011.118-.822 2.693 2.693 0 012.553 2.2c.122.653.227 1.309.343 1.981h7.323c.07-.406.139-.822.214-1.236a10.079 10.079 0 01.2-1.026 2.663 2.663 0 012.511-1.914 1.038 1.038 0 011.1.948 1.014 1.014 0 01-.96 1.14c-.462.056-.614.21-.692.681-.1.613-.21 1.226-.318 1.839a2.091 2.091 0 01-2.014 1.69c-.974-.011-1.948 0-2.921 0h-.4l.213 2.115c.376.057.745.094 1.1.174a6.559 6.559 0 011 .308 1.793 1.793 0 01.544.354.752.752 0 01.015 1.11 1.981 1.981 0 01-.9.515 7.664 7.664 0 01-3.207.282c-.5-.062-.987-.166-1.476-.277a1.878 1.878 0 01-.863-.449.787.787 0 01.058-1.291 2.738 2.738 0 011.1-.481c.47-.114.934-.176 1.44-.266z"
+          transform="translate(2045.08 -288.446)"
+        />
+        <Path
+          data-name="Path 6374"
+          d="M-1992.378 213.672v-.682a2.277 2.277 0 00-.244-.027c-.481 0-.963-.011-1.444 0a1.408 1.408 0 01-1.446-1.415q.012-.722 0-1.444a1.4 1.4 0 011.412-1.344h2.921c.4 0 .809.006 1.214 0a1.4 1.4 0 011.434 1.391q-.011.722 0 1.444a1.393 1.393 0 01-1.391 1.366h-1.731v.693c.109.006.223.017.338.017h2.69a1.461 1.461 0 01.871.231c.309.214.345.411.075.663a3.746 3.746 0 00-1.124 2.375 10.11 10.11 0 01-.078.518c-.054.3-.175.407-.491.415s-.613 0-.918 0H-1994.688c-.308-.016-.426-.121-.479-.43-.064-.365-.121-.732-.191-1.1a3.014 3.014 0 00-.932-1.693c-.421-.384-.248-.638.152-.843a1.547 1.547 0 01.731-.141h3.025z"
+          transform="translate(1999.717 -208.76)"
+        />
+      </G>
+    </Svg>
+  );
+};
+export const SvgBagGoldTopBar = props => {
+  return (
+    <Svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={11.795}
+      height={15.566}
+      viewBox="0 0 11.795 15.566"
+      {...props}>
       <Path
-        id="Path_6344"
-        data-name="Path 6344"
-        d="M25.966,25.966,10.5,10.5"
-        fill="none"
-        stroke="#cd8a1a"
-        strokeLinecap="round"
-        strokeWidth={1}
+        data-name="Path 6372"
+        d="M-2334.01 526.353a3.232 3.232 0 011.1-2.921 2.957 2.957 0 011.965-.711 3.01 3.01 0 012.351 1.092 3.3 3.3 0 01.707 2.541c.286 0 .521-.01.754 0a1.563 1.563 0 011.482 1.415c.124 1.644.227 3.29.34 4.934.082 1.194.15 2.39.253 3.582a1.684 1.684 0 01-1.783 2q-4.1.006-8.208 0a1.682 1.682 0 01-1.786-1.963c.147-1.96.265-3.921.4-5.881.06-.879.12-1.758.193-2.635a1.572 1.572 0 011.521-1.451c.221-.01.442-.002.711-.002zm1.106-.047h3.918a2.053 2.053 0 00-.988-2.236 1.873 1.873 0 00-2.133.118 2.049 2.049 0 00-.793 2.117zm1.957 5.47a3.081 3.081 0 002.727-1.671.556.556 0 00-.167-.8.554.554 0 00-.789.282 1.98 1.98 0 01-3.538.013c-.2-.348-.492-.46-.782-.3a.56.56 0 00-.17.82 3.079 3.079 0 002.719 1.656z"
+        transform="translate(2336.845 -522.721)"
+        fill="#cc8819"
       />
-      <Path
-        id="Path_6345"
-        data-name="Path 6345"
-        d="M10.5,25.966V10.5H25.966"
+    </Svg>
+  );
+};
+export const SvgfilterIcon = props => {
+  return (
+    <Svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={22}
+      height={16}
+      viewBox="0 0 22 16"
+      {...props}>
+      <G
+        data-name="Group 8018"
+        transform="translate(-302 -253)"
         fill="none"
-        stroke="#cd8a1a"
+        stroke="#d49621"
         strokeLinecap="round"
-        strokeWidth={1}
-      />
-    </G>
-  </Svg>
+        strokeLinejoin="round"
+        strokeWidth={2}>
+        <Path
+          data-name="Line 42"
+          transform="translate(303 254)"
+          d="M0 0L20 0"
+        />
+        <Path
+          data-name="Line 43"
+          transform="translate(307 261)"
+          d="M0 0L12 0"
+        />
+        <Path
+          data-name="Line 44"
+          transform="translate(303 268)"
+          d="M0 0L20 0"
+        />
+      </G>
+    </Svg>
   );
 };
