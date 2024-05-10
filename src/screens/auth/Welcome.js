@@ -30,7 +30,7 @@ const Welcome = ({navigation}) => {
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.splash_header}>
           <Image
-            source={require('../../assets/images/logo.png')}
+            source={require('../../assets/images/logoA.png')}
             style={styles.logo}
           />
         </View>
@@ -73,11 +73,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'flex-start',
     paddingTop: hp('3%'),
+    // backgroundColor:'red'
   },
   logo: {
     width: 80,
     height: 80,
     marginTop: 30,
+    // backgroundColor:'green'
   },
   splash_bottom: {
     flex: 0.4,
