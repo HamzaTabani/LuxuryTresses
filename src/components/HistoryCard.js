@@ -1,6 +1,6 @@
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import colors from '../assets/colors';
 import images from '../assets/images';
 import * as Progress from 'react-native-progress';
@@ -10,9 +10,8 @@ import {
   SvgGoldBagIcon,
 } from './SvgImages';
 import moment from 'moment';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import OutlineButton from './OutlineButton';
-import {useNavigation} from '@react-navigation/native';
 
 const HistoryCard = ({
   image,
@@ -27,12 +26,8 @@ const HistoryCard = ({
   onPressReorder,
   productId,
 }) => {
-  const {pic_baseUrl} = useSelector(state => state.ecommerceReducer);
-  console.log('productId=--=>', productId);
-  console.log('pic_baseUrl', pic_baseUrl);
-  // console.log(productRating);
+  const { pic_baseUrl } = useSelector(state => state.ecommerceReducer);
   const [imageError, setImageError] = useState(false);
-  const navigation = useNavigation();
 
   const handleImageError = () => {
     setImageError(true);
@@ -44,14 +39,7 @@ const HistoryCard = ({
         style={styles.cardStyle}
         activeOpacity={0.9}
         onPress={onPress}>
-        <View style={{flexDirection: 'row'}}>
-          {/* {imageError ? (
-          <Image
-            source={images.product3}
-            style={styles.image}
-            borderRadius={15}
-          />
-         ) : ( */}
+        <View style={{ flexDirection: 'row' }}>
           <Image
             source={
               imageError
@@ -59,18 +47,16 @@ const HistoryCard = ({
                 : productImg == 'null' &&
                   productImg == null &&
                   productImg == 'undefined'
-                ? images.imageNotFound
-                : {uri: pic_baseUrl + '/' + productImg}
+                  ? images.imageNotFound
+                  : { uri: pic_baseUrl + '/' + productImg }
             }
             style={styles.image}
             borderRadius={15}
             onError={handleImageError}
           />
-          {/* )} */}
           <View style={styles.textWrapper}>
             <Text style={styles.text}>{productName}</Text>
             <Text style={styles.location}>
-              {/* 1609 Oak, St. <Text style={{color: colors.white}}>(2km)</Text> */}
               ${productPrice}
             </Text>
             <Text style={styles.completedText}>{productStatus}</Text>
@@ -78,13 +64,9 @@ const HistoryCard = ({
         </View>
         <View style={[styles.wrapper]}>
           <View style={styles.iconView}>
-            {/* <Image
-                        source={images.bag}
-                    /> */}
             <SvgGoldBagIcon />
           </View>
           <View>
-            {/* {productRating != null ? ( */}
             <View style={styles.ratingView}>
               <View style={styles.ratingCard}>
                 <Progress.Circle
@@ -101,12 +83,11 @@ const HistoryCard = ({
                 {productRating ? productRating : 0} Rating
               </Text>
             </View>
-            {/* ) : null} */}
             <View
               style={
                 productRating != null
-                  ? {marginTop: hp('1%'), alignItems: 'flex-end', right: 25}
-                  : {marginTop: hp('5%'), alignItems: 'flex-end', right: 0}
+                  ? { marginTop: hp('1%'), alignItems: 'flex-start', right: 25 }
+                  : { marginTop: hp('5%'), alignItems: 'flex-start', right: 0 }
               }>
               <Text style={styles.location}>Date</Text>
               <Text style={styles.location}>
@@ -117,16 +98,10 @@ const HistoryCard = ({
         </View>
       </TouchableOpacity>
       {completeOrder ? (
-        // <View style={{backgroundColor: 'green'}}>
-        //   <Text>vfv</Text>
-        // </View>
         <OutlineButton
-          // onPress={() =>
-          //   navigation.navigate('SecondaryStack', {screen: 'Checkout'})
-          // }
           onPress={onPressReorder}
           title={'Select this Item to Reorder'}
-          textStyle={{color: colors.white, textTransform: 'capitalize'}}
+          textStyle={{ color: colors.white, textTransform: 'capitalize' }}
           buttonStyle={{
             marginTop: hp(2),
             backgroundColor: '#D49621',
@@ -195,7 +170,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.orange,
     justifyContent: 'space-around',
     height: hp('4%'),
-    width: '85%',
+    width: wp(26),
     flexDirection: 'row',
     borderRadius: 10,
     right: 5,
@@ -222,8 +197,10 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     flexDirection: 'row',
-    position: 'absolute',
-    right: 0,
+    // position: 'absolute',
+    // right: 0,
     // top: 15,
+    // width: '50%',
+    // alignItems: 'flex-start'
   },
 });

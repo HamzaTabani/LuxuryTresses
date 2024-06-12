@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   ImageBackground,
   StyleSheet,
@@ -10,38 +10,28 @@ import {
   ActivityIndicator,
   Platform,
 } from 'react-native';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import BackHeader from '../../components/BackHeader';
 import FontAwesome5 from 'react-native-vector-icons/Ionicons';
 import PrimaryButton from '../../components/PrimaryButton';
-import {ShowToast} from '../../utils';
-import {SvgFacebookIcon, SvgGoogleIcon} from '../../components/SvgImages';
-import {
-  SigninWithFacebook,
-  SigninWithGoogle,
-} from '../../config/firebase/AuthProviders';
-import {firebase} from '@react-native-firebase/auth';
-import {useDispatch} from 'react-redux';
-import {login} from '../../redux/slices/AuthSlice';
+import { ShowToast } from '../../utils';
+import { SvgFacebookIcon, SvgGoogleIcon } from '../../components/SvgImages';
+import { SigninWithFacebook, SigninWithGoogle } from '../../config/firebase/AuthProviders';
+import { firebase } from '@react-native-firebase/auth';
+import { useDispatch } from 'react-redux';
+import { login } from '../../redux/slices/AuthSlice';
 
-const Signup = ({navigation}) => {
+const Signup = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [indicator, setindicator] = useState(false);
   const [facebookLoader, setFacebookLoader] = useState(false);
-  // const [deviceToken, setDeviceToken] = useState('');
-  // const [uId, setUId] = useState('');
-  // const [providerId, setProviderId] = useState('');
-  // const [firstName, setFirstName] = useState('');
-  // const [lastName, setLastName] = useState('');
   const dispatch = useDispatch();
+
   const onContinuePress = () => {
     if (!email) {
       return ShowToast('Please type your email');
     } else {
-      navigation.navigate('initialprofile', {userData: email});
+      navigation.navigate('initialprofile', { userData: email });
     }
   };
 
@@ -49,9 +39,7 @@ const Signup = ({navigation}) => {
     setindicator(true);
     SigninWithGoogle()
       .then(async data => {
-        console.log('google datwaaa', data);
         if (!data) {
-          console.log('Error no data!');
           setindicator(false);
           return ShowToast('Google Login failed!');
         } else {
@@ -60,7 +48,6 @@ const Signup = ({navigation}) => {
           const setLastName = data.familyName;
           const profilePic = data.photo;
           firebase.auth().onAuthStateChanged(user => {
-            console.log('firebase user', user);
             if (user) {
               dispatch(
                 login({
@@ -98,23 +85,26 @@ const Signup = ({navigation}) => {
       setFacebookLoader(false);
       return ShowToast('Facebook login failed');
     } else {
-      console.log('facebook result=-=->', result.picture.data.url);
-      firebase.auth().onAuthStateChanged(user => {
-        if (user) {
-          console.log('user87878878----',user)
-          dispatch(
-            login({
-              email: result.email,
-              uId: user?.uid,
-              providerId: user?.providerData[0]?.providerId,
-              firstName: result.first_name,
-              lastName: result.last_name,
-              profilePhoto: result.picture.data.url,
-            }),
-          );
-          setFacebookLoader(false);
-        }
-      });
+      try {
+        firebase.auth().onAuthStateChanged(user => {
+          if (user) {
+            dispatch(
+              login({
+                email: result.email,
+                uId: user?.uid,
+                providerId: user?.providerData[0]?.providerId,
+                firstName: result.first_name,
+                lastName: result.last_name,
+                profilePhoto: result.picture.data.url,
+              }),
+            );
+            setFacebookLoader(false);
+          }
+        });
+      } catch (error) {
+        console.log('fb login failed', error);
+        return ShowToast('Google Login failed!');
+      };
     }
   };
 
@@ -124,157 +114,76 @@ const Signup = ({navigation}) => {
       resizeMode="cover"
       style={styles.bg_signup}>
       <BackHeader />
-      <ScrollView contentContainerStyle={{paddingHorizontal: wp('10%')}}>
-        <View
-          style={{
-            flex: 1,
-            marginTop: hp('5%'),
-          }}>
-          <View
-            style={{
-              flex: 0.5,
-              marginTop: hp('0%'),
-            }}>
-            <Text style={styles.signup_heading}>Welcome Back</Text>
-            <Text style={styles.signup_title}>
-              Lets make your hair attractive,
-            </Text>
+      <ScrollView
+        contentContainerStyle={{ paddingHorizontal: wp('10%'), paddingTop: hp(5) }}
+        showsVerticalScrollIndicator={false}
+      >
+        <Text style={styles.signup_heading}>Welcome</Text>
+        <Text style={styles.signup_title}>Lets make your hair attractive,</Text>
+        <View style={{ flex: 0.5, marginTop: hp(10), paddingBottom: 10 }}>
+          <Text style={styles.input_lable}>Enter your email</Text>
+          <View style={styles.inputs_container}>
+            <FontAwesome5
+              name="mail-outline"
+              type="Ionicons"
+              color="#e0e0e0"
+              size={32}
+              style={{ marginLeft: 10 }}
+            />
+            <TextInput
+              style={styles.inputs}
+              value={email}
+              onChangeText={text => setEmail(text)}
+              placeholder="Email"
+              keyboardType="email-address"
+              placeholderTextColor="#bbb9bd"
+            />
           </View>
-          <View
-            style={{
-              flex: 0.5,
-              marginTop: hp('13%'),
-              paddingBottom: 10,
-            }}>
-            <View>
-              <Text style={styles.input_lable}>Enter your email</Text>
-              <View style={styles.inputs_container}>
-                <FontAwesome5
-                  name="mail-outline"
-                  type="Ionicons"
-                  color="#e0e0e0"
-                  size={32}
-                  style={{marginLeft: 10}}
-                />
-                <TextInput
-                  style={styles.inputs}
-                  value={email}
-                  onChangeText={text => setEmail(text)}
-                  placeholder="Email"
-                  keyboardType="email-address"
-                  placeholderTextColor="#bbb9bd"
-                />
-              </View>
-            </View>
-
-            <View style={styles.seperator}>
-              <Text style={{color: '#bbb9bd', textAlign: 'center'}}>OR</Text>
-            </View>
-
-            <TouchableOpacity
-              onPress={() => googleSignIn()}
-              activeOpacity={0.9}
-              style={[styles.button_container]}>
-              {/* <Image
-                source={require('../../assets/images/google_icon.png')}
-                style={styles.btn_icon}
-              /> */}
-              {indicator ? (
-                <ActivityIndicator
-                  color={'#D1911E'}
-                  size={'small'}
-                  style={{alignSelf: 'center', flex: 1}}
-                />
-              ) : (
-                <>
-                  <View style={styles.btn_icon}>
-                    <SvgGoogleIcon />
-                  </View>
-                  <View style={{width: '75%'}}>
-                    <Text
-                      style={{
-                        fontSize: hp('2%'),
-                        color: '#bbb9bd',
-                        textAlign: 'center',
-                      }}>
-                      CONTINUE WITH GOOGLE
-                    </Text>
-                  </View>
-                </>
-              )}
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.button_container}
-              activeOpacity={0.9}
-              onPress={() => onFacebookPress()}>
-              {/* <Image
-                source={require('../../assets/images/facebook_icon.png')}
-                style={styles.btn_icon}
-              /> */}
-              {facebookLoader ? (
-                <ActivityIndicator
-                  color={'#D1911E'}
-                  size={'small'}
-                  style={{alignSelf: 'center', flex: 1}}
-                />
-              ) : (
-                <>
-                  <View style={styles.btn_icon}>
-                    <SvgFacebookIcon />
-                  </View>
-                  <View style={{width: '75%'}}>
-                    <Text
-                      style={{
-                        fontSize: hp('2%'),
-                        color: '#bbb9bd',
-                        textAlign: 'center',
-                      }}>
-                      CONTINUE WITH FACEBOOK
-                    </Text>
-                  </View>
-                </>
-              )}
-            </TouchableOpacity>
-            <View style={{alignItems: 'center', marginTop: 40}}>
-              <PrimaryButton
-                title="continue"
-                onPress={() => onContinuePress()}
-              />
-              <View style={{paddingTop: hp('3%')}}>
-                <PrimaryButton
-                  title="Already a user ?"
-                  onPress={() => navigation.navigate('Login')}
-                />
-              </View>
+          <View style={styles.seperator}>
+            <Text style={{ color: '#bbb9bd', textAlign: 'center' }}>OR</Text>
+          </View>
+          <TouchableOpacity onPress={googleSignIn} style={styles.button_container}>
+            {indicator ? (
+              <ActivityIndicator color={'#D1911E'} size={'small'} />
+            ) : (
+              <>
+                <SvgGoogleIcon />
+                <Text style={styles.btnText}>CONTINUE WITH GOOGLE</Text>
+              </>
+            )}
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button_container} onPress={onFacebookPress}>
+            {facebookLoader ? (
+              <ActivityIndicator color={'#D1911E'} size={'small'} />
+            ) : (
+              <>
+                <SvgFacebookIcon />
+                <Text style={styles.btnText}>CONTINUE WITH FACEBOOK</Text>
+              </>
+            )}
+          </TouchableOpacity>
+          <View style={{ marginTop: 40 }}>
+            <PrimaryButton title="continue" onPress={() => onContinuePress()} />
+            <View style={{ marginTop: hp('3%') }}>
+              <PrimaryButton title="Already a user?" onPress={() => navigation.navigate('Login')} />
             </View>
           </View>
         </View>
       </ScrollView>
-      <View>
-        {/* <LoginButton
-          onLoginFinished={(error, result) => {
-            if (error) {
-              console.log('login has error: ' + result.error);
-            } else if (result.isCancelled) {
-              console.log('login is cancelled.');
-            } else {
-              AccessToken.getCurrentAccessToken().then(data => {
-                console.log(data.accessToken.toString());
-              });
-            }
-          }}
-          onLogoutFinished={() => console.log('logout.')}
-        /> */}
-      </View>
     </ImageBackground>
   );
 };
 
 export default Signup;
+
 const styles = StyleSheet.create({
+  btnText: {
+    fontSize: hp('2%'),
+    color: '#bbb9bd',
+    textAlign: 'center',
+  },
   bg_signup: {
     flex: 1,
-    justifyContent: 'space-between',
   },
   signup_heading: {
     fontSize: hp('5%'),
@@ -300,7 +209,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 40,
     borderColor: '#D49621',
-    marginTop: hp('1.7%'),
+    marginTop: hp(1.7),
+    width: wp(80),
+    justifyContent: 'space-evenly',
   },
   inputs: {
     marginLeft: 10,
@@ -318,6 +229,6 @@ const styles = StyleSheet.create({
   btn_icon: {
     width: 30,
     height: 30,
-    marginLeft: 10,
+    // marginLeft: 10,
   },
 });

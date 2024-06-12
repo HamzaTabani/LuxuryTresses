@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
-import {Text, StyleSheet, View, TouchableOpacity, Image} from 'react-native';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import React, { useState } from 'react';
+import { Text, StyleSheet, View, TouchableOpacity, Image } from 'react-native';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import images from '../assets/images';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const CheckoutProductCard = ({
   image,
@@ -12,65 +12,37 @@ const CheckoutProductCard = ({
   increment,
   decrement,
 }) => {
-  // const [quantity, setQuantity] = useState(1);
   const [imageErrorProduct, setImageErrorProduct] = useState(false);
   const handleImageErrorProduct = () => {
     setImageErrorProduct(true);
   };
-  const {pic_baseUrl} = useSelector(state => state.ecommerceReducer);
-  console.log('pic_baseUrl=-=>', pic_baseUrl);
-  console.log('image product56546: ', image);
-  // const incrementQuantity = () => {
-  //   setQuantity(quantity + 1);
-  // };
-
-  // const decrementQuantity = () => {
-  //   if (quantity > 1) {
-  //     setQuantity(quantity - 1);
-  //   }
-  // };
-
-  // console.log('title', name.length);
+  const { pic_baseUrl } = useSelector(state => state.ecommerceReducer);
 
   return (
     <View style={styles.productQuantityBox}>
-      <View
-        style={{
-          flexDirection: 'row',
-          gap: 10,
-        }}>
-        <View
-          style={{
-            width: 70,
-            height: 70,
-          }}>
+      <View style={{ flexDirection: 'row', gap: 10 }}>
+        <View style={{ width: 70, height: 70 }}>
           <Image
             source={
               imageErrorProduct
                 ? images.imageNotFound
                 : image == 'null' && image == null && image == 'undefined'
-                ? images.imageNotFound
-                : {uri: pic_baseUrl + '/' + image}
+                  ? images.imageNotFound
+                  : { uri: pic_baseUrl + '/' + image }
             }
             resizeMode="cover"
-            style={{width: '100%', height: '100%', borderRadius: 15}}
+            style={{ width: '100%', height: '100%', borderRadius: 15 }}
             onError={handleImageErrorProduct}
           />
-          {/* online status button */}
         </View>
-        <View style={{justifyContent: 'center', width: '55%'}}>
-          <Text style={{color: '#fff', fontSize: hp('1.7%')}}>{name}</Text>
-          <Text
-            style={{
-              color: '#efefef',
-              fontSize: hp('1.5%'),
-              marginTop: 2,
-            }}>
+        <View style={{ justifyContent: 'center', width: '55%' }}>
+          <Text style={{ color: '#fff', fontSize: hp('1.7%') }}>{name}</Text>
+          <Text style={{ color: '#efefef', fontSize: hp('1.5%'), marginTop: 2 }}>
             ${price}
           </Text>
         </View>
       </View>
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <TouchableOpacity
           onPress={decrement}
           style={styles.button}

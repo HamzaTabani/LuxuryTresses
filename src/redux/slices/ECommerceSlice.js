@@ -1,11 +1,11 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import {BASE_URL} from '../constant.js';
-import {ErrorToast} from '../../utils/index.js';
+import { BASE_URL } from '../constant.js';
+import { ErrorToast } from '../../utils/index.js';
 
 export const fetchRecentProducts = createAsyncThunk(
   'recentProducts',
-  async (_, {getState}) => {
+  async (_, { getState }) => {
     const stateData = getState().userData;
     const token = stateData.token;
     return await axios
@@ -27,7 +27,7 @@ export const fetchRecentProducts = createAsyncThunk(
 
 export const getCompletedOrders = createAsyncThunk(
   'completedOrders',
-  async (_, {getState}) => {
+  async (_, { getState }) => {
     const stateData = getState().userData;
     const token = stateData.token;
     return await axios
@@ -50,7 +50,7 @@ export const getCompletedOrders = createAsyncThunk(
 
 export const getActiveOrders = createAsyncThunk(
   'activeOrders',
-  async (_, {getState}) => {
+  async (_, { getState }) => {
     const stateData = getState().userData;
     const token = stateData.token;
     return await axios
@@ -61,8 +61,6 @@ export const getActiveOrders = createAsyncThunk(
         },
       })
       .then(res => {
-        // console.log('active orders =========>', res.data);
-        // setActiveLoader(false);
         return res.data;
       })
       .catch(error => {
@@ -73,10 +71,9 @@ export const getActiveOrders = createAsyncThunk(
 
 export const getProductDetails = createAsyncThunk(
   'productDetails',
-  async ({product_id, setLoad}, {getState}) => {
+  async ({ product_id, setLoad }, { getState }) => {
     const stateData = getState().userData;
     const token = stateData.token;
-    console.log('stateData', product_id);
     return await axios
       .get(`${BASE_URL}/product/${product_id}/detail`, {
         headers: {
@@ -85,7 +82,6 @@ export const getProductDetails = createAsyncThunk(
         },
       })
       .then(res => {
-        console.log('product detailssss response ============>', res.data);
         setLoad(false);
         return res.data;
       })

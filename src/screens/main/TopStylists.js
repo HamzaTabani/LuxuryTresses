@@ -1,12 +1,10 @@
-import {StyleSheet, View, FlatList, TouchableOpacity, Text} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import { StyleSheet, View, FlatList, TouchableOpacity, Text } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import ProfileHeader from '../../components/ProfileHeader';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Container from '../../components/Container';
 import Card from '../../components/Card';
-import {useDispatch, useSelector} from 'react-redux';
-import images from '../../assets/images';
-import {useNavigation} from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   getAllServices,
   getServiceById,
@@ -15,13 +13,11 @@ import {
 import ServiceDropdown from '../../components/ServiceDropdown';
 import Loader from '../../components/Loader';
 import colors from '../../assets/colors';
+import { useNavigation } from '@react-navigation/native';
 
 const TopStylists = () => {
   const navigation = useNavigation();
-  const {pic_url} = useSelector(state => state.userData);
-  const {topStylists} = useSelector(state => state.stylistReducer);
   const [filterActive, setFilterActive] = useState(false);
-
   const [stylistData, setStylistData] = useState([]);
   const [stylistServices, setStylistServices] = useState([]);
   const dispatch = useDispatch();
@@ -30,55 +26,22 @@ const TopStylists = () => {
   const [serviceByIdData, setServiceByIdData] = useState([]);
   const [load, setLoad] = useState(true);
 
-  // console.log('serviceLabel=-=>', serviceLabel);
-
-  console.log('serviceId=-=-->', serviceId);
-
-  // console.log('serviceByIdData', serviceByIdData);
-  console.log(
-    'chutyapai ki logic:::',
-    serviceId != '' && serviceId != undefined,
-  );
-
-  // console.log('stylistData=-=->', stylistData);
-  // console.log('load=--=>', load);
-
   const handleServiceId = data => {
-    // console.log('data=--==>', data);
-    // if (data != null && data != undefined) {
-    //   console.log('data53483=--==>', data);
-    // setServiceId(data != null ? data[0].value : '0');
     setServiceId(data.value);
-    // const label = data.label.replace(/^\s+/, '');
-    // setServiceLabel(data != null ? data[0].label : 'Stylist');
     setServiceLabel(
       data.label != undefined && data.label != null
         ? data.label.replace(/^\s+/, '')
         : null,
     );
-    // } else {
-    //   setServiceId('');
-    //   setServiceLabel('');
-    // }
   };
 
-  // console.log('filterActive=->', filterActive);
-
-  // console.log('stylistData35435=-=>', stylistServices);
   useEffect(() => {
     getAllServicesById();
   }, [serviceId]);
 
-  // useEffect(() => {
-  //   getTopStylistsProfile();
-  // }, [serviceByIdData]);
-
   useEffect(() => {
-    // if (recentProducts.length < 1 || topStylists.length < 1) {
     getTopStylistsProfile();
     getAllStylistProfileServices();
-
-    // }
   }, []);
 
   const getTopStylistsProfile = async () => {
@@ -106,11 +69,10 @@ const TopStylists = () => {
     });
   };
 
-  const renderData = ({item}) => {
-    // console.log('itemitemitem', item);
+  const renderData = ({ item }) => {
     return (
       <TouchableOpacity
-        style={{marginBottom: 10}}
+        style={{ marginBottom: 10 }}
         activeOpacity={0.9}
         key={item?.id}
         onPress={() => onStylistDetail(item)}>
@@ -120,8 +82,8 @@ const TopStylists = () => {
           stylist_name={item.first_name + item.last_name}
           stylist_email={
             item.address != 'null' &&
-            item.address != null &&
-            item.address != 'undefined'
+              item.address != null &&
+              item.address != 'undefined'
               ? item.address
               : 'address'
           }
@@ -137,11 +99,9 @@ const TopStylists = () => {
     return (
       <View
         style={{
-          // flex: 1,
           alignItems: 'center',
           justifyContent: 'center',
           height: hp(75),
-          // backgroundColor: 'green',
         }}>
         <View style={styles.emptyContainer}>
           <Text style={styles.emptyText}>No Stylist Found!</Text>
@@ -153,7 +113,7 @@ const TopStylists = () => {
   return (
     <Container>
       {load ? (
-        <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+        <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
           <Loader size={'large'} />
         </View>
       ) : (
@@ -168,33 +128,22 @@ const TopStylists = () => {
           />
           {filterActive ? (
             <View>
-              <ServiceDropdown
-                services={stylistServices}
-                serviceValue={handleServiceId}
-              />
+              <ServiceDropdown services={stylistServices} serviceValue={handleServiceId} />
             </View>
           ) : null}
-
-          {/* <View style={styles.wrapper}> */}
           <FlatList
             data={
               serviceId != '' && serviceId != undefined
                 ? serviceByIdData
                 : stylistData
             }
-            // style={[
-            //   serviceId != '' && serviceId != undefined
-            //     ? {height: hp(100)}
-            //     : {height:hp(50)},
-            // ]}
             contentContainerStyle={styles.wrapper}
             keyExtractor={item => item.id}
             renderItem={renderData}
-            columnWrapperStyle={{justifyContent: 'space-evenly'}}
+            columnWrapperStyle={{ justifyContent: 'space-evenly' }}
             numColumns={2}
             ListEmptyComponent={emptyData}
           />
-          {/* </View> */}
         </>
       )}
     </Container>
@@ -213,8 +162,8 @@ const styles = StyleSheet.create({
     // flex: 1,
     paddingBottom: 70,
     // backgroundColor: 'red',
-    width:'95%',
-    alignSelf:'center'
+    width: '95%',
+    alignSelf: 'center'
   },
   emptyContainer: {
     // flex: 1,

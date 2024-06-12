@@ -1,24 +1,20 @@
-import React, {useEffect, useState} from 'react';
-import {Text, StyleSheet, View, ScrollView} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Text, StyleSheet, View, ScrollView } from 'react-native';
 import Container from '../../components/Container';
 import ProfileHeader from '../../components/ProfileHeader';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import CheckoutProductCard from '../../components/CheckoutProductCard';
 import PrimaryButton from '../../components/PrimaryButton';
-import {useNavigation} from '@react-navigation/native';
-import {useSelector, useDispatch} from 'react-redux';
-import {addProductinCart} from '../../redux/slices/ECommerceSlice';
+import { useNavigation } from '@react-navigation/native';
+import { useSelector, useDispatch } from 'react-redux';
+import { addProductinCart } from '../../redux/slices/ECommerceSlice';
 import InputText from '../../components/InputText';
 
 const Checkout = () => {
   const [note, setNote] = useState('');
   const [grandTotal, setGrandTotal] = useState('');
-
   const navigation = useNavigation();
-
-  const {cart_product} = useSelector(state => state.ecommerceReducer);
-  console.log('whyy', cart_product);
-
+  const { cart_product } = useSelector(state => state.ecommerceReducer);
   const dispatch = useDispatch();
 
   const onIncreaseQuantity = index => {
@@ -58,10 +54,7 @@ const Checkout = () => {
   });
 
   const calculateTotal = () => {
-    const total = cart_product.reduce(
-      (total, item) => total + item.productDetail.price * item.quantity,
-      0,
-    );
+    const total = cart_product.reduce((total, item) => total + item.productDetail.price * item.quantity, 0);
     setGrandTotal(total);
   };
 
@@ -77,9 +70,9 @@ const Checkout = () => {
             borderBottomWidth: 0.6,
           }}>
           {cart_product.map((item, index) => {
-            console.log('item checkout: ',item)
             return (
               <CheckoutProductCard
+                key={index}
                 image={item.productDetail.image}
                 name={item.productDetail.title}
                 quantity={item.quantity}
@@ -91,9 +84,9 @@ const Checkout = () => {
           })}
         </View>
         {/* checkout summary */}
-        <View style={{marginTop: 15}}>
+        <View style={{ marginTop: 15 }}>
           <Text
-            style={{color: '#fff', fontWeight: 'bold', fontSize: hp('2.5%')}}>
+            style={{ color: '#fff', fontWeight: 'bold', fontSize: hp('2.5%') }}>
             Payment Summary
           </Text>
           <View style={styles.summaryDetailsContainer}>
@@ -101,14 +94,6 @@ const Checkout = () => {
               <Text style={styles.summaryItemTitleText}>Total</Text>
               <Text style={styles.summaryItemTitleText}>${grandTotal}</Text>
             </View>
-            {/* <View style={styles.summaryItem}>
-              <Text style={styles.summaryItemTitleText}>Delivery</Text>
-              <Text style={styles.summaryItemTitleText}>$15</Text>
-            </View>
-            <View style={styles.summaryItemLast}>
-              <Text style={styles.summaryItemTotalTitle}>Total</Text>
-              <Text style={styles.summaryItemTotalPrice}>$65</Text>
-            </View> */}
           </View>
         </View>
         <InputText
@@ -117,15 +102,10 @@ const Checkout = () => {
           onChangeText={text => setNote(text)}
         />
         {/* Pay Button */}
-        <View style={{marginTop: hp('4%'), alignItems: 'center'}}>
+        <View style={{ marginTop: hp('4%'), alignItems: 'center' }}>
           <PrimaryButton
             title="Pay now"
-            onPress={() =>
-              navigation.navigate('PaymentMethod', {
-                total: grandTotal,
-                note: note,
-              })
-            }
+            onPress={() => navigation.navigate('PaymentMethod', { total: grandTotal, note: note })}
           />
         </View>
       </ScrollView>

@@ -6,16 +6,16 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import BackHeader from '../../components/BackHeader';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import InputText from '../../components/InputText';
 import PrimaryButton from '../../components/PrimaryButton';
-import {ShowToast} from '../../utils';
-import {useDispatch, useSelector} from 'react-redux';
-import {login} from '../../redux/slices/AuthSlice';
+import { ShowToast } from '../../utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../../redux/slices/AuthSlice';
 import colors from '../../assets/colors';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -23,29 +23,24 @@ const Login = () => {
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const {token, signin_loading} = useSelector(state => state.userData);
-  //   console.log('loader', token);
+  const { token, signin_loading } = useSelector(state => state.userData);
 
   const onLoginPress = async () => {
     if (!email) {
       return ShowToast('Please type your email');
     } else {
-      dispatch(
-        login({
-          email: email,
-          password: password,
-        }),
-      );
-    }
+      dispatch(login({ email: email, password: password }));
+    };
   };
 
   return (
     <ImageBackground
       source={require('../../assets/images/otpbg.png')}
       resizeMode="cover"
-      style={{flex: 1}}>
+      style={{ flex: 1 }}>
       <BackHeader />
       <View style={styles.labelWrapper}>
+        <Text style={styles.heading}>Welcome Back!</Text>
         <Text style={styles.heading}>Login</Text>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -67,7 +62,7 @@ const Login = () => {
               secureTextEntry={true}
               icon={'lock-closed-outline'}
             />
-            <View style={{paddingTop: hp('3%'), alignItems: 'center'}}>
+            <View style={{ paddingTop: hp('3%'), alignItems: 'center' }}>
               <PrimaryButton
                 title="Login"
                 indicator={signin_loading}
@@ -80,6 +75,10 @@ const Login = () => {
               onPress={() => navigation.navigate('ForgetPassword')}>
               <Text style={styles.forgotText}>Forgot Password ?</Text>
             </TouchableOpacity>
+            <PrimaryButton
+              title="ARE YOU NEW?"
+              onPress={() => navigation.navigate('signup')}
+            />
           </View>
         </View>
       </ScrollView>
@@ -94,7 +93,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   heading: {
-    fontSize: hp('5%'),
+    fontSize: hp(4),
     color: '#fff',
     fontFamily: 'Lora-Medium',
   },

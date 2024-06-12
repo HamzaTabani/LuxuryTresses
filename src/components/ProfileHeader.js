@@ -5,13 +5,13 @@ import {
   Pressable,
   TouchableOpacity,
 } from 'react-native';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import {useState} from 'react';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { useState } from 'react';
 import colors from '../assets/colors';
 import SearchTopButton from './SearchTopButton';
 import ProfileImgRound from './ProfileImgRound';
 import Back from 'react-native-vector-icons/Ionicons';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const ProfileHeader = ({
@@ -27,17 +27,13 @@ const ProfileHeader = ({
   const [searchActive, setSearchActive] = useState(false);
   const navigation = useNavigation();
 
-  // console.log('!home=-=-', !home);
-
   const handleFilter = () => {
     setFilterActive(!filterActive);
   };
 
-  // console.log(text?.length);
-
   return (
     <View style={styles.profile_header}>
-      <View style={{flexDirection: 'row', alignItems: 'center', gap: 15}}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 15 }}>
         {icon ? (
           <Pressable onPress={() => navigation.goBack()}>
             <View style={styles.iconView}>
@@ -52,7 +48,6 @@ const ProfileHeader = ({
             style={{
               color: '#fff',
               fontWeight: '500',
-              // width: text?.length === 28 && hp('32%'),
               fontSize: hp('2.5%'),
               fontFamily: 'Lora-Medium',
               width: hp('30%'),

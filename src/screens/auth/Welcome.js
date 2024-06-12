@@ -4,29 +4,24 @@ import {
   Text,
   StyleSheet,
   View,
-  StatusBar,
   Image,
   ScrollView,
-  Platform,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import PrimaryButton from '../../components/PrimaryButton';
-import {useSelector} from 'react-redux';
-import {SvgLogoIcon} from '../../components/SvgImages';
+import { useSelector } from 'react-redux';
 
-const Welcome = ({navigation}) => {
+const Welcome = ({ navigation }) => {
   const state = useSelector(state => state.userData);
-  console.log(state, 'my redux state test.');
 
   return (
     <ImageBackground
       source={require('../../assets/images/splashbg.png')}
       resizeMode="cover"
       style={styles.bg_splash}>
-      {/* logo header */}
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.splash_header}>
           <Image
@@ -34,21 +29,20 @@ const Welcome = ({navigation}) => {
             style={styles.logo}
           />
         </View>
-        {/* splash bottom */}
         <View style={styles.splash_bottom}>
           <View>
             <Text style={styles.splash_heading}>Let your hair,</Text>
             <Text style={styles.splash_heading}>Speak for itself</Text>
           </View>
-          <View style={{marginTop: 25}}>
+          <View style={{ marginTop: 25 }}>
             <Text style={styles.splash_title}>
               Lets make your hair attractive,
             </Text>
           </View>
-          <View style={{marginTop: 45, alignItems: 'center'}}>
+          <View style={{ marginTop: 45, alignItems: 'center' }}>
             <PrimaryButton
               title="Get Started"
-              onPress={() => navigation.navigate('signup')}
+              onPress={() => navigation.navigate('Login')}
             />
           </View>
         </View>
@@ -73,13 +67,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'flex-start',
     paddingTop: hp('3%'),
-    // backgroundColor:'red'
   },
   logo: {
     width: 80,
     height: 80,
     marginTop: 30,
-    // backgroundColor:'green'
   },
   splash_bottom: {
     flex: 0.4,
@@ -94,20 +86,20 @@ const styles = StyleSheet.create({
     color: '#bbb9bd',
   },
   // primary button
-  primary_btn: {
-    width: wp('80%'),
-    borderRadius: 50,
-  },
-  primary_btn_gradient: {
-    width: wp('80%'),
-    padding: 15,
-    borderRadius: 50,
-  },
-  primary_btn_text: {
-    fontSize: hp('1.7%'),
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#000',
-    textTransform: 'uppercase',
-  },
+  // primary_btn: {
+  //   width: wp('80%'),
+  //   borderRadius: 50,
+  // },
+  // primary_btn_gradient: {
+  //   width: wp('80%'),
+  //   padding: 15,
+  //   borderRadius: 50,
+  // },
+  // primary_btn_text: {
+  //   fontSize: hp('1.7%'),
+  //   fontWeight: 'bold',
+  //   textAlign: 'center',
+  //   color: '#000',
+  //   textTransform: 'uppercase',
+  // },
 });

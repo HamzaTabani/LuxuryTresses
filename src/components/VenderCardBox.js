@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Text,
   StyleSheet,
@@ -7,17 +7,11 @@ import {
   Pressable,
   TouchableOpacity,
 } from 'react-native';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import RatingIcon from './RatingIcon';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import Feather from 'react-native-vector-icons/Feather';
-import {useNavigation} from '@react-navigation/native';
-import {SvgGoldBagIcon, SvgGoldSeatIcon} from './SvgImages';
-import {useDispatch, useSelector} from 'react-redux';
-import {getRecentStylists} from '../redux/slices/StylistSlice';
+import { useNavigation } from '@react-navigation/native';
+import { SvgGoldBagIcon, SvgGoldSeatIcon } from './SvgImages';
+import { useSelector } from 'react-redux';
 import images from '../assets/images';
 
 const VenderCardBox = ({
@@ -31,35 +25,7 @@ const VenderCardBox = ({
   serviceIcon,
 }) => {
   const navigation = useNavigation();
-  // console.log('serviceIcon-==', serviceIcon);
-  console.log('img-==', img);
-  // console.log('itemData vendor card box-->', itemData);
-  // const {recentStylists} = useSelector(state => state.stylistReducer);
-  // const {user, pic_url} = useSelector(state => state.userData);
-
-  // const getRecentStylistsProfile = async () => {
-  //   await dispatch(getRecentStylists());
-  // };
-
-  // const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   // if (recentStylists.length < 1) {
-  //   getRecentStylistsProfile();
-  //   // }
-  // }, []);
-
-  // const onRecntStylistDetail = item => {
-  //   const stylistImages = recentStylists.map(item => ({
-  //     stylist_image: item.profile_pic,
-  //   }));
-
-  //   navigation.navigate('ProfileDetail', {
-  //     profile_id: item.id,
-  //     stylists: stylistImages,
-  //   });
-  // };
-  const {pic_url} = useSelector(state => state.userData);
+  const { pic_url } = useSelector(state => state.userData);
   const [imageError, setImageError] = useState(false);
 
   const handleImageError = () => {
@@ -71,29 +37,21 @@ const VenderCardBox = ({
       <View
         style={{
           flexDirection: 'row',
-          // alignItems: 'center',
           gap: 6,
-          // backgroundColor: 'yellow',
           width: '70%',
         }}>
-        {/* vender image */}
         <TouchableOpacity
-          onPress={() =>
-            navigation.navigate('ProfileDetail', {
-              profile_id: itemId,
-            })
-          }
+          onPress={() => navigation.navigate('ProfileDetail', { profile_id: itemId })}
           style={styles.cardImage}>
           <Image
             source={
               imageError
                 ? images.profile
                 : img == 'null' || img == null || img == 'undefined'
-                ? images.profile
-                : // : {uri: pic_url + img}
-                  {uri: img}
+                  ? images.profile
+                  : { uri: img }
             }
-            style={{width: '100%', height: '100%'}}
+            style={{ width: '100%', height: '100%' }}
             borderRadius={10}
             resizeMode="contain"
             onError={handleImageError}
@@ -104,16 +62,11 @@ const VenderCardBox = ({
           style={{
             height: '100%',
             justifyContent: 'space-evenly',
-            // backgroundColor: 'green',
             width: '60%',
           }}>
           <Text style={styles.venderNameText}>{name}</Text>
-          <Text style={styles.venderDistanceText}>
-            {email}
-            {/* <Text style={{color: '#000'}}>(2km)</Text> */}
-          </Text>
-
-          <View style={{flexDirection: 'row', gap: 5}}>
+          <Text style={styles.venderDistanceText}>{email}</Text>
+          <View style={{ flexDirection: 'row', gap: 5 }}>
             {serviceIcon ? (
               <View style={styles.filter_tab_active}>
                 <SvgGoldSeatIcon />
@@ -127,13 +80,8 @@ const VenderCardBox = ({
           </View>
         </View>
       </View>
-
-      {/* vender contact and ratings*/}
-      <View style={{justifyContent: 'space-between'}}>
-        {/* {ratings != null ? ( */}
+      <View style={{ justifyContent: 'space-between' }}>
         <Pressable
-          // activeOpacity={0.9}
-          // key={itemData?.id}
           onPress={() =>
             navigation.navigate('Reviews', {
               name,
@@ -143,68 +91,14 @@ const VenderCardBox = ({
               ratings,
             })
           }
-          // onPress={() => console.log('itemData.id-->', itemData.id)}
           style={styles.ratingButton}>
           <View>
             <RatingIcon rating={ratings} w={30} h={30} r={10} />
           </View>
-          <Text style={{color: '#fff', fontSize: hp('1.2%')}}>
+          <Text style={{ color: '#fff', fontSize: hp('1.2%') }}>
             {ratings ? (Math.round(ratings * 100) / 100).toFixed(2) : 0} Rating
           </Text>
         </Pressable>
-        {/* ) : null} */}
-        {/* <View
-          style={
-            ratings == null
-              ? {
-                  marginTop: hp(6),
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  // backgroundColor:'red',
-                  width: hp(12),
-                }
-              : {
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }
-          }>
-          <Pressable>
-            <View
-              style={{
-                width: 40,
-                height: 40,
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: 50,
-                backgroundColor: '#19CC89',
-              }}>
-              <Ionicons
-                name="chatbox-outline"
-                type="Ionicons"
-                color="#fff"
-                size={20}
-              />
-            </View>
-          </Pressable>
-          <Pressable>
-            <View
-              style={{
-                width: 40,
-                height: 40,
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: 50,
-                backgroundColor: '#0C0A22',
-              }}>
-              <Feather
-                name="shopping-bag"
-                type="Feather"
-                color="#D49621"
-                size={20}
-              />
-            </View>
-          </Pressable>
-        </View> */}
       </View>
     </View>
   );
@@ -231,7 +125,6 @@ const styles = StyleSheet.create({
   venderNameText: {
     color: '#000',
     fontSize: hp('2%'),
-    // backgroundColor: 'red',
   },
   venderDistanceText: {
     color: 'gray',
@@ -250,7 +143,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
     backgroundColor: '#D49621',
-    // height: hp('5.5%'),
     padding: hp('0.4%'),
     width: hp('12%'),
     borderRadius: 10,

@@ -9,21 +9,19 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import FontAwesome5 from 'react-native-vector-icons/Ionicons';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 const BackHeader = () => {
   const navigation = useNavigation();
 
   return (
     <View style={styles.back_header}>
-      <Pressable onPress={() => navigation.goBack()}>
-        <View style={styles.back_button}>
-          <FontAwesome5
-            name="arrow-back-sharp"
-            type="Ionicons"
-            color="#D49621"
-            size={32}
-          />
-        </View>
+      <Pressable onPress={() => navigation.goBack()} style={styles.back_button}>
+        <FontAwesome5
+          name="arrow-back-sharp"
+          type="Ionicons"
+          color="#D49621"
+          size={32}
+        />
       </Pressable>
     </View>
   );

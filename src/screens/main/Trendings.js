@@ -1,24 +1,17 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
-  ScrollView,
   View,
   Text,
-  Image,
   Pressable,
   FlatList,
   TouchableOpacity,
 } from 'react-native';
 import PageWrapper from '../../components/PageWrapper';
 import ProfileHeader from '../../components/ProfileHeader';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import VenderCardBox from '../../components/VenderCardBox';
-import ProductCardBox from '../../components/ProductCardBox';
-import {useSelector, useDispatch} from 'react-redux';
-import images from '../../assets/images';
+import { useSelector, useDispatch } from 'react-redux';
 import Loader from '../../components/Loader';
 import {
   getAllServices,
@@ -34,65 +27,17 @@ import {
 } from '../../components/SvgImages';
 import ServiceDropdown from '../../components/ServiceDropdown';
 
-const cartData2 = [
-  {
-    id: 1,
-    name: 'Omnis iste',
-    img: require('../../assets/images/cart6.png'),
-  },
-  {
-    id: 2,
-    name: 'Omnis iste',
-    img: require('../../assets/images/cart5.png'),
-  },
-  {
-    id: 3,
-    name: 'Omnis iste',
-    img: require('../../assets/images/cart4.png'),
-  },
-  {
-    id: 4,
-    name: 'Omnis iste',
-    img: require('../../assets/images/cart3.png'),
-  },
-  {
-    id: 5,
-    name: 'Omnis iste',
-    img: require('../../assets/images/cart5.png'),
-  },
-  {
-    id: 6,
-    name: 'Omnis iste',
-    img: require('../../assets/images/cart4.png'),
-  },
-];
-
 const Trendings = () => {
   const [filterTab, setFilterTab] = useState('tab1');
-
   const [filterActive, setFilterActive] = useState(false);
   const [serviceId, setServiceId] = useState('');
   const [stylistServices, setStylistServices] = useState([]);
   const [serviceByIdData, setServiceByIdData] = useState([]);
-
-  const {trending_stylists, trending_error, trending_loader} = useSelector(
-    state => state.stylistReducer,
-  );
-
-  const {pic_url} = useSelector(state => state.userData);
-
-  console.log(
-    'serviceByIdData-=>',
-    trending_stylists.length > 0 && serviceByIdData.length > 0,
-  );
-
-  // console.log('trending stylists ==========>', trending_stylists);
-
+  const { trending_stylists, trending_error, trending_loader } = useSelector(state => state.stylistReducer);
   const dispatch = useDispatch();
 
   const getAllStylistProfileServices = async () => {
     await dispatch(getAllServices(setStylistServices));
-    // setLoad(false);
   };
 
   const getAllServicesById = async () => {
@@ -101,28 +46,11 @@ const Trendings = () => {
   };
 
   const handleServiceId = data => {
-    // console.log('data=--==>', data);
-    // if (data != null && data != undefined) {
-    //   console.log('data53483=--==>', data);
-    // setServiceId(data != null ? data[0].value : '0');
     setServiceId(data.value);
-    // const label = data.label.replace(/^\s+/, '');
-    // setServiceLabel(data != null ? data[0].label : 'Stylist');
-    // setServiceLabel(
-    //   data.label != undefined && data.label != null
-    //     ? data.label.replace(/^\s+/, '')
-    //     : null,
-    // );
-    // } else {
-    //   setServiceId('');
-    //   setServiceLabel('');
-    // }
   };
 
   useEffect(() => {
-    // if (trending_stylists.length < 1) {
     fetchTrendingStylists();
-    // }
     getAllStylistProfileServices();
   }, [serviceByIdData]);
 
@@ -142,11 +70,9 @@ const Trendings = () => {
     return (
       <View
         style={{
-          // flex: 1,
           alignItems: 'center',
           justifyContent: 'center',
           height: hp(75),
-          // backgroundColor: 'green',
         }}>
         <View style={styles.emptyContainer}>
           <Text style={styles.emptyText}>No Stylist Found!</Text>
@@ -158,31 +84,18 @@ const Trendings = () => {
   return (
     <PageWrapper>
       <ProfileHeader home={true} />
-
       <View style={styles.trendingContainer}>
-        {/* ///////// title and filter buttons container ///////*/}
         <View style={styles.filterContainer}>
           <Text style={styles.mainTitleText}>Trending</Text>
-          <View style={{flexDirection: 'row', gap: 8}}>
-            {/* filter tab */}
+          <View style={{ flexDirection: 'row', gap: 8 }}>
             <View style={styles.filterTabs}>
               <Pressable onPress={() => setFilterTab('tab1')}>
-                <View
-                  style={
-                    filterTab === 'tab1'
-                      ? styles.filter_tab_active
-                      : styles.filter_tab
-                  }>
+                <View style={filterTab === 'tab1' ? styles.filter_tab_active : styles.filter_tab}>
                   <SvgSeatGoldTopbar />
                 </View>
               </Pressable>
               <Pressable onPress={() => setFilterTab('tab2')}>
-                <View
-                  style={
-                    filterTab === 'tab2'
-                      ? styles.filter_tab_active
-                      : styles.filter_tab
-                  }>
+                <View style={filterTab === 'tab2' ? styles.filter_tab_active : styles.filter_tab}>
                   <SvgBagGoldTopBar />
                 </View>
               </Pressable>
@@ -203,39 +116,28 @@ const Trendings = () => {
             trending={true}
           />
         ) : null}
-
-        {/*/////////////  filter items container ////////////// */}
-        {/* venders listing */}
         {filterTab === 'tab1' ? (
           trending_loader ? (
-            <>
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flex: 1,
-                }}>
-                <Loader size={'large'} />
-              </View>
-            </>
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                flex: 1,
+              }}>
+              <Loader size={'large'} />
+            </View>
           ) : trending_stylists.length > 0 || serviceByIdData.length > 0 ? (
-            // <ScrollView
-            //   showsVerticalScrollIndicator={false}
-            //   style={{marginBottom: 50}}>
             <FlatList
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{
                 paddingBottom: 100,
-                // marginBottom: 100,
-                // backgroundColor: 'green',
               }}
               data={
                 serviceId != '' && serviceId != undefined
                   ? serviceByIdData
                   : trending_stylists
               }
-              renderItem={({item}) => {
-                console.log('itemitemvvvv=-=->>>', item);
+              renderItem={({ item }) => {
                 return (
                   <View>
                     {item.service ? (
@@ -249,8 +151,8 @@ const Trendings = () => {
                           img={item.profile_pic}
                           email={
                             item.address != 'null' &&
-                            item.address != null &&
-                            item.address != 'undefined'
+                              item.address != null &&
+                              item.address != 'undefined'
                               ? item.address
                               : 'address'
                           }
@@ -264,30 +166,22 @@ const Trendings = () => {
                 );
               }}
               ListFooterComponent={
-                <View
-                  style={{
-                    marginTop: 50,
-                    alignItems: 'center',
-                    // backgroundColor:'red'
-                  }}>
+                <View style={{ marginTop: 50, alignItems: 'center' }}>
                   <SvgBottomLineSecondIcon />
                 </View>
               }
               ListEmptyComponent={emptyData}
             />
           ) : (
-            // </ScrollView>
             trending_error !== '' && (
-              <>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flex: 1,
-                  }}>
-                  <Text style={styles.errorMessage}>{trending_error}</Text>
-                </View>
-              </>
+              <View
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flex: 1,
+                }}>
+                <Text style={styles.errorMessage}>{trending_error}</Text>
+              </View>
             )
           )
         ) : (
@@ -298,9 +192,8 @@ const Trendings = () => {
                 : trending_stylists
             }
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{paddingBottom: 100}}
-            renderItem={({item}) => {
-              // console.log('itemitem=-=->>>', item.product);
+            contentContainerStyle={{ paddingBottom: 100 }}
+            renderItem={({ item }) => {
               return (
                 <View>
                   {item.product ? (
@@ -314,8 +207,8 @@ const Trendings = () => {
                         img={item.profile_pic}
                         email={
                           item.address != 'null' &&
-                          item.address != null &&
-                          item.address != 'undefined'
+                            item.address != null &&
+                            item.address != 'undefined'
                             ? item.address
                             : 'address'
                         }
@@ -333,7 +226,6 @@ const Trendings = () => {
                 style={{
                   marginTop: 50,
                   alignItems: 'center',
-                  // backgroundColor:'red'
                 }}>
                 <SvgBottomLineSecondIcon />
               </View>

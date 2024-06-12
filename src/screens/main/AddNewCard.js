@@ -1,17 +1,17 @@
-import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
-import React, {useRef, useState} from 'react';
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import React, { useRef, useState } from 'react';
 import Container from '../../components/Container';
 import ProfileHeader from '../../components/ProfileHeader';
 import colors from '../../assets/colors';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Add from 'react-native-vector-icons/Ionicons';
 import PaymentCard from '../../components/PaymentCard';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import InputText from '../../components/InputText';
 import PrimaryButton from '../../components/PrimaryButton';
-import {createCard} from '../../redux/slices/AuthSlice';
-import {ShowToast} from '../../utils';
+import { createCard } from '../../redux/slices/AuthSlice';
+import { ShowToast } from '../../utils';
 import uuid from 'react-native-uuid';
 
 const AddNewCard = () => {
@@ -23,16 +23,9 @@ const AddNewCard = () => {
     exp_month: '',
     cvc: '',
   });
-
   const dispatch = useDispatch();
-
   const sheetRef = useRef();
-
-  const {card} = useSelector(state => state.userData);
-
-  // console.log('cardcard-=-==>>>', (card[0].card_number).slice(0,1));
-
-  console.log('card details ==========>', state.card_id);
+  const { card } = useSelector(state => state.userData);
 
   const onOpenSheet = () => {
     sheetRef.current.open();
@@ -40,10 +33,7 @@ const AddNewCard = () => {
   };
 
   const onTextChange = (value, text) => {
-    setState({
-      ...state,
-      [value]: text,
-    });
+    setState({ ...state, [value]: text });
   };
 
   const clearState = () => {
@@ -66,10 +56,7 @@ const AddNewCard = () => {
     } else {
       const cardExist = card.find(item => item.card_id == state.card_id);
       if (cardExist) {
-        // alert('or kesa hai');
-        const updatedCard = card.map(item =>
-          item.card_id === state.card_id ? {...state} : item,
-        );
+        const updatedCard = card.map(item => item.card_id === state.card_id ? { ...state } : item);
         dispatch(createCard(updatedCard));
         sheetRef.current.close();
         return ShowToast('Card has been updated successfully');
@@ -104,13 +91,13 @@ const AddNewCard = () => {
         showsVerticalScrollIndicator={false}>
         {card.length > 0 &&
           card.map((item, i) => (
-            <View style={{marginBottom: hp('8%')}}>
+            <View style={{ marginBottom: hp('8%') }} key={i}>
               <PaymentCard
                 cardholder_name={item.card_holder}
                 card_number={item.card_number}
                 date={item.exp_month + '/' + item.exp_year}
-                cardStyle={{width: '100%'}}
-                masterStyle={{width: '22%'}}
+                cardStyle={{ width: '100%' }}
+                masterStyle={{ width: '22%' }}
                 onCardPress={() => onOpenCardDetails(item)}
               />
             </View>
@@ -132,7 +119,7 @@ const AddNewCard = () => {
               alignItems: 'center',
             },
           }}>
-          <ScrollView contentContainerStyle={{paddingBottom: hp('10%')}}>
+          <ScrollView contentContainerStyle={{ paddingBottom: hp('10%') }}>
             <InputText
               label={'Card Holder'}
               placeholder={'Card Holder Name'}
@@ -180,7 +167,7 @@ const AddNewCard = () => {
                 innerStyle={styles.input}
               />
             </View>
-            <View style={{alignItems: 'center', paddingTop: hp('4%')}}>
+            <View style={{ alignItems: 'center', paddingTop: hp('4%') }}>
               <PrimaryButton
                 title={state.card_id == '' ? 'Add Card' : 'Update Card'}
                 onPress={() => onAddCard()}

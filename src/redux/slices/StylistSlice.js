@@ -1,9 +1,9 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import {BASE_URL} from '../constant.js';
-import {ErrorToast} from '../../utils';
+import { BASE_URL } from '../constant.js';
+import { ErrorToast } from '../../utils';
 import FormData from 'form-data';
-import {Alert} from 'react-native';
+import { Alert } from 'react-native';
 
 // export const getTopStylists = createAsyncThunk(
 //   'topStylists',
@@ -28,7 +28,7 @@ import {Alert} from 'react-native';
 
 export const getTopStylists = createAsyncThunk(
   'topStylists',
-  async (setStylistData, {getState}) => {
+  async (setStylistData, { getState }) => {
     const stateData = getState().userData;
     const token = stateData.token;
     return await axios
@@ -39,7 +39,6 @@ export const getTopStylists = createAsyncThunk(
         },
       })
       .then(res => {
-        // console.log('topStylists =============>', res.data.data);
         setStylistData(res.data.data);
         return res.data;
       })
@@ -52,7 +51,7 @@ export const getTopStylists = createAsyncThunk(
 
 export const getRecentStylists = createAsyncThunk(
   'recentStylists',
-  async (_, {getState}) => {
+  async (_, { getState }) => {
     const stateData = getState().userData;
     // console.log('stateData-->',stateData)
     const token = stateData.token;
@@ -75,7 +74,7 @@ export const getRecentStylists = createAsyncThunk(
 
 export const getPopularStylists = createAsyncThunk(
   'popularStylists',
-  async (_, {getState}) => {
+  async (_, { getState }) => {
     const stateData = getState().userData;
     // console.log('stateData-->',stateData)
     const token = stateData.token;
@@ -98,7 +97,7 @@ export const getPopularStylists = createAsyncThunk(
 
 export const stylistProfileById = createAsyncThunk(
   'profileDetails',
-  async (id, {getState}) => {
+  async (id, { getState }) => {
     const stateData = getState().userData;
     const token = stateData.token;
     //  return Alert.alert('hello world');
@@ -124,10 +123,9 @@ export const stylistProfileById = createAsyncThunk(
 
 export const getServiceById = createAsyncThunk(
   'serviceById',
-  async (serviceId, {getState}) => {
+  async (serviceId, { getState }) => {
     const stateData = getState().userData;
     const token = stateData.token;
-    //  return Alert.alert('hello world');
     console.log('serviceId=-->', serviceId);
 
     let abc = await axios
@@ -152,7 +150,7 @@ export const getServiceById = createAsyncThunk(
 
 export const getAllServices = createAsyncThunk(
   'allServices',
-  async (setStylistServices, {getState}) => {
+  async (setStylistServices, { getState }) => {
     const stateData = getState().userData;
     const token = stateData.token;
     //  return Alert.alert('hello world');
@@ -180,7 +178,7 @@ export const getAllServices = createAsyncThunk(
 
 export const stylistReviewById = createAsyncThunk(
   'stylistReview',
-  async (stylist_id, {getState}) => {
+  async (stylist_id, { getState }) => {
     const stateData = getState().userData;
     const token = stateData.token;
     console.log('stylist_id: ', stylist_id);
@@ -203,7 +201,7 @@ export const stylistReviewById = createAsyncThunk(
 
 export const trendingStylists = createAsyncThunk(
   'trending',
-  async (_, {getState}) => {
+  async (_, { getState }) => {
     const stateData = getState().userData;
     const token = stateData.token;
 
@@ -227,15 +225,15 @@ export const trendingStylists = createAsyncThunk(
 export const getNearbyStylists = createAsyncThunk(
   'nearbyStylists',
   async (
-    {lat, long, serviceId, setNearbyStylistsProfile, setLoad},
-    {getState},
+    { lat, long, serviceId, setNearbyStylistsProfile, setLoad },
+    { getState },
   ) => {
     const stateData = getState().userData;
     const token = stateData.token;
     let abc
 
     if (serviceId != null) {
-       abc = `near-by-stylists?latitude=${lat}&longitude=${long}&service_id=${serviceId}`
+      abc = `near-by-stylists?latitude=${lat}&longitude=${long}&service_id=${serviceId}`
     } else {
       abc = `near-by-stylists?latitude=${lat}&longitude=${long}`
     }
@@ -266,15 +264,13 @@ export const getNearbyStylists = createAsyncThunk(
 export const Appointment = createAsyncThunk(
   'appointment',
   async (
-    {stylist_id, service_id, appointment_date, no_of_guests},
-    {getState},
+    { stylist_id, service_id, appointment_date, no_of_guests },
+    { getState },
   ) => {
     const stateData = getState().userData;
     const token = stateData.token;
 
     var data = new FormData();
-
-    // console.log('attributes',data)
 
     data.append('service_provider_id', stylist_id);
     data.append('service_id', service_id);
@@ -300,7 +296,7 @@ export const Appointment = createAsyncThunk(
 
 export const PostReview = createAsyncThunk(
   'review',
-  async ({userId, userRating, userComment}, {getState}) => {
+  async ({ userId, userRating, userComment }, { getState }) => {
     const stateData = getState().userData;
     const token = stateData.token;
 
