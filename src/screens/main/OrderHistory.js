@@ -12,7 +12,6 @@ import Container from '../../components/Container';
 import ProfileHeader from '../../components/ProfileHeader';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Swiper from 'react-native-swiper';
-import {historyImages} from '../../dummyData';
 import colors from '../../assets/colors';
 import UserDetailCard from '../../components/UserDetailCard';
 import StarRating from 'react-native-star-rating-widget';

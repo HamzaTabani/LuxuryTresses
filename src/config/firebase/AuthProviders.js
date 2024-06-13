@@ -33,7 +33,7 @@ export const SigninWithGoogle = async () => {
       // return console.log('signin methodsss', signInMethods)
 
       if (signInMethods.includes('facebook.com')) {
-        // If the user is already signed in with Google, link the Facebook credential
+        // If the user is already signed in with facebook, link the google credential
         await currentUser.linkWithCredential(googleCredentials);
         console.log('Google account linked successfully.');
       } else {
