@@ -1,20 +1,15 @@
-import {StyleSheet, View, FlatList, TouchableOpacity} from 'react-native';
+import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native';
 import React from 'react';
 import ProfileHeader from '../../components/ProfileHeader';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Container from '../../components/Container';
 import ProductCard from '../../components/ProductCard';
-import {useSelector} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
-import images from '../../assets/images';
+import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
-const RecentProducts = ({route}) => {
+const RecentProducts = ({ route }) => {
   const navigation = useNavigation();
-  const {pic_url} = useSelector(state => state.userData);
-  const {recentProducts} = useSelector(state => state.ecommerceReducer);
-
-  const recentItems = route?.params?.product;
-  // console.log('paramss dataa =======>', recentItems);
+  const { recentProducts } = useSelector(state => state.ecommerceReducer);
 
   return (
     <Container>
@@ -28,17 +23,12 @@ const RecentProducts = ({route}) => {
         <FlatList
           data={recentProducts}
           keyExtractor={item => item.id}
-          renderItem={({item}) => {
-            // console.log('recent product123: ', item.average_rating);
+          renderItem={({ item }) => {
             return (
               <TouchableOpacity
                 activeOpacity={0.9}
-                onPress={() =>
-                  navigation.navigate('SingleProduct', {
-                    productID: item.id,
-                  })
-                }
-                style={{marginBottom: hp('1%')}}>
+                onPress={() => navigation.navigate('SingleProduct', { productID: item.id })}
+                style={{ marginBottom: hp('1%'), width: wp(46), alignItems: 'center' }}>
                 <ProductCard
                   rating={item.average_rating}
                   username={item?.user.first_name + item?.user.last_name}
@@ -51,7 +41,7 @@ const RecentProducts = ({route}) => {
               </TouchableOpacity>
             );
           }}
-          columnWrapperStyle={{justifyContent: 'space-evenly'}}
+          columnWrapperStyle={{ justifyContent: 'space-evenly' }}
           numColumns={2}
         />
       </View>

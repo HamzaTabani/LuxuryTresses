@@ -8,11 +8,11 @@ import {
   Alert,
   Platform,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PageWrapper from '../../components/PageWrapper';
 import ProfileHeader from '../../components/ProfileHeader';
-import MapView, {Marker, Circle} from 'react-native-maps';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import MapView, { Marker, Circle } from 'react-native-maps';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import colors from '../../assets/colors';
 import {
   imageUrl,
@@ -22,168 +22,78 @@ import {
   stylistInformations,
   tabs,
 } from '../../dummyData';
-import {Picker} from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker';
 import images from '../../assets/images';
 import StylistInfo from '../../components/StylistInfo';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   getAllServices,
   getNearbyStylists,
 } from '../../redux/slices/StylistSlice';
 import GetLocation from 'react-native-get-location';
-import {ShowToast, requestLocationPermission} from '../../utils';
+import { ShowToast, requestLocationPermission } from '../../utils';
 import Loader from '../../components/Loader';
 import ServiceDropdown from '../../components/ServiceDropdown';
-import {useIsFocused} from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import {
   isLocationEnabled,
   promptForEnableLocationIfNeeded,
 } from 'react-native-android-location-enabler';
 
 const Nearby = () => {
-  const focused = useIsFocused();
   const mapRef = useRef(null);
-  const [changeTab, setChangeTab] = useState(1);
-  const [selectKilometers, setSelectKilometers] = useState('');
   const [currentRegion, setCurrentregion] = useState(null);
   const [imageUrls, setImageUrls] = useState([]);
   const [cardStates, setCardStates] = useState(Array().fill(false));
   const flatListRef = useRef(null);
   const [load, setLoad] = useState(true);
   const [filterActive, setFilterActive] = useState(false);
-  // console.log('selectKilometers: ', selectKilometers);
   const dispatch = useDispatch();
-  const {nearbyStylists, nearbyStylists_loader} = useSelector(
-    state => state.stylistReducer,
-  );
   const [nearbyStylistsProfile, setNearbyStylistsProfile] = useState([]);
   const [stylistServices, setStylistServices] = useState([]);
   const [serviceId, setServiceId] = useState(null);
-  const [serviceLabel, setServiceLabel] = useState('');
-  const [delayedEmpty, setDelayedEmpty] = useState(true);
   const [renderScreen, setRenderScreen] = useState(true);
-
-  console.log('imageUrls=-=->', imageUrls);
-  // console.log('nearbyStylistsProfile===>', nearbyStylistsProfile);
-
-  // console.log('delayedEmpty-=-=->', delayedEmpty);
-
-  // useEffect(() => {
-  // //   // Delay rendering of empty component
-  //   if (serviceId && nearbyStylistsProfile.length < 1) {
-  //     alert('from if');
-  //       setDelayedEmpty(false);
-  //   } else {
-  //     alert('from else');
-  //     setDelayedEmpty(true)
-  //   } // Adjust the delay time as needed (in milliseconds)
-
-  // //   // if(serviceId && nearbyStylistsProfile.length > 0) {
-  // //   //   setDelayedEmpty(true)
-  // //   // } else {
-  // //   //   setDelayedEmpty(false)
-  // //   // }
-  // }, [nearbyStylistsProfile]);
-
-  // console.log('load===>', load);
-  // console.log('stylistServices0-0-0-0-', stylistServices);
-  // console.log('serviceId0-0-0-', serviceId);
-
-  // console.log('serviceLabel0-0-0-', serviceLabel);
 
   async function handleCheckPressed() {
     if (Platform.OS === 'android') {
       const checkEnabled = await isLocationEnabled();
-      console.log('checkEnabled=-=->', checkEnabled);
       if (!checkEnabled) {
         handleEnabledPressed();
         setRenderScreen(false);
-        // setLoad(true);
       } else {
         setRenderScreen(true);
-        // setLoad(false);
-      }
-    }
-  }
+      };
+    };
+  };
 
   async function handleEnabledPressed() {
     if (Platform.OS === 'android') {
       try {
         const enableResult = await promptForEnableLocationIfNeeded();
-        console.log('enableResult', enableResult);
-        // setRenderScreen(true);
         setLoad(true);
         getCurrentLocation();
-        // The user has accepted to enable the location services
-        // data can be :
-        //  - "already-enabled" if the location services has been already enabled
-        //  - "enabled" if user has clicked on OK button in the popup
       } catch (error) {
-        // if (error instanceof Error) {
         console.error(error.message);
-        // The user has not accepted to enable the location services or something went wrong during the process
-        // "err" : { "code" : "ERR00|ERR01|ERR02|ERR03", "message" : "message"}
-        // codes :
-        //  - ERR00 : The user has clicked on Cancel button in the popup
-        //  - ERR01 : If the Settings change are unavailable
-        //  - ERR02 : If the popup has failed to open
-        //  - ERR03 : Internal error
-        // }
-      }
-    }
-  }
+      };
+    };
+  };
 
   const handleServiceId = data => {
-    // console.log('data=--==>', data);
-    // if (data != null && data != undefined) {
-    //   console.log('data53483=--==>', data);
-    // setServiceId(data != null ? data[0].value : '0');
     if (!data) {
       setServiceId(null);
     } else {
       setServiceId(data.value);
-    }
-    // const label = data.label.replace(/^\s+/, '');
-    // setServiceLabel(data != null ? data[0].label : 'Stylist');
-    // setServiceLabel(
-    //   data.label != undefined && data.label != null
-    //     ? data.label.replace(/^\s+/, '')
-    //     : null,
-    // );
-    // } else {
-    //   setServiceId('');
-    //   setServiceLabel('');
-    // }
+    };
   };
 
   const regionLat = useSelector(state => state.userData.latLng);
-
-  // console.log(
-  //   'nearbyStylistsProfile.length-0-0-OUTSIDE----',
-  //   nearbyStylistsProfile.length,
-  // );
-
-  // console.log('regionLat=-=>', regionLat);
-
   const [nearByImageError, setNearByImageError] = useState(false);
 
   const handleNearByImageError = () => {
     setNearByImageError(true);
   };
-  // console.log('currentRegion: ', currentRegion);
-
-  // console.log('defLat: ', regionLat, regionLat.length > 0);
-  // useEffect(() => {
-  //   setCurrentregion(regionLat);
-  // }, [regionLat]);
-  // console.log('currentRegion:', currentRegion);
-  // console.log('imageUrls: ', imageUrls);
 
   let circleRadius = 1500;
-
-  // useEffect(() => {
-  //   getAllStylistProfileServices();
-  // }, [serviceId])
 
   useEffect(() => {
     handleCheckPressed();
@@ -197,14 +107,8 @@ const Nearby = () => {
     getLatLngSecondory();
   }, [regionLat, serviceId]);
 
-  // useEffect(() => {
-  //   PreLoadImages();
-  // }, [nearbyStylistsProfile]);
-
   const getLatLngSecondory = () => {
     if (regionLat.length > 0) {
-      console.log('object');
-      // Alert.alert('abcds')
       getLatLngState();
       setLoad(true);
       setTimeout(() => {
@@ -222,14 +126,11 @@ const Nearby = () => {
       latitudeDelta: 0.06,
       longitudeDelta: 0.008 * (15 / 20),
     };
-    // Alert.alert('dffdhbg');
     setCurrentregion(data);
     await dispatch(
       getNearbyStylists({
         lat: regionLat.latitude,
-        // lat: 24.8800505,
         long: regionLat.longitude,
-        // long: 67.0796143,
         serviceId: serviceId,
         setNearbyStylistsProfile,
         setLoad,
@@ -239,25 +140,8 @@ const Nearby = () => {
 
   const getAllStylistProfileServices = async () => {
     await dispatch(getAllServices(setStylistServices));
-
     setLoad(false);
   };
-
-  // useEffect(() => {
-  //   fetchNearbyStylists
-  // }, [nearbyStylistsProfile])
-
-  // const fetchNearbyStylists = async () => {
-  //   await dispatch(
-  //     getNearbyStylists({
-  //       lat: currentRegion.latitude,
-  //       // lat: 24.8800505,
-  //       long: currentRegion.longitude,
-  //       // long: 67.0796143,
-  //       setNearbyStylistsProfile
-  //     }),
-  //   );
-  // };
 
   function moveToLocation(latitude, longitude) {
     mapRef.current?.animateToRegion(
@@ -272,7 +156,7 @@ const Nearby = () => {
   }
 
   const onIconPress = index => {
-    flatListRef.current.setNativeProps({scrollEnabled: true});
+    flatListRef.current.setNativeProps({ scrollEnabled: true });
     setCardStates(prevState => {
       const newState = [...prevState];
       newState[index] = !newState[index];
@@ -280,33 +164,8 @@ const Nearby = () => {
     });
   };
 
-  const handleRegionChange = region => {
-    setCurrentregion(region);
-    // console.log('currentRegion: ', currentRegion);
-  };
-
-  const PreLoadImages = async () => {
-    const urls = [];
-    for (const item of nearbyStylistsProfile) {
-      if (item.profile_pic) {
-        const uri = item.profile_pic;
-        await Image.prefetch(uri);
-        urls.push(uri);
-      } 
-      // else {
-      //   const uri = images.profile;
-      //   await Image.prefetch(uri);
-      //   urls.push(uri);
-      // }
-    }
-    setImageUrls(urls);
-  };
-
   const renderMarkers = () => {
-    // if (!imageUrls || imageUrls.length === 0) return console.log('object');
     return nearbyStylistsProfile.map((item, index) => {
-      console.log('render markers item=->', item);
-      console.log('imageUrls[index]=-=>', imageUrls[index]);
       return (
         <Marker
           key={item.id}
@@ -315,17 +174,14 @@ const Nearby = () => {
             longitude: parseFloat(item.lng),
           }}>
           <Image
-            // source={imageUrls[index] ? {uri: imageUrls[index]} : images.profile}
             source={
               nearByImageError
                 ? images.profile
                 : item.profile_pic == 'null' ||
                   item.profile_pic == null ||
                   item.profile_pic == 'undefined'
-                ? // &&
-                  // item.profile_pic
-                  images.profile
-                : {uri: item.profile_pic}
+                  ? images.profile
+                  : { uri: item.profile_pic }
             }
             style={{
               height: 30,
@@ -358,9 +214,7 @@ const Nearby = () => {
         await dispatch(
           getNearbyStylists({
             lat: location.latitude,
-            // lat: 24.8800505,
             long: location.longitude,
-            // long: 67.0796143,
             serviceId: serviceId,
             setNearbyStylistsProfile,
             setLoad,
@@ -369,31 +223,16 @@ const Nearby = () => {
         setTimeout(() => {
           setRenderScreen(true);
         }, 1000);
-        // await dispatch(
-        //   getNearbyStylists({
-        //     lat: location.latitude,
-        //     // lat: 24.8800505,
-        //     long: location.longitude,
-        //     // long: 67.0796143,
-        //     serviceId: serviceId,
-        //     setNearbyStylistsProfile,
-        //     setLoad,
-        //   }),
-        // );
-
-        // reigions(currentRegion);
-        // moveToLocation(location.latitude, location.longitude);
-        // console.log('location: ', location);
       })
       .catch(error => {
-        const {code, message} = error;
+        const { code, message } = error;
         console.warn(code, message);
       });
   };
 
   const emptyData = () => {
     return (
-      <View style={{width: hp(30), marginHorizontal: hp(10)}}>
+      <View style={{ width: hp(30), marginHorizontal: hp(10) }}>
         <View style={styles.emptyContainer}>
           <Text style={styles.emptyText}>No Stylist Found!</Text>
         </View>
@@ -408,7 +247,6 @@ const Nearby = () => {
         filter={true}
         filterActive={filterActive}
         setFilterActive={setFilterActive}
-        // text={serviceLabel ? 'Nearby ' + serviceLabel : 'Nearby stylists'}
       />
       {filterActive ? (
         <View style={styles.topComponent}>
@@ -418,20 +256,16 @@ const Nearby = () => {
           />
         </View>
       ) : null}
-
       {load && !renderScreen ? (
-        <>
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              flex: 1,
-            }}>
-            <Loader size={'large'} />
-          </View>
-        </>
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            flex: 1,
+          }}>
+          <Loader size={'large'} />
+        </View>
       ) : (
-        // <View style={{flex: 1}}>
         <View style={styles.screen}>
           <View style={styles.mapContainer}>
             {currentRegion != null ? (
@@ -458,9 +292,7 @@ const Nearby = () => {
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
                     nestedScrollEnabled
-                    // pagingEnabled={true}
-                    renderItem={({item, index}) => {
-                      // console.log('itemitem534=-=-=->', item);
+                    renderItem={({ item, index }) => {
                       return (
                         <StylistInfo
                           image={item.profile_pic}
@@ -498,29 +330,15 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     overflow: 'hidden',
-    // backgroundColor:'red'
   },
   mapContainer: {
     flex: 1,
   },
   mapStyle: {
     flex: 1,
-    // borderTopLeftRadius: 20,
-    // borderTopRightRadius: 20,
   },
   topComponent: {
-    // position: 'absolute',
-    // top: 0,
     left: 5,
-    // right: 0,
-    // zIndex: 1,
-    // alignSelf: 'center',
-    // flexDirection: 'row',
-    // justifyContent: 'space-between',
-    // marginHorizontal: 20,
-    // paddingTop: 10,
-    // backgroundColor: 'transparent',
-    // paddingBottom:50
   },
   bottomComponent: {
     position: 'absolute',
@@ -531,8 +349,6 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     width: '100%',
     backgroundColor: 'transparent',
-    // backgroundColor: 'red',
-    // paddingHorizontal:50
   },
   tabView: {
     flexDirection: 'row',
@@ -547,7 +363,6 @@ const styles = StyleSheet.create({
   },
   background: {
     backgroundColor: '#ffffff',
-    // backgroundColor: 'red',
     paddingHorizontal: 20,
     borderRadius: 50,
     paddingVertical: 15,
@@ -567,18 +382,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 30,
-    // marginTop:10
   },
   emptyContainer: {
     backgroundColor: '#D49621',
     width: hp(28),
     height: hp(5),
     borderRadius: 10,
-    // marginHorizontal:hp(3),
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    // marginLeft:hp(3)
   },
   emptyText: {
     color: colors.white,

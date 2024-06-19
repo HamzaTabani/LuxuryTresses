@@ -7,27 +7,24 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Container from '../../components/Container';
 import ProfileHeader from '../../components/ProfileHeader';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Swiper from 'react-native-swiper';
 import colors from '../../assets/colors';
 import UserDetailCard from '../../components/UserDetailCard';
 import StarRating from 'react-native-star-rating-widget';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import images from '../../assets/images';
-import {useDispatch, useSelector} from 'react-redux';
-import {ShowToast} from '../../utils';
-import {PostReview} from '../../redux/slices/StylistSlice';
-import {
-  widthPercentageToDP as wp,
-  // heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-import {useNavigation} from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { ShowToast } from '../../utils';
+import { PostReview } from '../../redux/slices/StylistSlice';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { useNavigation } from '@react-navigation/native';
 import OutlineButton from '../../components/OutlineButton';
 
-const OrderHistory = ({route}) => {
+const OrderHistory = ({ route }) => {
   const navigation = useNavigation();
   const [rating, setRating] = useState('');
   const productData = route?.params?.product;
@@ -36,25 +33,16 @@ const OrderHistory = ({route}) => {
   const completedOrdersData = route?.params?.completedOrders;
   const reorder = route?.params?.reorder;
   const reorderButton = route?.params?.reorderButton;
-  const {pic_baseUrl} = useSelector(state => state.ecommerceReducer);
-  const {pic_url} = useSelector(state => state.userData);
-  // const [rating, setRating] = useState('');
+  const { pic_baseUrl } = useSelector(state => state.ecommerceReducer);
   const [postComment, setPostComment] = useState('');
   const dispatch = useDispatch();
   const [productImages, setProductImages] = useState([]);
-
   const [imageError, setImageError] = useState(false);
 
   const handleImageError = () => {
     setImageError(true);
   };
-  console.log('reorderButton=-=>', reorderButton);
-  // console.log('reorder: ', reorder);
-  // console.log('productData data==>', productData);
 
-  // console.log('routess',navigation.getState().routeNames)
-  // console.log('orderData data==>', orderData);
-  // console.log('completedOrdersData data==>', completedOrdersData);
   useEffect(() => {
     setProductImages([productData.product_image]);
   }, [productData.product_image]);
@@ -72,19 +60,13 @@ const OrderHistory = ({route}) => {
       );
       if (res.payload.success) {
         navigation.navigate('home');
-        // return(
-        // console.log('rating data: ',rating,postComment)
         ShowToast(res.payload.message);
-        // await dispatch(stylistReviewById(id));
-        // )
       } else {
         return ShowToast(res.payload.message);
       }
     }
   };
 
-  // console.log('orderData data==>', productData);
-  // console.log('pic_baseUrl==>', pic_baseUrl);
   return (
     <Container>
       <ProfileHeader
@@ -96,19 +78,19 @@ const OrderHistory = ({route}) => {
         contentContainerStyle={styles.screen}
         showsVerticalScrollIndicator={false}>
         <Swiper
-          containerStyle={{height: hp('25%')}}
-          paginationStyle={{bottom: hp('2%')}}
-          // autoplay
+          containerStyle={{ height: hp('25%') }}
+          paginationStyle={{ bottom: hp('2%') }}
           activeDotColor={'#D49621'}
-          dotStyle={{borderWidth: 1, borderColor: colors.orange}}>
-          {productImages.map(item => (
+          dotStyle={{ borderWidth: 1, borderColor: colors.orange }}>
+          {productImages.map((item, i) => (
             <Image
+              key={i}
               source={
                 imageError
                   ? images.imageNotFound
                   : item == 'null' && item == null && item == 'undefined'
-                  ? images.imageNotFound
-                  : {uri: pic_baseUrl + '/' + item}
+                    ? images.imageNotFound
+                    : { uri: pic_baseUrl + '/' + item }
               }
               borderRadius={15}
               style={styles.image}
@@ -117,23 +99,15 @@ const OrderHistory = ({route}) => {
             />
           ))}
         </Swiper>
-        {/* vendor detail card */}
         <TouchableOpacity
-          // disabled={true}
-          onPress={() =>
-            navigation.navigate('ProfileDetail', {
-              profile_id: productData.user.id,
-            })
-          }
-          style={{paddingTop: hp('3%')}}>
+          onPress={() => navigation.navigate('ProfileDetail', { profile_id: productData.user.id })}
+          style={{ paddingTop: hp('3%') }}>
           <UserDetailCard
-            username={
-              productData?.user?.first_name + ' ' + productData?.user?.last_name
-            }
+            username={productData?.user?.first_name + ' ' + productData?.user?.last_name}
             email={
               productData?.user?.address != 'null' &&
-              productData?.user?.address != null &&
-              productData?.user?.address != 'undefined'
+                productData?.user?.address != null &&
+                productData?.user?.address != 'undefined'
                 ? productData?.user?.address
                 : 'address'
             }
@@ -155,25 +129,14 @@ const OrderHistory = ({route}) => {
         <View style={styles.line} />
         <Text style={styles.descriptionText}>Description</Text>
         <Text style={styles.textStyle}>
-          {productData.description != null
-            ? productData.description
-            : 'decription here'}
-          {/* Sed ut perspiciatis unde omnis iste natus error sit voluptatem{'\n'}
-          {'\n'} accusantium doloremque laudantium, totam rem aperiam, {'\n'}
-          {'\n'} eaque ipsa quae ab illo inventore veritatis et quasi architecto
-          beatae vitae dicta sunt explicabo. */}
+          {productData.description != null ? productData.description : 'decription here'}
         </Text>
         <View style={styles.cardStyle}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Text style={styles.price}>${completedOrdersData.price}</Text>
             <Text style={styles.quantityText}>
               Quantity:{' '}
-              <Text
-                style={{
-                  color: colors.white,
-                  fontSize: hp('2%'),
-                  fontWeight: 'bold',
-                }}>
+              <Text style={{ color: colors.white, fontSize: hp('2%'), fontWeight: 'bold' }}>
                 {completedOrdersData.quantity}
               </Text>
             </Text>
@@ -185,13 +148,12 @@ const OrderHistory = ({route}) => {
               justifyContent: 'space-between',
               paddingTop: hp('2.5%'),
             }}>
-            <Text style={[styles.text, {fontSize: hp('2%')}]}>Total</Text>
+            <Text style={[styles.text, { fontSize: hp('2%') }]}>Total</Text>
             <Text style={styles.price}>${completedOrdersData.grand_total}</Text>
           </View>
         </View>
         <View
           style={{
-            // height: hp('25%'),
             backgroundColor: 'transparent',
             borderRadius: 20,
             borderColor: colors.gray,
@@ -199,18 +161,14 @@ const OrderHistory = ({route}) => {
             marginTop: hp('5%'),
             padding: hp('1.5%'),
           }}>
-          <Text
-            style={{
-              color: colors.white,
-              fontSize: hp('2%'),
-            }}>
+          <Text style={{ color: colors.white, fontSize: hp('2%') }}>
             Add your review
           </Text>
           <StarRating
             rating={rating}
             starSize={30}
             color="#D59D33"
-            starStyle={{marginTop: hp('5%')}}
+            starStyle={{ marginTop: hp('5%') }}
             onChange={setRating}
           />
           <View
@@ -222,7 +180,6 @@ const OrderHistory = ({route}) => {
               justifyContent: 'space-between',
               alignItems: 'center',
               marginTop: hp('3%'),
-              // padding: hp('0.5%'),
               marginHorizontal: hp('1%'),
               marginBottom: 10,
             }}>
@@ -239,14 +196,13 @@ const OrderHistory = ({route}) => {
               multiline
             />
             <TouchableOpacity
-              style={{marginRight: hp(2)}}
+              style={{ marginRight: hp(2) }}
               onPress={() => onHandleSubmit()}>
               <Ionicons
                 name="send"
                 type="AntDesign"
                 color="#D49621"
                 size={22}
-                // style={{marginRight: hp(5)}}
               />
             </TouchableOpacity>
           </View>
@@ -254,46 +210,35 @@ const OrderHistory = ({route}) => {
         {reorderButton ? null : reorder ? (
           <OutlineButton
             title={'Add to cart'}
-            onPress={() =>
-              navigation.navigate('SingleProduct', {
-                productID: productData.id,
-                product: productData,
-                order: orderData,
-                completedOrders: completedOrdersData,
-                reorder: reorder,
-              })
-            }
-            textStyle={{color: '#fff'}}
+            onPress={() => navigation.navigate('SingleProduct', {
+              productID: productData.id,
+              product: productData,
+              order: orderData,
+              completedOrders: completedOrdersData,
+              reorder: reorder,
+            })}
+            textStyle={{ color: '#fff' }}
             buttonStyle={{
-              // width: hp(45),
-              // padding: hp('1.5%'),
               marginTop: hp(2),
               borderRadius: 10,
-              // width: hp(45),
               alignSelf: 'center',
             }}
           />
         ) : (
           <OutlineButton
-            onPress={() =>
-              navigation.navigate('SingleProduct', {
-                productID: productData.id,
-                product: productData,
-                order: orderData,
-                completedOrders: completedOrdersData,
-                reorder: reorder,
-              })
-            }
+            onPress={() => navigation.navigate('SingleProduct', {
+              productID: productData.id,
+              product: productData,
+              order: orderData,
+              completedOrders: completedOrdersData,
+              reorder: reorder,
+            })}
             title={'Select this Item to Reorder'}
-            textStyle={{color: colors.white}}
+            textStyle={{ color: colors.white }}
             buttonStyle={{
-              // padding: hp('1.5%'),
               marginTop: hp(2),
               backgroundColor: '#D49621',
               borderRadius: 10,
-              // height: hp(4),
-              // padding: 5,
-              // width: hp(45),
               alignSelf: 'center',
             }}
           />
@@ -309,8 +254,6 @@ const styles = StyleSheet.create({
   screen: {
     padding: hp('3%'),
     paddingTop: hp('2%'),
-    // height: hp('100%'),
-    // backgroundColor: 'red',
     paddingBottom: hp('12%'),
   },
   slideStyle: {

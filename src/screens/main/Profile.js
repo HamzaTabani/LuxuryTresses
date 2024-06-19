@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Text,
   StyleSheet,
@@ -10,19 +10,19 @@ import {
   TextInput,
   Alert,
 } from 'react-native';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import BackHeader from '../../components/BackHeader';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome5 from 'react-native-vector-icons/Ionicons';
-import {Picker} from '@react-native-picker/picker';
-import {useNavigation} from '@react-navigation/native';
+import { Picker } from '@react-native-picker/picker';
+import { useNavigation } from '@react-navigation/native';
 import ModalChangeProfilePic from '../../components/ModalChangeProfilePic';
 import colors from '../../assets/colors';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PrimaryButton from '../../components/PrimaryButton';
 import Logout from 'react-native-vector-icons/MaterialIcons';
-import {logoutUser} from '../../redux/slices/AuthSlice';
-import {ShowToast} from '../../utils';
+import { logoutUser } from '../../redux/slices/AuthSlice';
+import { ShowToast } from '../../utils';
 import FastImage from 'react-native-fast-image';
 import images from '../../assets/images';
 import {
@@ -31,7 +31,7 @@ import {
   SvgarrowUpLeftIcon,
 } from '../../components/SvgImages';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import auth, {firebase} from '@react-native-firebase/auth';
+import auth, { firebase } from '@react-native-firebase/auth';
 
 const Profile = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -40,10 +40,7 @@ const Profile = () => {
   const navigation = useNavigation();
   const [userId, setUserId] = useState(false);
 
-  const {user, pic_url} = useSelector(state => state.userData);
-  // console.log('waittt', user.profile_pic);
-
-  console.log('user details=-=-->', user);
+  const { user, pic_url } = useSelector(state => state.userData);
 
   const dispatch = useDispatch();
 
@@ -54,26 +51,10 @@ const Profile = () => {
 
   const onLogoutPress = () => {
     return Alert.alert('Logout', 'Are you sure you want to logout?', [
-      {text: 'Yes', onPress: onSignOut},
-      {text: 'No'},
+      { text: 'Yes', onPress: onSignOut },
+      { text: 'No' },
     ]);
   };
-
-  // console.log('userId=-vfvfrv=-->', userId);
-
-  // const userUid = auth().currentUser.uid;
-
-  // console.log('userUid=-=-=->', userUid);
-
-  // useEffect(() => {
-  //   if (auth().currentUser.uid != null) {
-  //     setUserId(true);
-  //     console.log('userId=-if=', userId);
-  //   } else {
-  //     setUserId(false);
-  //     console.log('userId=else-', userId);
-  //   }
-  // });
 
   return (
     <>
@@ -110,16 +91,16 @@ const Profile = () => {
                   padding: 5,
                   position: 'relative',
                 }}
-                // onPress={() => setModalVisible(true)}
+              // onPress={() => setModalVisible(true)}
               >
                 <FastImage
                   source={
                     user?.profile_pic
                       ? {
-                          // uri: pic_url + user?.profile_pic,
-                          uri: user?.profile_pic,
-                          priority: FastImage.priority.normal,
-                        }
+                        // uri: pic_url + user?.profile_pic,
+                        uri: user?.profile_pic,
+                        priority: FastImage.priority.normal,
+                      }
                       : images.profile
                   }
                   resizeMode={FastImage.resizeMode.cover}
@@ -129,20 +110,7 @@ const Profile = () => {
                     borderRadius: 30,
                   }}
                 />
-                {/* <AntDesign
-                  name="pluscircleo"
-                  type="AntDesign"
-                  color="#fff"
-                  size={28}
-                  style={{
-                    position: 'absolute',
-                    bottom: 20,
-                    right: 17,
-                  }}
-                /> */}
               </TouchableOpacity>
-
-              {/* name and status... */}
               <View
                 style={{
                   marginBottom: 20,
@@ -150,32 +118,16 @@ const Profile = () => {
                 }}>
                 <TouchableOpacity
                   style={{
-                    // marginBottom: hp('0.2%'),
                     flexDirection: 'row',
                     alignItems: 'center',
                     gap: 5,
-                    // backgroundColor:'red'
                   }}
                   onPress={() => onLogoutPress()}>
                   <Logout name={'logout'} color={colors.orange} size={20} />
-                  <Text style={[styles.statusText, {color: colors.orange}]}>
+                  <Text style={[styles.statusText, { color: colors.orange }]}>
                     LOGOUT
                   </Text>
                 </TouchableOpacity>
-                {/* <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: 5,
-                  }}>
-                  <AntDesign
-                    name="checkcircle"
-                    type="AntDesign"
-                    color="#19CC89"
-                    size={17}
-                  />
-                  <Text style={styles.statusText}>Active</Text>
-                </View> */}
                 <Text style={styles.nameText}>
                   {user?.first_name + ' ' + user?.last_name}
                 </Text>
@@ -200,7 +152,7 @@ const Profile = () => {
                   onPress={() =>
                     navigation.navigate('ProfileStack', {
                       screen: 'InitialProfile',
-                      params: {user},
+                      params: { user },
                     })
                   }>
                   <ImageBackground
@@ -220,7 +172,7 @@ const Profile = () => {
                         paddingHorizontal: 20,
                       }}>
                       <View>
-                        <Text style={{fontWeight: '500', color: '#000'}}>
+                        <Text style={{ fontWeight: '500', color: '#000' }}>
                           Complete Profile
                         </Text>
                       </View>
@@ -275,7 +227,7 @@ const Profile = () => {
                       type="Ionicons"
                       color="#6D6C7B"
                       size={22}
-                      style={{marginLeft: 10}}
+                      style={{ marginLeft: 10 }}
                     />
                     <TextInput
                       style={styles.inputs}
@@ -293,7 +245,7 @@ const Profile = () => {
                       type="Ionicons"
                       color="#6D6C7B"
                       size={22}
-                      style={{marginLeft: 10}}
+                      style={{ marginLeft: 10 }}
                     />
                     <TextInput
                       style={styles.inputs}
@@ -309,7 +261,7 @@ const Profile = () => {
                 // form 2
                 <View style={styles.first_form_container}>
                   <View style={styles.inputs_container2}>
-                    <View style={{flexDirection: 'row', gap: 10}}>
+                    <View style={{ flexDirection: 'row', gap: 10 }}>
                       <View>
                         <Text style={styles.label}>City</Text>
                         <View
@@ -343,7 +295,7 @@ const Profile = () => {
                         </View>
                       </View>
                     </View>
-                    <View style={{flexDirection: 'row'}}></View>
+                    <View style={{ flexDirection: 'row' }}></View>
                   </View>
                   <Text style={styles.label}>Your address</Text>
                   <View style={styles.inputs_container}>
@@ -352,7 +304,7 @@ const Profile = () => {
                       type="Ionicons"
                       color="#6D6C7B"
                       size={22}
-                      style={{marginLeft: 10}}
+                      style={{ marginLeft: 10 }}
                     />
                     <TextInput
                       style={styles.inputs}
@@ -376,11 +328,7 @@ const Profile = () => {
                 <Text style={styles.label}>Set up your location</Text>
                 <TouchableOpacity
                   activeOpacity={0.9}
-                  onPress={() =>
-                    navigation.navigate('SecondaryStack', {
-                      screen: 'SelectLocation',
-                    })
-                  }
+                  onPress={() => navigation.navigate('SecondaryStack', { screen: 'SelectLocation' })}
                   style={{
                     backgroundColor: '#D49621',
                     padding: 5,
@@ -390,13 +338,6 @@ const Profile = () => {
                     justifyContent: 'space-between',
                     gap: 8,
                   }}>
-                  {/* <Image
-                    source={require('../../assets/images/profilemap.png')}
-                    style={{
-                      width: '50%',
-                      borderRadius: 15,
-                    }}
-                  /> */}
                   <SvgProfileLocationMapIcon />
                   <View
                     style={{
@@ -405,25 +346,7 @@ const Profile = () => {
                       alignItems: 'center',
                       width: '50%',
                     }}>
-                    {/* <TouchableOpacity
-                      activeOpacity={0.9}
-                      onPress={() =>
-                        navigation.navigate('SecondaryStack', {
-                          screen: 'SelectLocation',
-                        })
-                      }>
-                      <Image
-                        source={require('../../assets/images/mapicon.png')}
-                        resizeMode="contain"
-                      />
-                    </TouchableOpacity> */}
-                    <View>
-                      {/* <Image
-                        source={require('../../assets/images/mapicon.png')}
-                        resizeMode="contain"
-                      /> */}
-                      <SvgProfileLocationCurrentIcon />
-                    </View>
+                    <SvgProfileLocationCurrentIcon />
                     <Text
                       style={{
                         color: '#fff',
@@ -436,15 +359,11 @@ const Profile = () => {
                 </TouchableOpacity>
               </View>
               {userId ? null : (
-                <View style={{paddingTop: hp('5%')}}>
+                <View style={{ paddingTop: hp('5%') }}>
                   <PrimaryButton
                     title={'Change password'}
-                    style={{width: '110%'}}
-                    onPress={() =>
-                      navigation.navigate('SecondaryStack', {
-                        screen: 'ChangePassword',
-                      })
-                    }
+                    style={{ width: '110%' }}
+                    onPress={() => navigation.navigate('SecondaryStack', { screen: 'ChangePassword' })}
                   />
                 </View>
               )}
@@ -452,19 +371,6 @@ const Profile = () => {
           </View>
         </ScrollView>
       </ImageBackground>
-      {/* profile pic change modal */}
-      {/* <ModalChangeProfilePic
-        modalVisible={modalVisible}
-        source={
-          user?.profile_pic
-            ? {
-                uri: pic_url + user?.profile_pic,
-                priority: FastImage.priority.normal,
-              }
-            : images.profile
-        }
-        setModalVisible={setModalVisible}
-      /> */}
     </>
   );
 };

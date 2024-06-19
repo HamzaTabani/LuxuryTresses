@@ -31,10 +31,7 @@ const Stack = createNativeStackNavigator();
 
 const HomeStacks = () => {
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen name="home" component={Home} />
       <Tab.Screen name="profile" component={Profile} />
       <Tab.Screen name="trendings" component={Trendings} />
@@ -54,37 +51,25 @@ const HomeStacks = () => {
 
 const CartStack = () => {
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false
-      }}
-    >
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen name="Cart" component={Cart} />
       <Tab.Screen name="OrderHistory" component={OrderHistory} />
     </Stack.Navigator>
-  )
-}
+  );
+};
 
 const ProfileStack = () => {
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen name="Profile" component={Profile} />
       <Tab.Screen name="InitialProfile" component={InitialProfile} />
     </Stack.Navigator>
   )
 }
 
-
 const SecondaryStack = () => {
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen name="Chat" component={Chat} />
       <Tab.Screen name="Checkout" component={Checkout} />
       <Tab.Screen name="PaymentMethod" component={PaymentMethod} />
@@ -92,31 +77,25 @@ const SecondaryStack = () => {
       <Stack.Screen name="ChangePassword" component={ChangePassword} />
       <Stack.Screen name='AddNewCard' component={AddNewCard} />
     </Stack.Navigator>
-  )
-}
-
+  );
+};
 
 const TabNavigation = () => {
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false
-      }}
-    >
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name='BottomStack' component={BottomStack} />
       <Stack.Screen name='SecondaryStack' component={SecondaryStack} />
     </Stack.Navigator>
-  )
-}
+  );
+};
 
 const BottomStack = () => {
   return (
     <Tab.Navigator
-
       activeColor="#f0edf6"
       inactiveColor="#3e2465"
       screenOptions={{
-        tabBarHideOnKeyboard:true,
+        tabBarHideOnKeyboard: true,
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: {

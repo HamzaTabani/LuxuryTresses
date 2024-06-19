@@ -23,19 +23,13 @@ const Login = () => {
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const {token, signin_loading} = useSelector(state => state.userData);
-  //   console.log('loader', token);
+  const {signin_loading} = useSelector(state => state.userData);
 
   const onLoginPress = async () => {
     if (!email) {
       return ShowToast('Please type your email');
     } else {
-      dispatch(
-        login({
-          email: email,
-          password: password,
-        }),
-      );
+      dispatch(login({email: email, password: password}));
     }
   };
 
@@ -46,42 +40,48 @@ const Login = () => {
       style={{flex: 1}}>
       <BackHeader />
       <View style={styles.labelWrapper}>
-        <Text style={styles.heading}>Login</Text>
+        <Text style={styles.heading}>Welcome Back!</Text>
+        {/* <Text style={styles.heading}>Login</Text> */}
+        <Text style={styles.signup_title}>Lets make your hair attractive,</Text>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.screen}>
-          <View style={styles.inputWrapper}>
-            <InputText
-              label={'Enter your email'}
-              value={email}
-              onChangeText={text => setEmail(text)}
-              placeholder={'Email'}
-              keyboardType={'email-address'}
-              icon={'mail-outline'}
+          {/* <View style={styles.inputWrapper}> */}
+          <InputText
+            label={'Enter your email'}
+            value={email}
+            onChangeText={text => setEmail(text)}
+            placeholder={'Email'}
+            keyboardType={'email-address'}
+            icon={'mail-outline'}
+          />
+          <InputText
+            label={'Enter your password'}
+            value={password}
+            onChangeText={text => setPassword(text)}
+            placeholder={'Password'}
+            secureTextEntry={true}
+            icon={'lock-closed-outline'}
+          />
+          <View style={{paddingTop: hp('3%'), alignItems: 'center'}}>
+            <PrimaryButton
+              title="Login"
+              indicator={signin_loading}
+              onPress={() => onLoginPress()}
             />
-            <InputText
-              label={'Enter your password'}
-              value={password}
-              onChangeText={text => setPassword(text)}
-              placeholder={'Password'}
-              secureTextEntry={true}
-              icon={'lock-closed-outline'}
-            />
-            <View style={{paddingTop: hp('3%'), alignItems: 'center'}}>
-              <PrimaryButton
-                title="Login"
-                indicator={signin_loading}
-                onPress={() => onLoginPress()}
-              />
-            </View>
             <TouchableOpacity
               style={styles.forgotWrapper}
               activeOpacity={0.9}
               onPress={() => navigation.navigate('ForgetPassword')}>
               <Text style={styles.forgotText}>Forgot Password ?</Text>
             </TouchableOpacity>
+            <PrimaryButton
+              title="ARE YOU NEW?"
+              onPress={() => navigation.navigate('signup')}
+            />
           </View>
         </View>
+        {/* </View> */}
       </ScrollView>
     </ImageBackground>
   );
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   heading: {
-    fontSize: hp('5%'),
+    fontSize: hp(4.5),
     color: '#fff',
     fontFamily: 'Lora-Medium',
   },
@@ -111,5 +111,9 @@ const styles = StyleSheet.create({
     color: colors.orange,
     fontFamily: 'Lora-Medium',
     fontSize: hp('1.8%'),
+  },
+  signup_title: {
+    fontSize: hp('2%'),
+    color: '#bbb9bd',
   },
 });

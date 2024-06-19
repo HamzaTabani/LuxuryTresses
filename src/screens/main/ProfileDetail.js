@@ -8,7 +8,7 @@ import {
   FlatList,
   Alert,
 } from 'react-native';
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import ProfileHeader from '../../components/ProfileHeader';
 import images from '../../assets/images';
 import {
@@ -18,15 +18,15 @@ import {
 import colors from '../../assets/colors';
 import Container from '../../components/Container';
 import ReviewCard from '../../components/ReviewCard';
-import {products, stylistImages} from '../../dummyData';
+import { products, stylistImages } from '../../dummyData';
 import TimingCard from '../../components/TimingCard';
 import OutlineButton from '../../components/OutlineButton';
 import MessageOption from '../../components/MessageOption';
-import {useState} from 'react';
+import { useState } from 'react';
 import ProductCard from '../../components/ProductCard';
-import {useNavigation} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
-import {stylistProfileById} from '../../redux/slices/StylistSlice';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { stylistProfileById } from '../../redux/slices/StylistSlice';
 import Loader from '../../components/Loader';
 import {
   SvgGoldBagIcon,
@@ -34,50 +34,30 @@ import {
   SvgGoldSeatIcon,
 } from '../../components/SvgImages';
 
-const ProfileDetail = ({route}) => {
+const ProfileDetail = ({ route }) => {
   const [tabActive, setTabActive] = useState('');
   const [tabBothActive, setTabBothActive] = useState(false);
   const [serviceIcon, setServiceIcon] = useState(false);
   const [productIcon, setProductIcon] = useState(false);
   const navigation = useNavigation();
-  console.log('tabActive=-=>', tabActive);
-  // console.log('seviceIcon->', serviceIcon, 'productIcon->', productIcon);
-
   const id = route?.params?.profile_id;
-  // const moreStylist = route?.params?.stylists;
-  console.log('profile_id', id);
-  // console.log('moreStylist', moreStylist);
   const [profiledetail, setProfiledetail] = useState(null);
   const dispatch = useDispatch();
-
-  const {profileDetails, profileDetails_loading, profileDetails_error} =
-    useSelector(state => state.stylistReducer);
-
-  const {pic_url} = useSelector(state => state.userData);
-  console.log(
-    'profile detail from screen =========>',
-    profiledetail?.profile_pic,
-  );
-  // console.log('profile loader =========>', profileDetails_loading);
-
-  const [stylistProfileImageError, setStylistProfileImageError] =
-    useState(false);
+  const { profileDetails, profileDetails_loading, profileDetails_error } = useSelector(state => state.stylistReducer);
+  const { pic_url } = useSelector(state => state.userData);
+  const [stylistProfileImageError, setStylistProfileImageError] = useState(false);
 
   const handleStylistProfileImageError = () => {
     setStylistProfileImageError(true);
   };
 
   useEffect(() => {
-    // if (!profileDetails) {
     fetchProfileDetailss();
-    // }
   }, []);
 
   const fetchProfileDetailss = async () => {
-    // if (profileDetails?.id !== id) {
     const res = await dispatch(stylistProfileById(id));
     setProfiledetail(res.payload.data);
-    // }
   };
 
   useEffect(() => {
@@ -101,11 +81,9 @@ const ProfileDetail = ({route}) => {
         profiledetail?.services.length >= 1 &&
         !profileDetails_loading
       ) {
-        // console.log('object');
         setTabBothActive(true);
         setTabActive('service');
         setProductIcon(true);
-        // setTabActive('service');
         setServiceIcon(true);
       }
     }
@@ -116,19 +94,11 @@ const ProfileDetail = ({route}) => {
       {profiledetail == null ? (
         <>
           <View
-            style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+            style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
             <Loader size={'large'} />
           </View>
         </>
       ) : (
-        //  : profileDetails_error != '' ? (
-        //   <>
-        //     <View
-        //       style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
-        //       <Text style={{color:'white'}}>No record Found</Text>
-        //     </View>
-        //   </>
-        // )
         <>
           <ProfileHeader
             username={true}
@@ -146,12 +116,8 @@ const ProfileDetail = ({route}) => {
                     : profiledetail?.profile_pic == 'null' ||
                       profiledetail?.profile_pic == null ||
                       profiledetail?.profile_pic == 'undefined'
-                    ? images.profile
-                    : // : {uri: pic_url + profiledetail?.profile_pic}
-                      {uri: profiledetail?.profile_pic}
-                  // profiledetail?.profile_pic == null
-                  //   ? images.stylist1
-                  //   : {uri: pic_url + profiledetail?.profile_pic}
+                      ? images.profile
+                      : { uri: profiledetail?.profile_pic }
                 }
                 style={styles.imageStyle}
                 resizeMode="cover"
@@ -166,11 +132,8 @@ const ProfileDetail = ({route}) => {
                   {profiledetail?.email === 'undefined'
                     ? 'test123@gmail.com'
                     : profiledetail?.email}
-                  {/* <Text style={{color: colors.white, fontWeight: 'bold'}}>
-                (2km)
-              </Text> */}
                 </Text>
-                <View style={{flexDirection: 'row', gap: 10}}>
+                <View style={{ flexDirection: 'row', gap: 10 }}>
                   {serviceIcon ? (
                     <View style={styles.iconView}>
                       <SvgGoldSeatIcon />
@@ -184,7 +147,7 @@ const ProfileDetail = ({route}) => {
                 </View>
               </View>
               <TouchableOpacity
-                style={{marginTop: hp('7%')}}
+                style={{ marginTop: hp('7%') }}
                 activeOpacity={0.9}
                 onPress={() => navigation.navigate('Nearby')}>
                 <Image
@@ -195,21 +158,20 @@ const ProfileDetail = ({route}) => {
                 <Text style={styles.exploreText}>Explore</Text>
               </TouchableOpacity>
             </View>
-            <View style={{paddingTop: hp('4%')}}>
+            <View style={{ paddingTop: hp('4%') }}>
               <ReviewCard
                 onPress={() =>
                   navigation.navigate('Reviews', {
                     name: profiledetail?.first_name + profiledetail?.last_name,
                     email:
                       profiledetail?.address != 'null' &&
-                      profiledetail?.address != null &&
-                      profiledetail?.address != 'undefined'
+                        profiledetail?.address != null &&
+                        profiledetail?.address != 'undefined'
                         ? profiledetail?.address
                         : 'address',
                     img:
                       profiledetail?.profile_pic != null
-                        ? // ? {uri: pic_url + profiledetail?.profile_pic}
-                          profiledetail?.profile_pic
+                        ? profiledetail?.profile_pic
                         : images.cart1,
                     id: profiledetail?.id,
                     ratings: profiledetail?.average_rating,
@@ -228,156 +190,70 @@ const ProfileDetail = ({route}) => {
                 {profiledetail?.about != null ? profiledetail?.about : 'about'}
               </Text>
             </View>
-
             {profiledetail?.services.length < 1 &&
-            profiledetail?.products.length >= 1 ? (
-              <View style={[styles.btn_wrapperA, {marginTop: hp('4%')}]}>
+              profiledetail?.products.length >= 1 ? (
+              <View style={[styles.btn_wrapperA, { marginTop: hp('4%') }]}>
                 <View style={styles.btns_activeA}>
                   <Text style={styles.btns_active_textA}>Products</Text>
                 </View>
               </View>
-            ) : profiledetail?.products.length < 1 &&
-              profiledetail?.services.length >= 1 ? (
-              <View style={[styles.btn_wrapperA, {marginTop: hp('4%')}]}>
+            ) : profiledetail?.products.length < 1 && profiledetail?.services.length >= 1 ? (
+              <View style={[styles.btn_wrapperA, { marginTop: hp('4%') }]}>
                 <View style={styles.btns_activeA}>
                   <Text style={styles.btns_active_textA}>Services</Text>
                 </View>
               </View>
             ) : tabBothActive ? (
-              <View style={{paddingTop: hp('4%')}}>
-                <View style={styles.btn_wrapper}>
-                  <TouchableOpacity
+              <View style={styles.btn_wrapper}>
+                <TouchableOpacity
+                  style={tabActive === 'service' ? styles.btns_active : styles.btns}
+                  onPress={() => setTabActive('service')}>
+                  <Text style={tabActive == 'service' ? styles.btns_active_text : styles.btns_text}>
+                    Services
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={tabActive !== 'service' ? styles.btns_active : styles.btns}
+                  onPress={() => setTabActive('product')}>
+                  <Text
                     style={
-                      tabActive === 'service' ? styles.btns_active : styles.btns
-                    }
-                    onPress={() => setTabActive('service')}>
-                    <Text
-                      style={
-                        tabActive == 'service'
-                          ? styles.btns_active_text
-                          : styles.btns_text
-                      }>
-                      Services
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={
-                      tabActive !== 'service' ? styles.btns_active : styles.btns
-                    }
-                    onPress={() => setTabActive('product')}>
-                    <Text
-                      style={
-                        tabActive !== 'service'
-                          ? styles.btns_active_text
-                          : styles.btns_text
-                      }>
-                      Products
-                    </Text>
-                  </TouchableOpacity>
-                </View>
+                      tabActive !== 'service'
+                        ? styles.btns_active_text
+                        : styles.btns_text
+                    }>
+                    Products
+                  </Text>
+                </TouchableOpacity>
               </View>
             ) : null}
-
-            {/* {tabActive === 'product' ? (
-              <View style={[styles.btn_wrapperA, {marginTop: hp('4%')}]}>
-                <View style={styles.btns_activeA}>
-                  <Text style={styles.btns_active_textA}>Products</Text>
-                </View>
-              </View>
-            ) : tabActive === 'service' ? (
-              <View style={[styles.btn_wrapperA, {marginTop: hp('4%')}]}>
-                <View style={styles.btns_activeA}>
-                  <Text style={styles.btns_active_textA}>Services</Text>
-                </View>
-              </View>
-            ) : profileDetails.services.length < 1 &&
-              profileDetails.products.length < 1 ? null : (
-              <View style={{paddingTop: hp('4%')}}>
-                <View style={styles.btn_wrapper}>
-                  <TouchableOpacity
-                    style={
-                      tabActive === 'service' ? styles.btns_active : styles.btns
-                    }
-                    onPress={() => setTabActive('service')}>
-                    <Text
-                      style={
-                        tabActive == 'service'
-                          ? styles.btns_active_text
-                          : styles.btns_text
-                      }>
-                      Services
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={
-                      tabActive !== 'service' ? styles.btns_active : styles.btns
-                    }
-                    onPress={() => setTabActive('product')}>
-                    <Text
-                      style={
-                        tabActive !== 'service'
-                          ? styles.btns_active_text
-                          : styles.btns_text
-                      }>
-                      Products
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            )} */}
-
             {tabActive === 'service' ? (
-              <View style={{paddingTop: hp('4%')}}>
-                {/* <View style={styles.imageWrapper}>
-                  {moreStylist?.slice(20, 24).map((item, i) => {
-                    // console.log(item.profile_pic)
-                    return (
-                      <View key={i}>
-                        <Image
-                          key={item.id}
-                          source={{uri: pic_url + item.stylist_image}}
-                          borderRadius={15}
-                          blurRadius={i == 3 ? 25 : 0}
-                          style={styles.image}
-                        />
-                        <View style={styles.absoluteText}>
-                          <Text style={styles.moreText}>
-                            {i == 3 && 'More'}
-                          </Text>
-                        </View>
-                      </View>
-                    );
-                  })}
-                </View> */}
-                <View style={{paddingTop: hp('4%'), marginTop: hp('4%')}}>
-                  <TimingCard />
-                  <View style={{paddingTop: hp('5%'), flexDirection: 'row'}}>
-                    <OutlineButton
-                      title={'BOOK NOW'}
-                      buttonStyle={{width: '80%'}}
-                      textStyle={{color: colors.white}}
-                      onPress={() =>
-                        navigation.navigate('Booking', {
-                          bookingData: profiledetail,
-                        })
-                      }
-                    />
-                    <View style={{marginLeft: hp('2%')}}>
-                      <MessageOption />
-                    </View>
+              <View style={{ paddingTop: hp('4%'), marginTop: hp('4%') }}>
+                <TimingCard />
+                <View style={{ paddingTop: hp('5%'), flexDirection: 'row' }}>
+                  <OutlineButton
+                    title={'BOOK NOW'}
+                    buttonStyle={{ width: '80%' }}
+                    textStyle={{ color: colors.white }}
+                    onPress={() =>
+                      navigation.navigate('Booking', {
+                        bookingData: profiledetail,
+                      })
+                    }
+                  />
+                  <View style={{ marginLeft: hp('2%') }}>
+                    <MessageOption />
                   </View>
                 </View>
               </View>
             ) : tabActive === 'product' ? (
-              <View style={{paddingTop: hp('4%')}}>
+              <View style={{ paddingTop: hp('4%') }}>
                 <FlatList
                   data={profiledetail?.products}
                   keyExtractor={(item, ind) => ind}
-                  renderItem={({item}) => {
-                    console.log('profileDetails.products items==>', item);
+                  renderItem={({ item }) => {
                     return (
                       <TouchableOpacity
-                        style={{marginBottom: hp('3.5%')}}
+                        style={{ marginBottom: hp('3.5%') }}
                         activeOpacity={0.9}
                         onPress={() =>
                           navigation.navigate('SingleProduct', {
@@ -398,14 +274,13 @@ const ProfileDetail = ({route}) => {
                       </TouchableOpacity>
                     );
                   }}
-                  columnWrapperStyle={{justifyContent: 'space-evenly'}}
+                  columnWrapperStyle={{ justifyContent: 'space-evenly' }}
                   numColumns={2}
                 />
               </View>
             ) : null}
           </ScrollView>
         </>
-        // null
       )}
     </Container>
   );
@@ -475,26 +350,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 25,
   },
-  image: {
-    height: 75,
-    width: 75,
-  },
-  imageWrapper: {
-    paddingTop: hp('5%'),
-    // marginRight: hp()
-    height: '19%',
-    width: '19%',
-    flexDirection: 'row',
-    gap: 12,
-  },
-  moreText: {
-    color: colors.white,
-    position: 'absolute',
-    right: hp('3.7%'),
-    fontWeight: 'bold',
-    top: hp('3.5%'),
-    fontSize: hp('2%'),
-  },
   btn_wrapper: {
     borderWidth: 1.2,
     borderColor: colors.secondary,
@@ -503,17 +358,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     gap: 5,
-    // backgroundColor:'red'
   },
   btn_wrapperA: {
     borderWidth: 1.2,
     borderColor: colors.secondary,
     borderRadius: 50,
     padding: 4,
-    // flexDirection: 'row',
-    // justifyContent: 'space-between',
-    // gap: 5,
-    // backgroundColor:'red'
   },
   btns_active: {
     backgroundColor: colors.secondary,
@@ -527,7 +377,6 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 50,
     width: '100%',
-    // flex:1,
     alignItems: 'center',
     alignSelf: 'center',
   },
@@ -546,10 +395,5 @@ const styles = StyleSheet.create({
   },
   btns_text: {
     color: '#fff',
-  },
-  absoluteText: {
-    // position: 'absolute',
-    // right: 32,
-    // bottom: 29
   },
 });

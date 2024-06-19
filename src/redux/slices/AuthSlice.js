@@ -1,6 +1,6 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {ErrorToast, ShowToast} from '../../utils';
-import {BASE_URL} from '../constant.js';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { ErrorToast, ShowToast } from '../../utils';
+import { BASE_URL } from '../constant.js';
 import axios from 'axios';
 
 var formData = require('form-data');
@@ -40,8 +40,6 @@ export const register = createAsyncThunk(
       });
     }
 
-    // console.log('dataaa', data);
-
     return await fetch(`${BASE_URL}/signup`, {
       method: 'POST',
       headers: {
@@ -52,9 +50,10 @@ export const register = createAsyncThunk(
     })
       .then(async res => {
         let user = await res.json();
-        // console.log('signuppppppp response =============>', user);
         if (user.success) {
           ShowToast('Account created successfully');
+        } else {
+          ShowToast(user?.message);
         }
         return user;
       })
@@ -98,12 +97,10 @@ export const login = createAsyncThunk(
     })
       .then(async res => {
         let data = await res.json();
-        // console.log('login response ============>', data);
         if (data.success) {
           ShowToast('Login successfully');
         } else {
           ShowToast(data.message);
-          // console.log(data.message);
         }
         return data;
       })
@@ -116,8 +113,8 @@ export const login = createAsyncThunk(
 export const editProfile = createAsyncThunk(
   'updateProfile',
   async (
-    {first_name, last_name, phone_number, address, state, city, profile_pic},
-    {getState},
+    { first_name, last_name, phone_number, address, state, city, profile_pic },
+    { getState },
   ) => {
     const stateData = getState().userData;
     const token = stateData.token;
@@ -171,7 +168,7 @@ export const editProfile = createAsyncThunk(
 
 export const changePassword = createAsyncThunk(
   'passwordChange',
-  async ({current_password, new_password}, {getState}) => {
+  async ({ current_password, new_password }, { getState }) => {
     const stateData = getState().userData;
     const token = stateData.token;
     // console.log('tokennn', token)
@@ -229,7 +226,7 @@ export const generateOTP = createAsyncThunk('verifyEmail', async email => {
     });
 });
 
-export const verifyCode = createAsyncThunk('verifyCode', async ({code, id}) => {
+export const verifyCode = createAsyncThunk('verifyCode', async ({ code, id }) => {
   var data = new formData();
 
   data.append('code', code);
@@ -261,7 +258,7 @@ export const logoutUser = createAsyncThunk('logout/authUser', async () => {
 
 export const updateForgetPassword = createAsyncThunk(
   'updatePasswprd',
-  async ({id, password}) => {
+  async ({ id, password }) => {
     var data = new formData();
 
     data.append('id', id);
@@ -286,7 +283,7 @@ export const updateForgetPassword = createAsyncThunk(
 
 export const Payment = createAsyncThunk(
   'pay',
-  async ({product, total, note, stripe_token}, {getState}) => {
+  async ({ product, total, note, stripe_token }, { getState }) => {
     const stateData = getState().userData;
     const token = stateData.token;
 
@@ -356,7 +353,6 @@ export const authState = createSlice({
     });
     builder.addCase(login.fulfilled, (state, action) => {
       state.signin_loading = false;
-      // console.log('why yar', action.payload);
       state.user = action.payload.user;
       (state.token = action.payload.token),
         (state.pic_url = action.payload.profile_url);
@@ -366,7 +362,6 @@ export const authState = createSlice({
     });
     builder.addCase(editProfile.fulfilled, (state, action) => {
       (state.edit_loading = false), (state.user = action.payload.data);
-      console.log('edit profile action.payload.data--', action.payload.data);
     });
     builder.addCase(changePassword.pending, state => {
       state.change_loading = true;
@@ -412,7 +407,6 @@ export const authState = createSlice({
     });
     builder.addCase(postLatLng.fulfilled, (state, action) => {
       (state.latLng_loading = false), (state.latLng = action.payload);
-      console.log('action.payload', action.payload);
     });
   },
 });

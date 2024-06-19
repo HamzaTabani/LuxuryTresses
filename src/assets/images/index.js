@@ -43,4 +43,6 @@ export default {
   profile: require('../images/userProfile.jpeg'),
   initialProfileCam: require('../images/initialProfileCam.png'),
   imageNotFound: require('../images/imageNotFound.png'),
+  google: require('../images/googleLogo.png'),
+  facebook: require('../images/facebookLogo.png')
 };

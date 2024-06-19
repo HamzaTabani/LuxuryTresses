@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Text,
   StyleSheet,
@@ -10,33 +10,27 @@ import {
 import Container from '../../components/Container';
 import ProfileHeader from '../../components/ProfileHeader';
 import Swiper from 'react-native-swiper';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import colors from '../../assets/colors';
 import OutlineButton from '../../components/OutlineButton';
 import MessageOption from '../../components/MessageOption';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import UserDetailCard from '../../components/UserDetailCard';
-import {historyImages} from '../../dummyData';
-import {useDispatch, useSelector} from 'react-redux';
+import { historyImages } from '../../dummyData';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   addProductinCart,
   getProductDetails,
 } from '../../redux/slices/ECommerceSlice';
 import Loader from '../../components/Loader';
 import images from '../../assets/images';
-import {ShowToast} from '../../utils';
-import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
+import { ShowToast } from '../../utils';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
-const SingleProduct = ({route}) => {
+const SingleProduct = ({ route }) => {
   const navigation = useNavigation();
   const [quantity, setQuantity] = useState(1);
   const [load, setLoad] = useState(true);
-
-  console.log(
-    'routess',
-    navigation.getState().routeNames[13] === 'OrderHistory',
-  );
-
   const dispatch = useDispatch();
 
   const {
@@ -47,34 +41,14 @@ const SingleProduct = ({route}) => {
     cart_error,
   } = useSelector(state => state.ecommerceReducer);
 
-  const {pic_url} = useSelector(state => state.userData);
-  const {pic_baseUrl} = useSelector(state => state.ecommerceReducer);
+  const { pic_url } = useSelector(state => state.userData);
+  const { pic_baseUrl } = useSelector(state => state.ecommerceReducer);
   const product_id = route?.params?.productID;
-  const {product, order, completedOrders, reorder} = route?.params;
+  const { product, order, completedOrders, reorder } = route?.params;
 
-  // console.log('product_id', product_id);
-  // console.log(
-  //   'productDetails[product_id]?.user?.profile_pic--',
-  //   productDetails[product_id]?.user?.profile_pic,
-  // );
-  // console.log('productDetails[product_id]-=-=-=-', productDetails[product_id]);
-  // console.log('detail_loading=-=>', load);
-  // console.log('pic_url==>', images.stylist1);
-  // console.log('product_id==>', product_id);
-  // console.log('product detailssss from screens =========>', productDetails);
-  // console.log(
-  //   'pic_baseUrl===>',
-  //   pic_baseUrl + '/' + productDetails[product_id]?.product_image,
-  // );
-  // console.log(
-  //   'productDetails[product_id]?.average_rating---',
-  //   productDetails[product_id].average_rating,
-  // );
   useEffect(() => {
-    // if (!productDetails[product_id]) {
-    dispatch(getProductDetails({product_id, setLoad}));
+    dispatch(getProductDetails({ product_id, setLoad }));
     setLoad(false);
-    // }
   }, [product_id]);
 
   const incrementQuantity = () => {
@@ -101,23 +75,11 @@ const SingleProduct = ({route}) => {
     const index = cart_product?.findIndex(
       item => item.productDetail.product_id == product_id,
     );
-    //  return console.log(
-    //     'indexxx',
-    //     cart_product[index].productDetail.product_id == productDetails.id,
-    //   );
-
     if (
       cart_product[index]?.productDetail.product_id ==
       productDetails[product_id].id
     ) {
-      console.log(
-        'auto quantityy',
-        cart_product[index].quantity,
-        'selected quantity',
-        quantity,
-      );
       const updatedCart = cart_product.map((item, i) => {
-        //  return console.log('condition check', item.productDetail.product_id == productDetails.id)
         if (i == index) {
           return {
             ...item,
@@ -129,19 +91,17 @@ const SingleProduct = ({route}) => {
       });
       //  console.log('updated', updatedCart)
       await dispatch(addProductinCart(updatedCart));
-      navigation.navigate('SecondaryStack', {screen: 'Checkout'});
+      navigation.navigate('SecondaryStack', { screen: 'Checkout' });
       // return ShowToast('Item has been added to your cart');
     } else {
       const res = await dispatch(addProductinCart(confirmedDetails));
       if (res) {
-        navigation.navigate('SecondaryStack', {screen: 'Checkout'});
-        // alert('hello world');
+        navigation.navigate('SecondaryStack', { screen: 'Checkout' });
       } else {
         return ShowToast(cart_error);
       }
     }
 
-    // console.log('cart details =======>', confirmedDetails);
   };
 
   const [imageError, setImageError] = useState(false);
@@ -201,11 +161,11 @@ const SingleProduct = ({route}) => {
           />
           <ScrollView style={styles.container}>
             {/* product images.. */}
-            <View style={{height: hp('35%')}}>
+            <View style={{ height: hp('35%') }}>
               <Swiper
                 style={styles.wrapper}
                 activeDotColor={colors.orange}
-                dotStyle={{borderWidth: 1, borderColor: colors.orange}}>
+                dotStyle={{ borderWidth: 1, borderColor: colors.orange }}>
                 {/* {historyImages.map((item, ind) => ( */}
                 <Image
                   // key={ind}
@@ -215,8 +175,8 @@ const SingleProduct = ({route}) => {
                       : productDetails[product_id]?.product_image == 'null' &&
                         productDetails[product_id]?.product_image == null &&
                         productDetails[product_id]?.product_image == 'undefined'
-                      ? images.imageNotFound
-                      : {
+                        ? images.imageNotFound
+                        : {
                           uri:
                             pic_baseUrl +
                             '/' +
@@ -236,7 +196,7 @@ const SingleProduct = ({route}) => {
               </Swiper>
             </View>
             {/* product detail */}
-            <View style={{marginTop: 30}}>
+            <View style={{ marginTop: 30 }}>
               {/* product owner.. */}
               <TouchableOpacity
                 onPress={() =>
@@ -255,8 +215,8 @@ const SingleProduct = ({route}) => {
                     productDetails[product_id]?.user?.profile_pic == null
                       ? images.stylist1
                       : {
-                          uri: productDetails[product_id]?.user?.profile_pic,
-                        }
+                        uri: productDetails[product_id]?.user?.profile_pic,
+                      }
                   }
                   rating={productDetails[product_id]?.average_rating}
                 />
@@ -279,11 +239,6 @@ const SingleProduct = ({route}) => {
                     color: '#efefef',
                     marginTop: 20,
                   }}>
-                  {/* Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries */}
                   {productDetails[product_id]?.description}
                 </Text>
               </View>
@@ -296,14 +251,14 @@ const SingleProduct = ({route}) => {
                     gap: 5,
                     marginLeft: 20,
                   }}>
-                  <Text style={{color: '#D49621', fontSize: hp('2.4%')}}>
+                  <Text style={{ color: '#D49621', fontSize: hp('2.4%') }}>
                     ${productDetails[product_id]?.regular_price}
                   </Text>
-                  <Text style={{color: '#efefef', fontSize: hp('1.6%')}}>
+                  <Text style={{ color: '#efefef', fontSize: hp('1.6%') }}>
                     (24 available)
                   </Text>
                 </View>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <TouchableOpacity
                     onPress={decrementQuantity}
                     style={styles.button}>
@@ -331,8 +286,8 @@ const SingleProduct = ({route}) => {
                 <OutlineButton
                   title={'Add to cart'}
                   onPress={() => onAddtoCartPress()}
-                  textStyle={{color: '#fff'}}
-                  buttonStyle={{width: '82%'}}
+                  textStyle={{ color: '#fff' }}
+                  buttonStyle={{ width: '82%' }}
                 />
                 <MessageOption />
               </View>
