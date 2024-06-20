@@ -1,25 +1,25 @@
-import React, { useRef, useState } from 'react';
-import { Text, StyleSheet, View, ScrollView } from 'react-native';
+import React, {useRef, useState} from 'react';
+import {Text, StyleSheet, View, ScrollView} from 'react-native';
 import Container from '../../components/Container';
 import ProfileHeader from '../../components/ProfileHeader';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import PrimaryButton from '../../components/PrimaryButton';
 import OutlineButton from '../../components/OutlineButton';
 import PayMethodCard from '../../components/PayMethodCard';
-import { methods } from '../../dummyData';
+import {methods} from '../../dummyData';
 import colors from '../../assets/colors';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import PaymentCard from '../../components/PaymentCard';
-import { useSelector, useDispatch } from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import { Payment, STRIPE_KEY } from '../../redux/slices/AuthSlice';
-import { ShowToast } from '../../utils';
+import {Payment, STRIPE_KEY} from '../../redux/slices/AuthSlice';
+import {ShowToast} from '../../utils';
 
 var stripe = require('stripe-client')(STRIPE_KEY);
 
-const PaymentMethod = ({ route }) => {
-  const { card, payment_loading } = useSelector(state => state.userData);
-  const { cart_product } = useSelector(state => state.ecommerceReducer);
+const PaymentMethod = ({route}) => {
+  const {card, payment_loading} = useSelector(state => state.userData);
+  const {cart_product} = useSelector(state => state.ecommerceReducer);
 
   const dispatch = useDispatch();
 
@@ -97,7 +97,7 @@ const PaymentMethod = ({ route }) => {
         {/* checkout product list */}
         {card.length > 0 && (
           <PaymentCard
-            cardStyle={{ width: '100%' }}
+            cardStyle={{width: '100%'}}
             cardholder_name={
               state.card_holder !== '' ? state.card_holder : card[0].card_holder
             }
@@ -109,7 +109,7 @@ const PaymentMethod = ({ route }) => {
                 ? state.exp_month + '/' + state.exp_year
                 : card[0].exp_month + '/' + card[0].exp_year
             }
-            masterStyle={{ width: '21%' }}
+            masterStyle={{width: '21%'}}
           />
         )}
         {/* <CheckoutProductCard /> */}
@@ -124,12 +124,12 @@ const PaymentMethod = ({ route }) => {
           }}>
           <OutlineButton
             title={card.length > 0 ? 'Select Card' : 'Add New Card'}
-            textStyle={{ color: '#fff' }}
+            textStyle={{color: '#fff'}}
             onPress={() => onButtonPress()}
           />
         </View>
         {/* checkou summary */}
-        <View style={{ marginTop: 15 }}>
+        <View style={{marginTop: 15}}>
           <Text
             style={{
               color: '#fff',
@@ -149,7 +149,7 @@ const PaymentMethod = ({ route }) => {
           ))}
         </View>
         {/* Pay Button */}
-        <View style={{ marginTop: hp('2%'), alignItems: 'center' }}>
+        <View style={{marginTop: hp('2%'), alignItems: 'center'}}>
           <PrimaryButton
             title="Pay now"
             onPress={() => onPayment()}
@@ -172,18 +172,18 @@ const PaymentMethod = ({ route }) => {
             scrollEnabled={card.length > 1 && true}
             showsVerticalScrollIndicator={false}>
             {card.map((item, key) => (
-              <View key={key} style={{ marginBottom: hp('4%') }}>
+              <View key={key} style={{marginBottom: hp('4%')}}>
                 <PaymentCard
                   cardholder_name={item.card_holder}
                   card_number={item.card_number}
                   date={item.exp_year + '/' + item.exp_month}
-                  cardStyle={{ height: '100%', width: '100%' }}
-                  masterStyle={{ width: '22%' }}
+                  cardStyle={{height: '100%', width: '100%'}}
+                  masterStyle={{width: '22%'}}
                   onCardPress={() => onSelectCard(item)}
                 />
               </View>
             ))}
-            <View style={{ alignItems: 'center', paddingTop: hp('2%') }}>
+            <View style={{alignItems: 'center', paddingTop: hp('2%')}}>
               <OutlineButton
                 title={'Add New Card'}
                 onPress={() => navigation.navigate('AddNewCard')}

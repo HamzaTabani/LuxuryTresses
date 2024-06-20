@@ -5,13 +5,13 @@ import {
   Pressable,
   TouchableOpacity,
 } from 'react-native';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { useState } from 'react';
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {useState} from 'react';
 import colors from '../assets/colors';
 import SearchTopButton from './SearchTopButton';
 import ProfileImgRound from './ProfileImgRound';
 import Back from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const ProfileHeader = ({
@@ -33,7 +33,7 @@ const ProfileHeader = ({
 
   return (
     <View style={styles.profile_header}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 15 }}>
+      <View style={{flexDirection: 'row', alignItems: 'center', gap: 15}}>
         {icon ? (
           <Pressable onPress={() => navigation.goBack()}>
             <View style={styles.iconView}>
@@ -56,24 +56,27 @@ const ProfileHeader = ({
           </Text>
         ) : null}
       </View>
-      {filter ? (
-        <View style={styles.filter}>
-          <Ionicons
-            name="options-outline"
-            type="Ionicons"
-            color="#fff"
-            size={25}
-            onPress={() => handleFilter()}
-          />
-        </View>
-      ) : !home ? (
-        <View>
-          <SearchTopButton
-            searchActive={searchActive}
-            setSearchActive={setSearchActive}
-          />
-        </View>
-      ) : null}
+      {
+        filter && (
+          <View style={styles.filter}>
+            <Ionicons
+              name="options-outline"
+              type="Ionicons"
+              color="#fff"
+              size={25}
+              onPress={() => handleFilter()}
+            />
+          </View>
+        )
+        // : !home ? (
+        //   <View>
+        //     {/* <SearchTopButton
+        //       searchActive={searchActive}
+        //       setSearchActive={setSearchActive}
+        //     /> */}
+        //   </View>
+        // ) : null
+      }
     </View>
   );
 };

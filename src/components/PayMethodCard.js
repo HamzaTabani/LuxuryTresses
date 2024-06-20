@@ -1,12 +1,16 @@
-import { StyleSheet, Text, View, Image } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import Back from 'react-native-vector-icons/Ionicons';
 import colors from '../assets/colors';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { useNavigation } from '@react-navigation/native';
 
 const PayMethodCard = ({ image, cardname, number }) => {
+
+  const navigation = useNavigation()
+
   return (
-    <View style={styles.chatHeader}>
+    <TouchableOpacity style={styles.chatHeader} activeOpacity={0.9} onPress={() => navigation.navigate('AddNewCard')}>
       <View style={styles.cardWrapper}>
         <View style={styles.cardView}>
           <Image source={image} resizeMode="cover" style={styles.imageStyle}
@@ -21,7 +25,7 @@ const PayMethodCard = ({ image, cardname, number }) => {
       <View style={styles.iconView}>
         <Back name={'arrow-forward'} color={colors.orange} size={20} />
       </View>
-    </View>
+    </TouchableOpacity>
   )
 }
 

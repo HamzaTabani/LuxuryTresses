@@ -138,12 +138,12 @@ export const methods = [
         card: 'Mastercard / VISA',
         number: '1512 1212 **** ****'
     },
-    {
-        id: 2,
-        image: images.cash,
-        card: 'Cash on delivery',
-        number: 'Pay in cash'
-    }
+    // {
+    //     id: 2,
+    //     image: images.cash,
+    //     card: 'Cash on delivery',
+    //     number: 'Pay in cash'
+    // }
 ]
 
 export const checkoutss = [
