@@ -304,7 +304,7 @@ export const Payment = createAsyncThunk(
         },
       })
       .then(res => {
-        // console.log('payment res ================>', res.data);
+        console.log('payment res ================>', res.data);
         return res.data;
       })
       .catch(error => {

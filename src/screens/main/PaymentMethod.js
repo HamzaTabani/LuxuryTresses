@@ -54,6 +54,8 @@ const PaymentMethod = ({route}) => {
     var card = await stripe.createToken(information);
     var token = card.id;
 
+    console.log('stripe token ===>',token)
+
     const res = await dispatch(
       Payment({
         product: product,
